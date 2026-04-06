@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amaris Experience</title>
+  <meta name="description" content="Luxury travel consultation, private concierge, and supercar experiences." />
+  <meta name="keywords" content="luxury concierge, travel consultation, supercar rental, private transfers, Italian Riviera" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS v4 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style>
+    :root {
+      /* Shared */
+      --black: #050505;
+      --dark: #0a0a0a;
+      --white: #f5f5f3;
+
+      /* Font variables */
+      --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-cormorant: 'Cormorant Garamond', Georgia, serif;
+      --font-dm-sans: 'DM Sans', sans-serif;
+
+      /* Lite Brand */
+      --lite-bg: #faf9f7;
+      --lite-accent: #b14028;
+      --lite-text: #2d2d2d;
+
+      /* Elite Brand */
+      --elite-bg: #050505;
+      --elite-accent: #d4c5a9;
+      --elite-gold: #c4b69c;
+      --elite-border: #1f1f1f;
+      --elite-muted: #4a4a4a;
+      --elite-light: #8a8a8a;
+
+      /* Drive Brand */
+      --drive-bg: #0a0f0a;
+      --drive-accent: #7a9a7a;
+      --drive-border: #1a251a;
+      --drive-muted: #4a5a4a;
+      --drive-light: #8a9a8a;
+
+      /* Transitions */
+      --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-inter);
+      line-height: 1.6;
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection {
+      background: var(--elite-accent);
+      color: var(--black);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+      50%       { opacity: 1;   transform: scaleY(1); }
+    }
+
+    .animate-fade-in   { animation: fadeIn  0.6s var(--transition) forwards; }
+    .animate-fade-up   { animation: fadeUp  0.6s var(--transition) forwards; }
+    .animate-fade-down { animation: fadeDown 0.6s var(--transition) forwards; }
+    .animate-pulse-line { animation: pulse 2s ease-in-out infinite; }
+
+    /* Panel flex expansion on hover */
+    .panel {
+      flex: 1;
+      transition: flex 700ms var(--transition);
+    }
+    .panel:hover {
+      flex: 1.6;
+    }
+
+    /* Video scale on panel hover */
+    .panel .panel-video {
+      transform: scale(1.1);
+      transition: transform 700ms var(--transition);
+    }
+    .panel:hover .panel-video {
+      transform: scale(1.15);
+    }
+
+    /* Dark overlay dims on hover */
+    .panel .panel-overlay-dark {
+      transition: opacity 600ms var(--transition);
+    }
+    .panel:hover .panel-overlay-dark {
+      opacity: 0.25;
+    }
+
+    /* Accent overlay dims on hover */
+    .panel .panel-overlay-accent {
+      opacity: 0.4;
+      transition: opacity 600ms var(--transition);
+    }
+    .panel:hover .panel-overlay-accent {
+      opacity: 0.15;
+    }
+
+    /* Panel icon */
+    .panel .panel-icon {
+      opacity: 0.4;
+      transition: opacity 500ms, transform 500ms;
+    }
+    .panel:hover .panel-icon {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+
+    /* Panel heading letter-spacing */
+    .panel .panel-heading {
+      transition: letter-spacing 500ms;
+    }
+    .panel:hover .panel-heading-lite {
+      letter-spacing: 0.15em;
+    }
+    .panel:hover .panel-heading-elite {
+      letter-spacing: 0.15em;
+    }
+    .panel:hover .panel-heading-drive {
+      letter-spacing: 0.25em;
+    }
+
+    /* Panel subtitle opacity */
+    .panel .panel-subtitle {
+      transition: opacity 500ms;
+    }
+    .panel:hover .panel-subtitle {
+      opacity: 0.7;
+    }
+
+    /* CTA button: hidden by default, revealed on panel hover */
+    .panel .panel-cta {
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: opacity 500ms, transform 500ms;
+    }
+    .panel:hover .panel-cta {
+      opacity: 0.6;
+      transform: translateY(0);
+    }
+    .panel .panel-cta:hover {
+      opacity: 1 !important;
+    }
+
+    /* Divider lines between panels */
+    .panel .panel-divider {
+      opacity: 0.1;
+      transition: opacity 500ms;
+    }
+    .panel:hover .panel-divider {
+      opacity: 0.2;
+    }
+
+    /* Arrow icon nudge on panel hover */
+    .panel .panel-arrow {
+      transition: transform 300ms;
+    }
+    .panel:hover .panel-arrow {
+      transform: translateX(0.25rem);
+    }
+
+    /* Mobile: show CTA even without hover */
+    @media (max-width: 767px) {
+      .panel .panel-cta {
+        opacity: 0.5;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main class="h-screen w-full overflow-hidden bg-[#0a0a0a]">
+
+  <!-- Floating Logo -->
+  <header class="fixed top-0 left-0 right-0 z-[100] flex items-center justify-center py-10 px-8 pointer-events-none opacity-0 animate-fade-down" style="animation-delay: 0s; animation-fill-mode: forwards;">
+    <div class="flex flex-col items-center gap-1">
+      <div class="w-6 h-6 opacity-90 mb-1" style="color: var(--elite-accent);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2L14.5 9H22L16 13.5L18 21L12 17L6 21L8 13.5L2 9H9.5L12 2Z" />
+        </svg>
+      </div>
+      <span class="text-sm font-normal tracking-[0.35em] uppercase text-white/90" style="font-family: var(--font-cormorant);">
+        Amaris Experience
+      </span>
+      <span class="text-[9px] font-light tracking-[0.25em] uppercase text-[#888] mt-1" style="font-family: var(--font-inter);">
+        Scegli il Tuo Viaggio
+      </span>
+    </div>
+  </header>
+
+  <!-- Three Panels -->
+  <div class="flex h-screen w-full max-md:flex-col overflow-hidden">
+
+    <!-- Lite Panel -->
+    <a href="lite/" class="panel group relative flex flex-col items-center justify-center bg-[#1a1a1a] text-white overflow-hidden max-md:min-h-[180px]" style="text-decoration: none;">
+      <!-- Video background -->
+      <div class="absolute inset-0 overflow-hidden">
+        <video autoplay muted loop playsinline class="panel-video w-full h-full object-cover">
+          <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <!-- Dark overlay -->
+      <div class="panel-overlay-dark absolute inset-0 bg-black/75"></div>
+      <!-- Accent overlay -->
+      <div class="panel-overlay-accent absolute inset-0 mix-blend-multiply" style="background-color: var(--lite-accent);"></div>
+
+      <!-- Content -->
+      <div class="relative z-10 text-center px-8 py-4 opacity-0 translate-y-[30px] animate-fade-up" style="animation-delay: 0.3s; animation-fill-mode: forwards;">
+        <!-- Icon -->
+        <div class="panel-icon w-12 h-12 mx-auto mb-8 max-md:w-8 max-md:h-8 max-md:mb-4">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="24" cy="24" r="18" />
+            <path d="M24 12V24L32 28" />
+          </svg>
+        </div>
+        <!-- Title -->
+        <h2 class="panel-heading panel-heading-lite text-[clamp(1.5rem,4vw,3.5rem)] font-medium tracking-[0.1em] mb-3 max-md:text-2xl max-md:mb-2" style="font-family: var(--font-dm-sans);">
+          Lite
+        </h2>
+        <!-- Subtitle -->
+        <p class="panel-subtitle text-[11px] tracking-[0.2em] uppercase opacity-40 mb-10 max-md:text-[9px] max-md:mb-6">
+          Consulenza di Viaggio
+        </p>
+        <!-- CTA -->
+        <span class="panel-cta inline-flex items-center gap-3 px-8 py-4 border border-white/60 text-[10px] tracking-[0.25em] uppercase max-md:px-5 max-md:py-3 max-md:text-[9px] hover:bg-white hover:text-[#1a1a1a]" style="transition: background 300ms, color 300ms;">
+          Esplora
+          <svg class="panel-arrow w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12"/>
+          </svg>
+        </span>
+      </div>
+
+      <!-- Right divider -->
+      <div class="panel-divider absolute right-0 top-[20%] bottom-[20%] w-px bg-gradient-to-b from-transparent via-white/30 to-transparent max-md:hidden"></div>
+    </a>
+
+    <!-- Elite Panel -->
+    <a href="elite/" class="panel group relative flex flex-col items-center justify-center bg-[#0a0a0a] text-white overflow-hidden max-md:min-h-[180px]" style="text-decoration: none;">
+      <!-- Video background -->
+      <div class="absolute inset-0 overflow-hidden">
+        <video autoplay muted loop playsinline class="panel-video w-full h-full object-cover">
+          <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <!-- Dark overlay -->
+      <div class="panel-overlay-dark absolute inset-0 bg-black/75"></div>
+      <!-- Accent overlay -->
+      <div class="panel-overlay-accent absolute inset-0 mix-blend-multiply" style="background-color: var(--elite-accent);"></div>
+
+      <!-- Content -->
+      <div class="relative z-10 text-center px-8 py-4 opacity-0 translate-y-[30px] animate-fade-up" style="animation-delay: 0.5s; animation-fill-mode: forwards;">
+        <!-- Icon -->
+        <div class="panel-icon w-12 h-12 mx-auto mb-8 max-md:w-8 max-md:h-8 max-md:mb-4" style="color: var(--elite-accent);">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M24 4L28 16H40L30 24L34 36L24 28L14 36L18 24L8 16H20L24 4Z" />
+          </svg>
+        </div>
+        <!-- Title -->
+        <h2 class="panel-heading panel-heading-elite text-[clamp(2.25rem,4.5vw,4rem)] font-light italic tracking-[0.1em] mb-3 max-md:text-3xl max-md:mb-2" style="font-family: var(--font-cormorant); color: var(--elite-accent);">
+          Elite
+        </h2>
+        <!-- Subtitle -->
+        <p class="panel-subtitle text-[11px] tracking-[0.2em] uppercase opacity-40 mb-10 max-md:text-[9px] max-md:mb-6">
+          Concierge Privato
+        </p>
+        <!-- CTA -->
+        <span class="panel-cta inline-flex items-center gap-3 px-8 py-4 text-[10px] tracking-[0.25em] uppercase max-md:px-5 max-md:py-3 max-md:text-[9px]" style="border: 1px solid color-mix(in srgb, var(--elite-accent) 60%, transparent); color: var(--elite-accent); transition: background 300ms, color 300ms;" onmouseenter="this.style.background='var(--elite-accent)';this.style.color='#050505';" onmouseleave="this.style.background='';this.style.color='var(--elite-accent)';">
+          Scopri
+          <svg class="panel-arrow w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12"/>
+          </svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- Drive Panel -->
+    <a href="drive/" class="panel group relative flex flex-col items-center justify-center bg-[#0a0a0a] text-white overflow-hidden max-md:min-h-[180px]" style="text-decoration: none;">
+      <!-- Video background -->
+      <div class="absolute inset-0 overflow-hidden">
+        <video autoplay muted loop playsinline class="panel-video w-full h-full object-cover">
+          <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <!-- Dark overlay -->
+      <div class="panel-overlay-dark absolute inset-0 bg-black/75"></div>
+      <!-- Accent overlay -->
+      <div class="panel-overlay-accent absolute inset-0 mix-blend-multiply" style="background-color: var(--drive-accent);"></div>
+
+      <!-- Content -->
+      <div class="relative z-10 text-center px-8 py-4 opacity-0 translate-y-[30px] animate-fade-up" style="animation-delay: 0.7s; animation-fill-mode: forwards;">
+        <!-- Icon -->
+        <div class="panel-icon w-12 h-12 mx-auto mb-8 max-md:w-8 max-md:h-8 max-md:mb-4" style="color: var(--drive-accent);">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="6" y="20" width="36" height="14" rx="3" />
+            <circle cx="14" cy="34" r="4" />
+            <circle cx="34" cy="34" r="4" />
+            <path d="M10 20L14 12H34L38 20" />
+          </svg>
+        </div>
+        <!-- Title -->
+        <h2 class="panel-heading panel-heading-drive text-[clamp(1.5rem,4vw,3.5rem)] font-extralight tracking-[0.2em] mb-3 max-md:text-2xl max-md:mb-2" style="font-family: var(--font-inter);">
+          Drive
+        </h2>
+        <!-- Subtitle -->
+        <p class="panel-subtitle text-[11px] tracking-[0.2em] uppercase opacity-40 mb-10 max-md:text-[9px] max-md:mb-6">
+          Veicoli di Lusso
+        </p>
+        <!-- CTA -->
+        <span class="panel-cta inline-flex items-center gap-3 px-8 py-4 border border-white/60 text-[10px] tracking-[0.25em] uppercase max-md:px-5 max-md:py-3 max-md:text-[9px] hover:bg-white hover:text-[#0a0f0a]" style="transition: background 300ms, color 300ms;">
+          Vivi
+          <svg class="panel-arrow w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12"/>
+          </svg>
+        </span>
+      </div>
+
+      <!-- Left divider -->
+      <div class="panel-divider absolute left-0 top-[20%] bottom-[20%] w-px bg-gradient-to-b from-transparent via-white/30 to-transparent max-md:hidden"></div>
+    </a>
+
+  </div>
+
+  <!-- Bottom hint -->
+  <p class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 text-[9px] tracking-[0.2em] uppercase text-[#666] pointer-events-none opacity-0 animate-fade-up max-md:bottom-4 max-md:text-[8px]" style="font-family: var(--font-inter); animation-delay: 1.5s; animation-fill-mode: forwards;">
+    Passa sopra per esplorare
+  </p>
+
+</main>
+
+</body>
+</html>

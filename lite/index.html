@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amaris Lite | Consulenza di Viaggio Premium</title>
+  <meta name="description" content="Pianificazione viaggio intelligente e accessibile. Itinerari personalizzati, mappe Google, guide PDF. A partire da €99." />
+
+  <!-- Tailwind CSS v4 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      /* Shared */
+      --black: #050505;
+      --dark: #0a0a0a;
+      --white: #f5f5f3;
+
+      /* Lite Brand */
+      --lite-bg: #faf9f7;
+      --lite-accent: #b14028;
+      --lite-text: #2d2d2d;
+
+      /* Elite Brand */
+      --elite-bg: #050505;
+      --elite-accent: #d4c5a9;
+      --elite-gold: #c4b69c;
+      --elite-border: #1f1f1f;
+      --elite-muted: #4a4a4a;
+      --elite-light: #8a8a8a;
+
+      /* Drive Brand */
+      --drive-bg: #0a0f0a;
+      --drive-accent: #7a9a7a;
+      --drive-border: #1a251a;
+      --drive-muted: #4a5a4a;
+      --drive-light: #8a9a8a;
+
+      /* Font variables */
+      --font-inter: 'Inter', sans-serif;
+      --font-cormorant: 'Cormorant Garamond', serif;
+      --font-dm-sans: 'DM Sans', sans-serif;
+
+      /* Transitions */
+      --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-dm-sans);
+      line-height: 1.6;
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection {
+      background: var(--lite-accent);
+      color: var(--white);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    .animate-fade-in  { animation: fadeIn  0.6s var(--transition) forwards; }
+    .animate-fade-up   { animation: fadeUp   0.6s var(--transition) forwards; }
+    .animate-fade-down { animation: fadeDown 0.6s var(--transition) forwards; }
+    .animate-pulse-line { animation: pulse 2s ease-in-out infinite; }
+
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    .delay-500 { animation-delay: 0.5s; }
+  </style>
+</head>
+<body>
+
+<div class="min-h-screen bg-white text-[#2d2d2d]" style="font-family: 'DM Sans', sans-serif;">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#e8e4dc]">
+    <div class="max-w-[1200px] mx-auto px-6 flex justify-between items-center h-[70px]">
+      <a href="../" class="flex items-center gap-2">
+        <span class="w-8 h-8 bg-[var(--lite-accent)] rounded-full flex items-center justify-center text-white text-sm font-medium" style="font-family: 'Cormorant Garamond', serif;">
+          A
+        </span>
+        <span class="text-xl font-medium text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+          Amaris <span class="text-[var(--lite-accent)] font-normal">Lite</span>
+        </span>
+      </a>
+      <ul class="hidden md:flex items-center gap-10">
+        <li>
+          <a href="#servizi" class="text-[#2d2d2d] text-[0.9375rem] font-medium hover:text-[var(--lite-accent)] transition-colors">
+            Servizi
+          </a>
+        </li>
+        <li>
+          <a href="#pacchetti" class="text-[#2d2d2d] text-[0.9375rem] font-medium hover:text-[var(--lite-accent)] transition-colors">
+            Pacchetti
+          </a>
+        </li>
+        <li>
+          <a href="#come-funziona" class="text-[#2d2d2d] text-[0.9375rem] font-medium hover:text-[var(--lite-accent)] transition-colors">
+            Come Funziona
+          </a>
+        </li>
+      </ul>
+      <a href="#contatti" class="px-6 py-3 bg-[var(--lite-accent)] text-white text-sm font-medium rounded-[14px] hover:bg-[#c85a42] hover:-translate-y-0.5 transition-all">
+        Inizia Ora
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pt-40 pb-24 bg-[#faf9f7] relative overflow-hidden">
+    <div class="absolute -top-1/2 -right-[20%] w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(177,64,40,0.05)_0%,transparent_70%)] pointer-events-none"></div>
+    <div class="max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div class="text-center lg:text-left">
+        <span class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full text-[0.8125rem] text-[#6b6b6b] mb-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+          <span class="w-2 h-2 bg-[var(--lite-accent)] rounded-full"></span>
+          Consulenza di Viaggio Premium
+        </span>
+        <h1 class="text-[clamp(2.5rem,5vw,3.5rem)] font-normal leading-[1.15] mb-6 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+          Pianificazione Smart,
+          <br />
+          <em class="text-[var(--lite-accent)]">Prezzi Accessibili</em>
+        </h1>
+        <p class="text-lg text-[#6b6b6b] leading-relaxed mb-8 max-w-[480px] mx-auto lg:mx-0">
+          Noi creiamo, tu vivi. Itinerari personalizzati, mappe Google,
+          guide PDF e supporto dedicato. Il viaggio perfetto senza stress.
+        </p>
+        <div class="flex gap-4 justify-center lg:justify-start">
+          <a href="#pacchetti" class="inline-flex items-center gap-2 px-8 py-4 bg-[var(--lite-accent)] text-white text-[0.9375rem] font-medium rounded-[14px] hover:bg-[#c85a42] hover:-translate-y-0.5 transition-all shadow-[0_4px_14px_rgba(177,64,40,0.3)]">
+            Vedi i Pacchetti
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="#servizi" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#2d2d2d] text-[0.9375rem] font-medium rounded-[14px] border border-[#e8e4dc] hover:border-[#2d2d2d] transition-all">
+            Scopri di Più
+          </a>
+        </div>
+      </div>
+      <div class="max-w-[400px] mx-auto lg:mx-0">
+        <div class="bg-white rounded-3xl p-8 shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
+          <div class="flex justify-between items-start mb-6">
+            <span class="text-2xl text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+              Essential Planning
+            </span>
+            <div class="text-right">
+              <span class="text-xs text-[#9a9a9a] block">da</span>
+              <span class="text-[1.75rem] text-[var(--lite-accent)]" style="font-family: 'Cormorant Garamond', serif;">
+                &euro;99
+              </span>
+            </div>
+          </div>
+          <ul class="mb-6">
+            <li class="py-3 border-b border-[#f5f3ef] flex items-center gap-3 text-[0.9375rem] text-[#2d2d2d]">
+              <span class="w-5 h-5 bg-[rgba(177,64,40,0.1)] rounded-full flex items-center justify-center text-[var(--lite-accent)]">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-3 h-3">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </span>
+              Itinerario personalizzato
+            </li>
+            <li class="py-3 border-b border-[#f5f3ef] flex items-center gap-3 text-[0.9375rem] text-[#2d2d2d]">
+              <span class="w-5 h-5 bg-[rgba(177,64,40,0.1)] rounded-full flex items-center justify-center text-[var(--lite-accent)]">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-3 h-3">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </span>
+              Mappe Google dedicate
+            </li>
+            <li class="py-3 border-b border-[#f5f3ef] flex items-center gap-3 text-[0.9375rem] text-[#2d2d2d]">
+              <span class="w-5 h-5 bg-[rgba(177,64,40,0.1)] rounded-full flex items-center justify-center text-[var(--lite-accent)]">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-3 h-3">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </span>
+              Guida PDF Perfect Spots
+            </li>
+            <li class="py-3 flex items-center gap-3 text-[0.9375rem] text-[#2d2d2d]">
+              <span class="w-5 h-5 bg-[rgba(177,64,40,0.1)] rounded-full flex items-center justify-center text-[var(--lite-accent)]">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-3 h-3">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </span>
+              Supporto WhatsApp
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="servizi" class="py-24 bg-white">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1.5 bg-[#f5f3ef] rounded-full text-xs font-medium text-[#6b6b6b] uppercase tracking-wider mb-4">
+          Cosa Include
+        </span>
+        <h2 class="text-[clamp(2rem,4vw,2.75rem)] font-normal text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+          Servizi Amaris Lite
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[400px] md:max-w-none mx-auto">
+
+        <!-- Analisi e Proposta -->
+        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
+          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              <path d="M9 12h6M9 16h6" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+            Analisi e Proposta
+          </h3>
+          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
+            Raccolta preferenze, definizione stile di viaggio, proposta itinerario con 3 alternative per ogni categoria.
+          </p>
+        </div>
+
+        <!-- Mappe Personalizzate -->
+        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
+          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+            Mappe Personalizzate
+          </h3>
+          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
+            Mappe Google con ristoranti, zone da evitare, posti con buon rapporto qualità/prezzo, attività per ogni orario.
+          </p>
+        </div>
+
+        <!-- PDF Viaggio Completo -->
+        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
+          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
+              <path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              <path d="M12 3v6h6" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+            PDF Viaggio Completo
+          </h3>
+          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
+            Documento con orari, biglietti, mappe, contatti e link diretti alle prenotazioni. Tutto in un unico file.
+          </p>
+        </div>
+
+        <!-- Guida Perfect Spots -->
+        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
+          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+            Guida Perfect Spots
+          </h3>
+          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
+            Mini guide PDF della destinazione con ristoranti, negozi, attività e beach club selezionati per te.
+          </p>
+        </div>
+
+        <!-- Supporto Dedicato -->
+        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
+          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
+              <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+            Supporto Dedicato
+          </h3>
+          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
+            Assistenza linguistica, traduzioni al volo, suggerimenti locali non turistici. Numeri utili e contatti emergenza.
+          </p>
+        </div>
+
+        <!-- Flessibilità Totale -->
+        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
+          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
+              <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+            Flessibilità Totale
+          </h3>
+          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
+            Modifica itinerario con preavviso, consigli giornalieri su richiesta, valutazione piani fatti da te.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pacchetti" class="py-24 bg-[#faf9f7]">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="inline-block px-4 py-1.5 bg-[#f5f3ef] rounded-full text-xs font-medium text-[#6b6b6b] uppercase tracking-wider mb-4">
+          Prezzi Trasparenti
+        </span>
+        <h2 class="text-[clamp(2rem,4vw,2.75rem)] font-normal text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+          Scegli il Tuo Pacchetto
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[800px] mx-auto">
+
+        <!-- Essential Planning -->
+        <div class="bg-white rounded-[1.25rem] p-10 border border-[#e8e4dc] transition-all hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] hover:-translate-y-1 relative">
+          <h3 class="text-[1.375rem] text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
+            Essential Planning
+          </h3>
+          <p class="text-sm text-[#9a9a9a] mb-6">Pianificazione viaggio completa per singoli e coppie</p>
+          <div class="flex items-baseline gap-1 mb-6">
+            <span class="text-xl text-[#2d2d2d]">&euro;</span>
+            <span class="text-5xl text-[#1a1a1a] leading-none" style="font-family: 'Cormorant Garamond', serif;">99</span>
+            <span class="text-sm text-[#9a9a9a]">/ viaggio</span>
+          </div>
+          <ul class="mb-8">
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Call conoscitiva 15-20 minuti
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Questionario personalizzato
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Itinerario 2-7 giorni
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              3 alternative per categoria
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              PDF viaggio completo
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Mappe Google personalizzate
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Guida Perfect Spots
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              1 revisione inclusa
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Supporto WhatsApp base
+            </li>
+          </ul>
+          <a href="#contatti" class="block w-full py-4 text-center text-[0.9375rem] font-medium rounded-[14px] transition-all bg-[#faf9f7] text-[#2d2d2d] border border-[#e8e4dc] hover:border-[#2d2d2d]">
+            Inizia Ora
+          </a>
+        </div>
+
+        <!-- Family Planning -->
+        <div class="bg-white rounded-[1.25rem] p-10 border border-[var(--lite-accent)] shadow-[0_8px_40px_rgba(0,0,0,0.12)] transition-all hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] hover:-translate-y-1 relative">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-[var(--lite-accent)] text-white text-[0.6875rem] font-semibold uppercase tracking-wider rounded-full">
+            Per Famiglie
+          </span>
+          <h3 class="text-[1.375rem] text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
+            Family Planning
+          </h3>
+          <p class="text-sm text-[#9a9a9a] mb-6">Tutto l'Essential + servizi dedicati alle famiglie</p>
+          <div class="flex items-baseline gap-1 mb-6">
+            <span class="text-xl text-[#2d2d2d]">&euro;</span>
+            <span class="text-5xl text-[#1a1a1a] leading-none" style="font-family: 'Cormorant Garamond', serif;">149</span>
+            <span class="text-sm text-[#9a9a9a]">/ viaggio</span>
+          </div>
+          <ul class="mb-8">
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Tutto Essential Planning +
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Ricerca strutture con mini club
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Hotel/resort family verificati
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Itinerari family-friendly
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Attività per bambini 0-12 anni
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Ristoranti child-friendly
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Soluzioni meteo variabile
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Mini guida Family Edition
+            </li>
+            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Contatti babysitter locali
+            </li>
+          </ul>
+          <a href="#contatti" class="block w-full py-4 text-center text-[0.9375rem] font-medium rounded-[14px] transition-all bg-[var(--lite-accent)] text-white hover:bg-[#c85a42]">
+            Inizia Ora
+          </a>
+        </div>
+
+      </div>
+      <p class="text-center text-sm text-[#9a9a9a] mt-8">
+        Il cliente effettua le prenotazioni in autonomia. Noi forniamo consulenza e pianificazione.
+      </p>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="come-funziona" class="py-24 bg-white">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="inline-block px-4 py-1.5 bg-[#f5f3ef] rounded-full text-xs font-medium text-[#6b6b6b] uppercase tracking-wider mb-4">
+          Processo Semplice
+        </span>
+        <h2 class="text-[clamp(2rem,4vw,2.75rem)] font-normal text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+          Come Funziona
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[300px] sm:max-w-none mx-auto relative">
+        <div class="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-[#e8e4dc]"></div>
+
+        <!-- Step 1 -->
+        <div class="text-center group">
+          <div class="w-16 h-16 bg-white border-2 border-[#e8e4dc] rounded-full flex items-center justify-center mx-auto mb-5 text-xl text-[var(--lite-accent)] relative z-10 transition-all group-hover:bg-[var(--lite-accent)] group-hover:border-[var(--lite-accent)] group-hover:text-white" style="font-family: 'Cormorant Garamond', serif;">
+            1
+          </div>
+          <h3 class="text-lg text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
+            Raccontaci i Tuoi Sogni
+          </h3>
+          <p class="text-sm text-[#6b6b6b] leading-relaxed">
+            Condividi le tue idee di viaggio, date e preferenze con noi.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="text-center group">
+          <div class="w-16 h-16 bg-white border-2 border-[#e8e4dc] rounded-full flex items-center justify-center mx-auto mb-5 text-xl text-[var(--lite-accent)] relative z-10 transition-all group-hover:bg-[var(--lite-accent)] group-hover:border-[var(--lite-accent)] group-hover:text-white" style="font-family: 'Cormorant Garamond', serif;">
+            2
+          </div>
+          <h3 class="text-lg text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
+            Ricevi la Proposta
+          </h3>
+          <p class="text-sm text-[#6b6b6b] leading-relaxed">
+            Ti inviamo un itinerario personalizzato con 3 alternative per categoria.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="text-center group">
+          <div class="w-16 h-16 bg-white border-2 border-[#e8e4dc] rounded-full flex items-center justify-center mx-auto mb-5 text-xl text-[var(--lite-accent)] relative z-10 transition-all group-hover:bg-[var(--lite-accent)] group-hover:border-[var(--lite-accent)] group-hover:text-white" style="font-family: 'Cormorant Garamond', serif;">
+            3
+          </div>
+          <h3 class="text-lg text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
+            Perfeziona il Piano
+          </h3>
+          <p class="text-sm text-[#6b6b6b] leading-relaxed">
+            Revisione inclusa per adattare ogni dettaglio alle tue esigenze.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="text-center group">
+          <div class="w-16 h-16 bg-white border-2 border-[#e8e4dc] rounded-full flex items-center justify-center mx-auto mb-5 text-xl text-[var(--lite-accent)] relative z-10 transition-all group-hover:bg-[var(--lite-accent)] group-hover:border-[var(--lite-accent)] group-hover:text-white" style="font-family: 'Cormorant Garamond', serif;">
+            4
+          </div>
+          <h3 class="text-lg text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
+            Vivi il Tuo Viaggio
+          </h3>
+          <p class="text-sm text-[#6b6b6b] leading-relaxed">
+            Prenota in autonomia con i nostri link e parti senza stress.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Cosa NON Include -->
+  <section class="py-24 bg-[#faf9f7]">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <div class="max-w-[700px] mx-auto">
+        <div class="text-center mb-12">
+          <span class="inline-block px-4 py-1.5 bg-[#f5f3ef] rounded-full text-xs font-medium text-[#6b6b6b] uppercase tracking-wider mb-4">
+            Trasparenza
+          </span>
+          <h2 class="text-[clamp(2rem,4vw,2.75rem)] font-normal text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
+            Cosa NON Include
+          </h2>
+          <p class="text-[#6b6b6b] mt-4">
+            Per essere completamente trasparenti, ecco cosa non è incluso in Amaris Lite
+          </p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 border border-[#e8e4dc]">
+          <ul class="space-y-4">
+            <li class="flex items-center gap-3 text-[#6b6b6b]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#9a9a9a] shrink-0">
+                <path d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Prenotazioni dirette (le effettui tu con i nostri link)
+            </li>
+            <li class="flex items-center gap-3 text-[#6b6b6b]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#9a9a9a] shrink-0">
+                <path d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Gestione 24/7 degli imprevisti
+            </li>
+            <li class="flex items-center gap-3 text-[#6b6b6b]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#9a9a9a] shrink-0">
+                <path d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Modifiche illimitate durante il viaggio
+            </li>
+            <li class="flex items-center gap-3 text-[#6b6b6b]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#9a9a9a] shrink-0">
+                <path d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Coordinamento diretto con hotel e fornitori
+            </li>
+            <li class="flex items-center gap-3 text-[#6b6b6b]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#9a9a9a] shrink-0">
+                <path d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Servizio concierge completo
+            </li>
+          </ul>
+          <div class="mt-8 pt-6 border-t border-[#e8e4dc] text-center">
+            <p class="text-sm text-[#6b6b6b] mb-4">
+              Hai bisogno di gestione completa e concierge 24/7?
+            </p>
+            <a href="../elite/" class="inline-flex items-center gap-2 text-[var(--lite-accent)] font-medium hover:underline">
+              Scopri Amaris Elite
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contatti" class="py-24 bg-[#2d2d2d] text-center">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <h2 class="text-[clamp(2rem,4vw,2.75rem)] font-normal text-white mb-4" style="font-family: 'Cormorant Garamond', serif;">
+        Pronto a Pianificare il Tuo Viaggio?
+      </h2>
+      <p class="text-[#9a9a9a] text-lg mb-8 max-w-[500px] mx-auto">
+        Consulenza di viaggio professionale a prezzi accessibili.
+        Inizia oggi a pianificare la tua prossima avventura.
+      </p>
+      <a href="mailto:lite@amarisexperience.com" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#2d2d2d] text-[0.9375rem] font-medium rounded-[14px] hover:bg-[#f5f3ef] transition-all">
+        Contattaci
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-16 bg-[#1a1a1a] text-white">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 text-center md:text-left">
+
+        <!-- Brand column -->
+        <div class="flex flex-col items-center md:items-start">
+          <a href="../" class="flex items-center gap-2 mb-4">
+            <span class="w-8 h-8 bg-[var(--lite-accent)] rounded-full flex items-center justify-center text-white text-sm font-medium" style="font-family: 'Cormorant Garamond', serif;">
+              A
+            </span>
+            <span class="text-xl font-medium" style="font-family: 'Cormorant Garamond', serif;">
+              Amaris <span class="text-[var(--lite-accent)] font-normal">Lite</span>
+            </span>
+          </a>
+          <p class="text-sm text-[#9a9a9a] leading-relaxed max-w-[280px]">
+            Consulenza di viaggio professionale per esperienze italiane indimenticabili.
+          </p>
+          <a href="../" class="inline-flex items-center gap-2 text-[0.8125rem] text-white/50 mt-4 hover:text-white transition-colors">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3.5 h-3.5">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Torna ad Amaris Experience
+          </a>
+        </div>
+
+        <!-- Servizi column -->
+        <div>
+          <h4 class="text-xs font-semibold tracking-wider uppercase text-[#9a9a9a] mb-5">
+            Servizi
+          </h4>
+          <ul class="space-y-2.5">
+            <li>
+              <a href="#servizi" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
+                Analisi e Proposta
+              </a>
+            </li>
+            <li>
+              <a href="#servizi" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
+                Mappe Personalizzate
+              </a>
+            </li>
+            <li>
+              <a href="#servizi" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
+                PDF Viaggio
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pacchetti column -->
+        <div>
+          <h4 class="text-xs font-semibold tracking-wider uppercase text-[#9a9a9a] mb-5">
+            Pacchetti
+          </h4>
+          <ul class="space-y-2.5">
+            <li>
+              <a href="#pacchetti" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
+                Essential Planning - &euro;99
+              </a>
+            </li>
+            <li>
+              <a href="#pacchetti" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
+                Family Planning - &euro;149
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Contatti column -->
+        <div>
+          <h4 class="text-xs font-semibold tracking-wider uppercase text-[#9a9a9a] mb-5">
+            Contatti
+          </h4>
+          <ul class="space-y-2.5">
+            <li>
+              <a href="mailto:lite@amarisexperience.com" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
+                Scrivici
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
+                WhatsApp
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 gap-4">
+        <p class="text-[0.8125rem] text-[#9a9a9a]">
+          &copy; 2024 Amaris Experience. Tutti i diritti riservati.
+        </p>
+        <div class="flex gap-6">
+          <a href="#" class="text-[0.8125rem] text-[#9a9a9a] hover:text-white transition-colors">
+            Privacy Policy
+          </a>
+          <a href="#" class="text-[0.8125rem] text-[#9a9a9a] hover:text-white transition-colors">
+            Termini di Servizio
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
