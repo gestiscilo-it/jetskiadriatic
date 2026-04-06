@@ -1,231 +1,1178 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amaris Lite | Consulenza di Viaggio Premium</title>
-  <meta name="description" content="Pianificazione viaggio intelligente e accessibile. Itinerari personalizzati, mappe Google, guide PDF. A partire da €99." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amaris Noleggio | Moto d'Acqua Senza Patente — Cattolica</title>
+  <meta name="description" content="Moto d'acqua senza patente a Cattolica. Dal porto verso Gabicce, Baia Vallugola e le falesie del San Bartolo. Prenota via WhatsApp.">
 
-  <!-- Tailwind CSS v4 -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      /* Shared */
-      --black: #050505;
-      --dark: #0a0a0a;
-      --white: #f5f5f3;
+      --white: #ffffff;
+      --off-white: #faf8f4;
+      --cream: #f0ece4;
+      --sand: #ddd8cc;
+      --gray: #98938a;
+      --dark-gray: #6a6560;
+      --charcoal: #2c2825;
+      --black: #1a1815;
+      --terracotta: #2a7a8a;
+      --terracotta-light: #3a8a9a;
+      --blue: #c46a40;
 
-      /* Lite Brand */
-      --lite-bg: #faf9f7;
-      --lite-accent: #b14028;
-      --lite-text: #2d2d2d;
-
-      /* Elite Brand */
-      --elite-bg: #050505;
-      --elite-accent: #d4c5a9;
-      --elite-gold: #c4b69c;
-      --elite-border: #1f1f1f;
-      --elite-muted: #4a4a4a;
-      --elite-light: #8a8a8a;
-
-      /* Drive Brand */
-      --drive-bg: #0a0f0a;
-      --drive-accent: #7a9a7a;
-      --drive-border: #1a251a;
-      --drive-muted: #4a5a4a;
-      --drive-light: #8a9a8a;
-
-      /* Font variables */
-      --font-inter: 'Inter', sans-serif;
-      --font-cormorant: 'Cormorant Garamond', serif;
-      --font-dm-sans: 'DM Sans', sans-serif;
-
-      /* Transitions */
+      --font-sans: 'Outfit', -apple-system, sans-serif;
+      --font-serif: 'Fraunces', Georgia, serif;
       --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      --radius: 14px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
     }
 
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
+      font-family: var(--font-sans);
+      background: var(--white);
+      color: var(--charcoal);
+      line-height: 1.6;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--sand);
+      transition: all 0.3s var(--transition);
+    }
+
+    nav.scrolled {
+      box-shadow: var(--shadow);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--black);
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--terracotta);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-family: var(--font-serif);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .logo-text {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    .logo-text span {
+      color: var(--terracotta);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--charcoal);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      transition: color 0.2s var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--terracotta);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.375rem;
+      height: 40px;
+      padding: 0 1.25rem;
+      background: var(--terracotta);
+      color: var(--white);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: var(--radius);
+      white-space: nowrap;
+      transition: all 0.2s var(--transition);
+    }
+
+    .nav-cta svg {
+      flex-shrink: 0;
+    }
+
+    .nav-cta:hover {
+      background: var(--terracotta-light);
+      transform: translateY(-1px);
+    }
+
+    .nav-cta-secondary {
+      background: var(--white);
+      color: var(--charcoal);
+      border: 1px solid var(--sand);
+    }
+
+    .nav-cta-secondary:hover {
+      background: var(--white);
+      border-color: var(--charcoal);
+      transform: translateY(-1px);
+    }
+
+    .nav-cta-booking {
+      background: var(--blue);
+    }
+
+    .nav-cta-booking:hover {
+      background: #b55a30;
+    }
+
+    .btn-booking {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: var(--white);
+      color: var(--charcoal);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: var(--radius);
+      border: 1px solid var(--sand);
+      transition: all 0.2s var(--transition);
+    }
+
+    .btn-booking:hover {
+      border-color: var(--charcoal);
+    }
+
+    .cta .btn-booking {
+      background: transparent;
+      color: var(--white);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .cta .btn-booking:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--white);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 10rem 0 6rem;
+      background: var(--off-white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(42, 122, 138, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--white);
+      border-radius: 2rem;
+      font-size: 0.8125rem;
+      color: var(--dark-gray);
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--terracotta);
+      border-radius: 50%;
+    }
+
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      color: var(--black);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--terracotta);
+    }
+
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--dark-gray);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      max-width: 480px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: var(--terracotta);
+      color: var(--white);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition: all 0.2s var(--transition);
+      box-shadow: 0 4px 14px rgba(42, 122, 138, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--terracotta-light);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(42, 122, 138, 0.35);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: var(--white);
+      color: var(--charcoal);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: var(--radius);
+      border: 1px solid var(--sand);
+      transition: all 0.2s var(--transition);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--charcoal);
+    }
+
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-card {
+      background: var(--white);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-card-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      color: var(--black);
+    }
+
+    .hero-card-price {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .hero-card-price .from {
+      font-size: 0.8125rem;
+      color: var(--gray);
+    }
+
+    .hero-card-price .amount {
+      font-family: var(--font-serif);
+      font-size: 1.75rem;
+      color: var(--terracotta);
+    }
+
+    .hero-card-features {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-card-features li {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--cream);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9375rem;
+      color: var(--charcoal);
+    }
+
+    .hero-card-features li:last-child {
+      border-bottom: none;
+    }
+
+    .check-icon {
+      width: 20px;
+      height: 20px;
+      background: rgba(42, 122, 138, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--terracotta);
+    }
+
+    .check-icon svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* Services */
+    .services {
+      padding: 6rem 0;
+      background: var(--white);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-label {
+      display: inline-block;
+      padding: 0.375rem 1rem;
+      background: var(--cream);
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--dark-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 400;
+      color: var(--black);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      padding: 2rem;
+      background: var(--off-white);
+      border-radius: 1rem;
+      transition: all 0.3s var(--transition);
+      border: 1px solid transparent;
+    }
+
+    .service-card:hover {
+      background: var(--white);
+      border-color: var(--sand);
+      box-shadow: var(--shadow);
+      transform: translateY(-4px);
+    }
+
+    .service-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      color: var(--black);
+    }
+
+    .service-card p {
+      font-size: 0.9375rem;
+      color: var(--dark-gray);
+      line-height: 1.7;
+    }
+
+    /* Pricing */
+    .pricing {
+      padding: 6rem 0;
+      background: var(--off-white);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .price-card {
+      background: var(--white);
+      border-radius: 1.25rem;
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--sand);
+      transition: all 0.3s var(--transition);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .price-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    .price-card.featured {
+      border-color: var(--terracotta);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .price-card.featured::before {
+      content: 'Pi\00f9 scelto';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.375rem 1rem;
+      background: var(--terracotta);
+      color: var(--white);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 2rem;
+    }
+
+    .price-name {
+      font-family: var(--font-serif);
+      font-size: 1.75rem;
+      color: var(--black);
+      margin-bottom: 0.75rem;
+    }
+
+    .price-duration {
+      align-self: flex-start;
+      padding: 0.25rem 0.75rem;
+      background: var(--cream);
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--dark-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .price-desc {
+      font-size: 0.9375rem;
+      color: var(--dark-gray);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .price-amount {
+      display: flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      margin-top: auto;
+      padding-top: 1rem;
+    }
+
+    .price-label {
+      font-size: 0.8125rem;
+      color: var(--gray);
+    }
+
+    .price-value {
+      font-size: 0.8125rem;
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    .price-features {
+      list-style: none;
+      margin-bottom: 0;
+    }
+
+    .price-features li {
+      padding: 0.625rem 0;
+      font-size: 0.9375rem;
+      color: var(--charcoal);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .price-features li svg {
+      width: 16px;
+      height: 16px;
+      color: var(--terracotta);
+      flex-shrink: 0;
+    }
+
+    .price-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition: all 0.2s var(--transition);
+    }
+
+    .price-btn-primary {
+      background: var(--terracotta);
+      color: var(--white);
+    }
+
+    .price-btn-primary:hover {
+      background: var(--terracotta-light);
+    }
+
+    .price-btn-secondary {
+      background: var(--off-white);
+      color: var(--charcoal);
+      border: 1px solid var(--sand);
+    }
+
+    .price-btn-secondary:hover {
+      border-color: var(--charcoal);
+    }
+
+    /* How It Works */
+    .how-it-works {
+      padding: 6rem 0;
+      background: var(--white);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 2px;
+      background: var(--sand);
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 64px;
+      height: 64px;
+      background: var(--white);
+      border: 2px solid var(--sand);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      color: var(--terracotta);
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s var(--transition);
+    }
+
+    .step:hover .step-number {
+      background: var(--terracotta);
+      border-color: var(--terracotta);
+      color: var(--white);
+    }
+
+    .step h3 {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      color: var(--black);
+      margin-bottom: 0.5rem;
+    }
+
+    .step p {
+      font-size: 0.875rem;
+      color: var(--dark-gray);
+      line-height: 1.6;
+    }
+
+    /* Testimonials */
+    .testimonials {
+      padding: 6rem 0;
+      background: var(--off-white);
+    }
+
+    .testimonial-card {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .testimonial-quote {
+      font-family: var(--font-serif);
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-style: italic;
+      color: var(--black);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .testimonial-avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--sand);
+      border-radius: 50%;
+    }
+
+    .testimonial-info {
+      text-align: left;
+    }
+
+    .testimonial-name {
+      font-weight: 600;
+      color: var(--black);
+    }
+
+    .testimonial-role {
+      font-size: 0.875rem;
+      color: var(--gray);
+    }
+
+    /* CTA */
+    .cta {
+      padding: 6rem 0;
+      background: var(--charcoal);
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .cta p {
+      color: var(--gray);
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .cta .btn-primary {
+      background: var(--white);
+      color: var(--charcoal);
+    }
+
+    .cta .btn-primary:hover {
+      background: var(--cream);
+    }
+
+    .cta .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .cta .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--white);
+    }
+
+    /* Footer */
+    footer {
+      padding: 4rem 0 2rem;
       background: var(--black);
       color: var(--white);
-      font-family: var(--font-dm-sans);
-      line-height: 1.6;
-      font-weight: 300;
-      letter-spacing: 0.01em;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
-    ::selection {
-      background: var(--lite-accent);
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand .logo {
+      margin-bottom: 1rem;
       color: var(--white);
     }
 
-    h1, h2, h3, h4, h5, h6 {
-      font-weight: 300;
-      letter-spacing: -0.02em;
+    .footer-brand .logo-icon {
+      background: var(--terracotta);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .footer-brand p {
+      color: var(--gray);
+      font-size: 0.875rem;
+      line-height: 1.7;
+      max-width: 280px;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .footer-col h4 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1.25rem;
     }
 
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .footer-col ul {
+      list-style: none;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
-      50% { opacity: 1; transform: scaleY(1); }
+    .footer-col li {
+      margin-bottom: 0.625rem;
     }
 
-    .animate-fade-in  { animation: fadeIn  0.6s var(--transition) forwards; }
-    .animate-fade-up   { animation: fadeUp   0.6s var(--transition) forwards; }
-    .animate-fade-down { animation: fadeDown 0.6s var(--transition) forwards; }
-    .animate-pulse-line { animation: pulse 2s ease-in-out infinite; }
+    .footer-col a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      transition: color 0.2s var(--transition);
+    }
 
-    .delay-100 { animation-delay: 0.1s; }
-    .delay-200 { animation-delay: 0.2s; }
-    .delay-300 { animation-delay: 0.3s; }
-    .delay-400 { animation-delay: 0.4s; }
-    .delay-500 { animation-delay: 0.5s; }
+    .footer-col a:hover {
+      color: var(--white);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .footer-bottom p {
+      font-size: 0.8125rem;
+      color: var(--gray);
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-legal a {
+      font-size: 0.8125rem;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s var(--transition);
+    }
+
+    .footer-legal a:hover {
+      color: var(--white);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.8125rem;
+      margin-top: 1rem;
+      transition: color 0.2s var(--transition);
+    }
+
+    .back-link:hover {
+      color: var(--white);
+    }
+
+    .back-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-cta {
+        justify-content: center;
+      }
+
+      .hero-visual {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      .services-grid,
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .steps::before {
+        display: none;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-cta {
+        justify-content: flex-start;
+        max-width: 40px;
+        padding: 0 0 0 12px;
+        overflow: hidden;
+        transition: max-width 0.4s ease, padding 0.4s ease;
+      }
+
+      .nav-cta span {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .nav-cta-secondary,
+      .nav-cta-secondary:hover,
+      .nav-cta-secondary.expanded {
+        border-color: var(--sand);
+      }
+
+      .nav-cta-secondary.expanded {
+        max-width: 105px;
+        padding: 0 12px;
+      }
+
+      .nav-cta:not(.nav-cta-secondary):not(.nav-cta-booking).expanded {
+        max-width: 125px;
+        padding: 0 12px;
+      }
+
+      .nav-cta-booking.expanded {
+        max-width: 120px;
+        padding: 0 12px;
+      }
+
+
+      .nav-cta.expanded span {
+        opacity: 1;
+      }
+
+      .hero {
+        padding: 6rem 0 3rem;
+      }
+
+      .hero h1 {
+        font-size: 2.25rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-cta .btn-primary,
+      .hero-cta .btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .services,
+      .pricing,
+      .how-it-works {
+        padding: 4rem 0;
+      }
+
+      .section-header {
+        margin-bottom: 2.5rem;
+      }
+
+      .service-card {
+        padding: 1.5rem;
+      }
+
+      .price-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .steps {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        max-width: none;
+      }
+
+      .step-number {
+        width: 48px;
+        height: 48px;
+        font-size: 1rem;
+      }
+
+      .cta {
+        padding: 4rem 0;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .cta-buttons .btn-primary,
+      .cta-buttons .btn-secondary,
+      .cta-buttons .btn-booking {
+        justify-content: center;
+      }
+
+      footer {
+        padding: 3rem 0 1.5rem;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer-brand p {
+        text-align: center;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
-
-<div class="min-h-screen bg-white text-[#2d2d2d]" style="font-family: 'DM Sans', sans-serif;">
-
   <!-- Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#e8e4dc]">
-    <div class="max-w-[1200px] mx-auto px-6 flex justify-between items-center h-[70px]">
-      <a href="../" class="flex items-center gap-2">
-        <span class="w-8 h-8 bg-[var(--lite-accent)] rounded-full flex items-center justify-center text-white text-sm font-medium" style="font-family: 'Cormorant Garamond', serif;">
-          A
-        </span>
-        <span class="text-xl font-medium text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-          Amaris <span class="text-[var(--lite-accent)] font-normal">Lite</span>
-        </span>
+  <nav id="navbar">
+    <div class="container nav-container">
+      <a href="../" class="logo">
+        <span class="logo-text">Amaris <span>Noleggio</span></span>
       </a>
-      <ul class="hidden md:flex items-center gap-10">
-        <li>
-          <a href="#servizi" class="text-[#2d2d2d] text-[0.9375rem] font-medium hover:text-[var(--lite-accent)] transition-colors">
-            Servizi
-          </a>
-        </li>
-        <li>
-          <a href="#pacchetti" class="text-[#2d2d2d] text-[0.9375rem] font-medium hover:text-[var(--lite-accent)] transition-colors">
-            Pacchetti
-          </a>
-        </li>
-        <li>
-          <a href="#come-funziona" class="text-[#2d2d2d] text-[0.9375rem] font-medium hover:text-[var(--lite-accent)] transition-colors">
-            Come Funziona
-          </a>
-        </li>
+      <ul class="nav-links">
+        <li><a href="#flotta">La Flotta</a></li>
+        <li><a href="#pacchetti">Pacchetti</a></li>
+        <li><a href="#prenota">Prenota</a></li>
       </ul>
-      <a href="#contatti" class="px-6 py-3 bg-[var(--lite-accent)] text-white text-sm font-medium rounded-[14px] hover:bg-[#c85a42] hover:-translate-y-0.5 transition-all">
-        Inizia Ora
-      </a>
+      <div class="nav-actions">
+        <a href="tel:+39000000000" class="nav-cta nav-cta-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          <span>Chiama</span>
+        </a>
+        <a href="https://wa.me/39000000000?text=Ciao!%20Vorrei%20prenotare%20una%20moto%20d%27acqua." class="nav-cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+          </svg>
+          <span>WhatsApp</span>
+        </a>
+        <a href="#prenota" class="nav-cta nav-cta-booking">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span>Prenota</span>
+        </a>
+      </div>
     </div>
   </nav>
 
   <!-- Hero -->
-  <section class="pt-40 pb-24 bg-[#faf9f7] relative overflow-hidden">
-    <div class="absolute -top-1/2 -right-[20%] w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(177,64,40,0.05)_0%,transparent_70%)] pointer-events-none"></div>
-    <div class="max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-      <div class="text-center lg:text-left">
-        <span class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full text-[0.8125rem] text-[#6b6b6b] mb-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-          <span class="w-2 h-2 bg-[var(--lite-accent)] rounded-full"></span>
-          Consulenza di Viaggio Premium
+  <section class="hero">
+    <div class="container hero-container">
+      <div class="hero-content">
+        <span class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Moto d'Acqua &middot; Cattolica &middot; Senza Patente
         </span>
-        <h1 class="text-[clamp(2.5rem,5vw,3.5rem)] font-normal leading-[1.15] mb-6 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-          Pianificazione Smart,
-          <br />
-          <em class="text-[var(--lite-accent)]">Prezzi Accessibili</em>
-        </h1>
-        <p class="text-lg text-[#6b6b6b] leading-relaxed mb-8 max-w-[480px] mx-auto lg:mx-0">
-          Noi creiamo, tu vivi. Itinerari personalizzati, mappe Google,
-          guide PDF e supporto dedicato. Il viaggio perfetto senza stress.
-        </p>
-        <div class="flex gap-4 justify-center lg:justify-start">
-          <a href="#pacchetti" class="inline-flex items-center gap-2 px-8 py-4 bg-[var(--lite-accent)] text-white text-[0.9375rem] font-medium rounded-[14px] hover:bg-[#c85a42] hover:-translate-y-0.5 transition-all shadow-[0_4px_14px_rgba(177,64,40,0.3)]">
-            Vedi i Pacchetti
+        <h1><em>jetski</em><br>senza patente</h1>
+        <p>Noleggio jetski senza patente dal porto di Cattolica. Si esce verso Gabicce, la Vallugola e le falesie del San Bartolo. Briefing, assicurazione e assistenza inclusi.</p>
+        <div class="hero-cta">
+          <a href="#pacchetti" class="btn-primary">
+            Scegli la tua uscita
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
+              <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </a>
-          <a href="#servizi" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#2d2d2d] text-[0.9375rem] font-medium rounded-[14px] border border-[#e8e4dc] hover:border-[#2d2d2d] transition-all">
-            Scopri di Più
-          </a>
+          <a href="#flotta" class="btn-secondary">Scopri la flotta</a>
         </div>
       </div>
-      <div class="max-w-[400px] mx-auto lg:mx-0">
-        <div class="bg-white rounded-3xl p-8 shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
-          <div class="flex justify-between items-start mb-6">
-            <span class="text-2xl text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-              Essential Planning
-            </span>
-            <div class="text-right">
-              <span class="text-xs text-[#9a9a9a] block">da</span>
-              <span class="text-[1.75rem] text-[var(--lite-accent)]" style="font-family: 'Cormorant Garamond', serif;">
-                &euro;99
-              </span>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <span class="hero-card-title">Noleggia una moto d'acqua</span>
+            <div class="hero-card-price">
+              <span class="from">da</span>
+              <span class="amount">&euro;60</span>
             </div>
           </div>
-          <ul class="mb-6">
-            <li class="py-3 border-b border-[#f5f3ef] flex items-center gap-3 text-[0.9375rem] text-[#2d2d2d]">
-              <span class="w-5 h-5 bg-[rgba(177,64,40,0.1)] rounded-full flex items-center justify-center text-[var(--lite-accent)]">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-3 h-3">
-                  <path d="M20 6L9 17l-5-5" />
+          <ul class="hero-card-features">
+            <li>
+              <span class="check-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M20 6L9 17l-5-5"/>
                 </svg>
               </span>
-              Itinerario personalizzato
+              Senza patente nautica
             </li>
-            <li class="py-3 border-b border-[#f5f3ef] flex items-center gap-3 text-[0.9375rem] text-[#2d2d2d]">
-              <span class="w-5 h-5 bg-[rgba(177,64,40,0.1)] rounded-full flex items-center justify-center text-[var(--lite-accent)]">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-3 h-3">
-                  <path d="M20 6L9 17l-5-5" />
+            <li>
+              <span class="check-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M20 6L9 17l-5-5"/>
                 </svg>
               </span>
-              Mappe Google dedicate
+              Cattolica &rarr; Gabicce &rarr; Vallugola
             </li>
-            <li class="py-3 border-b border-[#f5f3ef] flex items-center gap-3 text-[0.9375rem] text-[#2d2d2d]">
-              <span class="w-5 h-5 bg-[rgba(177,64,40,0.1)] rounded-full flex items-center justify-center text-[var(--lite-accent)]">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-3 h-3">
-                  <path d="M20 6L9 17l-5-5" />
+            <li>
+              <span class="check-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M20 6L9 17l-5-5"/>
                 </svg>
               </span>
-              Guida PDF Perfect Spots
+              Briefing di 5 minuti incluso
             </li>
-            <li class="py-3 flex items-center gap-3 text-[0.9375rem] text-[#2d2d2d]">
-              <span class="w-5 h-5 bg-[rgba(177,64,40,0.1)] rounded-full flex items-center justify-center text-[var(--lite-accent)]">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-3 h-3">
-                  <path d="M20 6L9 17l-5-5" />
+            <li>
+              <span class="check-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M20 6L9 17l-5-5"/>
                 </svg>
               </span>
-              Supporto WhatsApp
+              Prenota via WhatsApp
             </li>
           </ul>
         </div>
@@ -233,547 +1180,266 @@
     </div>
   </section>
 
-  <!-- Services -->
-  <section id="servizi" class="py-24 bg-white">
-    <div class="max-w-[1200px] mx-auto px-6">
-      <div class="text-center mb-16">
-        <span class="inline-block px-4 py-1.5 bg-[#f5f3ef] rounded-full text-xs font-medium text-[#6b6b6b] uppercase tracking-wider mb-4">
-          Cosa Include
-        </span>
-        <h2 class="text-[clamp(2rem,4vw,2.75rem)] font-normal text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-          Servizi Amaris Lite
-        </h2>
+  <!-- Fleet -->
+  <section class="services" id="flotta">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Tre caratteri, un mare</span>
+        <h2>La Flotta</h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[400px] md:max-w-none mx-auto">
-
-        <!-- Analisi e Proposta -->
-        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
-          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
-              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              <path d="M9 12h6M9 16h6" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-            Analisi e Proposta
-          </h3>
-          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
-            Raccolta preferenze, definizione stile di viaggio, proposta itinerario con 3 alternative per ogni categoria.
-          </p>
+      <div class="services-grid">
+        <div class="service-card">
+          <img class="service-img" src="https://images.pexels.com/photos/704213/pexels-photo-704213.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Moto d'acqua Sport in azione">
+          <h3>Sport</h3>
+          <p>Leggera, reattiva, costruita per sentire l'acqua. Sterzi e risponde. Acceleri e il porto sparisce. Per chi vuole onde, curve e sale sulla pelle.</p>
         </div>
-
-        <!-- Mappe Personalizzate -->
-        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
-          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-            Mappe Personalizzate
-          </h3>
-          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
-            Mappe Google con ristoranti, zone da evitare, posti con buon rapporto qualità/prezzo, attività per ogni orario.
-          </p>
+        <div class="service-card">
+          <img class="service-img" src="https://images.pexels.com/photos/1430671/pexels-photo-1430671.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Moto d'acqua Comfort per due persone">
+          <h3>Comfort</h3>
+          <p>Due posti larghi, carena stabile, andatura da crociera. Si va verso Gabicce senza fretta, si guarda la costa che cambia forma, si parla senza urlare.</p>
         </div>
-
-        <!-- PDF Viaggio Completo -->
-        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
-          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
-              <path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              <path d="M12 3v6h6" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-            PDF Viaggio Completo
-          </h3>
-          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
-            Documento con orari, biglietti, mappe, contatti e link diretti alle prenotazioni. Tutto in un unico file.
-          </p>
+        <div class="service-card">
+          <img class="service-img" src="https://images.pexels.com/photos/9765729/pexels-photo-9765729.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Moto d'acqua Premium di alta gamma">
+          <h3>Premium</h3>
+          <p>La pi&ugrave; grande, la pi&ugrave; veloce. Raggiungi Vallugola in quindici minuti, costeggi le falesie del San Bartolo e torni a Cattolica con il tramonto alle spalle.</p>
         </div>
-
-        <!-- Guida Perfect Spots -->
-        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
-          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-            Guida Perfect Spots
-          </h3>
-          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
-            Mini guide PDF della destinazione con ristoranti, negozi, attività e beach club selezionati per te.
-          </p>
-        </div>
-
-        <!-- Supporto Dedicato -->
-        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
-          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
-              <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-            Supporto Dedicato
-          </h3>
-          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
-            Assistenza linguistica, traduzioni al volo, suggerimenti locali non turistici. Numeri utili e contatti emergenza.
-          </p>
-        </div>
-
-        <!-- Flessibilità Totale -->
-        <div class="p-8 bg-[#faf9f7] rounded-2xl border border-transparent hover:bg-white hover:border-[#e8e4dc] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all">
-          <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 text-[var(--lite-accent)] shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
-              <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-medium mb-3 text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-            Flessibilità Totale
-          </h3>
-          <p class="text-[0.9375rem] text-[#6b6b6b] leading-relaxed">
-            Modifica itinerario con preavviso, consigli giornalieri su richiesta, valutazione piani fatti da te.
-          </p>
-        </div>
-
       </div>
     </div>
   </section>
 
   <!-- Pricing -->
-  <section id="pacchetti" class="py-24 bg-[#faf9f7]">
-    <div class="max-w-[1200px] mx-auto px-6">
-      <div class="text-center mb-12">
-        <span class="inline-block px-4 py-1.5 bg-[#f5f3ef] rounded-full text-xs font-medium text-[#6b6b6b] uppercase tracking-wider mb-4">
-          Prezzi Trasparenti
-        </span>
-        <h2 class="text-[clamp(2rem,4vw,2.75rem)] font-normal text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-          Scegli il Tuo Pacchetto
-        </h2>
+  <section class="pricing" id="pacchetti">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Dove vuoi arrivare?</span>
+        <h2>Scegli il Tuo Percorso</h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[800px] mx-auto">
-
-        <!-- Essential Planning -->
-        <div class="bg-white rounded-[1.25rem] p-10 border border-[#e8e4dc] transition-all hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] hover:-translate-y-1 relative">
-          <h3 class="text-[1.375rem] text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
-            Essential Planning
-          </h3>
-          <p class="text-sm text-[#9a9a9a] mb-6">Pianificazione viaggio completa per singoli e coppie</p>
-          <div class="flex items-baseline gap-1 mb-6">
-            <span class="text-xl text-[#2d2d2d]">&euro;</span>
-            <span class="text-5xl text-[#1a1a1a] leading-none" style="font-family: 'Cormorant Garamond', serif;">99</span>
-            <span class="text-sm text-[#9a9a9a]">/ viaggio</span>
-          </div>
-          <ul class="mb-8">
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
+      <div class="pricing-grid">
+        <div class="price-card">
+          <h3 class="price-name">Costa di Gabicce</h3>
+          <span class="price-duration">30 minuti</span>
+          <p class="price-desc">Trenta minuti lungo la costa di Gabicce Mare</p>
+          <ul class="price-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
               </svg>
-              Call conoscitiva 15-20 minuti
+              Partenza dal porto di Cattolica
             </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
               </svg>
-              Questionario personalizzato
+              Costa di Gabicce dall'acqua
             </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
               </svg>
-              Itinerario 2-7 giorni
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              3 alternative per categoria
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              PDF viaggio completo
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              Mappe Google personalizzate
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              Guida Perfect Spots
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              1 revisione inclusa
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              Supporto WhatsApp base
+              Senza patente nautica
             </li>
           </ul>
-          <a href="#contatti" class="block w-full py-4 text-center text-[0.9375rem] font-medium rounded-[14px] transition-all bg-[#faf9f7] text-[#2d2d2d] border border-[#e8e4dc] hover:border-[#2d2d2d]">
-            Inizia Ora
-          </a>
-        </div>
-
-        <!-- Family Planning -->
-        <div class="bg-white rounded-[1.25rem] p-10 border border-[var(--lite-accent)] shadow-[0_8px_40px_rgba(0,0,0,0.12)] transition-all hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] hover:-translate-y-1 relative">
-          <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-[var(--lite-accent)] text-white text-[0.6875rem] font-semibold uppercase tracking-wider rounded-full">
-            Per Famiglie
-          </span>
-          <h3 class="text-[1.375rem] text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
-            Family Planning
-          </h3>
-          <p class="text-sm text-[#9a9a9a] mb-6">Tutto l'Essential + servizi dedicati alle famiglie</p>
-          <div class="flex items-baseline gap-1 mb-6">
-            <span class="text-xl text-[#2d2d2d]">&euro;</span>
-            <span class="text-5xl text-[#1a1a1a] leading-none" style="font-family: 'Cormorant Garamond', serif;">149</span>
-            <span class="text-sm text-[#9a9a9a]">/ viaggio</span>
+          <div class="price-amount">
+            <span class="price-label">da</span>
+            <span class="price-value">&euro;60</span>
           </div>
-          <ul class="mb-8">
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
+        </div>
+        <div class="price-card featured">
+          <h3 class="price-name">Baia Vallugola</h3>
+          <span class="price-duration">1 ora</span>
+          <p class="price-desc">Un'ora fino alla caletta del Parco San Bartolo</p>
+          <ul class="price-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
               </svg>
-              Tutto Essential Planning +
+              Cattolica &rarr; Gabicce &rarr; Vallugola
             </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
               </svg>
-              Ricerca strutture con mini club
+              Sosta per tuffo in caletta
             </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
               </svg>
-              Hotel/resort family verificati
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              Itinerari family-friendly
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              Attività per bambini 0-12 anni
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              Ristoranti child-friendly
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              Soluzioni meteo variabile
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              Mini guida Family Edition
-            </li>
-            <li class="py-2.5 text-[0.9375rem] text-[#2d2d2d] flex items-center gap-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[var(--lite-accent)] shrink-0">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              Contatti babysitter locali
+              Senza patente nautica
             </li>
           </ul>
-          <a href="#contatti" class="block w-full py-4 text-center text-[0.9375rem] font-medium rounded-[14px] transition-all bg-[var(--lite-accent)] text-white hover:bg-[#c85a42]">
-            Inizia Ora
-          </a>
+          <div class="price-amount">
+            <span class="price-label">da</span>
+            <span class="price-value">&euro;100</span>
+          </div>
         </div>
-
+        <div class="price-card">
+          <h3 class="price-name">Falesie del San Bartolo</h3>
+          <span class="price-duration">mezza giornata</span>
+          <p class="price-desc">Mezza giornata lungo dodici chilometri di costa</p>
+          <ul class="price-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+              12 km di falesie a picco
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+              Fiorenzuola, Casteldimezzo, Vallugola
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+              Soste illimitate per tuffi
+            </li>
+          </ul>
+          <div class="price-amount">
+            <span class="price-label">da</span>
+            <span class="price-value">&euro;180</span>
+          </div>
+        </div>
       </div>
-      <p class="text-center text-sm text-[#9a9a9a] mt-8">
-        Il cliente effettua le prenotazioni in autonomia. Noi forniamo consulenza e pianificazione.
-      </p>
     </div>
   </section>
 
   <!-- How It Works -->
-  <section id="come-funziona" class="py-24 bg-white">
-    <div class="max-w-[1200px] mx-auto px-6">
-      <div class="text-center mb-12">
-        <span class="inline-block px-4 py-1.5 bg-[#f5f3ef] rounded-full text-xs font-medium text-[#6b6b6b] uppercase tracking-wider mb-4">
-          Processo Semplice
-        </span>
-        <h2 class="text-[clamp(2rem,4vw,2.75rem)] font-normal text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-          Come Funziona
-        </h2>
+  <section class="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Nessuna patente, nessuna coda</span>
+        <h2>Come Funziona</h2>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[300px] sm:max-w-none mx-auto relative">
-        <div class="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-[#e8e4dc]"></div>
-
-        <!-- Step 1 -->
-        <div class="text-center group">
-          <div class="w-16 h-16 bg-white border-2 border-[#e8e4dc] rounded-full flex items-center justify-center mx-auto mb-5 text-xl text-[var(--lite-accent)] relative z-10 transition-all group-hover:bg-[var(--lite-accent)] group-hover:border-[var(--lite-accent)] group-hover:text-white" style="font-family: 'Cormorant Garamond', serif;">
-            1
-          </div>
-          <h3 class="text-lg text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
-            Raccontaci i Tuoi Sogni
-          </h3>
-          <p class="text-sm text-[#6b6b6b] leading-relaxed">
-            Condividi le tue idee di viaggio, date e preferenze con noi.
-          </p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Scrivi</h3>
+          <p>Un messaggio WhatsApp con la data. Ti confermiamo mezzo e orario entro un'ora.</p>
         </div>
-
-        <!-- Step 2 -->
-        <div class="text-center group">
-          <div class="w-16 h-16 bg-white border-2 border-[#e8e4dc] rounded-full flex items-center justify-center mx-auto mb-5 text-xl text-[var(--lite-accent)] relative z-10 transition-all group-hover:bg-[var(--lite-accent)] group-hover:border-[var(--lite-accent)] group-hover:text-white" style="font-family: 'Cormorant Garamond', serif;">
-            2
-          </div>
-          <h3 class="text-lg text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
-            Ricevi la Proposta
-          </h3>
-          <p class="text-sm text-[#6b6b6b] leading-relaxed">
-            Ti inviamo un itinerario personalizzato con 3 alternative per categoria.
-          </p>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Scegli</h3>
+          <p>Gabicce, Vallugola o le falesie del San Bartolo? Ti consigliamo il percorso e il mezzo.</p>
         </div>
-
-        <!-- Step 3 -->
-        <div class="text-center group">
-          <div class="w-16 h-16 bg-white border-2 border-[#e8e4dc] rounded-full flex items-center justify-center mx-auto mb-5 text-xl text-[var(--lite-accent)] relative z-10 transition-all group-hover:bg-[var(--lite-accent)] group-hover:border-[var(--lite-accent)] group-hover:text-white" style="font-family: 'Cormorant Garamond', serif;">
-            3
-          </div>
-          <h3 class="text-lg text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
-            Perfeziona il Piano
-          </h3>
-          <p class="text-sm text-[#6b6b6b] leading-relaxed">
-            Revisione inclusa per adattare ogni dettaglio alle tue esigenze.
-          </p>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Briefing</h3>
+          <p>Cinque minuti al porto: acceleratore, sterzo, percorso. Non serve esperienza.</p>
         </div>
-
-        <!-- Step 4 -->
-        <div class="text-center group">
-          <div class="w-16 h-16 bg-white border-2 border-[#e8e4dc] rounded-full flex items-center justify-center mx-auto mb-5 text-xl text-[var(--lite-accent)] relative z-10 transition-all group-hover:bg-[var(--lite-accent)] group-hover:border-[var(--lite-accent)] group-hover:text-white" style="font-family: 'Cormorant Garamond', serif;">
-            4
-          </div>
-          <h3 class="text-lg text-[#1a1a1a] mb-2" style="font-family: 'Cormorant Garamond', serif;">
-            Vivi il Tuo Viaggio
-          </h3>
-          <p class="text-sm text-[#6b6b6b] leading-relaxed">
-            Prenota in autonomia con i nostri link e parti senza stress.
-          </p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Cosa NON Include -->
-  <section class="py-24 bg-[#faf9f7]">
-    <div class="max-w-[1200px] mx-auto px-6">
-      <div class="max-w-[700px] mx-auto">
-        <div class="text-center mb-12">
-          <span class="inline-block px-4 py-1.5 bg-[#f5f3ef] rounded-full text-xs font-medium text-[#6b6b6b] uppercase tracking-wider mb-4">
-            Trasparenza
-          </span>
-          <h2 class="text-[clamp(2rem,4vw,2.75rem)] font-normal text-[#1a1a1a]" style="font-family: 'Cormorant Garamond', serif;">
-            Cosa NON Include
-          </h2>
-          <p class="text-[#6b6b6b] mt-4">
-            Per essere completamente trasparenti, ecco cosa non è incluso in Amaris Lite
-          </p>
-        </div>
-        <div class="bg-white rounded-2xl p-8 border border-[#e8e4dc]">
-          <ul class="space-y-4">
-            <li class="flex items-center gap-3 text-[#6b6b6b]">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#9a9a9a] shrink-0">
-                <path d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              Prenotazioni dirette (le effettui tu con i nostri link)
-            </li>
-            <li class="flex items-center gap-3 text-[#6b6b6b]">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#9a9a9a] shrink-0">
-                <path d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              Gestione 24/7 degli imprevisti
-            </li>
-            <li class="flex items-center gap-3 text-[#6b6b6b]">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#9a9a9a] shrink-0">
-                <path d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              Modifiche illimitate durante il viaggio
-            </li>
-            <li class="flex items-center gap-3 text-[#6b6b6b]">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#9a9a9a] shrink-0">
-                <path d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              Coordinamento diretto con hotel e fornitori
-            </li>
-            <li class="flex items-center gap-3 text-[#6b6b6b]">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#9a9a9a] shrink-0">
-                <path d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              Servizio concierge completo
-            </li>
-          </ul>
-          <div class="mt-8 pt-6 border-t border-[#e8e4dc] text-center">
-            <p class="text-sm text-[#6b6b6b] mb-4">
-              Hai bisogno di gestione completa e concierge 24/7?
-            </p>
-            <a href="../elite/" class="inline-flex items-center gap-2 text-[var(--lite-accent)] font-medium hover:underline">
-              Scopri Amaris Elite
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Parti</h3>
+          <p>Da qui in poi &egrave; solo acqua.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CTA -->
-  <section id="contatti" class="py-24 bg-[#2d2d2d] text-center">
-    <div class="max-w-[1200px] mx-auto px-6">
-      <h2 class="text-[clamp(2rem,4vw,2.75rem)] font-normal text-white mb-4" style="font-family: 'Cormorant Garamond', serif;">
-        Pronto a Pianificare il Tuo Viaggio?
-      </h2>
-      <p class="text-[#9a9a9a] text-lg mb-8 max-w-[500px] mx-auto">
-        Consulenza di viaggio professionale a prezzi accessibili.
-        Inizia oggi a pianificare la tua prossima avventura.
-      </p>
-      <a href="mailto:lite@amarisexperience.com" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#2d2d2d] text-[0.9375rem] font-medium rounded-[14px] hover:bg-[#f5f3ef] transition-all">
-        Contattaci
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M5 12h14M12 5l7 7-7 7" />
-        </svg>
-      </a>
+  <section class="cta" id="prenota">
+    <div class="container">
+      <h2>Prenota la Tua Uscita</h2>
+      <p>Dicci quando e verso dove. Ti confermiamo il mezzo, l'orario e il percorso entro un'ora.</p>
+      <div class="cta-buttons">
+        <a href="tel:+39000000000" class="btn-primary">
+          Chiama Ora
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+        </a>
+        <a href="https://wa.me/39000000000?text=Ciao!%20Vorrei%20prenotare%20una%20moto%20d%27acqua." class="btn-secondary">
+          WhatsApp
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+          </svg>
+        </a>
+        <a href="#prenota" class="btn-booking">
+          Prenota Online
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </a>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="py-16 bg-[#1a1a1a] text-white">
-    <div class="max-w-[1200px] mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 text-center md:text-left">
-
-        <!-- Brand column -->
-        <div class="flex flex-col items-center md:items-start">
-          <a href="../" class="flex items-center gap-2 mb-4">
-            <span class="w-8 h-8 bg-[var(--lite-accent)] rounded-full flex items-center justify-center text-white text-sm font-medium" style="font-family: 'Cormorant Garamond', serif;">
-              A
-            </span>
-            <span class="text-xl font-medium" style="font-family: 'Cormorant Garamond', serif;">
-              Amaris <span class="text-[var(--lite-accent)] font-normal">Lite</span>
-            </span>
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="../" class="logo">
+            <span class="logo-text">Amaris <span>Noleggio</span></span>
           </a>
-          <p class="text-sm text-[#9a9a9a] leading-relaxed max-w-[280px]">
-            Consulenza di viaggio professionale per esperienze italiane indimenticabili.
-          </p>
-          <a href="../" class="inline-flex items-center gap-2 text-[0.8125rem] text-white/50 mt-4 hover:text-white transition-colors">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3.5 h-3.5">
-              <path d="M19 12H5M12 19l-7-7 7-7" />
+          <p>Moto d'acqua senza patente a Cattolica. Dal porto verso Gabicce Mare, Baia Vallugola e le falesie del Parco San Bartolo.</p>
+          <a href="../" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
             Torna ad Amaris Experience
           </a>
         </div>
-
-        <!-- Servizi column -->
-        <div>
-          <h4 class="text-xs font-semibold tracking-wider uppercase text-[#9a9a9a] mb-5">
-            Servizi
-          </h4>
-          <ul class="space-y-2.5">
-            <li>
-              <a href="#servizi" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
-                Analisi e Proposta
-              </a>
-            </li>
-            <li>
-              <a href="#servizi" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
-                Mappe Personalizzate
-              </a>
-            </li>
-            <li>
-              <a href="#servizi" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
-                PDF Viaggio
-              </a>
-            </li>
+        <div class="footer-col">
+          <h4>La Flotta</h4>
+          <ul>
+            <li><a href="#flotta">Sport</a></li>
+            <li><a href="#flotta">Comfort</a></li>
+            <li><a href="#flotta">Premium</a></li>
           </ul>
         </div>
-
-        <!-- Pacchetti column -->
-        <div>
-          <h4 class="text-xs font-semibold tracking-wider uppercase text-[#9a9a9a] mb-5">
-            Pacchetti
-          </h4>
-          <ul class="space-y-2.5">
-            <li>
-              <a href="#pacchetti" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
-                Essential Planning - &euro;99
-              </a>
-            </li>
-            <li>
-              <a href="#pacchetti" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
-                Family Planning - &euro;149
-              </a>
-            </li>
+        <div class="footer-col">
+          <h4>Percorsi</h4>
+          <ul>
+            <li><a href="#pacchetti">Costa di Gabicce</a></li>
+            <li><a href="#pacchetti">Baia Vallugola</a></li>
+            <li><a href="#pacchetti">Falesie del San Bartolo</a></li>
           </ul>
         </div>
-
-        <!-- Contatti column -->
-        <div>
-          <h4 class="text-xs font-semibold tracking-wider uppercase text-[#9a9a9a] mb-5">
-            Contatti
-          </h4>
-          <ul class="space-y-2.5">
-            <li>
-              <a href="mailto:lite@amarisexperience.com" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
-                Scrivici
-              </a>
-            </li>
-            <li>
-              <a href="#" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
-                Instagram
-              </a>
-            </li>
-            <li>
-              <a href="#" class="text-[0.9375rem] text-white/70 hover:text-white transition-colors">
-                WhatsApp
-              </a>
-            </li>
+        <div class="footer-col">
+          <h4>Contatti</h4>
+          <ul>
+            <li><a href="#prenota">Prenota Ora</a></li>
+            <li><a href="tel:+39000000000">+39 000 000 000</a></li>
+            <li><a href="https://wa.me/39000000000?text=Ciao!%20Vorrei%20prenotare%20una%20moto%20d%27acqua.">WhatsApp</a></li>
           </ul>
         </div>
-
       </div>
-      <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 gap-4">
-        <p class="text-[0.8125rem] text-[#9a9a9a]">
-          &copy; 2024 Amaris Experience. Tutti i diritti riservati.
-        </p>
-        <div class="flex gap-6">
-          <a href="#" class="text-[0.8125rem] text-[#9a9a9a] hover:text-white transition-colors">
-            Privacy Policy
-          </a>
-          <a href="#" class="text-[0.8125rem] text-[#9a9a9a] hover:text-white transition-colors">
-            Termini di Servizio
-          </a>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Amaris Experience. Tutti i diritti riservati.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy</a>
+          <a href="#">Termini di Servizio</a>
         </div>
       </div>
     </div>
   </footer>
 
-</div>
+  <script>
+    const navbar = document.getElementById('navbar');
+    var navBtns = document.querySelectorAll('.nav-cta');
 
+    window.addEventListener('scroll', function() {
+      navbar.classList.toggle('scrolled', window.scrollY > 10);
+      navBtns.forEach(function(b) { b.classList.remove('expanded'); });
+    });
+
+    // Mobile: tap-to-expand nav CTA buttons
+    if ('ontouchstart' in window) {
+      navBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          if (btn.classList.contains('expanded')) return;
+          e.preventDefault();
+          navBtns.forEach(function(b) { b.classList.remove('expanded'); });
+          btn.classList.add('expanded');
+        });
+      });
+    }
+  </script>
 </body>
 </html>
