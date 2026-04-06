@@ -198,17 +198,6 @@
       border-color: var(--charcoal);
     }
 
-    .cta .btn-booking {
-      background: transparent;
-      color: var(--white);
-      border-color: rgba(255,255,255,0.3);
-    }
-
-    .cta .btn-booking:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: var(--white);
-    }
-
     /* Hero */
     .hero {
       padding: 10rem 0 6rem;
@@ -764,24 +753,39 @@
       justify-content: center;
     }
 
+    /* Match header (.nav-cta-*) palette: Chiama = white/charcoal,
+       WhatsApp = terracotta, Prenota = blue */
     .cta .btn-primary {
       background: var(--white);
       color: var(--charcoal);
+      border-color: var(--sand);
     }
 
     .cta .btn-primary:hover {
       background: var(--cream);
+      border-color: var(--charcoal);
     }
 
     .cta .btn-secondary {
-      background: transparent;
+      background: var(--terracotta);
       color: var(--white);
-      border-color: rgba(255,255,255,0.3);
+      border-color: var(--terracotta);
     }
 
     .cta .btn-secondary:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: var(--white);
+      background: var(--terracotta-light);
+      border-color: var(--terracotta-light);
+    }
+
+    .cta .btn-booking {
+      background: var(--blue);
+      color: var(--white);
+      border-color: var(--blue);
+    }
+
+    .cta .btn-booking:hover {
+      background: #b55a30;
+      border-color: #b55a30;
     }
 
     /* Footer */
@@ -1073,87 +1077,6 @@
       }
     }
 
-    /* ── Booking form ───────────────────────────────────────────────── */
-    .booking-form {
-      max-width: 720px;
-      margin: 3rem auto 0;
-      padding: 2rem;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px;
-      text-align: left;
-    }
-    .booking-form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.25rem;
-    }
-    .booking-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-    .booking-field-wide { grid-column: 1 / -1; }
-    .booking-field span {
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.6);
-    }
-    .booking-field input,
-    .booking-field select {
-      width: 100%;
-      padding: 0.85rem 1rem;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 6px;
-      color: #fff;
-      font-size: 1rem;
-      font-family: inherit;
-      transition: border-color 0.2s ease;
-    }
-    .booking-field input:focus,
-    .booking-field select:focus {
-      outline: none;
-      border-color: var(--gold, #c9a961);
-    }
-    .booking-field select:disabled,
-    .booking-field input:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .booking-submit {
-      margin-top: 1.5rem;
-      width: 100%;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .booking-submit:disabled { opacity: 0.6; cursor: wait; }
-    .booking-status {
-      margin: 1rem 0 0;
-      min-height: 1.2em;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-      text-align: center;
-    }
-    .booking-status-error { color: #ff6b6b; }
-    .booking-success {
-      max-width: 720px;
-      margin: 3rem auto 0;
-      padding: 2.5rem 2rem;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px;
-      text-align: center;
-      color: #fff;
-    }
-    .booking-success svg { color: var(--gold, #c9a961); margin: 0 auto 1rem; display: block; }
-    .booking-success h3 { font-size: 1.5rem; margin: 0 0 0.5rem; }
-    .booking-success p { color: rgba(255, 255, 255, 0.75); margin: 0 0 1.5rem; }
-    @media (max-width: 600px) {
-      .booking-form-grid { grid-template-columns: 1fr; }
-      .booking-form { padding: 1.5rem; }
-    }
   </style>
 </head>
 <body>
@@ -1166,7 +1089,7 @@
       <ul class="nav-links">
         <li><a href="#flotta">La Flotta</a></li>
         <li><a href="#pacchetti">Pacchetti</a></li>
-        <li><a href="#prenota">Prenota</a></li>
+        <li><a href="#" data-booking-link>Prenota</a></li>
       </ul>
       <div class="nav-actions">
         <a href="#" data-phone-link class="nav-cta nav-cta-secondary">
@@ -1181,7 +1104,7 @@
           </svg>
           <span>WhatsApp</span>
         </a>
-        <a href="#prenota" class="nav-cta nav-cta-booking">
+        <a href="#" class="nav-cta nav-cta-booking" data-booking-link>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
             <line x1="16" y1="2" x2="16" y2="6"/>
@@ -1220,7 +1143,7 @@
             <span class="hero-card-title">Noleggia una moto d'acqua</span>
             <div class="hero-card-price">
               <span class="from">da</span>
-              <span class="amount">&euro;60</span>
+              <span class="amount" data-min-price>&euro;—</span>
             </div>
           </div>
           <ul class="hero-card-features">
@@ -1323,7 +1246,7 @@
           </ul>
           <div class="price-amount">
             <span class="price-label">da</span>
-            <span class="price-value">&euro;60</span>
+            <span class="price-value" data-product-price="Costa di Gabicce">&euro;—</span>
           </div>
         </div>
         <div class="price-card featured">
@@ -1352,7 +1275,7 @@
           </ul>
           <div class="price-amount">
             <span class="price-label">da</span>
-            <span class="price-value">&euro;100</span>
+            <span class="price-value" data-product-price="Baia Vallugola">&euro;—</span>
           </div>
         </div>
         <div class="price-card">
@@ -1381,7 +1304,7 @@
           </ul>
           <div class="price-amount">
             <span class="price-label">da</span>
-            <span class="price-value">&euro;180</span>
+            <span class="price-value" data-product-price="Falesie del San Bartolo">&euro;—</span>
           </div>
         </div>
       </div>
@@ -1427,76 +1350,25 @@
       <p>Dicci quando e verso dove. Ti confermiamo il mezzo, l'orario e il percorso entro un'ora.</p>
       <div class="cta-buttons">
         <a href="#" data-phone-link class="btn-primary">
-          Chiama Ora
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
           </svg>
+          Chiama Ora
         </a>
         <a href="#" data-whatsapp-link class="btn-secondary">
-          WhatsApp
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
           </svg>
+          WhatsApp
         </a>
-        <a href="#booking-form" class="btn-booking">
-          Prenota Online
+        <a href="#" class="btn-booking" data-booking-link>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
             <line x1="16" y1="2" x2="16" y2="6"/>
             <line x1="8" y1="2" x2="8" y2="6"/>
             <line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
-        </a>
-      </div>
-
-      <!-- Real booking form (wired to /api/v1/businesses/{slug}/bookings) -->
-      <form id="booking-form" class="booking-form" novalidate>
-        <div class="booking-form-grid">
-          <label class="booking-field">
-            <span>Data</span>
-            <select name="booking_date" required>
-              <option value="">Caricamento…</option>
-            </select>
-          </label>
-          <label class="booking-field">
-            <span>Orario</span>
-            <select name="time_slot_id" required disabled>
-              <option value="">Seleziona prima la data</option>
-            </select>
-          </label>
-          <label class="booking-field">
-            <span>Persone</span>
-            <input type="number" name="party_size" min="1" max="6" value="2" required>
-          </label>
-          <label class="booking-field booking-field-wide">
-            <span>Nome e cognome</span>
-            <input type="text" name="guest_name" autocomplete="name" required>
-          </label>
-          <label class="booking-field">
-            <span>Email</span>
-            <input type="email" name="guest_email" autocomplete="email" required>
-          </label>
-          <label class="booking-field">
-            <span>Telefono (opzionale)</span>
-            <input type="tel" name="guest_phone" autocomplete="tel">
-          </label>
-        </div>
-        <button type="submit" class="btn-booking booking-submit">
-          Conferma prenotazione
-        </button>
-        <p class="booking-status" data-booking-status></p>
-      </form>
-
-      <!-- Success state (hidden until booking confirmed) -->
-      <div class="booking-success" data-booking-success hidden>
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-          <polyline points="22 4 12 14.01 9 11.01"/>
-        </svg>
-        <h3>Prenotazione confermata</h3>
-        <p data-booking-success-text></p>
-        <a href="#" data-booking-share class="btn-secondary" target="_blank" rel="noopener">
-          Condividi su WhatsApp
+          Prenota Online
         </a>
       </div>
     </div>
@@ -1537,7 +1409,7 @@
         <div class="footer-col">
           <h4>Contatti</h4>
           <ul>
-            <li><a href="#booking-form">Prenota Ora</a></li>
+            <li><a href="#" data-booking-link>Prenota Ora</a></li>
             <li><a href="#" data-phone-link data-phone-display>+39 000 000 000</a></li>
             <li><a href="#" data-whatsapp-link>WhatsApp</a></li>
           </ul>
@@ -1591,150 +1463,46 @@
       });
     })();
 
-    // ── Booking form: GET availability + POST booking against the real API ──
+    // ── Products: fetch and inject prices into [data-min-price] and [data-product-price="<name>"] ──
     (function () {
-      var form = document.getElementById('booking-form');
-      if (!form) return;
       var cfg = window.__CONFIG || {};
       var apiBase = cfg.api_base || '';
       if (!apiBase) return;
 
-      var dateSel = form.querySelector('select[name="booking_date"]');
-      var slotSel = form.querySelector('select[name="time_slot_id"]');
-      var status = form.querySelector('[data-booking-status]');
-      var success = document.querySelector('[data-booking-success]');
-      var successText = document.querySelector('[data-booking-success-text]');
-      var shareLink = document.querySelector('[data-booking-share]');
-
-      var slotsByDate = {};
-
-      var monthsShort = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
-      function fmtDate(iso) {
-        var p = iso.split('-');
-        if (p.length !== 3) return iso;
-        var d = parseInt(p[2], 10);
-        var m = monthsShort[parseInt(p[1], 10) - 1] || p[1];
-        return d + ' ' + m;
+      function formatEuro(cents) {
+        var euros = (cents / 100);
+        // Italian formatting: "60" or "60,50" — drop trailing ",00"
+        var s = euros.toFixed(2).replace('.', ',');
+        return '\u20AC' + s.replace(/,00$/, '');
       }
 
-      function setStatus(msg, isError) {
-        status.textContent = msg || '';
-        status.classList.toggle('booking-status-error', !!isError);
-      }
-
-      function populateSlots(date) {
-        slotSel.innerHTML = '';
-        var slots = (slotsByDate[date] || []).filter(function (s) { return s.available; });
-        if (slots.length === 0) {
-          var opt = document.createElement('option');
-          opt.value = '';
-          opt.textContent = 'Nessun orario disponibile';
-          slotSel.appendChild(opt);
-          slotSel.disabled = true;
-          return;
-        }
-        var placeholder = document.createElement('option');
-        placeholder.value = '';
-        placeholder.textContent = 'Seleziona un orario';
-        slotSel.appendChild(placeholder);
-        slots.forEach(function (s) {
-          var opt = document.createElement('option');
-          opt.value = s.slot_id;
-          opt.textContent = s.time + '  (' + s.duration_minutes + ' min, ' + s.remaining + ' posti)';
-          slotSel.appendChild(opt);
-        });
-        slotSel.disabled = false;
-      }
-
-      fetch(apiBase + '/bookings/availability', { credentials: 'include' })
+      fetch(apiBase + '/products', { credentials: 'include' })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(r); })
         .then(function (data) {
-          var dates = (data && data.dates) || [];
-          dateSel.innerHTML = '';
-          if (dates.length === 0) {
-            var opt = document.createElement('option');
-            opt.value = '';
-            opt.textContent = 'Nessuna data disponibile';
-            dateSel.appendChild(opt);
-            return;
+          var products = (data && data.data) || [];
+          if (products.length === 0) return;
+
+          // Inject min price into hero / any [data-min-price]
+          var min = products.reduce(function (acc, p) {
+            return (acc === null || p.price_cents < acc) ? p.price_cents : acc;
+          }, null);
+          if (min !== null) {
+            document.querySelectorAll('[data-min-price]').forEach(function (el) {
+              el.innerHTML = formatEuro(min);
+            });
           }
-          var placeholder = document.createElement('option');
-          placeholder.value = '';
-          placeholder.textContent = 'Seleziona una data';
-          dateSel.appendChild(placeholder);
-          dates.forEach(function (d) {
-            slotsByDate[d.date] = d.slots;
-            var opt = document.createElement('option');
-            opt.value = d.date;
-            opt.textContent = fmtDate(d.date);
-            dateSel.appendChild(opt);
+
+          // Inject per-product price into [data-product-price="<name>"]
+          var byName = {};
+          products.forEach(function (p) { byName[p.name] = p; });
+          document.querySelectorAll('[data-product-price]').forEach(function (el) {
+            var p = byName[el.getAttribute('data-product-price')];
+            if (p) el.innerHTML = formatEuro(p.price_cents);
           });
         })
-        .catch(function () {
-          dateSel.innerHTML = '<option value="">Errore nel caricamento</option>';
-          setStatus('Impossibile caricare le disponibilità. Riprova più tardi.', true);
-        });
-
-      dateSel.addEventListener('change', function () {
-        if (dateSel.value) {
-          populateSlots(dateSel.value);
-        } else {
-          slotSel.innerHTML = '<option value="">Seleziona prima la data</option>';
-          slotSel.disabled = true;
-        }
-      });
-
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        setStatus('');
-        var fd = new FormData(form);
-        var body = {
-          time_slot_id: parseInt(fd.get('time_slot_id'), 10),
-          booking_date: fd.get('booking_date'),
-          party_size: parseInt(fd.get('party_size'), 10),
-          guest_name: (fd.get('guest_name') || '').trim(),
-          guest_email: (fd.get('guest_email') || '').trim(),
-          guest_phone: (fd.get('guest_phone') || '').trim() || null,
-        };
-        if (!body.time_slot_id || !body.booking_date || !body.guest_name || !body.guest_email) {
-          setStatus('Compila tutti i campi obbligatori.', true);
-          return;
-        }
-        var submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.disabled = true;
-        setStatus('Invio in corso…');
-        fetch(apiBase + '/bookings', {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        })
-          .then(function (r) {
-            return r.json().then(function (json) { return { ok: r.ok, json: json }; });
-          })
-          .then(function (res) {
-            if (!res.ok) {
-              throw new Error((res.json && res.json.error) || 'Errore sconosciuto');
-            }
-            var b = res.json;
-            form.hidden = true;
-            success.hidden = false;
-            successText.textContent =
-              b.guest_name + ', la tua uscita del ' + fmtDate(b.booking_date) +
-              ' alle ' + b.booking_time + ' è confermata.';
-            if (b.whatsapp_share_url) {
-              shareLink.href = b.whatsapp_share_url;
-            } else {
-              shareLink.hidden = true;
-            }
-            success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          })
-          .catch(function (err) {
-            setStatus(err.message || 'Errore durante la prenotazione.', true);
-            submitBtn.disabled = false;
-          });
-      });
+        .catch(function () { /* silent — leave placeholder dashes */ });
     })();
+
   </script>
 </body>
 </html>
