@@ -1,653 +1,1602 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Amaris Experience</title>
-  <meta name="description" content="Esperienze in moto d'acqua sulla costa del Monte Conero. Noleggio, tour guidati e tramonti romantici in mare.">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@400;500&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
-
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html, body {
-      height: 100%;
-      overflow: hidden;
-    }
-
-    body {
-      background: #0a0a0a;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Floating Logo Header */
-    .logo-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2.5rem 2rem;
-      pointer-events: none;
-      animation: fadeDown 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      opacity: 0;
-    }
-
-    .logo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .logo-star {
-      width: 24px;
-      height: 24px;
-      opacity: 0.9;
-    }
-
-    .logo-star svg {
-      width: 100%;
-      height: 100%;
-      fill: none;
-      stroke: #d4c5a9;
-      stroke-width: 1.5;
-    }
-
-    .logo-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.875rem;
-      font-weight: 400;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #f5f5f3;
-      opacity: 0.9;
-    }
-
-    .logo-tagline {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.5625rem;
-      font-weight: 300;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: #888;
-      margin-top: 0.25rem;
-    }
-
-    /* Panel Container */
-    .panels {
-      display: flex;
-      height: 100vh;
-      width: 100%;
-    }
-
-    .panel {
-      flex: 1;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      transition: flex 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-      cursor: pointer;
-    }
-
-    .panel:hover,
-    .panel.expanded {
-      flex: 1.6;
-    }
-
-    /* Video Background */
-    .panel-video {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-
-    .panel-video video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: scale(1.1);
-      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .panel:hover .panel-video video,
-    .panel.expanded .panel-video video {
-      transform: scale(1.15);
-    }
-
-    /* Dark Cover Overlay */
-    .panel-cover {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .panel:hover .panel-cover,
-    .panel.expanded .panel-cover {
-      opacity: 0.25;
-    }
-
-    /* Color tint overlay */
-    .panel-tint {
-      position: absolute;
-      inset: 0;
-      opacity: 0.4;
-      mix-blend-mode: multiply;
-      transition: opacity 0.6s ease;
-    }
-
-    .panel:hover .panel-tint,
-    .panel.expanded .panel-tint {
-      opacity: 0.15;
-    }
-
-    /* Panel Content */
-    .panel-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding: 2rem;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .panel:nth-child(1) .panel-content { animation-delay: 0.3s; }
-    .panel:nth-child(2) .panel-content { animation-delay: 0.5s; }
-    .panel:nth-child(3) .panel-content { animation-delay: 0.7s; }
-
-    .panel-icon {
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 2rem;
-      opacity: 0.4;
-      transition: all 0.5s ease;
-    }
-
-    .panel:hover .panel-icon,
-    .panel.expanded .panel-icon {
-      opacity: 0.8;
-      transform: scale(1.1);
-    }
-
-    .panel-icon svg {
-      width: 100%;
-      height: 100%;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1;
-    }
-
-    .panel-name {
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 300;
-      margin-bottom: 0.75rem;
-      letter-spacing: 0.1em;
-      transition: all 0.5s ease;
-    }
-
-    .panel:hover .panel-name,
-    .panel.expanded .panel-name {
-      letter-spacing: 0.15em;
-    }
-
-    .panel-tagline {
-      font-size: 0.6875rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      opacity: 0.4;
-      margin-bottom: 2.5rem;
-      transition: opacity 0.5s ease;
-    }
-
-    .panel:hover .panel-tagline,
-    .panel.expanded .panel-tagline {
-      opacity: 0.7;
-    }
-
-    .panel-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.625rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      padding: 1rem 2rem;
-      border: 1px solid currentColor;
-      opacity: 0;
-      transform: translateY(15px);
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .panel:hover .panel-cta,
-    .panel.expanded .panel-cta {
-      opacity: 0.6;
-      transform: translateY(0);
-    }
-
-    .panel .panel-cta:hover {
-      opacity: 1;
-      background: currentColor;
-    }
-
-    .panel-cta-arrow {
-      width: 16px;
-      height: 16px;
-      transition: transform 0.3s ease;
-    }
-
-    .panel .panel-cta:hover .panel-cta-arrow {
-      transform: translateX(4px);
-    }
-
-    /* Vertical Dividers */
-    .panel-divider {
-      position: absolute;
-      top: 20%;
-      bottom: 20%;
-      width: 1px;
-      opacity: 0.1;
-      transition: opacity 0.5s ease;
-    }
-
-    .panel:hover .panel-divider,
-    .panel.expanded .panel-divider {
-      opacity: 0.2;
-    }
-
-    /* ==================== LITE ==================== */
-    .panel-lite {
-      background: #1a1a1a;
-      color: #f5f5f3;
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    .panel-lite .panel-tint {
-      background: #b14028;
-    }
-
-    .panel-lite .panel-name {
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 500;
-      color: #fff;
-    }
-
-    .panel-lite .panel-cta {
-      border-color: rgba(255,255,255,0.6);
-      color: #fff;
-    }
-
-    .panel-lite .panel-cta:hover {
-      background: #fff;
-      color: #1a1a1a;
-      border-color: #fff;
-    }
-
-    .panel-lite .panel-divider {
-      right: 0;
-      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.3), transparent);
-    }
-
-    /* ==================== ELITE ==================== */
-    .panel-elite {
-      background: #0a0a0a;
-      color: #f5f5f3;
-      font-family: 'Cormorant Garamond', serif;
-    }
-
-    .panel-elite .panel-tint {
-      background: #d4c5a9;
-    }
-
-    .panel-elite .panel-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-style: italic;
-      color: #d4c5a9;
-      font-size: clamp(2.25rem, 4.5vw, 4rem);
-    }
-
-    .panel-elite .panel-icon {
-      stroke: #d4c5a9;
-    }
-
-    .panel-elite .panel-cta {
-      border-color: rgba(212, 197, 169, 0.6);
-      color: #d4c5a9;
-    }
-
-    .panel-elite .panel-cta:hover {
-      background: #d4c5a9;
-      color: #050505;
-      border-color: #d4c5a9;
-    }
-
-    /* ==================== DRIVE ==================== */
-    .panel-drive {
-      background: #0a0a0a;
-      color: #e8ece8;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .panel-drive .panel-tint {
-      background: #7a9a7a;
-    }
-
-    .panel-drive .panel-name {
-      font-family: 'Inter', sans-serif;
-      font-weight: 200;
-      letter-spacing: 0.2em;
-      color: #fff;
-    }
-
-    .panel-drive .panel-icon {
-      stroke: #7a9a7a;
-    }
-
-    .panel-drive .panel-cta {
-      border-color: rgba(255,255,255,0.6);
-      color: #fff;
-    }
-
-    .panel-drive .panel-cta:hover {
-      background: #fff;
-      color: #0a0f0a;
-      border-color: #fff;
-    }
-
-    .panel-drive .panel-divider {
-      left: 0;
-      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.3), transparent);
-    }
-
-    /* Work in Progress panels */
-    .panel-wip {
-      cursor: default;
-    }
-
-    .panel-wip .panel-cover {
-      opacity: 1;
-      background: rgba(0, 0, 0, 0.85);
-    }
-
-    .panel-wip:hover .panel-cover,
-    .panel-wip.expanded .panel-cover {
-      opacity: 0.65;
-    }
-
-    .panel-wip .panel-video video {
-      filter: grayscale(0.6);
-    }
-
-    .panel-wip .panel-cta {
-      border-color: rgba(255,255,255,0.2);
-      font-style: italic;
-      letter-spacing: 0.15em;
-    }
-
-    .panel-wip:hover .panel-cta,
-    .panel-wip.expanded .panel-cta {
-      opacity: 0.35;
-      transform: translateY(0);
-    }
-
-    /* Animations */
-    @keyframes fadeDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Footer Hint */
-    .hint {
-      position: fixed;
-      bottom: 2rem;
-      left: 0;
-      right: 0;
-      text-align: center;
-      z-index: 100;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.5625rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #666;
-      pointer-events: none;
-      opacity: 0;
-      animation: fadeUp 0.8s 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    /* Mobile */
-    @media (max-width: 768px) {
-      .logo-header {
-        padding: 1.5rem 1rem;
-      }
-
-      .logo-text {
-        font-size: 0.75rem;
-      }
-
-      .panels {
-        flex-direction: column;
-      }
-
-      .panel {
-        height: 33.333vh;
-        min-height: 180px;
-      }
-
-      .panel:hover,
-      .panel.expanded {
-        flex: 2;
-      }
-
-      .panel-content {
-        padding: 1rem;
-      }
-
-      .panel-icon {
-        width: 32px;
-        height: 32px;
-        margin-bottom: 1rem;
-      }
-
-      .panel-name {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .panel-tagline {
-        font-size: 0.5625rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .panel-cta {
-        opacity: 0.5;
-        transform: translateY(0);
-        padding: 0.75rem 1.25rem;
-        font-size: 0.5625rem;
-      }
-
-      .panel-divider {
-        display: none;
-      }
-
-      .hint {
-        bottom: 1rem;
-        font-size: 0.5rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .logo-star {
-        width: 18px;
-        height: 18px;
-      }
-
-      .logo-text {
-        font-size: 0.625rem;
-        letter-spacing: 0.25em;
-      }
-
-      .logo-tagline {
-        display: none;
-      }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#f4e7c5" />
+<title>Jet Ski Adriatic — Adriatico, chiavi in mano · Cattolica, Rimini</title>
+<meta name="description" content="Adriatico, chiavi in mano. Noleggio moto d'acqua con e senza patente, tour guidati lungo la Riviera Romagnola ed eventi privati. Cattolica, Rimini." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Serif+Display:ital@0;1&family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&family=Caveat:wght@400..700&display=swap" rel="stylesheet" />
+
+<style>
+/* ==============================================================
+   DESIGN TOKENS — Romagna Mediterranean Riso-Print
+============================================================== */
+:root{
+  /* Palette: serigrafia / cartolina lungomare */
+  --sand:#f4e7c5;       /* sabbia bagnasciuga */
+  --paper:#faf3e0;      /* carta cotone */
+  --ink:#1a1a1a;        /* inchiostro nero */
+  --tomato:#d14e2d;     /* rosso pomodoro stampato */
+  --tomato-d:#a53a22;
+  --sea:#3b6a8f;        /* blu piscina profonda */
+  --sea-l:#7ab0cd;      /* blu acqua bassa */
+  --ochre:#e9b448;      /* giallo ocra sole */
+  --ochre-d:#c08a2b;
+  --olive:#3d5e2a;      /* verde oliva bottiglia */
+  --mint:#a7c98b;       /* verde menta acqua */
+  --coral:#e88667;      /* corallo */
+  --pink:#f4c7c0;       /* rosa confetto */
+  --red-flag:#e23a25;   /* rosso bandiera bagnino */
+  --turquoise:#4bb3a4;  /* turchese acqua bassa */
+  --cream:#fef8e8;      /* crema più chiara del paper */
+
+  /* Type */
+  --f-display:'DM Serif Display', Georgia, serif;
+  --f-slab:'Alfa Slab One', serif;
+  --f-script:'Caveat', cursive;
+  --f-body:'Familjen Grotesk', system-ui, sans-serif;
+
+  --container:min(1280px, 92vw);
+  --container-n:min(960px, 90vw);
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--sand)}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--f-body);
+  color:var(--ink);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+
+/* Paper grain overlay (tiny noise SVG) */
+body::before{
+  content:"";position:fixed;inset:0;z-index:999;pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0 0.04 0 0 0 .18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.4'/></svg>");
+  mix-blend-mode:multiply;opacity:.32;
+}
+
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+section{position:relative}
+::selection{background:var(--ochre);color:var(--ink)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--sand)}
+::-webkit-scrollbar-thumb{background:var(--ink);border-radius:0}
+
+/* ==============================================================
+   REVEAL
+============================================================== */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease), transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal-s > *{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease), transform .7s var(--ease)}
+.reveal-s.in > *{opacity:1;transform:none}
+.reveal-s.in > *:nth-child(1){transition-delay:.04s}
+.reveal-s.in > *:nth-child(2){transition-delay:.12s}
+.reveal-s.in > *:nth-child(3){transition-delay:.2s}
+.reveal-s.in > *:nth-child(4){transition-delay:.28s}
+.reveal-s.in > *:nth-child(5){transition-delay:.36s}
+@media (prefers-reduced-motion:reduce){.reveal,.reveal-s > *{opacity:1;transform:none;transition:none}}
+
+/* ==============================================================
+   TOP BAR
+============================================================== */
+.topbar{
+  background:var(--ink);color:var(--sand);
+  font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;
+}
+.topbar .wrap{
+  max-width:100%;padding:10px 4vw;
+  display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.topbar .status{margin-right:2px;white-space:nowrap}
+.topbar .dot{
+  width:8px;height:8px;border-radius:50%;background:#666;
+  display:inline-block;vertical-align:middle;margin:-2px 6px 0 0;
+}
+.topbar .sep{opacity:.55;margin:0 4px}
+/* Status: OPEN */
+.topbar .status[data-status="open"] .dot{background:#22c55e;animation:pulseOpen 2.4s ease-in-out infinite}
+.topbar .status[data-status="open"] .status-label{color:#22c55e}
+@keyframes pulseOpen{50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}to{box-shadow:0 0 0 0 rgba(34,197,94,.45)}}
+/* Status: WHATSAPP ONLY */
+.topbar .status[data-status="whatsapp"] .dot{background:var(--ochre);animation:pulseWa 2.4s ease-in-out infinite}
+.topbar .status[data-status="whatsapp"] .status-label{color:var(--ochre)}
+@keyframes pulseWa{50%{box-shadow:0 0 0 6px rgba(233,180,72,0)}to{box-shadow:0 0 0 0 rgba(233,180,72,.4)}}
+/* Status: CLOSED */
+.topbar .status[data-status="closed"] .dot{background:#e23a25}
+.topbar .status[data-status="closed"] .status-label{color:#e23a25}
+.topbar a:hover{color:var(--ochre)}
+@media (max-width:700px){.topbar .hide-s{display:none}}
+
+/* ==============================================================
+   NAV
+============================================================== */
+.nav{
+  position:sticky;top:0;z-index:80;
+  background:var(--sand);border-bottom:2px solid var(--ink);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 4vw;
+}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700}
+.brand-mark{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--tomato);color:var(--sand);
+  display:grid;place-items:center;
+  border:2px solid var(--ink);
+  box-shadow:3px 3px 0 0 var(--ink);
+  transform:rotate(-8deg);
+}
+.brand-mark svg{width:22px;height:22px}
+.brand-name{line-height:1}
+.brand-name b{font-family:var(--f-display);font-weight:400;font-size:22px;letter-spacing:-.01em;display:block}
+.brand-name small{font-family:var(--f-script);font-size:16px;color:var(--tomato);font-weight:600;display:block;margin-top:-3px;letter-spacing:.01em}
+
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:14px;font-weight:600;position:relative;padding:4px 0;transition:color .2s}
+.nav-links a:hover{color:var(--tomato)}
+.nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--tomato);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+.nav-links a:hover::after{transform:scaleX(1)}
+
+.nav-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 20px;
+  background:var(--ochre);color:var(--ink);
+  border:2px solid var(--ink);font-weight:700;font-size:14px;
+  box-shadow:4px 4px 0 0 var(--ink);
+  transition:transform .15s var(--ease),box-shadow .15s var(--ease);
+}
+.nav-cta:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 0 var(--ink)}
+.nav-cta:active{transform:translate(1px,1px);box-shadow:2px 2px 0 0 var(--ink)}
+.nav-cta svg{width:16px;height:16px}
+
+.burger{display:none;width:44px;height:44px;background:transparent;border:2px solid var(--ink);align-items:center;justify-content:center}
+.burger span{width:20px;height:2px;background:var(--ink);display:block;position:relative}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:20px;height:2px;background:var(--ink)}
+.burger span::before{top:-6px}.burger span::after{top:6px}
+@media (max-width:900px){.nav-links{display:none}.burger{display:flex}}
+
+/* ==============================================================
+   HERO (full-bleed editoriale)
+============================================================== */
+.hero{
+  position:relative;
+  height:100svh;min-height:560px;max-height:1040px;
+  overflow:hidden;
+  color:var(--sand);
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background-size:cover;background-position:center;
+  transform:scale(1.05);
+  animation:heroKenBurns 22s ease-in-out infinite alternate;
+}
+@keyframes heroKenBurns{to{transform:scale(1.12) translate(-1%, 1%)}}
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(180deg, rgba(10,10,10,.35) 0%, rgba(10,10,10,.15) 30%, rgba(10,10,10,.25) 55%, rgba(10,10,10,.85) 100%),
+    linear-gradient(90deg, rgba(10,10,10,.35) 0%, transparent 60%);
+}
+.hero-inner{
+  position:relative;z-index:2;
+  height:100%;
+  display:flex;flex-direction:column;
+  padding:16px 4vw 0;
+}
+.hero-top{
+  flex:0 0 auto;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
+  padding-top:8px;
+}
+.hero-top-l{display:flex;flex-direction:column;gap:10px;font-family:var(--f-body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:rgba(244,231,197,.85)}
+.hero-top-l span{display:inline-flex;align-items:center;gap:10px}
+.hero-top-l .dash{width:28px;height:1px;background:var(--ochre);display:inline-block}
+
+/* Timbro top right */
+.hero-timbro{
+  position:relative;transform:rotate(-12deg);
+  width:108px;height:108px;border-radius:50%;
+  border:3px double var(--sand);color:var(--sand);
+  display:grid;place-items:center;text-align:center;
+  font-family:var(--f-slab);font-size:10px;line-height:1.1;letter-spacing:.06em;
+  text-transform:uppercase;padding:8px;
+  opacity:.92;
+}
+.hero-timbro::before,.hero-timbro::after{
+  content:"★★★";position:absolute;left:0;right:0;font-size:10px;letter-spacing:.3em;text-align:center;
+}
+.hero-timbro::before{top:12px}
+.hero-timbro::after{bottom:12px}
+.hero-timbro b{display:block;font-family:var(--f-display);font-weight:400;font-size:18px;letter-spacing:-.01em;color:var(--ochre);margin-bottom:2px}
+.hero-timbro small{display:block;font-family:var(--f-body);font-size:8px;font-weight:700;letter-spacing:.12em;margin-top:3px;color:var(--sand)}
+@media (max-width:640px){.hero-timbro{width:84px;height:84px;font-size:9px;padding:6px}.hero-timbro b{font-size:14px}}
+
+.hero-body{
+  flex:1 1 auto;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  max-width:820px;
+  padding:20px 0 28px;
+  min-height:0;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:10px;align-self:flex-start;
+  padding:6px 12px;border:2px solid var(--sand);background:var(--tomato);color:var(--sand);
+  font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  transform:rotate(-2deg);margin-bottom:16px;
+  box-shadow:3px 3px 0 0 rgba(0,0,0,.35);
+}
+h1.hero-h{
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(44px, 7.5vw, 110px);
+  line-height:.92;letter-spacing:-.03em;
+  margin:0 0 14px;
+  color:var(--sand);
+  text-shadow:0 2px 30px rgba(0,0,0,.25);
+}
+h1.hero-h em{
+  font-family:var(--f-display);font-style:italic;
+  color:var(--ochre);
+}
+h1.hero-h .ornate{
+  font-family:var(--f-script);font-weight:700;font-style:normal;
+  color:var(--ochre);
+  display:inline-block;transform:rotate(-3deg) translateY(-.08em);
+  font-size:.65em;line-height:1;
+  padding:0 .05em;
+}
+
+.hero-lead{
+  font-size:clamp(16px, 1.2vw, 20px);
+  max-width:540px;
+  color:rgba(250,243,224,.92);
+  margin:0 0 24px;line-height:1.5;
+}
+.hero-lead strong{
+  display:block;
+  font-family:var(--f-display);font-weight:400;font-style:italic;
+  color:var(--ochre);
+  font-size:1.35em;letter-spacing:-.015em;line-height:1.1;
+  margin-bottom:8px;
+}
+.hero-lead b{color:var(--ochre);font-weight:700;white-space:nowrap}
+
+.hero-bottom{
+  flex:0 0 auto;
+  position:relative;z-index:3;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--ink);border-top:2px solid var(--ink);
+  margin:0 -4vw;
+}
+.hero-bottom .hb{
+  padding:12px 18px;
+  border-right:1px solid rgba(244,231,197,.16);
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--f-body);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;
+  color:var(--sand);
+}
+.hero-bottom .hb:last-child{border-right:0}
+.hero-bottom .hb svg{width:16px;height:16px;color:var(--ochre);flex:0 0 auto}
+.hero-bottom .hb b{color:var(--ochre);font-weight:800}
+@media (max-width:900px){
+  .hero-bottom{grid-template-columns:repeat(2,1fr)}
+  .hero-bottom .hb:nth-child(2){border-right:0}
+  .hero-bottom .hb:nth-child(1),.hero-bottom .hb:nth-child(2){border-bottom:1px solid rgba(244,231,197,.16)}
+}
+@media (max-width:640px){
+  .hero-bottom{grid-template-columns:1fr}
+  .hero-bottom .hb{border-right:0;border-bottom:1px solid rgba(244,231,197,.16);padding:10px 16px;font-size:10px}
+  .hero-bottom .hb:last-child{border-bottom:0}
+}
+
+/* ========= ADRIATIC UTILITIES ========= */
+/* Rubber stamp timbro */
+.timbro{
+  position:absolute;
+  display:grid;place-items:center;text-align:center;
+  width:140px;height:140px;border-radius:50%;
+  border:3px double var(--red-flag);
+  color:var(--red-flag);
+  font-family:var(--f-slab);font-size:13px;line-height:1.05;letter-spacing:.08em;text-transform:uppercase;
+  padding:12px;
+  opacity:.85;
+  transform:rotate(-14deg);
+  mix-blend-mode:multiply;
+  pointer-events:none;
+  font-weight:400;
+}
+.timbro small{display:block;font-family:var(--f-body);font-weight:700;font-size:9px;letter-spacing:.14em;margin-top:4px;color:currentColor}
+.timbro::before,.timbro::after{
+  content:"★★★";position:absolute;left:0;right:0;
+  font-family:var(--f-body);font-size:11px;color:currentColor;
+  letter-spacing:.3em;text-align:center;
+}
+.timbro::before{top:14px}
+.timbro::after{bottom:14px}
+
+/* Wavy horizontal divider */
+.wavy{
+  display:block;width:100%;height:24px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 16' preserveAspectRatio='none'><path d='M0 8 Q 10 0 20 8 T 40 8 T 60 8 T 80 8' fill='none' stroke='%231a1a1a' stroke-width='2.5' stroke-linecap='round'/></svg>");
+  background-repeat:repeat-x;background-size:80px 16px;background-position:center;
+}
+.wavy-ochre{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 16' preserveAspectRatio='none'><path d='M0 8 Q 10 0 20 8 T 40 8 T 60 8 T 80 8' fill='none' stroke='%23e9b448' stroke-width='3' stroke-linecap='round'/></svg>")}
+.wavy-tomato{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 16' preserveAspectRatio='none'><path d='M0 8 Q 10 0 20 8 T 40 8 T 60 8 T 80 8' fill='none' stroke='%23d14e2d' stroke-width='3' stroke-linecap='round'/></svg>")}
+
+/* Frieze band (lungomare) */
+.frieze{
+  background:var(--ink);color:var(--sand);
+  padding:18px 0;overflow:hidden;position:relative;
+  border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+}
+.frieze-track{display:flex;gap:44px;white-space:nowrap;animation:scroll-f 45s linear infinite;width:max-content;align-items:center}
+.frieze-track > svg{width:26px;height:26px;flex:0 0 auto;color:var(--sand)}
+.frieze-track > span{font-family:var(--f-script);font-size:22px;color:var(--ochre);font-weight:700;letter-spacing:.01em}
+.frieze-track > b{font-family:var(--f-slab);font-size:14px;color:var(--sand);letter-spacing:.14em;text-transform:uppercase;font-weight:400}
+@keyframes scroll-f{to{transform:translateX(-50%)}}
+
+/* Strip striped barber/ombrellone */
+.stripes-o{
+  height:14px;background:repeating-linear-gradient(45deg, var(--red-flag) 0 18px, var(--cream) 18px 36px);
+  border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+}
+.stripes-b{
+  height:14px;background:repeating-linear-gradient(45deg, var(--sea) 0 18px, var(--cream) 18px 36px);
+  border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+}
+
+/* legacy .hero-lead removed, see new hero CSS above */
+
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:16px 26px;
+  border:2px solid var(--ink);font-weight:700;font-size:15px;
+  box-shadow:5px 5px 0 0 var(--ink);
+  transition:transform .15s var(--ease),box-shadow .15s var(--ease);
+  cursor:pointer;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:3px 3px 0 0 var(--ink)}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--tomato);color:var(--sand)}
+.btn-ghost{background:var(--sand);color:var(--ink)}
+.btn-wa{background:#25d366;color:var(--ink)}
+
+/* legacy postcard/hero-facts CSS removed — hero is now full-bleed */
+
+/* ==============================================================
+   TICKER BAR
+============================================================== */
+.ticker{
+  background:var(--tomato);color:var(--sand);
+  padding:14px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+  overflow:hidden;
+  font-family:var(--f-display);font-style:italic;font-weight:400;
+  font-size:clamp(24px,3vw,38px);letter-spacing:-.01em;
+}
+.ticker-track{display:flex;gap:40px;white-space:nowrap;animation:tick 38s linear infinite;width:max-content}
+@keyframes tick{to{transform:translateX(-50%)}}
+.ticker span{display:inline-flex;align-items:center;gap:28px}
+.ticker span::after{content:"✸";color:var(--ochre);font-size:.7em;display:inline-block}
+
+/* ==============================================================
+   SECTION COMMON
+============================================================== */
+.section{padding:clamp(70px, 9vw, 130px) 0;position:relative}
+.container{width:var(--container);margin:0 auto}
+.container-n{width:var(--container-n);margin:0 auto}
+
+.section-head{
+  width:var(--container);margin:0 auto 56px;
+  display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:end;
+}
+@media (max-width:900px){.section-head{grid-template-columns:1fr;gap:20px}}
+.kicker{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--f-script);font-size:28px;font-weight:600;color:var(--tomato);
+  margin-bottom:8px;line-height:1;transform:rotate(-2deg);
+}
+.kicker::before{content:"❋";font-size:.8em;color:var(--ochre)}
+h2.sh{
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(40px,5.6vw,92px);line-height:.95;letter-spacing:-.025em;
+  margin:0;
+}
+h2.sh em{font-family:var(--f-display);font-style:italic;color:var(--tomato)}
+h2.sh u{text-decoration:underline wavy var(--sea);text-underline-offset:3px;text-decoration-thickness:2px}
+.section-head p.lead{font-size:16px;max-width:420px;margin:0;color:rgba(26,26,26,.78)}
+
+/* ==============================================================
+   EXPERIENCES (3 poster cards)
+============================================================== */
+.experiences{background:var(--sand)}
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media (max-width:900px){.exp-grid{grid-template-columns:1fr}}
+.exp{
+  position:relative;padding:30px 28px 28px;
+  border:3px solid var(--ink);background:var(--paper);
+  box-shadow:8px 8px 0 0 var(--ink);
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease);
+  display:flex;flex-direction:column;gap:16px;
+}
+.exp:hover{transform:translate(-3px,-3px);box-shadow:11px 11px 0 0 var(--ink)}
+.exp-n{
+  position:absolute;top:-18px;right:-12px;
+  width:52px;height:52px;border-radius:50%;
+  background:var(--ochre);border:3px solid var(--ink);
+  display:grid;place-items:center;
+  font-family:var(--f-display);font-weight:400;font-size:22px;color:var(--ink);
+  transform:rotate(6deg);
+}
+.exp-illu{
+  aspect-ratio:16/11;border:2px solid var(--ink);
+  background:var(--sea-l);overflow:hidden;position:relative;
+  background-size:cover;background-position:center;
+  filter:saturate(1.05);
+}
+.exp-illu::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 60%, rgba(0,0,0,.08));
+  pointer-events:none;
+}
+.exp h3{
+  font-family:var(--f-display);font-weight:400;font-size:clamp(30px,3vw,42px);line-height:.98;letter-spacing:-.02em;
+  margin:6px 0 4px;
+}
+.exp h3 em{color:var(--tomato);font-style:italic}
+.exp p{font-size:14.5px;color:rgba(26,26,26,.78);line-height:1.55}
+.exp-tags{display:flex;gap:6px;flex-wrap:wrap}
+.exp-tags li{list-style:none;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border:1.5px solid var(--ink);background:var(--sand)}
+.exp-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  margin-top:4px;padding-top:14px;border-top:2px dashed var(--ink);
+}
+.exp-price b{font-family:var(--f-display);font-weight:400;font-size:28px;letter-spacing:-.01em;color:var(--tomato)}
+.exp-price span{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.exp-go{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 16px;
+  background:var(--ink);color:var(--sand);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  transition:background .2s;
+}
+.exp-go:hover{background:var(--tomato)}
+.exp-go svg{width:14px;height:14px}
+
+/* ==============================================================
+   TOURS (5 posters grid / magnifico)
+============================================================== */
+.tours{background:var(--paper);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.tour-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-left:2px solid var(--ink)}
+@media (max-width:1100px){.tour-grid{grid-template-columns:repeat(2,1fr);border-left:0}}
+@media (max-width:600px){.tour-grid{grid-template-columns:1fr}}
+.tour{
+  padding:28px 24px 26px;border-right:2px solid var(--ink);
+  background:var(--paper);
+  display:flex;flex-direction:column;gap:14px;min-height:380px;
+  transition:background .25s;position:relative;overflow:hidden;cursor:pointer;
+}
+.tour:hover{background:var(--sand)}
+.tour::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:0;
+  background:var(--tomato);transition:height .3s var(--ease);
+}
+.tour:hover::after{height:6px}
+.tour-num{
+  font-family:var(--f-slab);font-size:42px;color:var(--tomato);line-height:1;letter-spacing:-.02em;
+}
+.tour-num small{font-family:var(--f-body);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-left:6px}
+.tour-illu{
+  aspect-ratio:1/1;border:2px solid var(--ink);background:var(--sea-l);
+  position:relative;overflow:hidden;margin:6px 0;
+  background-size:cover;background-position:center;
+}
+.tour-illu::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 55%, rgba(0,0,0,.15));
+  pointer-events:none;
+}
+.tour h4{
+  font-family:var(--f-display);font-weight:400;font-size:22px;letter-spacing:-.01em;line-height:1.05;
+  margin:2px 0 2px;
+}
+.tour h4 em{font-style:italic;color:var(--tomato)}
+.tour-meta{display:flex;gap:12px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,26,26,.72)}
+.tour-meta span{display:inline-flex;align-items:center;gap:4px}
+.tour-price{
+  margin-top:auto;display:flex;align-items:baseline;justify-content:space-between;
+  padding-top:12px;border-top:2px dashed var(--ink);
+}
+.tour-price b{font-family:var(--f-display);font-weight:400;font-size:26px;color:var(--ink);letter-spacing:-.01em}
+.tour-price small{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(26,26,26,.7)}
+
+/* ==============================================================
+   MANIFESTO (big quote + wavy frame)
+============================================================== */
+.manifesto{background:var(--tomato);color:var(--sand);padding:120px 0;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.manifesto .wrap{width:var(--container-n);margin:0 auto;text-align:center;position:relative}
+.manifesto .big{
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(36px,6vw,92px);line-height:.95;letter-spacing:-.025em;
+  color:var(--sand);
+}
+.manifesto .big em{font-style:italic;color:var(--ochre)}
+.manifesto .big s{text-decoration:line-through;text-decoration-color:rgba(244,231,197,.4);text-decoration-thickness:3px}
+.manifesto .big .ornate{font-family:var(--f-script);font-weight:700;color:var(--ochre);font-style:normal;display:inline-block;transform:rotate(-3deg) translateY(.04em);font-size:1.05em;line-height:.9;vertical-align:baseline}
+.manifesto-stats{
+  margin-top:60px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px;
+  padding-top:30px;border-top:2px solid rgba(244,231,197,.35);
+}
+@media (max-width:700px){.manifesto-stats{grid-template-columns:repeat(2,1fr);gap:26px 20px}}
+.manifesto-stats .m b{display:block;font-family:var(--f-display);font-weight:400;font-size:clamp(30px,4vw,52px);line-height:1;color:var(--ochre);letter-spacing:-.02em}
+.manifesto-stats .m span{display:block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);margin-top:6px;opacity:.9}
+
+/* ==============================================================
+   FLEET (3 cards + illustrations)
+============================================================== */
+.fleet{background:var(--sand)}
+.fleet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:900px){.fleet-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.fleet-grid{grid-template-columns:1fr}}
+.moto{
+  border:3px solid var(--ink);background:var(--paper);
+  box-shadow:6px 6px 0 0 var(--ink);
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease);
+  display:flex;flex-direction:column;
+}
+.moto:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 0 var(--ink)}
+.moto-illu{
+  aspect-ratio:5/3;border-bottom:3px solid var(--ink);
+  position:relative;overflow:hidden;display:grid;place-items:center;
+  background-size:cover;background-position:center;
+}
+.moto-illu::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 55%, rgba(0,0,0,.2));
+  pointer-events:none;
+}
+.moto-body{padding:22px 24px 24px;display:flex;flex-direction:column;gap:12px}
+.moto-badge{
+  align-self:flex-start;padding:4px 10px;background:var(--ochre);
+  border:1.5px solid var(--ink);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+}
+.moto h4{font-family:var(--f-display);font-weight:400;font-size:24px;line-height:1;letter-spacing:-.01em}
+.moto-my{font-family:var(--f-script);font-size:18px;color:var(--sea);font-weight:700;margin-top:-8px}
+.moto-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
+.moto-specs div{padding:10px 6px;border:1.5px solid var(--ink);background:var(--sand);text-align:center}
+.moto-specs span{display:block;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(26,26,26,.68)}
+.moto-specs b{display:block;font-family:var(--f-display);font-weight:400;font-size:18px;color:var(--tomato);margin-top:4px;letter-spacing:-.01em}
+.moto-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding-top:14px;border-top:2px dashed var(--ink);margin-top:6px;
+}
+.moto-price b{font-family:var(--f-display);font-weight:400;font-size:22px;letter-spacing:-.01em}
+.moto-price small{font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(26,26,26,.7)}
+.moto-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tomato);
+}
+.moto-cta svg{width:14px;height:14px;transition:transform .2s}
+.moto:hover .moto-cta svg{transform:translateX(3px)}
+
+/* ==============================================================
+   HOW IT WORKS (3 steps with sketched arrows)
+============================================================== */
+.how{background:var(--paper);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-left:2px solid var(--ink)}
+@media (max-width:900px){.how-grid{grid-template-columns:1fr;border-left:0}}
+.step{
+  padding:40px 32px;border-right:2px solid var(--ink);position:relative;
+  display:flex;flex-direction:column;gap:14px;min-height:280px;
+}
+.step-n{
+  width:60px;height:60px;border-radius:50%;
+  background:var(--tomato);color:var(--sand);
+  display:grid;place-items:center;
+  font-family:var(--f-display);font-weight:400;font-size:26px;
+  border:2px solid var(--ink);
+  transform:rotate(-4deg);box-shadow:3px 3px 0 0 var(--ink);
+}
+.step:nth-child(2) .step-n{background:var(--sea);transform:rotate(2deg)}
+.step:nth-child(3) .step-n{background:var(--ochre);color:var(--ink);transform:rotate(-2deg)}
+.step h4{font-family:var(--f-display);font-weight:400;font-size:28px;line-height:1;letter-spacing:-.01em;margin-top:10px}
+.step p{font-size:15px;color:rgba(26,26,26,.78);line-height:1.55}
+
+/* ==============================================================
+   PRICING
+============================================================== */
+.pricing{background:var(--sand)}
+.p-tabs{
+  display:inline-flex;gap:0;margin:0 auto 40px;
+  border:2px solid var(--ink);background:var(--paper);
+  box-shadow:4px 4px 0 0 var(--ink);
+}
+.p-tabs-wrap{display:flex;justify-content:center}
+.p-tabs button{
+  padding:12px 22px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink);border-right:2px solid var(--ink);transition:all .2s;
+}
+.p-tabs button:last-child{border-right:0}
+.p-tabs button.active{background:var(--ink);color:var(--sand)}
+.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:3px solid var(--ink);background:var(--paper);box-shadow:8px 8px 0 0 var(--ink)}
+.p-grid[hidden]{display:none !important}
+@media (max-width:900px){.p-grid{grid-template-columns:1fr}}
+.price{
+  padding:34px 28px;border-right:2px solid var(--ink);
+  display:flex;flex-direction:column;gap:14px;position:relative;
+  background:var(--paper);
+}
+.price:last-child{border-right:0}
+@media (max-width:900px){.price{border-right:0;border-bottom:2px solid var(--ink)}.price:last-child{border-bottom:0}}
+.price.featured{background:var(--sand);position:relative}
+.price.featured::before{
+  content:"⟡ Più scelto ⟡";
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%) rotate(-2deg);
+  padding:6px 16px;background:var(--tomato);color:var(--sand);
+  border:2px solid var(--ink);box-shadow:3px 3px 0 0 var(--ink);
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
+}
+.price h4{font-family:var(--f-display);font-weight:400;font-size:28px;letter-spacing:-.01em;line-height:1}
+.price .p-desc{font-size:14px;color:rgba(26,26,26,.75);line-height:1.5}
+.price .p-amt{display:flex;align-items:baseline;gap:6px;padding:10px 0 14px;border-bottom:2px dashed var(--ink)}
+.price .p-amt b{font-family:var(--f-display);font-weight:400;font-size:58px;letter-spacing:-.03em;line-height:1}
+.price .p-amt small{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,26,26,.6)}
+.price ul{list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;padding:6px 0}
+.price ul li{display:flex;gap:10px;font-size:14px;color:var(--ink);align-items:flex-start}
+.price ul li svg{width:18px;height:18px;color:var(--tomato);flex:0 0 auto;margin-top:1px}
+.price .p-cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:6px;padding:14px 22px;
+  background:var(--ink);color:var(--sand);border:2px solid var(--ink);
+  font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  transition:background .2s,color .2s;
+}
+.price .p-cta:hover{background:var(--tomato);color:var(--sand)}
+.price.featured .p-cta{background:var(--tomato)}
+.price.featured .p-cta:hover{background:var(--ink)}
+
+/* ==============================================================
+   GALLERY (postcard grid)
+============================================================== */
+.gallery{background:var(--paper);border-top:3px solid var(--ink)}
+.g-grid{
+  display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:110px;gap:12px;
+  padding:0 4vw;
+}
+@media (max-width:900px){.g-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px}}
+.g-item{
+  border:2px solid var(--ink);background:var(--sand);
+  background-size:cover;background-position:center;
+  position:relative;overflow:hidden;cursor:zoom-in;
+  transition:transform .25s var(--ease);
+}
+.g-item:hover{transform:rotate(-1deg) scale(1.01)}
+.g-item::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 60%, rgba(26,26,26,.7));
+  opacity:0;transition:opacity .25s;
+}
+.g-item:hover::after{opacity:1}
+.g-item .g-lbl{
+  position:absolute;left:14px;bottom:12px;z-index:1;
+  font-family:var(--f-script);font-weight:700;font-size:18px;color:var(--sand);
+  opacity:0;transform:translateY(6px);transition:all .25s;
+}
+.g-item:hover .g-lbl{opacity:1;transform:none}
+.g1{grid-column:span 5;grid-row:span 3}
+.g2{grid-column:span 3;grid-row:span 2}
+.g3{grid-column:span 4;grid-row:span 2}
+.g4{grid-column:span 3;grid-row:span 3}
+.g5{grid-column:span 4;grid-row:span 2}
+.g6{grid-column:span 5;grid-row:span 2}
+.g7{grid-column:span 4;grid-row:span 2}
+.g8{grid-column:span 3;grid-row:span 2}
+
+/* ==============================================================
+   REVIEWS
+============================================================== */
+.reviews{background:var(--sea);color:var(--sand);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.reviews .section-head h2{color:var(--sand)}
+.reviews .section-head h2 em{color:var(--ochre)}
+.reviews .section-head .kicker{color:var(--ochre)}
+.reviews .section-head p.lead{color:rgba(244,231,197,.85)}
+
+.r-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:900px){.r-grid{grid-template-columns:1fr}}
+.rev{
+  padding:28px;
+  background:var(--sand);color:var(--ink);
+  border:3px solid var(--ink);box-shadow:6px 6px 0 0 rgba(26,26,26,.45);
+  display:flex;flex-direction:column;gap:14px;position:relative;
+}
+.rev:nth-child(2){transform:rotate(-1deg)}
+.rev:nth-child(3){transform:rotate(1deg)}
+.rev .rtop{display:flex;justify-content:space-between;align-items:center}
+.rev .rstars{display:flex;gap:3px;color:var(--tomato)}
+.rev .rstars svg{width:20px;height:20px}
+.rev .rplatform{display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:rgba(26,26,26,.6)}
+.rev .rplatform svg{width:18px;height:18px}
+.rev blockquote{
+  font-family:var(--f-display);font-weight:400;font-size:19px;line-height:1.4;letter-spacing:-.01em;
+  margin:0;position:relative;padding-left:14px;
+}
+.rev blockquote::before{content:"\201C";position:absolute;left:-4px;top:-8px;font-size:42px;color:var(--tomato);line-height:1;font-family:var(--f-display)}
+.rev .who{display:flex;align-items:center;gap:12px;padding-top:14px;border-top:2px dashed var(--ink);margin-top:auto}
+.rev .who .av{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--ochre);border:2px solid var(--ink);
+  display:grid;place-items:center;
+  font-family:var(--f-display);font-weight:400;font-size:16px;
+}
+.rev .who b{display:block;font-size:14px;font-weight:700}
+.rev .who span{display:block;font-family:var(--f-script);font-size:16px;color:var(--tomato);font-weight:600}
+
+/* ==============================================================
+   FAQ
+============================================================== */
+.faq{background:var(--sand)}
+.faq-list{max-width:900px;margin:0 auto;border-top:2px solid var(--ink)}
+.fa{border-bottom:2px solid var(--ink);padding:22px 0;cursor:pointer}
+.fq{display:grid;grid-template-columns:50px 1fr auto;gap:20px;align-items:center}
+.fq .num{font-family:var(--f-display);font-size:22px;color:var(--tomato);font-style:italic}
+.fq h5{font-family:var(--f-display);font-weight:400;font-size:clamp(18px,2vw,26px);letter-spacing:-.01em;line-height:1.2}
+.fq .ic{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--sand);border:2px solid var(--ink);
+  display:grid;place-items:center;transition:all .25s;
+}
+.fq .ic svg{width:14px;height:14px;transition:transform .25s}
+.fa.open .ic{transform:rotate(45deg);background:var(--tomato);color:var(--sand);border-color:var(--ink)}
+.fa-body{max-height:0;overflow:hidden;transition:max-height .4s var(--ease),padding .3s;padding-left:70px;padding-right:60px;color:rgba(26,26,26,.78)}
+.fa.open .fa-body{max-height:400px;padding-top:14px;padding-bottom:6px}
+
+/* ==============================================================
+   BIG CTA
+============================================================== */
+.bigcta{background:var(--ochre);color:var(--ink);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);position:relative;overflow:hidden}
+.bigcta .wrap{width:var(--container-n);margin:0 auto;text-align:center;position:relative;z-index:2}
+.bigcta h2{font-family:var(--f-display);font-weight:400;font-size:clamp(44px,7vw,110px);line-height:.95;letter-spacing:-.03em;margin:0 0 22px}
+.bigcta h2 em{font-style:italic;color:var(--tomato)}
+.bigcta h2 .ornate{font-family:var(--f-script);font-weight:700;color:var(--sea);font-style:normal;display:inline-block;transform:rotate(-3deg)}
+.bigcta p{font-size:17px;max-width:560px;margin:0 auto 30px;line-height:1.55}
+.bigcta .cta-row{justify-content:center}
+.bigcta .sun-l{position:absolute;top:-100px;left:-80px;width:300px;opacity:.4;color:var(--tomato);pointer-events:none}
+.bigcta .sun-r{position:absolute;bottom:-120px;right:-90px;width:340px;opacity:.4;color:var(--ink);pointer-events:none}
+
+/* ==============================================================
+   CONTACT
+============================================================== */
+.contact{background:var(--sand)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px}
+@media (max-width:900px){.contact-grid{grid-template-columns:1fr;gap:36px}}
+.contact-info{display:flex;flex-direction:column;gap:18px}
+.ci{
+  padding:20px;border:2.5px solid var(--ink);background:var(--paper);
+  display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;
+}
+.ci .ic{
+  width:48px;height:48px;background:var(--tomato);border:2px solid var(--ink);
+  display:grid;place-items:center;color:var(--sand);
+}
+.ci:nth-child(2) .ic{background:var(--sea)}
+.ci:nth-child(3) .ic{background:var(--ochre);color:var(--ink)}
+.ci:nth-child(4) .ic{background:var(--olive)}
+.ci .ic svg{width:22px;height:22px}
+.ci b{display:block;font-family:var(--f-display);font-weight:400;font-size:18px;letter-spacing:-.01em}
+.ci span{display:block;font-size:14px;color:rgba(26,26,26,.74);margin-top:2px}
+.ci a{color:var(--tomato);font-weight:600}
+.ci a:hover{text-decoration:underline}
+
+.contact-form{
+  padding:36px 32px;border:3px solid var(--ink);background:var(--paper);
+  box-shadow:8px 8px 0 0 var(--ink);
+  display:flex;flex-direction:column;gap:14px;
+}
+.contact-form h3{font-family:var(--f-display);font-weight:400;font-size:30px;line-height:1;letter-spacing:-.01em;margin-bottom:4px}
+.contact-form p{font-size:14px;color:rgba(26,26,26,.72);margin-bottom:12px}
+.ff{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;border:2px solid var(--ink);background:var(--sand);
+}
+.ff-col{flex:1;min-width:0}
+.ff svg{width:16px;height:16px;flex:0 0 auto}
+.ff label{display:block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(26,26,26,.6)}
+.ff input,.ff select,.ff textarea{
+  width:100%;background:transparent;border:0;outline:0;font:500 15px var(--f-body);color:var(--ink);
+}
+.ff textarea{min-height:100px;resize:vertical}
+.ff select option{background:var(--sand)}
+.ff-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-submit{
+  padding:18px;background:var(--tomato);color:var(--sand);border:2px solid var(--ink);
+  font-size:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  box-shadow:5px 5px 0 0 var(--ink);
+  display:flex;align-items:center;justify-content:center;gap:12px;margin-top:4px;
+  transition:transform .15s var(--ease),box-shadow .15s var(--ease);
+}
+.form-submit:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 0 var(--ink)}
+.form-submit svg{width:16px;height:16px}
+
+/* ==============================================================
+   FOOTER
+============================================================== */
+.footer{background:var(--ink);color:var(--sand);padding:60px 0 22px}
+.foot-top{
+  width:var(--container);margin:0 auto;padding-bottom:40px;border-bottom:1px solid rgba(244,231,197,.22);
+  display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:40px;
+}
+@media (max-width:900px){.foot-top{grid-template-columns:1fr 1fr}.foot-top > div:first-child{grid-column:span 2}}
+.foot-brand{display:flex;flex-direction:column;gap:16px}
+.foot-brand .brand-name b{color:var(--sand)}
+.foot-brand .brand-name small{color:var(--ochre)}
+.foot-brand p{font-size:13px;max-width:320px;color:rgba(244,231,197,.75)}
+.foot-socials{display:flex;gap:14px;margin-top:6px}
+.foot-socials a{display:grid;place-items:center;color:var(--sand);transition:color .2s,transform .2s}
+.foot-socials a:hover{color:var(--ochre);transform:translateY(-1px)}
+.foot-col h6{font-family:var(--f-script);font-weight:700;font-size:22px;color:var(--ochre);margin-bottom:12px;transform:rotate(-2deg);display:inline-block}
+.foot-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.foot-col a{font-size:13px;color:rgba(244,231,197,.85);transition:color .2s}
+.foot-col a:hover{color:var(--ochre)}
+.foot-bottom{
+  width:var(--container);margin:0 auto;padding-top:22px;
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-size:11px;color:rgba(244,231,197,.55);font-weight:500;letter-spacing:.06em;
+}
+.foot-bottom a:hover{color:var(--ochre)}
+
+/* Floating WhatsApp */
+.wa{
+  position:fixed;right:22px;bottom:22px;z-index:70;
+  width:58px;height:58px;border-radius:50%;
+  background:#25d366;color:var(--ink);
+  border:2px solid var(--ink);box-shadow:5px 5px 0 0 var(--ink);
+  display:grid;place-items:center;
+  transition:transform .15s var(--ease),box-shadow .15s var(--ease);
+}
+.wa:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 0 var(--ink)}
+.wa svg{width:28px;height:28px}
+
+/* Mobile menu */
+.menu{position:fixed;inset:0;z-index:120;background:var(--ochre);opacity:0;pointer-events:none;transition:opacity .3s var(--ease);display:flex;flex-direction:column}
+.menu.open{opacity:1;pointer-events:auto}
+.menu .mclose{align-self:flex-end;margin:18px;width:44px;height:44px;background:var(--ink);color:var(--sand);display:grid;place-items:center}
+.menu nav{padding:0 24px;display:flex;flex-direction:column;gap:0}
+.menu nav a{font-family:var(--f-display);font-weight:400;font-size:clamp(34px,8vw,54px);letter-spacing:-.02em;padding:14px 0;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center}
+.menu nav a em{font-family:var(--f-script);font-weight:700;font-size:.3em;color:var(--tomato);font-style:normal}
+.menu .mfoot{margin-top:auto;padding:22px 24px;display:flex;flex-direction:column;gap:10px;font-size:14px;font-weight:600}
+
+/* Mobile polish */
+@media (max-width:640px){
+  .hero{padding:40px 0 70px}
+  h1.hero-h{font-size:clamp(52px,14vw,100px)}
+  .hero-facts{gap:16px 26px;margin-top:32px}
+  .fact b{font-size:26px}
+  .nav{padding:12px 4vw}
+  .brand-name b{font-size:18px}
+  .brand-mark{width:40px;height:40px}
+  .section-head{margin-bottom:44px}
+  .ticker{font-size:24px}
+  .exp{padding:26px 22px}
+  .exp h3{font-size:28px}
+  .price{padding:28px 22px}
+  .price .p-amt b{font-size:46px}
+  .step{padding:32px 24px;min-height:auto}
+  .contact-form{padding:28px 24px}
+}
+</style>
 </head>
 <body>
-  <!-- Floating Logo -->
-  <header class="logo-header">
-    <div class="logo">
-      <span class="logo-text">Amaris Experience</span>
-      <span class="logo-tagline">Scegli la Tua Esperienza</span>
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar">
+  <div class="wrap">
+    <span>
+      <span class="status" id="statusBar" data-status="open"><span class="dot"></span><span class="status-label">Aperto</span></span>
+      <span class="sep">·</span>
+      dalle 9:00 alle 20:00
+    </span>
+    <span class="hide-s"><a href="tel:+390000000000">📞 +39 000 000 0000</a> · <a href="mailto:ciao@jetskiadriatic.it">ciao@jetskiadriatic.it</a> · Cattolica (RN)</span>
+  </div>
+</div>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <a class="brand" href="#top">
+    <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/><path d="M8 12V7a2 2 0 0 1 2-2h5"/></svg></span>
+    <span class="brand-name"><b>Jet Ski Adriatic</b><small>Cattolica · Rimini</small></span>
+  </a>
+  <div class="nav-links">
+    <a href="#esperienze">Esperienze</a>
+    <a href="#tour">Tour</a>
+    <a href="#flotta">Flotta</a>
+    <a href="#prezzi">Listino</a>
+    <a href="#contatti">Contatti</a>
+  </div>
+  <a href="#contatti" class="nav-cta">
+    Prenota
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span></button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="menu" id="menu">
+  <button class="mclose" id="mclose" aria-label="Chiudi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  <nav>
+    <a href="#esperienze">Esperienze <em>01</em></a>
+    <a href="#tour">Tour <em>02</em></a>
+    <a href="#flotta">Flotta <em>03</em></a>
+    <a href="#prezzi">Listino <em>04</em></a>
+    <a href="#contatti">Contatti <em>05</em></a>
+  </nav>
+  <div class="mfoot">
+    <a href="tel:+390000000000">📞 +39 000 000 0000</a>
+    <a href="mailto:ciao@jetskiadriatic.it">✉️ ciao@jetskiadriatic.it</a>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1505867798796-639ec7e8cdf5?q=90&w=2400&auto=format&fit=crop')"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-inner">
+
+    <div class="hero-body reveal">
+      <span class="hero-badge">Patente nautica non necessaria</span>
+      <h1 class="hero-h">
+        Adriatico,<br/>chiavi <em>in mano.</em>
+      </h1>
+      <p class="hero-lead">
+        <strong>Scegli. Prenoti. Parti.</strong>
+        Al pontile di Cattolica, in mare in 5 minuti.<br/>
+        <b>Senza patente, senza acconto.</b>
+      </p>
+      <div class="cta-row">
+        <a href="#contatti" class="btn btn-primary">
+          Prenota la tua uscita
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://wa.me/390000000000" class="btn btn-wa" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12 2C6.48 2 2 6.48 2 12c0 1.74.46 3.37 1.26 4.78L2 22l5.35-1.4C8.72 21.49 10.3 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          WhatsApp
+        </a>
+      </div>
     </div>
-  </header>
 
-  <!-- Three Panels -->
-  <div class="panels">
-    <a href="lite/" class="panel panel-lite">
-      <div class="panel-video">
-        <video autoplay muted loop playsinline>
-          <source src="https://videos.pexels.com/video-files/4115690/4115690-uhd_2560_1440_25fps.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="panel-cover"></div>
-      <div class="panel-tint"></div>
-      <div class="panel-content">
-        <div class="panel-icon">
-          <svg viewBox="0 0 48 48">
-            <path d="M4 34C8 30 12 34 16 30S24 34 28 30S36 34 40 30" />
-            <path d="M4 38C8 34 12 38 16 34S24 38 28 34S36 38 40 34" />
-            <path d="M20 26L22 20L28 18L30 14L32 14L30 18L32 20L28 22L26 26Z" />
-            <path d="M24 22C22 22 20 24 20 26" />
-          </svg>
-        </div>
-        <h2 class="panel-name">Noleggio</h2>
-        <p class="panel-tagline">Moto d'Acqua Senza Patente</p>
-        <span class="panel-cta">
-          Scopri
-          <svg class="panel-cta-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M3 8H13M13 8L9 4M13 8L9 12"/>
-          </svg>
-        </span>
-      </div>
-      <div class="panel-divider"></div>
-    </a>
-
-    <div class="panel panel-elite panel-wip">
-      <div class="panel-video">
-        <video autoplay muted loop playsinline>
-          <source src="https://videos.pexels.com/video-files/4822353/4822353-hd_1280_720_30fps.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="panel-cover"></div>
-      <div class="panel-tint"></div>
-      <div class="panel-content">
-        <div class="panel-icon">
-          <svg viewBox="0 0 48 48">
-            <path d="M10 28C10 20.268 16.268 14 24 14S38 20.268 38 28" />
-            <line x1="24" y1="10" x2="24" y2="14" />
-            <line x1="12" y1="16" x2="14.5" y2="18.5" />
-            <line x1="36" y1="16" x2="33.5" y2="18.5" />
-            <line x1="8" y1="28" x2="12" y2="28" />
-            <line x1="36" y1="28" x2="40" y2="28" />
-            <path d="M4 32C8 28 12 32 16 28S24 32 28 28S36 32 40 28" />
-            <path d="M4 36C8 32 12 36 16 32S24 36 28 32S36 36 40 32" />
-            <path d="M22 24L24 22L26 24" />
-          </svg>
-        </div>
-        <h2 class="panel-name">Esperienza</h2>
-        <p class="panel-tagline">Celebra i Momenti Migliori</p>
-        <span class="panel-cta">
-          Prossimamente
-        </span>
-      </div>
-    </div>
-
-    <div class="panel panel-drive panel-wip">
-      <div class="panel-video">
-        <video autoplay muted loop playsinline>
-          <source src="https://videos.pexels.com/video-files/6981328/6981328-hd_1920_1080_25fps.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="panel-cover"></div>
-      <div class="panel-tint"></div>
-      <div class="panel-content">
-        <div class="panel-icon">
-          <svg viewBox="0 0 48 48">
-            <circle cx="24" cy="22" r="14" />
-            <circle cx="24" cy="22" r="2" />
-            <polygon points="24,10 21,20 24,18 27,20" />
-            <polygon points="24,34 27,24 24,26 21,24" />
-            <polygon points="12,22 22,25 20,22 22,19" />
-            <polygon points="36,22 26,19 28,22 26,25" />
-            <path d="M4 40C8 36 12 40 16 36S24 40 28 36S36 40 40 36" />
-            <path d="M4 44C8 40 12 44 16 40S24 44 28 40S36 44 40 40" />
-          </svg>
-        </div>
-        <h2 class="panel-name">Tour</h2>
-        <p class="panel-tagline">Esplora la Costa del Conero</p>
-        <span class="panel-cta">
-          Prossimamente
-        </span>
-      </div>
-      <div class="panel-divider"></div>
+    <div class="hero-bottom">
+      <div class="hb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="10"/></svg><span><b>Nuovo</b> · stagione 2026</span></div>
+      <div class="hb"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span><b>Cancellazione</b> gratuita 24 h</span></div>
+      <div class="hb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span><b>Cert.</b> Capitaneria · Rimini</span></div>
+      <div class="hb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/></svg><span>Flotta <b>Yamaha</b> 2024-26</span></div>
     </div>
   </div>
+</section>
 
-  <!-- Hint -->
-  <p class="hint">&copy; 2026 Amaris Experience</p>
 
-  <script>
-    (function() {
-      var isTouch = 'ontouchstart' in window;
-      if (!isTouch) return;
+<!-- ============ ESPERIENZE ============ -->
+<section class="section experiences" id="esperienze">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">le esperienze</span>
+      <h2 class="sh">Tre modi<br/>per <em>dirsi</em> sì al mare.</h2>
+    </div>
+    <p class="lead">Dalla prima uscita senza patente al tour al tramonto, fino al pacchetto privato per il gruppo di amici. Scegli il ritmo. Il mare fa il resto.</p>
+  </div>
 
-      var panels = document.querySelectorAll('.panel');
+  <div class="container exp-grid reveal-s">
 
-      panels.forEach(function(panel) {
-        panel.addEventListener('click', function(e) {
-          if (panel.classList.contains('panel-wip')) {
-            e.preventDefault();
-            panels.forEach(function(p) { p.classList.remove('expanded'); });
-            panel.classList.add('expanded');
-            return;
-          }
-          if (panel.classList.contains('expanded')) return;
-          e.preventDefault();
-          panels.forEach(function(p) { p.classList.remove('expanded'); });
-          panel.classList.add('expanded');
-        });
+    <article class="exp">
+      <div class="exp-n">01</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop')"></div>
+      <h3>Noleggio <em>libero</em></h3>
+      <p>Sali, accendi, vai. Dai 15 minuti a tutta la giornata. Senza patente resti in area controllata; con patente navighi dove vuoi, mappa delle rotte in mano.</p>
+      <ul class="exp-tags"><li>15/30/60 min</li><li>mezza giornata</li><li>full day</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 50€</b><span>15 minuti</span></div>
+        <a href="#prezzi" class="exp-go">Tariffe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+    <article class="exp">
+      <div class="exp-n">02</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1554132267-d06483b00adc?q=85&w=1400&auto=format&fit=crop')"></div>
+      <h3>Tour <em>guidati</em></h3>
+      <p>Due ore di costa vera. Faraglioni, grotte, calette. Convoglio con istruttore in testa e in coda, foto di bordo, sosta bagno nelle acque più trasparenti.</p>
+      <ul class="exp-tags"><li>Gabicce Monte</li><li>Fiorenzuola</li><li>Sunset San Bartolo</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 149€</b><span>a moto d'acqua</span></div>
+        <a href="#tour" class="exp-go">Percorsi <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+    <article class="exp">
+      <div class="exp-n">03</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1400&auto=format&fit=crop')"></div>
+      <h3>Party <em>in acqua</em></h3>
+      <p>Addii al celibato, incentive aziendali, shooting e compleanni. Flotta riservata, catering a bordo, fotografo e drone. Aftermovie pronto in 48h.</p>
+      <ul class="exp-tags"><li>gruppi 6-15</li><li>foto/video</li><li>catering</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 890€</b><span>pacchetto</span></div>
+        <a href="#contatti" class="exp-go">Preventivo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ TOURS POSTERS ============ -->
+<section class="section tours" id="tour">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">i percorsi</span>
+      <h2 class="sh">Cinque <u>rotte</u><br/>un <em>Adriatico</em> diverso.</h2>
+    </div>
+    <p class="lead">Le progettiamo noi. Sono tratti di costa che non si vedono dalla spiaggia, raggiungibili solo via mare. Si parte sempre dal porto di Cattolica.</p>
+  </div>
+
+  <div class="container tour-grid reveal-s">
+    <a href="#contatti" class="tour" data-plan="Tour Cattolica 20 min">
+      <div class="tour-num">I<small>20 min</small></div>
+      <div class="tour-illu" style="background-image:url('https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=900&auto=format&fit=crop')"></div>
+      <h4>Lungomare di <em>Cattolica</em></h4>
+      <div class="tour-meta"><span>Porto · Lungomare</span><span>22 km</span></div>
+      <div class="tour-price"><b>69€</b><small>moto d'acqua</small></div>
+    </a>
+
+    <a href="#contatti" class="tour" data-plan="Tour Gabicce Monte 45 min">
+      <div class="tour-num">II<small>45 min</small></div>
+      <div class="tour-illu" style="background-image:url('https://images.unsplash.com/photo-1579780330393-52f61018e490?q=85&w=900&auto=format&fit=crop')"></div>
+      <h4>Gabicce <em>Monte</em></h4>
+      <div class="tour-meta"><span>scogliera · sosta bagno</span><span>34 km</span></div>
+      <div class="tour-price"><b>119€</b><small>moto d'acqua</small></div>
+    </a>
+
+    <a href="#contatti" class="tour" data-plan="Tour Vallugola 90 min">
+      <div class="tour-num">III<small>1h30</small></div>
+      <div class="tour-illu" style="background-image:url('https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=900&auto=format&fit=crop')"></div>
+      <h4>Baia di <em>Vallugola</em></h4>
+      <div class="tour-meta"><span>caletta · acque cristalline</span><span>48 km</span></div>
+      <div class="tour-price"><b>189€</b><small>moto d'acqua</small></div>
+    </a>
+
+    <a href="#contatti" class="tour" data-plan="Tour Fiorenzuola 120 min">
+      <div class="tour-num">IV<small>2 ore</small></div>
+      <div class="tour-illu" style="background-image:url('https://images.unsplash.com/photo-1638100191048-33f8e6d07505?q=85&w=900&auto=format&fit=crop')"></div>
+      <h4>Fiorenzuola <em>di Focara</em></h4>
+      <div class="tour-meta"><span>borgo arroccato · foto dal mare</span><span>52 km</span></div>
+      <div class="tour-price"><b>229€</b><small>moto d'acqua</small></div>
+    </a>
+
+    <a href="#contatti" class="tour" data-plan="Tour Sunset San Bartolo 120 min">
+      <div class="tour-num">V<small>2 ore</small></div>
+      <div class="tour-illu" style="background-image:url('https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=900&auto=format&fit=crop')"></div>
+      <h4>Sunset <em>San Bartolo</em></h4>
+      <div class="tour-meta"><span>tramonto · brindisi</span><span>38 km</span></div>
+      <div class="tour-price"><b>249€</b><small>moto d'acqua</small></div>
+    </a>
+  </div>
+</section>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="section manifesto">
+  <div class="timbro" style="top:50px;right:6vw;color:var(--ochre);border-color:var(--ochre);opacity:.8">
+    Certificato<br/>Capitaneria<small>Rimini · IT</small>
+  </div>
+  <div class="wrap reveal">
+    <p class="big">
+      Non <s>affittiamo</s> moto d'acqua.<br/>
+      Apriamo <span class="ornate">l'Adriatico</span>,<br/>
+      e ti diamo le <em>chiavi.</em>
+    </p>
+    <div class="manifesto-stats">
+      <div class="m"><b>2026</b><span>Stagione inaugurale</span></div>
+      <div class="m"><b>4</b><span>Istruttori brevettati</span></div>
+      <div class="m"><b>9</b><span>Moto d'acqua in flotta</span></div>
+      <div class="m"><b>0</b><span>Acconto richiesto</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FLEET ============ -->
+<section class="section fleet" id="flotta">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">la flotta</span>
+      <h2 class="sh">Yamaha &amp; Sea-Doo.<br/><em>Ultima</em> leva.</h2>
+    </div>
+    <p class="lead">Tagliandate settimanalmente. Giubbotti in tutte le taglie (bambino incluso), radio VHF a bordo, cauzione 300€ rimborsabile a fine uscita.</p>
+  </div>
+
+  <div class="container fleet-grid reveal-s">
+    <article class="moto">
+      <div class="moto-illu" style="background-image:url('https://images.weserv.nl/?url=cdn2.yamaha-motor.eu/prod/product-assets/2024/VXCRUISERHO/2024-Yamaha-VXCRUISERHO-EU-Pure_White_Solid-Studio-001-03.jpg&w=1400')"></div>
+      <div class="moto-body">
+        <span class="moto-badge">Top seller</span>
+        <h4>Yamaha VX Cruiser HO</h4>
+        <span class="moto-my">model year 2024</span>
+        <div class="moto-specs">
+          <div><span>motore</span><b>1.8 L</b></div>
+          <div><span>posti</span><b>3</b></div>
+          <div><span>velocità</span><b>85 km/h</b></div>
+        </div>
+        <div class="moto-foot">
+          <div class="moto-price"><b>90€</b><small>/ 30 min</small></div>
+          <a href="#contatti" class="moto-cta">Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </article>
+
+    <article class="moto">
+      <div class="moto-illu" style="background-image:url('https://images.weserv.nl/?url=cdn2.yamaha-motor.eu/prod/product-assets/2026/VXLTDHO/2026-Yamaha-VXLTDHO-EU-Azure_Blue-Studio-001-03.jpg&w=1400')"></div>
+      <div class="moto-body">
+        <span class="moto-badge" style="background:var(--sea);color:var(--sand)">Nuova 2026</span>
+        <h4>Yamaha VX Limited HO</h4>
+        <span class="moto-my">model year 2026 · audio integrato</span>
+        <div class="moto-specs">
+          <div><span>motore</span><b>1.8 L</b></div>
+          <div><span>posti</span><b>3</b></div>
+          <div><span>velocità</span><b>95 km/h</b></div>
+        </div>
+        <div class="moto-foot">
+          <div class="moto-price"><b>120€</b><small>/ 30 min</small></div>
+          <a href="#contatti" class="moto-cta">Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </article>
+
+    <article class="moto">
+      <div class="moto-illu" style="background-image:url('https://images.weserv.nl/?url=cdn2.yamaha-motor.eu/prod/product-assets/2026/FXSVHOCR/2026-Yamaha-FXSVHOCR-EU-Lagoon_Blue-Studio-001-03.jpg&w=1400')"></div>
+      <div class="moto-body">
+        <span class="moto-badge" style="background:var(--ink);color:var(--ochre)">Flagship</span>
+        <h4>Yamaha FX Cruiser SVHO</h4>
+        <span class="moto-my">model year 2025</span>
+        <div class="moto-specs">
+          <div><span>motore</span><b>1.8 SC</b></div>
+          <div><span>posti</span><b>3</b></div>
+          <div><span>velocità</span><b>110 km/h</b></div>
+        </div>
+        <div class="moto-foot">
+          <div class="moto-price"><b>150€</b><small>/ 30 min</small></div>
+          <a href="#contatti" class="moto-cta">Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section how">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">come si fa</span>
+      <h2 class="sh">Tre passi.<br/><em>Zero</em> imprevisti.</h2>
+    </div>
+    <p class="lead">Dal primo messaggio al pontile in meno di 10 minuti. Niente acconti, paghi solo al check-in, cancelli gratis fino a 24h prima.</p>
+  </div>
+
+  <div class="container how-grid reveal-s">
+    <div class="step">
+      <div class="step-n">1</div>
+      <h4>Scegli e scrivici</h4>
+      <p>Scegli esperienza, data e orario qui sul sito o direttamente su WhatsApp. Rispondiamo in 5 minuti durante la stagione con conferma e indicazioni per arrivare.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <h4>Arrivi al pontile</h4>
+      <p>Parcheggio gratuito al nostro fianco, doccia e spogliatoio, bar e ristorante a 30 metri. Briefing di sicurezza di 10 minuti, giubbotto salvagente, si parte.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <h4>Vai in mare</h4>
+      <p>Istruttore con te i primi minuti, poi è tutta tua. Foto e video di bordo te li mandiamo via AirDrop a fine uscita. Buon ritorno in Italia.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="section pricing" id="prezzi">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">il listino</span>
+      <h2 class="sh">Prezzi <em>scritti</em>.<br/>Tutto compreso.</h2>
+    </div>
+    <p class="lead">Carburante incluso nelle uscite brevi. Cauzione 300€ preautorizzata sulla carta, svincolata a fine uscita. Pagamento al check-in: carta, bancomat, contanti.</p>
+  </div>
+
+  <div class="container">
+    <div class="p-tabs-wrap reveal">
+      <div class="p-tabs" role="tablist">
+        <button class="active" data-tab="noleggio">Noleggio</button>
+        <button data-tab="tour">Tour</button>
+        <button data-tab="eventi">Eventi</button>
+      </div>
+    </div>
+
+    <div class="p-grid" data-pgrid="noleggio">
+      <article class="price">
+        <h4>Taste</h4>
+        <p class="p-desc">Un quarto d'ora per provarlo. Senza patente, area controllata.</p>
+        <div class="p-amt"><b>50€</b><small>/ 15 min</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Senza patente</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Carburante incluso</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Istruttore a vista · radio VHF</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Giubbotto salvagente</li>
+        </ul>
+        <a href="#contatti" class="p-cta" data-plan="Taste 15 min">Prenota Taste</a>
+      </article>
+      <article class="price featured">
+        <h4>Ride</h4>
+        <p class="p-desc">Il formato giusto: 30 minuti, con o senza patente.</p>
+        <div class="p-amt"><b>90€</b><small>/ 30 min</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Con o senza patente</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Yamaha VX / Sea-Doo GTI</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Foto di bordo incluse</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Fino a 3 persone</li>
+        </ul>
+        <a href="#contatti" class="p-cta" data-plan="Ride 30 min">Prenota Ride</a>
+      </article>
+      <article class="price">
+        <h4>Full Day</h4>
+        <p class="p-desc">Dall'alba al tramonto, la costa è tua.</p>
+        <div class="p-amt"><b>590€</b><small>/ 8 ore</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Patente nautica richiesta</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>10:00 → 18:00</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Carburante escluso</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Mappa rotte consigliate</li>
+        </ul>
+        <a href="#contatti" class="p-cta" data-plan="Full Day">Prenota Full Day</a>
+      </article>
+    </div>
+
+    <div class="p-grid" data-pgrid="tour" hidden>
+      <article class="price">
+        <h4>Lungomare &amp; Gabicce</h4>
+        <p class="p-desc">Il classico della Riviera, in 45 minuti.</p>
+        <div class="p-amt"><b>119€</b><small>/ moto d'acqua</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Istruttore in convoglio</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Sosta bagno a Vallugola</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Foto incluse</li>
+        </ul>
+        <a href="#contatti" class="p-cta" data-plan="Tour Cattolica Gabicce">Prenota</a>
+      </article>
+      <article class="price featured">
+        <h4>Sunset San Bartolo</h4>
+        <p class="p-desc">La rotta più fotografata. 2 ore al crepuscolo.</p>
+        <div class="p-amt"><b>249€</b><small>/ moto d'acqua</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Partenza 1h prima del tramonto</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Falesia di San Bartolo + Vallugola</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Brindisi in mare · reportage foto</li>
+        </ul>
+        <a href="#contatti" class="p-cta" data-plan="Sunset San Bartolo">Prenota Sunset</a>
+      </article>
+      <article class="price">
+        <h4>Fiorenzuola di Focara</h4>
+        <p class="p-desc">Il borgo arroccato, vista dalla barca.</p>
+        <div class="p-amt"><b>229€</b><small>/ moto d'acqua</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>2 ore · maschera inclusa</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Adatto a principianti</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Acque basse e protette</li>
+        </ul>
+        <a href="#contatti" class="p-cta" data-plan="Fiorenzuola">Prenota</a>
+      </article>
+    </div>
+
+    <div class="p-grid" data-pgrid="eventi" hidden>
+      <article class="price">
+        <h4>Bachelor / Hen</h4>
+        <p class="p-desc">Festa in mare per 6–12 amici.</p>
+        <div class="p-amt"><b>890€</b><small>/ gruppo</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>3 moto d'acqua · 2 ore</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Champagne + gadget custom</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Aftermovie in 48 ore</li>
+        </ul>
+        <a href="#contatti" class="p-cta" data-plan="Bachelor Party">Preventivo</a>
+      </article>
+      <article class="price featured">
+        <h4>Incentive Aziendale</h4>
+        <p class="p-desc">Team building brandizzabile, P.IVA.</p>
+        <div class="p-amt"><b>Custom</b><small>/ preventivo</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Fino a 15 persone</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Branding moto e vele</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Catering · drone · aftermovie</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Fatturazione elettronica</li>
+        </ul>
+        <a href="#contatti" class="p-cta" data-plan="Incentive Aziendale">Parliamone</a>
+      </article>
+      <article class="price">
+        <h4>Shooting &amp; Video</h4>
+        <p class="p-desc">Location per brand, moda, creator.</p>
+        <div class="p-amt"><b>da 690€</b><small>/ mezza giornata</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Fino a 4 moto + skipper</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Barca appoggio</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Permessi e liberatorie</li>
+        </ul>
+        <a href="#contatti" class="p-cta" data-plan="Shooting Video">Invia brief</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="section gallery">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">la gallery</span>
+      <h2 class="sh">Niente stock.<br/>Solo <em>mare</em> vero.</h2>
+    </div>
+    <p class="lead">Scatti delle uscite reali dei nostri ospiti. Se non ti sale la voglia di partire, rileggi il manifesto — qualcosa è andato storto.</p>
+  </div>
+  <div class="g-grid reveal">
+    <div class="g-item g1" style="background-image:url('https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1600&auto=format&fit=crop')"><span class="g-lbl">Lungomare Cattolica</span></div>
+    <div class="g-item g2" style="background-image:url('https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1200&auto=format&fit=crop')"><span class="g-lbl">Sunset San Bartolo</span></div>
+    <div class="g-item g3" style="background-image:url('https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=900&auto=format&fit=crop')"><span class="g-lbl">Vista aerea</span></div>
+    <div class="g-item g4" style="background-image:url('https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1200&auto=format&fit=crop')"><span class="g-lbl">Private event</span></div>
+    <div class="g-item g5" style="background-image:url('https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=900&auto=format&fit=crop')"><span class="g-lbl">Wake &amp; spray</span></div>
+    <div class="g-item g6" style="background-image:url('https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop')"><span class="g-lbl">Vallugola</span></div>
+    <div class="g-item g7" style="background-image:url('https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1200&auto=format&fit=crop')"><span class="g-lbl">Briefing a riva</span></div>
+    <div class="g-item g8" style="background-image:url('https://images.unsplash.com/photo-1524061508355-90afbf7fcf03?q=85&w=900&auto=format&fit=crop')"><span class="g-lbl">Il pontile</span></div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="section reviews">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">quelli che son saliti</span>
+      <h2 class="sh">Si scrive <em>recensione</em>,<br/>si legge pagamento.</h2>
+    </div>
+    <p class="lead">Stagione inaugurale 2026 — le recensioni qui sotto sono <i>demo</i> per la preview. Le raccoglieremo dai primi ospiti dell'estate.</p>
+  </div>
+  <div class="container r-grid reveal-s">
+    <article class="rev">
+      <div class="rtop">
+        <div class="rstars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <span class="rplatform"><svg viewBox="0 0 48 48"><path fill="#4285F4" d="M45 24c0-1.5-.1-3-.4-4.5H24v8.5h11.8c-.5 2.8-2 5.1-4.4 6.6v5.5h7.1C42.8 36.3 45 30.6 45 24z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.6-5.3l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.7 0-10.6-3.9-12.3-9.1H4.3v5.7C7.9 41 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.7 28.2c-.4-1.3-.7-2.7-.7-4.2s.2-2.9.7-4.2v-5.7H4.3C2.8 17.1 2 20.4 2 24s.8 6.9 2.3 9.9l7.4-5.7z"/><path fill="#EA4335" d="M24 10.7c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.4 2 7.9 6.9 4.3 14.1l7.4 5.7c1.7-5.2 6.6-9.1 12.3-9.1z"/></svg>Google</span>
+      </div>
+      <blockquote>Briefing serio, moto perfetta, istruttore che ti fa sentire al sicuro anche a 80 km/h. La parte migliore della nostra vacanza in Riviera.</blockquote>
+      <div class="who"><div class="av">MR</div><div><b>Marco &amp; Roberta</b><span>Milano · Sunset San Bartolo</span></div></div>
+    </article>
+    <article class="rev">
+      <div class="rtop">
+        <div class="rstars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <span class="rplatform"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#34e0a1"/><circle cx="17" cy="24" r="6" fill="none" stroke="#000" stroke-width="2.5"/><circle cx="31" cy="24" r="6" fill="none" stroke="#000" stroke-width="2.5"/><circle cx="17" cy="24" r="2" fill="#000"/><circle cx="31" cy="24" r="2" fill="#000"/></svg>Tripadvisor</span>
+      </div>
+      <blockquote>Addio al celibato organizzato in due giorni. Champagne in mare, foto pazzesche, zero intoppi. Ragazzi professionali e pure simpatici.</blockquote>
+      <div class="who"><div class="av">GL</div><div><b>Giacomo L.</b><span>Bologna · Bachelor 10 pax</span></div></div>
+    </article>
+    <article class="rev">
+      <div class="rtop">
+        <div class="rstars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <span class="rplatform"><svg viewBox="0 0 48 48"><path fill="#4285F4" d="M45 24c0-1.5-.1-3-.4-4.5H24v8.5h11.8c-.5 2.8-2 5.1-4.4 6.6v5.5h7.1C42.8 36.3 45 30.6 45 24z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.6-5.3l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.7 0-10.6-3.9-12.3-9.1H4.3v5.7C7.9 41 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.7 28.2c-.4-1.3-.7-2.7-.7-4.2s.2-2.9.7-4.2v-5.7H4.3C2.8 17.1 2 20.4 2 24s.8 6.9 2.3 9.9l7.4-5.7z"/><path fill="#EA4335" d="M24 10.7c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.4 2 7.9 6.9 4.3 14.1l7.4 5.7c1.7-5.2 6.6-9.1 12.3-9.1z"/></svg>Google</span>
+      </div>
+      <blockquote>Non avevo mai guidato una moto d'acqua. Dopo dieci minuti di spiegazioni ridevo come un bambino. La Riviera Romagnola dal mare è un'altra cosa.</blockquote>
+      <div class="who"><div class="av">SD</div><div><b>Sara D.</b><span>Torino · Ride 30 min</span></div></div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section faq">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">le domande</span>
+      <h2 class="sh">Rispondiamo<br/><em>prima</em> che tu chieda.</h2>
+    </div>
+    <p class="lead">Se la tua domanda non è qui, scrivici su WhatsApp. In stagione rispondiamo entro pochi minuti — a volte anche con la barca in acqua.</p>
+  </div>
+  <div class="faq-list reveal-s">
+    <div class="fa"><div class="fq"><span class="num">01</span><h5>Serve la patente nautica?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Per navigare liberamente sì, è obbligatoria. Senza patente offriamo i format Taste e Ride in area controllata con radio VHF e istruttore a vista — nessun esame, solo briefing di 10 minuti.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">02</span><h5>Da che età si può salire?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Il conducente deve avere 18 anni compiuti. I passeggeri sono benvenuti dai 6 anni accompagnati da un adulto. Giubbotto sempre obbligatorio — taglie da 15 kg in su.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">03</span><h5>Se il mare è brutto?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Se annulliamo noi per condizioni meteo sfavorevoli riprogrammi senza costi o ricevi rimborso integrale entro 24 ore. La sicurezza viene prima della voglia di uscire.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">04</span><h5>Cosa serve portare?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Costume e crema solare resistente all'acqua. Giubbotto salvagente, occhialini, dry-bag per il telefono e asciugamano a richiesta li forniamo noi.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">05</span><h5>Come si paga?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Al check-in in carta, bancomat o contanti. Cauzione di 300€ preautorizzata sulla carta e svincolata a fine uscita se tutto è in ordine. Nessun acconto online.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">06</span><h5>Fate buoni regalo?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Un tramonto in Riviera regala molto più dell'ennesimo profumo. Voucher digitale personalizzato in 24 ore, valido 12 mesi su qualsiasi esperienza.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ BIG CTA ============ -->
+<section class="section bigcta">
+  <svg class="sun-l" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="100" cy="100" r="60" fill="currentColor"/>
+    <g stroke="currentColor" stroke-width="5" stroke-linecap="round">
+      <line x1="100" y1="10" x2="100" y2="30"/><line x1="100" y1="170" x2="100" y2="190"/>
+      <line x1="10" y1="100" x2="30" y2="100"/><line x1="170" y1="100" x2="190" y2="100"/>
+      <line x1="35" y1="35" x2="48" y2="48"/><line x1="152" y1="152" x2="165" y2="165"/>
+      <line x1="35" y1="165" x2="48" y2="152"/><line x1="152" y1="48" x2="165" y2="35"/>
+    </g>
+  </svg>
+  <svg class="sun-r" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M30 100 Q 60 70 100 100 T 170 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+    <path d="M30 130 Q 60 100 100 130 T 170 130" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+    <path d="M30 160 Q 60 130 100 160 T 170 160" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+  </svg>
+  <div class="wrap reveal">
+    <h2>Il mare non ti aspetta.<br/><span class="ornate">noi</span> <em>sì.</em></h2>
+    <p>Prenota adesso la tua uscita in Riviera. Conferma WhatsApp in 5 minuti, cancellazione gratuita fino a 24h prima. Il tramonto fa il resto.</p>
+    <div class="cta-row">
+      <a href="#contatti" class="btn btn-primary">Prenota la tua uscita <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="tel:+390000000000" class="btn btn-ghost">📞 Chiamaci subito</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section contact" id="contatti">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">dove ci trovi</span>
+      <h2 class="sh">Sul <em>pontile</em>,<br/>a Cattolica.</h2>
+    </div>
+    <p class="lead">Parcheggio gratuito, doccia, spogliatoio. Bar e ristorante a 30 metri. A due passi dal lungomare, con il parco di San Bartolo sullo sfondo.</p>
+  </div>
+
+  <div class="container contact-grid">
+    <div class="contact-info reveal-s">
+      <div class="ci">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><b>Base operativa</b><span>Via del Porto, Cattolica · 47841 Rimini (RN)<br/>43.9592° N · 12.7431° E</span></div>
+      </div>
+      <div class="ci">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div><b>Telefono &amp; WhatsApp</b><span><a href="tel:+390000000000">+39 000 000 0000</a> · risposta in 5 minuti</span></div>
+      </div>
+      <div class="ci">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div><b>Email</b><span><a href="mailto:ciao@jetskiadriatic.it">ciao@jetskiadriatic.it</a></span></div>
+      </div>
+      <div class="ci">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <div><b>Orari stagione</b><span>Maggio → Settembre · 9:00—20:00 · 7/7</span></div>
+      </div>
+    </div>
+
+    <form class="contact-form reveal" onsubmit="event.preventDefault();const b=this.querySelector('button');b.innerText='Grazie! Ti richiamiamo ✓';b.style.background='var(--olive)';">
+      <h3>Scrivici due righe</h3>
+      <p>Rispondiamo entro 1 ora in stagione. Niente newsletter, promesso.</p>
+      <div class="ff-row">
+        <div class="ff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/></svg><div class="ff-col"><label>Nome</label><input type="text" required placeholder="Mario Rossi" /></div></div>
+        <div class="ff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg><div class="ff-col"><label>Telefono</label><input type="tel" placeholder="+39 ..." /></div></div>
+      </div>
+      <div class="ff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><div class="ff-col"><label>Email</label><input type="email" required placeholder="ciao@esempio.it" /></div></div>
+      <div class="ff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l3-9 6 18 3-9h3"/></svg>
+        <div class="ff-col"><label>Esperienza</label>
+          <select>
+            <option>Noleggio senza patente</option>
+            <option>Noleggio con patente</option>
+            <option>Tour guidato</option>
+            <option>Evento privato / gruppo</option>
+            <option>Altro (scrivilo nel messaggio)</option>
+          </select>
+        </div>
+      </div>
+      <div class="ff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div class="ff-col"><label>Messaggio</label><textarea placeholder="Data, numero di persone, eventuali richieste..."></textarea></div></div>
+      <button type="submit" class="form-submit">
+        Invia messaggio
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <a class="brand" href="#top">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/><path d="M8 12V7a2 2 0 0 1 2-2h5"/></svg></span>
+        <span class="brand-name"><b>Jet Ski Adriatic</b><small>Cattolica · Rimini</small></span>
+      </a>
+      <p>Noleggio moto d'acqua, tour guidati ed eventi privati sulla Riviera Romagnola. Certificati Capitaneria di Porto, assicurati, ossessionati dal mare.</p>
+      <div class="foot-socials">
+        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1z"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h6>esperienze</h6>
+      <ul>
+        <li><a href="#esperienze">Noleggio</a></li>
+        <li><a href="#tour">Tour</a></li>
+        <li><a href="#esperienze">Eventi privati</a></li>
+        <li><a href="#flotta">La flotta</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h6>utili</h6>
+      <ul>
+        <li><a href="#prezzi">Listino</a></li>
+        <li><a href="#">Buoni regalo</a></li>
+        <li><a href="#">Come arrivare</a></li>
+        <li><a href="#">Norme di sicurezza</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h6>contatti</h6>
+      <ul>
+        <li><a href="tel:+390000000000">+39 000 000 0000</a></li>
+        <li><a href="https://wa.me/390000000000" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href="mailto:ciao@jetskiadriatic.it">Email</a></li>
+        <li><a href="#contatti">Prenota</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Jet Ski Adriatic SRL · P.IVA 00000000000 · Cattolica, Rimini</span>
+    <span><a href="#">Privacy</a> · <a href="#">Cookie</a> · <a href="#">Termini</a></span>
+  </div>
+</footer>
+
+<a class="wa" href="https://wa.me/390000000000" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12 2C6.48 2 2 6.48 2 12c0 1.74.46 3.37 1.26 4.78L2 22l5.35-1.4C8.72 21.49 10.3 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+</a>
+
+<script>
+  /* ==============================================================
+     STATUS INDICATOR — Aperto / Solo WhatsApp / Chiuso
+     Attualmente hardcoded 'open'. Quando il backend sarà pronto,
+     sostituire fetchStatus() con: fetch('/api/status').then(r=>r.json())
+     Risposta attesa: { status: 'open' | 'whatsapp' | 'closed' }
+  ============================================================== */
+  async function fetchStatus(){ return { status: 'open' }; }
+  function applyStatus({status}){
+    const el = document.getElementById('statusBar');
+    if (!el) return;
+    el.setAttribute('data-status', status);
+    const label = el.querySelector('.status-label');
+    const labels = { open: 'Aperto', whatsapp: 'Solo WhatsApp', closed: 'Chiuso' };
+    if (label) label.textContent = labels[status] || 'Aperto';
+  }
+  fetchStatus().then(applyStatus).catch(() => applyStatus({status:'whatsapp'}));
+
+  /* Reveal */
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }, {rootMargin:'0px 0px -10% 0px', threshold:.06});
+  document.querySelectorAll('.reveal,.reveal-s').forEach(el => io.observe(el));
+
+  /* Pricing tabs */
+  document.querySelectorAll('.p-tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.p-tabs button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      const k = b.dataset.tab;
+      document.querySelectorAll('[data-pgrid]').forEach(g => {
+        g.hidden = g.dataset.pgrid !== k;
       });
-    })();
-  </script>
+    });
+  });
+
+  /* FAQ */
+  document.querySelectorAll('.fa').forEach(it => it.addEventListener('click', () => it.classList.toggle('open')));
+
+  /* Mobile menu */
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('menu');
+  const mclose = document.getElementById('mclose');
+  function setM(o){menu.classList.toggle('open', o);document.body.style.overflow = o ? 'hidden' : ''}
+  burger?.addEventListener('click', () => setM(true));
+  mclose?.addEventListener('click', () => setM(false));
+  menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(false)));
+</script>
+
 </body>
 </html>
