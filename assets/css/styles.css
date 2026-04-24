@@ -478,6 +478,10 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 }
 @media (max-width:960px){.exp-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.exp-grid{grid-template-columns:1fr}}
+.exp-grid--love{grid-template-columns:1fr 1fr;gap:22px}
+@media (max-width:720px){.exp-grid--love{grid-template-columns:1fr}}
+.exp--love .exp-illu{height:300px}
+.exp--love .exp-n{color:var(--ochre,#C89F4A)}
 .exp{
   background:var(--abisso);
   color:var(--spuma);
