@@ -55,26 +55,26 @@ menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(
 
   const EXPERIENCES = [
     // Noleggio
-    { id:'taste',   cat:'noleggio', name:'Taste · 15 min',        dur:'15 min',  price:50,   unit:'/ 15 min',  desc:'Senza patente, area controllata.' },
-    { id:'ride',    cat:'noleggio', name:'Ride · 30 min',         dur:'30 min',  price:90,   unit:'/ 30 min',  desc:'Con o senza patente. La giusta dose.' },
-    { id:'fullday', cat:'noleggio', name:'Full Day · 8 h',        dur:'8 h',     price:590,  unit:'/ giornata',desc:'Richiede patente nautica.' },
-    // Flotta specifica
-    { id:'vx-cruiser-ho',  cat:'noleggio', name:'Yamaha VX Cruiser HO',    dur:'30 min', price:90,  unit:'/ 30 min', desc:'Top seller · 1.8 L HO, 85 km/h.' },
-    { id:'vx-ltd-ho',      cat:'noleggio', name:'Yamaha VX Limited HO',    dur:'30 min', price:120, unit:'/ 30 min', desc:'Audio integrato · 1.8 L HO, 95 km/h.' },
-    { id:'fx-cruiser-svho',cat:'noleggio', name:'Yamaha FX Cruiser SVHO',  dur:'30 min', price:150, unit:'/ 30 min', desc:'Flagship · 1.8 SC, 110 km/h.' },
-    // Tour
-    { id:'tour-cattolica',   cat:'tour', name:'Lungomare di Cattolica',   dur:'20 min', price:69,  unit:'/ moto d\u2019acqua', desc:'Porto · lungomare.' },
-    { id:'tour-gabicce',     cat:'tour', name:'Gabicce Monte',            dur:'45 min', price:119, unit:'/ moto d\u2019acqua', desc:'Scogliera · sosta bagno.' },
-    { id:'tour-vallugola',   cat:'tour', name:'Baia di Vallugola',        dur:'1h30',   price:189, unit:'/ moto d\u2019acqua', desc:'Caletta · acque cristalline.' },
-    { id:'tour-fiorenzuola', cat:'tour', name:'Fiorenzuola di Focara',    dur:'2h',     price:229, unit:'/ moto d\u2019acqua', desc:'Borgo arroccato · foto dal mare.' },
-    { id:'tour-sunset',      cat:'tour', name:'Sunset San Bartolo',       dur:'2h',     price:249, unit:'/ moto d\u2019acqua', desc:'Tramonto · brindisi in mare.' },
-    // Eventi
-    { id:'bachelor',  cat:'evento', name:'Bachelor / Hen',         dur:'2 h',       price:890, unit:'/ gruppo',       desc:'6-12 amici · champagne + foto.' },
-    { id:'incentive', cat:'evento', name:'Incentive aziendale',    dur:'mezza/intera giornata', price:null, unit:'preventivo su misura', desc:'Team building brandizzabile, P.IVA.' },
-    { id:'shooting',  cat:'evento', name:'Shooting & Video',       dur:'mezza giornata', price:690, unit:'/ mezza giornata', desc:'Location per brand e creator.' }
+    { id:'fast-fun',       cat:'noleggio', name:'Fast & Fun · 15 min',    dur:'15 min', price:50,  unit:'/ 15 min',  desc:'Adrenalina pura. +10 min omaggio rientro.' },
+    { id:'sprint',         cat:'noleggio', name:'Sprint · 30 min',        dur:'30 min', price:85,  unit:'/ 30 min',  desc:'Divertimento puro, senza pensieri.' },
+    { id:'classic',        cat:'noleggio', name:'Classic · 45 min',       dur:'45 min', price:105, unit:'/ 45 min',  desc:'Il best seller. Miglior rapporto qualità/prezzo.' },
+    { id:'sunset-hour',    cat:'noleggio', name:'Sunset Hour · 1 ora',    dur:'1 ora',  price:145, unit:'/ ora',     desc:'Esperienza premium, ideale al tramonto.' },
+    { id:'vallugola-gold', cat:'noleggio', name:'Vallugola Gold · 4 ore', dur:'4 ore',  price:289, unit:'/ persona · min 2', desc:'VIP: attracco + sconto Ristorante Falco.' },
+    // Love Experience
+    { id:'secret-romance',    cat:'love', name:'Secret Romance · 1 ora',       dur:'1 ora',  price:320, unit:'/ coppia',  desc:'Rose, Champagne piccolo, GoPro. In segreto.' },
+    { id:'the-proposal',      cat:'love', name:'The Proposal · 1h30',          dur:'1h30',   price:490, unit:'/ coppia',  desc:'Drone 4K, paparazzo, pergamena GPS. La proposta.' },
+    { id:'midday-brunch',     cat:'love', name:'Midday Brunch · 1 ora',        dur:'1 ora',  price:220, unit:'/ coppia',  desc:'Luxury Brunch Box, drink, tavolo a bordo.' },
+    { id:'vallugola-diamond', cat:'love', name:'Vallugola Diamond · 4 ore',    dur:'4 ore',  price:850, unit:'/ coppia',  desc:'All-inclusive: 2 bottiglie, fiori, drone, attracco.' },
+    // Add-on & Bundle
+    { id:'bundle-social',  cat:'extra', name:'Bundle Social Star',       dur:'add-on', price:100, unit:'/ add-on', desc:'Drone VIP Movie 4K + GoPro POV. Risparmi 14€.' },
+    { id:'drone-vip',      cat:'extra', name:'Drone VIP Movie 4K',       dur:'add-on', price:99,  unit:'/ add-on', desc:'Video 4K editato stile Reel. Pronto in 24h.' },
+    { id:'gopro',          cat:'extra', name:'GoPro POV Rental',         dur:'add-on', price:15,  unit:'/ add-on', desc:'Camera 4K montata sul manubrio. File via AirDrop.' },
+    { id:'photo-kit',      cat:'extra', name:'Photo Kit Staff',          dur:'add-on', price:50,  unit:'/ add-on', desc:'Fotografo dedicato. Galleria digitale in 24h.' },
+    { id:'bundle-relax',   cat:'extra', name:'Bundle Total Relax',       dur:'add-on', price:20,  unit:'/ add-on', desc:'Kasko Light + Refresh Kit. Zero pensieri.' },
+    { id:'drink-delivery', cat:'extra', name:'Drink Delivery a bordo',   dur:'add-on', price:140, unit:'da',       desc:'Champagne, birra, soft drink. Moët 230€, Dom 550€.' }
   ];
 
-  const CAT_LABELS = { noleggio: 'Esperienza', tour: 'Tour', evento: 'Evento' };
+  const CAT_LABELS = { noleggio: 'Noleggio', love: 'Love Experience', extra: 'Add-on' };
 
   const state = {
     step: 1,
@@ -95,9 +95,6 @@ menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(
   const body        = bk?.querySelector('.bk-body');
   const panes       = [...bk?.querySelectorAll('.bk-pane') || []];
   const stepNum     = document.getElementById('bkStepNum');
-  const stepLabel   = document.getElementById('bkStepLabel');
-  const dots        = [...bk?.querySelectorAll('.bk-dot') || []];
-  const lines       = [...bk?.querySelectorAll('.bk-line') || []];
   const catBtns     = [...bk?.querySelectorAll('.bk-cats button') || []];
   const expGrid     = document.getElementById('bkExpGrid');
   const dateIn      = document.getElementById('bkDate');
@@ -133,9 +130,9 @@ menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(
 
   const STEP_META = [
     null,
-    { num:'01', label:'Esperienza',     hint:"Scegli un'esperienza per continuare" },
+    { num:'01', label:'Esperienza',     hint:"Scegli un'esperienza" },
     { num:'02', label:'Data e orario',  hint:'Scegli data e orario' },
-    { num:'03', label:'I tuoi contatti',hint:'Ti confermiamo in 5 min su WhatsApp' }
+    { num:'03', label:'I tuoi contatti',hint:'Conferma prenotazione' }
   ];
 
   function getExp(id) {
@@ -151,7 +148,7 @@ menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(
   }
 
   // Flags for featured items ("Più scelto")
-  const FEATURED = new Set(['ride', 'tour-sunset', 'bachelor']);
+  const FEATURED = new Set(['classic', 'the-proposal', 'bundle-social']);
 
   function renderExpCards() {
     if (!expGrid) return;
@@ -185,13 +182,7 @@ menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(
     state.step = Math.min(Math.max(n, 1), 3);
     panes.forEach(p => p.classList.toggle('active', +p.dataset.pane === state.step));
     const meta = STEP_META[state.step];
-    if (stepNum)   stepNum.textContent   = meta.num;
-    if (stepLabel) stepLabel.textContent = meta.label;
-    dots.forEach((d, i) => {
-      d.classList.toggle('active', i + 1 === state.step);
-      d.classList.toggle('done',   i + 1 < state.step);
-    });
-    lines.forEach((l, i) => l.classList.toggle('done', i + 1 < state.step));
+    if (stepNum) stepNum.textContent = meta.num;
     backBtn.hidden   = state.step === 1;
     nextBtn.hidden   = state.step === 3;
     submitBtn.hidden = state.step !== 3;
@@ -210,26 +201,7 @@ menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(
   function updateHint() {
     if (!hintEl) return;
     hintEl.classList.remove('warn');
-    const meta = STEP_META[state.step];
-    let msg = meta.hint;
-    if (state.step === 1 && state.expId) {
-      const e = getExp(state.expId);
-      msg = e ? `✓ Scelto: ${e.name}` : meta.hint;
-    } else if (state.step === 2) {
-      if (state.date && state.time) msg = `✓ ${formatDate(state.date)} alle ${state.time}`;
-      else if (!state.time && state.date) msg = 'Scegli un orario';
-      else if (!state.date && state.time) msg = 'Scegli una data';
-    } else if (state.step === 3) {
-      const missing = [];
-      if (!state.name.trim())  missing.push('nome');
-      if (!state.phone.trim()) missing.push('WhatsApp');
-      if (!state.consent)      missing.push('privacy');
-      if (missing.length) {
-        msg = 'Manca: ' + missing.join(', ');
-        hintEl.classList.add('warn');
-      }
-    }
-    hintEl.textContent = msg;
+    hintEl.textContent = STEP_META[state.step].hint;
   }
 
   function updateNextBtn() {
@@ -247,9 +219,10 @@ menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(
     sumTime.textContent   = state.time || '—';
     sumPeople.textContent = state.people;
     if (e && e.price !== null) {
-      // Se è "per gruppo" o "preventivo" non moltiplicare
-      const perUnit = e.unit.includes('gruppo') || e.unit.includes('moto') || e.unit.includes('giornata') || e.unit.includes('mezza');
-      const total = perUnit ? e.price : e.price * state.people;
+      // Moltiplica solo se unit include "persona" (es. Vallugola Gold 289€/pers)
+      // Tutti gli altri (coppia, add-on, 15/30/45/60 min) hanno prezzo flat
+      const perPerson = e.unit.includes('persona');
+      const total = perPerson ? e.price * Math.max(state.people, 2) : e.price;
       sumPrice.textContent  = total + '€ ' + e.unit;
     } else if (e && e.price === null) {
       sumPrice.textContent = 'Da preventivare';
