@@ -50,7 +50,7 @@
    RESET + BASE
 ============================================================== */
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
 html,body{background:var(--spuma)}
 body{
   font-family:var(--f-body);
@@ -303,7 +303,7 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 ============================================================== */
 .hero{
   position:relative;
-  height:100svh;min-height:620px;max-height:1040px;
+  height:calc(100svh - 114px);min-height:560px;max-height:940px;
   overflow:hidden;
   color:var(--spuma);
   isolation:isolate;
@@ -333,7 +333,7 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 .hero-body{
   flex:1 1 auto;
   display:flex;flex-direction:column;justify-content:flex-end;
-  padding-bottom:60px;
+  padding-bottom:48px;
   max-width:1080px;
 }
 .hero-badge{
@@ -1150,6 +1150,79 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
   /* Featured su dark: forza il colore del desc */
   .price.featured .p-desc{color:var(--on-dark)}
   .price.featured .p-amt small{color:var(--on-dark)}
+}
+
+/* ==============================================================
+   EXTRAS — add-on contestuali
+============================================================== */
+.extras{background:var(--abisso);color:var(--spuma)}
+.extras .sh{color:var(--spuma)}
+.extras .sh em{color:var(--tramonto)}
+.extras .kicker{color:var(--acqua)}
+.extras .kicker::before{background:var(--acqua)}
+.extras .lead{color:var(--on-dark)}
+.extras-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:12px;
+}
+@media (max-width:960px){.extras-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.extras-grid{grid-template-columns:1fr}}
+.extra{
+  display:flex;align-items:center;gap:16px;
+  padding:18px 20px;
+  background:rgba(244,241,234,.04);
+  border:1px solid rgba(244,241,234,.14);
+  border-radius:var(--r-md);
+  color:var(--spuma);
+  transition:border-color .25s var(--ease), background .25s var(--ease), transform .25s var(--ease);
+  position:relative;
+}
+.extra:hover{
+  border-color:var(--tramonto);
+  background:rgba(255,107,61,.08);
+  transform:translateY(-3px);
+}
+.extra-ic{
+  flex:0 0 44px;
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(111,179,216,.15);
+  color:var(--acqua-l);
+  display:grid;place-items:center;
+}
+.extra-ic svg{width:22px;height:22px}
+.extra-body{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.extra-body h4{
+  font-family:var(--f-display);
+  font-size:16px;font-weight:600;
+  letter-spacing:-.01em;
+  color:var(--spuma);
+  line-height:1.15;
+}
+.extra-body p{
+  font-size:13px;
+  line-height:1.45;
+  color:var(--on-dark);
+}
+.extra-price{
+  font-family:var(--f-display);
+  font-size:20px;font-weight:700;
+  letter-spacing:-.02em;
+  color:var(--tramonto);
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+.extra-featured{
+  border-color:var(--tramonto);
+  background:rgba(255,107,61,.08);
+}
+.extra-badge{
+  position:absolute;top:-9px;left:16px;
+  padding:3px 10px;
+  background:var(--tramonto);color:var(--abisso);
+  border-radius:var(--r-pill);
+  font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
 }
 
 /* ==============================================================

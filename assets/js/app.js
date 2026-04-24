@@ -64,17 +64,10 @@ menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(
     { id:'secret-romance',    cat:'love', name:'Secret Romance · 1 ora',       dur:'1 ora',  price:320, unit:'/ coppia',  desc:'Rose, Champagne piccolo, GoPro. In segreto.' },
     { id:'the-proposal',      cat:'love', name:'The Proposal · 1h30',          dur:'1h30',   price:490, unit:'/ coppia',  desc:'Drone 4K, paparazzo, pergamena GPS. La proposta.' },
     { id:'midday-brunch',     cat:'love', name:'Midday Brunch · 1 ora',        dur:'1 ora',  price:220, unit:'/ coppia',  desc:'Luxury Brunch Box, drink, tavolo a bordo.' },
-    { id:'vallugola-diamond', cat:'love', name:'Vallugola Diamond · 4 ore',    dur:'4 ore',  price:850, unit:'/ coppia',  desc:'All-inclusive: 2 bottiglie, fiori, drone, attracco.' },
-    // Add-on & Bundle
-    { id:'bundle-social',  cat:'extra', name:'Bundle Social Star',       dur:'add-on', price:100, unit:'/ add-on', desc:'Drone VIP Movie 4K + GoPro POV. Risparmi 14€.' },
-    { id:'drone-vip',      cat:'extra', name:'Drone VIP Movie 4K',       dur:'add-on', price:99,  unit:'/ add-on', desc:'Video 4K editato stile Reel. Pronto in 24h.' },
-    { id:'gopro',          cat:'extra', name:'GoPro POV Rental',         dur:'add-on', price:15,  unit:'/ add-on', desc:'Camera 4K montata sul manubrio. File via AirDrop.' },
-    { id:'photo-kit',      cat:'extra', name:'Photo Kit Staff',          dur:'add-on', price:50,  unit:'/ add-on', desc:'Fotografo dedicato. Galleria digitale in 24h.' },
-    { id:'bundle-relax',   cat:'extra', name:'Bundle Total Relax',       dur:'add-on', price:20,  unit:'/ add-on', desc:'Kasko Light + Refresh Kit. Zero pensieri.' },
-    { id:'drink-delivery', cat:'extra', name:'Drink Delivery a bordo',   dur:'add-on', price:140, unit:'da',       desc:'Champagne, birra, soft drink. Moët 230€, Dom 550€.' }
+    { id:'vallugola-diamond', cat:'love', name:'Vallugola Diamond · 4 ore',    dur:'4 ore',  price:850, unit:'/ coppia',  desc:'All-inclusive: 2 bottiglie, fiori, drone, attracco.' }
   ];
 
-  const CAT_LABELS = { noleggio: 'Noleggio', love: 'Love Experience', extra: 'Add-on' };
+  const CAT_LABELS = { noleggio: 'Noleggio', love: 'Love Experience' };
 
   const state = {
     step: 1,
@@ -148,7 +141,7 @@ menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(
   }
 
   // Flags for featured items ("Più scelto")
-  const FEATURED = new Set(['classic', 'the-proposal', 'bundle-social']);
+  const FEATURED = new Set(['classic', 'the-proposal']);
 
   function renderExpCards() {
     if (!expGrid) return;
