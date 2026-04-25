@@ -36,6 +36,45 @@ document.querySelectorAll('.p-tabs button').forEach(b => {
 /* FAQ */
 document.querySelectorAll('.fa').forEach(it => it.addEventListener('click', () => it.classList.toggle('open')));
 
+/* Topbar marquee on mobile */
+(() => {
+  if (window.innerWidth > 720) return;
+  const wrap = document.querySelector('.topbar .wrap');
+  if (!wrap) return;
+  const track = document.createElement('div');
+  track.className = 'topbar-track';
+  [...wrap.children].forEach((el, i) => {
+    if (i > 0) {
+      const sep = document.createElement('span');
+      sep.className = 'sep';
+      sep.textContent = '·';
+      track.appendChild(sep);
+    }
+    track.appendChild(el);
+  });
+  const clone = track.cloneNode(true);
+  clone.setAttribute('aria-hidden', 'true');
+  const inner = document.createElement('div');
+  inner.className = 'topbar-marquee-inner';
+  inner.appendChild(track);
+  inner.appendChild(clone);
+  wrap.appendChild(inner);
+})();
+
+/* Hide header on scroll down, restore on scroll up */
+(() => {
+  const hdr = document.querySelector('.site-header');
+  const tb  = document.querySelector('.topbar');
+  if (!hdr) return;
+  if (tb) document.documentElement.style.setProperty('--topbar-h', tb.offsetHeight + 'px');
+  let last = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    hdr.classList.toggle('header--hidden', y > last && y > 80);
+    last = y;
+  }, { passive: true });
+})();
+
 /* Mobile menu */
 const burger = document.getElementById('burger');
 const menu = document.getElementById('menu');

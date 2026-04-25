@@ -119,8 +119,9 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 /* ==============================================================
    TOP BAR
 ============================================================== */
-.site-header{position:sticky;top:0;z-index:90;display:flex;flex-direction:column}
-.topbar{
+.site-header{position:sticky;top:var(--topbar-h,36px);z-index:90;transition:transform .3s ease}
+.site-header.header--hidden{transform:translateY(-100%)}
+.topbar{position:sticky;top:0;z-index:91;
   background:var(--abisso-d);
   color:var(--on-dark);
   font-size:12px;
@@ -158,7 +159,13 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 @keyframes pulseRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.8);opacity:0}}
 .topbar .status[data-status="closed"] .dot{background:#e23a25}
 .topbar .status[data-status="closed"] .status-label{color:#e23a25}
-@media (max-width:720px){.topbar .hide-s{display:none}}
+@media (max-width:720px){
+  .topbar .wrap:has(.topbar-marquee-inner){overflow:hidden;padding:0}
+  .topbar-marquee-inner{display:flex;animation:topbar-scroll 24s linear infinite;will-change:transform}
+  .topbar-track{display:inline-flex;align-items:center;gap:8px;padding:10px 40px 10px 0;flex-shrink:0;white-space:nowrap}
+  .topbar-track .hide-s{display:inline-flex!important}
+  @keyframes topbar-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+}
 
 /* ==============================================================
    NAV — navy, glassy, big pill CTA
@@ -350,6 +357,47 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 .menu-cta:hover{background:var(--white);transform:translateY(-1px)}
 .menu-cta svg{width:16px;height:16px;transition:transform .2s var(--ease)}
 .menu-cta:hover svg{transform:translateX(4px)}
+
+/* Row di 2 CTA secondari (Chiama + WhatsApp) sotto il primary */
+.menu-cta-row{
+  display:flex;
+  gap:10px;
+}
+.menu-cta-alt{
+  flex:1;
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 14px;
+  border-radius:var(--r-pill);
+  font-family:var(--f-body);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.04em;
+  transition:transform .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease);
+  white-space:nowrap;
+}
+.menu-cta-alt svg{width:16px;height:16px;flex:0 0 16px}
+
+.menu-cta-alt.cta-tel{
+  background:transparent;
+  color:var(--spuma);
+  border:1px solid rgba(244,241,234,.25);
+}
+.menu-cta-alt.cta-tel:hover{
+  background:rgba(244,241,234,.08);
+  border-color:rgba(244,241,234,.45);
+  transform:translateY(-1px);
+}
+
+.menu-cta-alt.cta-wa{
+  background:#25D366;
+  color:#053D22;
+  box-shadow:0 8px 22px -10px rgba(37,211,102,.5);
+}
+.menu-cta-alt.cta-wa:hover{
+  background:#1ea854;
+  color:#fff;
+  transform:translateY(-1px);
+}
 
 /* ==============================================================
    BUTTONS — pill con freccia + varianti
@@ -2074,8 +2122,32 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 }
 .contact-cta p{color:var(--on-dark);font-size:14.5px;line-height:1.55}
 .contact-cta .btn{justify-content:center}
-.contact-cta-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media (max-width:500px){.contact-cta-btns{grid-template-columns:1fr}}
+.contact-cta-btns{display:flex;flex-direction:column;gap:10px}
+.contact-cta-secondary{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.contact-cta-secondary .btn{padding:12px 18px;font-size:13px}
+@media (max-width:420px){.contact-cta-secondary{grid-template-columns:1fr}}
+
+/* Desktop: tutti e 3 i CTA su una sola riga, larghezza uguale */
+@media (min-width:700px){
+  .contact-cta-btns{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:10px;
+  }
+  .contact-cta-secondary{display:contents}
+  .contact-cta-secondary .btn{padding:14px 22px;font-size:14px}
+}
+
+.btn-tel{
+  background:transparent;
+  color:var(--spuma);
+  border:1px solid rgba(244,241,234,.25);
+}
+.btn-tel:hover{
+  background:rgba(244,241,234,.08);
+  border-color:rgba(244,241,234,.45);
+  transform:translateY(-1px);
+}
 
 /* ==============================================================
    FOOTER
