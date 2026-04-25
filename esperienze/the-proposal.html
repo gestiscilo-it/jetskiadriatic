@@ -53,17 +53,33 @@
 
 <!-- Mobile menu -->
 <div class="menu" id="menu">
-  <button class="mclose" id="mclose" aria-label="Chiudi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-  <nav>
-    <a href="../index.html#esperienze">Esperienze <em>01</em></a>
-    <a href="../index.html#flotta">Flotta <em>02</em></a>
-    <a href="../index.html#prezzi">Listino <em>03</em></a>
-    <a href="the-proposal.html">The Proposal <em>04</em></a>
-    <a href="../index.html#contatti">Contatti <em>05</em></a>
+  <div class="menu-top">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/><path d="M8 12V7a2 2 0 0 1 2-2h5"/></svg></span>
+      <span class="brand-name"><b>Jet Ski Adriatic</b><small>Cattolica · Rimini</small></span>
+    </a>
+    <button class="mclose" id="mclose" aria-label="Chiudi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <nav class="menu-nav">
+    <a href="../index.html#esperienze"><em>01</em><span>Esperienze</span></a>
+    <a href="../index.html#flotta"><em>02</em><span>Flotta</span></a>
+    <a href="../index.html#prezzi"><em>03</em><span>Listino</span></a>
+    <a href="the-proposal.html"><em>04</em><span>The Proposal</span></a>
+    <a href="../index.html#contatti"><em>05</em><span>Contatti</span></a>
   </nav>
-  <div class="mfoot">
-    <a href="tel:+390000000000">📞 +39 000 000 0000</a>
-    <a href="mailto:ciao@jetskiadriatic.it">✉️ ciao@jetskiadriatic.it</a>
+
+  <div class="menu-foot">
+    <div class="menu-contact">
+      <a href="tel:+390000000000">+39 000 000 0000</a>
+      <a href="mailto:ciao@jetskiadriatic.it">ciao@jetskiadriatic.it</a>
+    </div>
+    <a href="#prenota" class="menu-cta" data-book="the-proposal">
+      Prenota The Proposal
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
   </div>
 </div>
 

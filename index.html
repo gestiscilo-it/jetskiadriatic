@@ -15,6 +15,8 @@
 </head>
 <body>
 
+<!-- ============ SITE HEADER ============ -->
+<div class="site-header">
 <!-- ============ TOP BAR ============ -->
 <div class="topbar">
   <div class="wrap">
@@ -36,7 +38,6 @@
   <div class="nav-links">
     <a href="#esperienze">Esperienze</a>
     <a href="#flotta">Flotta</a>
-    <a href="#prezzi">Listino</a>
     <a href="esperienze/the-proposal.html">The Proposal</a>
     <a href="#contatti">Contatti</a>
   </div>
@@ -46,28 +47,44 @@
   </a>
   <button class="burger" id="burger" aria-label="Menu"><span></span></button>
 </nav>
+</div>
 
 <!-- Mobile menu -->
 <div class="menu" id="menu">
-  <button class="mclose" id="mclose" aria-label="Chiudi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-  <nav>
-    <a href="#esperienze">Esperienze <em>01</em></a>
-    <a href="#flotta">Flotta <em>02</em></a>
-    <a href="#prezzi">Listino <em>03</em></a>
-    <a href="esperienze/the-proposal.html">The Proposal <em>04</em></a>
-    <a href="#contatti">Contatti <em>05</em></a>
+  <div class="menu-top">
+    <a class="brand" href="#top">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/><path d="M8 12V7a2 2 0 0 1 2-2h5"/></svg></span>
+      <span class="brand-name"><b>Jet Ski Adriatic</b><small>Cattolica · Rimini</small></span>
+    </a>
+    <button class="mclose" id="mclose" aria-label="Chiudi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <nav class="menu-nav">
+    <a href="#esperienze"><em>01</em><span>Esperienze</span></a>
+    <a href="#flotta"><em>02</em><span>Flotta</span></a>
+    <a href="#prezzi"><em>03</em><span>Listino</span></a>
+    <a href="esperienze/the-proposal.html"><em>04</em><span>The Proposal</span></a>
+    <a href="#contatti"><em>05</em><span>Contatti</span></a>
   </nav>
-  <div class="mfoot">
-    <a href="tel:+390000000000">📞 +39 000 000 0000</a>
-    <a href="mailto:ciao@jetskiadriatic.it">✉️ ciao@jetskiadriatic.it</a>
+
+  <div class="menu-foot">
+    <div class="menu-contact">
+      <a href="tel:+390000000000">+39 000 000 0000</a>
+      <a href="mailto:ciao@jetskiadriatic.it">ciao@jetskiadriatic.it</a>
+    </div>
+    <a href="#contatti" class="menu-cta" data-book="">
+      Prenota la tua uscita
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
   </div>
 </div>
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
-  <video class="hero-video" autoplay loop muted playsinline preload="auto" aria-hidden="true"
+  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
          poster="https://images.unsplash.com/photo-1505867798796-639ec7e8cdf5?q=90&w=2400&auto=format&fit=crop">
-    <source src="https://videos.pexels.com/video-files/35077130/14859111_2560_1440_60fps.mp4" type="video/mp4" />
     <source src="https://videos.pexels.com/video-files/35077130/14859106_960_540_60fps.mp4" type="video/mp4" />
   </video>
   <div class="hero-overlay"></div>
@@ -76,7 +93,7 @@
 
     <div class="hero-body">
       <h1 class="hero-h">
-        Adriatico,<br/>chiavi <em>in mano.</em>
+        <em>Adriatico,</em><br/>chiavi in mano.
       </h1>
       <p class="hero-lead">
         Per chi vuole sentire <strong>il sale in faccia</strong> e dimenticare il resto.<br/>
@@ -118,7 +135,7 @@
       <ul class="exp-tags"><li>15/30/60 min</li><li>mezza giornata</li><li>full day</li></ul>
       <div class="exp-foot">
         <div class="exp-price"><b>da 50€</b><span>15 minuti</span></div>
-        <a href="#prezzi" class="exp-go">Tariffe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a href="#contatti" class="exp-go">Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       </div>
     </article>
 
@@ -212,216 +229,22 @@
   </div>
 </section>
 
-<!-- ============ PRICING ============ -->
-<section class="section pricing" id="prezzi">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">il listino</span>
-      <h2 class="sh">Prezzi <em>scritti</em>.<br/>Tutto compreso.</h2>
-    </div>
-    <p class="lead">Carburante incluso nelle uscite brevi. Cauzione 300€ preautorizzata sulla carta, svincolata a fine uscita. Pagamento al check-in: carta, bancomat, contanti.</p>
+<section class="section manifesto">
+  <div class="timbro" style="top:50px;right:6vw;color:var(--ochre);border-color:var(--ochre);opacity:.8">
+    Certificato<br/>Capitaneria<small>Rimini · IT</small>
   </div>
-
-  <div class="container">
-    <div class="p-tabs-wrap reveal">
-      <div class="p-tabs" role="tablist">
-        <button class="active" data-tab="noleggio">Noleggio</button>
-        <button data-tab="love">Love Experience</button>
-      </div>
+  <div class="wrap reveal">
+    <p class="big">
+      Non <s>affittiamo</s> moto d'acqua.<br/>
+      Apriamo <span class="ornate">l'Adriatico</span>,<br/>
+      e ti diamo le <em>chiavi.</em>
+    </p>
+    <div class="manifesto-stats">
+      <div class="m"><b>2026</b><span>Stagione inaugurale</span></div>
+      <div class="m"><b>4</b><span>Istruttori brevettati</span></div>
+      <div class="m"><b>9</b><span>Moto d'acqua in flotta</span></div>
+      <div class="m"><b>0</b><span>Acconto richiesto</span></div>
     </div>
-
-    <div class="p-grid" data-pgrid="noleggio">
-      <article class="price">
-        <h4>Fast &amp; Fun</h4>
-        <p class="p-desc">Adrenalina pura in quindici minuti. +10 min omaggio per il rientro.</p>
-        <div class="p-amt"><b>50€</b><small>/ 15 min</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Senza patente</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Il tempo parte in mare aperto</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Carburante incluso</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Briefing istruttore · giubbotto</li>
-        </ul>
-        <a href="#contatti" class="p-cta" data-book="fast-fun" data-plan="Fast &amp; Fun 15 min">Prenota Fast &amp; Fun</a>
-      </article>
-      <article class="price">
-        <h4>Sprint</h4>
-        <p class="p-desc">Mezz'ora per sentire davvero cosa può fare.</p>
-        <div class="p-amt"><b>85€</b><small>/ 30 min</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Divertimento puro, senza pensieri</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Sportender JST-30, fino a 3 pers.</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Navigazione effettiva di 30 min</li>
-        </ul>
-        <a href="#contatti" class="p-cta" data-book="sprint" data-plan="Sprint 30 min">Prenota Sprint</a>
-      </article>
-      <article class="price featured">
-        <h4>Classic</h4>
-        <p class="p-desc">Il best seller. Quarantacinque minuti: il miglior rapporto qualità-prezzo.</p>
-        <div class="p-amt"><b>105€</b><small>/ 45 min</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Il formato più venduto</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Arrivi fino a Gabicce o oltre</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Foto di bordo incluse</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Fino a 3 persone</li>
-        </ul>
-        <a href="#contatti" class="p-cta" data-book="classic" data-plan="Classic 45 min">Prenota Classic</a>
-      </article>
-      <article class="price">
-        <h4>Sunset Hour</h4>
-        <p class="p-desc">Un'ora intera al tramonto. L'uscita premium per due.</p>
-        <div class="p-amt"><b>145€</b><small>/ 1 ora</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Perfetto per coppie</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Tour lungocosta al crepuscolo</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>+1 ora aggiuntiva a 100€</li>
-        </ul>
-        <a href="#contatti" class="p-cta" data-book="sunset-hour" data-plan="Sunset Hour 1h">Prenota Sunset</a>
-      </article>
-      <article class="price">
-        <h4>Vallugola Gold</h4>
-        <p class="p-desc">Quattro ore, attracco al Porto di Vallugola, pranzo con sconto al Ristorante Falco. VIP experience.</p>
-        <div class="p-amt"><b>289€</b><small>/ persona · min 2</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Attracco incluso</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Sconto Ristorante Falco</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Acque cristalline, caletta riservata</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>4 ore di navigazione effettiva</li>
-        </ul>
-        <a href="#contatti" class="p-cta" data-book="vallugola-gold" data-plan="Vallugola Gold 4h">Prenota Vallugola</a>
-      </article>
-    </div>
-
-    <div class="p-grid" data-pgrid="love" hidden>
-      <article class="price">
-        <h4>Secret Romance</h4>
-        <p class="p-desc">Il momento perfetto, orchestrato nel silenzio. Rose, Champagne, GoPro.</p>
-        <div class="p-amt"><b>320€</b><small>/ coppia · 1 ora</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Mazzo di rose a bordo</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Champagne 375ml nel gavone</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>GoPro POV inclusa</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Coordinamento segreto dello staff</li>
-        </ul>
-        <a href="#contatti" class="p-cta" data-book="secret-romance" data-plan="Secret Romance">Prenota Secret Romance</a>
-      </article>
-      <article class="price featured">
-        <h4>The Proposal</h4>
-        <p class="p-desc">L'esperienza definitiva. Fiori, Champagne 750ml, drone 4K, paparazzo, pergamena con coordinate GPS.</p>
-        <div class="p-amt"><b>490€</b><small>/ coppia · 1h30</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Rose rosse a gambo lungo</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Champagne 750ml + flute</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Drone VIP Movie 4K editato</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Foto paparazzo + certificato d'amore</li>
-        </ul>
-        <a href="esperienze/the-proposal.html" class="p-cta">Scopri The Proposal</a>
-      </article>
-      <article class="price">
-        <h4>Midday Brunch</h4>
-        <p class="p-desc">Un'ora al largo con brunch box di lusso e drink a bordo. Set-up tavolo incluso.</p>
-        <div class="p-amt"><b>220€</b><small>/ coppia · 1 ora</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Luxury Brunch Box</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Drink premium a scelta</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Set-up tavolo a bordo</li>
-        </ul>
-        <a href="#contatti" class="p-cta" data-book="midday-brunch" data-plan="Midday Brunch">Prenota Brunch</a>
-      </article>
-      <article class="price">
-        <h4>Vallugola Diamond</h4>
-        <p class="p-desc">Tutto il pacchetto Vallugola, con fiori, drone 4K e due bottiglie di Champagne a bordo.</p>
-        <div class="p-amt"><b>850€</b><small>/ coppia · 4 ore</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Tutto Vallugola Gold</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Fiori + drone VIP Movie</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>2 bottiglie Champagne</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Aperitivo a bordo</li>
-        </ul>
-        <a href="#contatti" class="p-cta" data-book="vallugola-diamond" data-plan="Vallugola Diamond">Prenota Diamond</a>
-      </article>
-    </div>
-
-  </div>
-</section>
-
-<!-- ============ EXTRAS — add-on contestuali ============ -->
-<section class="section extras">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">gli extra</span>
-      <h2 class="sh">Aggiungili a <em>qualsiasi</em><br/>prenotazione.</h2>
-    </div>
-    <p class="lead">Personalizza la tua uscita con i nostri extra digitali, di sicurezza e di comfort. Li combiniamo con qualsiasi pacchetto di Noleggio o Love Experience. Basta chiederlo al check-in o scriverci prima.</p>
-  </div>
-
-  <div class="container extras-grid reveal-s">
-    <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20aggiungere%20il%20Drone%20VIP%20Movie%204K" target="_blank" rel="noopener" class="extra">
-      <div class="extra-ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="6" height="6" rx="1"/><circle cx="4" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/><path d="M6 6l3 3M18 6l-3 3M6 18l3-3M18 18l-3-3"/></svg>
-      </div>
-      <div class="extra-body">
-        <h4>Drone VIP Movie 4K</h4>
-        <p>Video editato stile Reel, pronto in 24h.</p>
-      </div>
-      <span class="extra-price">99€</span>
-    </a>
-
-    <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20aggiungere%20il%20Bundle%20Social%20Star" target="_blank" rel="noopener" class="extra extra-featured">
-      <span class="extra-badge">Bundle</span>
-      <div class="extra-ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      </div>
-      <div class="extra-body">
-        <h4>Social Star</h4>
-        <p>Drone VIP + GoPro POV. Risparmi 14€.</p>
-      </div>
-      <span class="extra-price">100€</span>
-    </a>
-
-    <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20aggiungere%20la%20GoPro%20POV" target="_blank" rel="noopener" class="extra">
-      <div class="extra-ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/></svg>
-      </div>
-      <div class="extra-body">
-        <h4>GoPro POV</h4>
-        <p>Camera 4K sul manubrio. File via AirDrop.</p>
-      </div>
-      <span class="extra-price">15€</span>
-    </a>
-
-    <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20aggiungere%20il%20Photo%20Kit%20Staff" target="_blank" rel="noopener" class="extra">
-      <div class="extra-ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M9 3h6l1 3"/><circle cx="12" cy="13" r="4"/></svg>
-      </div>
-      <div class="extra-body">
-        <h4>Photo Kit Staff</h4>
-        <p>Fotografo dedicato, galleria in 24h.</p>
-      </div>
-      <span class="extra-price">50€</span>
-    </a>
-
-    <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20aggiungere%20il%20Bundle%20Total%20Relax" target="_blank" rel="noopener" class="extra extra-featured">
-      <span class="extra-badge">Bundle</span>
-      <div class="extra-ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      </div>
-      <div class="extra-body">
-        <h4>Total Relax</h4>
-        <p>Kasko Light + Refresh Kit. Zero pensieri.</p>
-      </div>
-      <span class="extra-price">20€</span>
-    </a>
-
-    <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20aggiungere%20il%20Drink%20Delivery" target="_blank" rel="noopener" class="extra">
-      <div class="extra-ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8M8 2v5a4 4 0 0 0 8 0V2M10 2v4M14 2v4M12 11v11M8 22h8"/></svg>
-      </div>
-      <div class="extra-body">
-        <h4>Drink Delivery</h4>
-        <p>Champagne, birra, soft drink a bordo.</p>
-      </div>
-      <span class="extra-price">da 140€</span>
-    </a>
   </div>
 </section>
 
@@ -477,8 +300,8 @@
       </ul>
 
       <div class="mezzo-cta-row">
-        <a href="#prezzi" class="btn btn-dark">
-          Vedi il listino
+        <a href="#contatti" class="btn btn-dark">
+          Prenota ora
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
         <a href="#contatti" class="btn btn-ghost" data-book="classic">Prova il Classic · 105€</a>
@@ -516,25 +339,42 @@
   </div>
 </section>
 
-<!-- ============ MANIFESTO ============ -->
-<section class="section manifesto">
-  <div class="timbro" style="top:50px;right:6vw;color:var(--ochre);border-color:var(--ochre);opacity:.8">
-    Certificato<br/>Capitaneria<small>Rimini · IT</small>
+
+<!-- ============ METEO — controlla prima di prenotare ============ -->
+<section class="section meteo">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">il meteo</span>
+      <h2 class="sh">Controlla <em>prima</em><br/>di prenotare.</h2>
+    </div>
+    <p class="lead">Non usciamo se le condizioni non sono all'altezza, e non vogliamo che paghi per qualcosa che non sarà perfetto. Controlliamo Capitaneria, <a href="https://www.windy.com/?43.96,12.74,11" target="_blank" rel="noopener">Windy su Cattolica</a> e Meteomar ogni mattina alle 8:00. Se hai dubbi su una data, <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20info%20sul%20meteo%20per%20una%20prenotazione" target="_blank" rel="noopener">scrivici su WhatsApp</a> e controlliamo insieme.</p>
   </div>
-  <div class="wrap reveal">
-    <p class="big">
-      Non <s>affittiamo</s> moto d'acqua.<br/>
-      Apriamo <span class="ornate">l'Adriatico</span>,<br/>
-      e ti diamo le <em>chiavi.</em>
-    </p>
-    <div class="manifesto-stats">
-      <div class="m"><b>2026</b><span>Stagione inaugurale</span></div>
-      <div class="m"><b>4</b><span>Istruttori brevettati</span></div>
-      <div class="m"><b>9</b><span>Moto d'acqua in flotta</span></div>
-      <div class="m"><b>0</b><span>Acconto richiesto</span></div>
+
+  <div class="container fcast-wrap reveal">
+    <div class="fcast-head">
+      <span class="fcast-tag">Le prossime 7 giornate</span>
+      <span class="fcast-source">Dati Open-Meteo · aggiornati ogni mattina</span>
+    </div>
+
+    <div class="forecast-7d" id="fcastGrid" aria-live="polite">
+      <!-- skeleton placeholders, popolati via JS -->
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+    </div>
+
+    <div class="fcast-legend">
+      <span><i data-v="go"></i>Perfetto · esci sereno</span>
+      <span><i data-v="caution"></i>Verifichiamo · sentiamoci la mattina</span>
+      <span><i data-v="no"></i>Sconsigliato · meglio rimandare</span>
     </div>
   </div>
 </section>
+
 
 <!-- ============ GALLERY ============ -->
 <section class="section gallery">
@@ -576,32 +416,6 @@
   </div>
 </section>
 
-<!-- ============ BIG CTA ============ -->
-<section class="section bigcta">
-  <svg class="sun-l" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="100" cy="100" r="60" fill="currentColor"/>
-    <g stroke="currentColor" stroke-width="5" stroke-linecap="round">
-      <line x1="100" y1="10" x2="100" y2="30"/><line x1="100" y1="170" x2="100" y2="190"/>
-      <line x1="10" y1="100" x2="30" y2="100"/><line x1="170" y1="100" x2="190" y2="100"/>
-      <line x1="35" y1="35" x2="48" y2="48"/><line x1="152" y1="152" x2="165" y2="165"/>
-      <line x1="35" y1="165" x2="48" y2="152"/><line x1="152" y1="48" x2="165" y2="35"/>
-    </g>
-  </svg>
-  <svg class="sun-r" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M30 100 Q 60 70 100 100 T 170 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-    <path d="M30 130 Q 60 100 100 130 T 170 130" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-    <path d="M30 160 Q 60 130 100 160 T 170 160" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-  </svg>
-  <div class="wrap reveal">
-    <h2>Hai letto, hai visto.<br/>Ora il mare <em>è lì.</em></h2>
-    <p>Conferma WhatsApp in 5 minuti, paghi al check-in, cancelli gratis fino a 24 h prima. Quando arrivi, ce ne occupiamo noi.</p>
-    <div class="cta-row">
-      <a href="#contatti" class="btn btn-primary" data-book="">Prenota la tua uscita <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-      <a href="tel:+390000000000" class="btn btn-ghost">Chiamaci subito</a>
-    </div>
-  </div>
-</section>
-
 <!-- ============ CONTACT ============ -->
 <section class="section contact" id="contatti">
   <div class="section-head reveal">
@@ -613,22 +427,38 @@
   </div>
 
   <div class="container contact-grid">
-    <div class="contact-info reveal-s">
-      <div class="ci">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-        <div><b>Base operativa</b><span>Via del Porto, Cattolica · 47841 Rimini (RN)<br/>43.9592° N · 12.7431° E</span></div>
+
+    <div class="contact-mapinfo reveal">
+      <div class="contact-map">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=12.726%2C43.949%2C12.760%2C43.969&amp;layer=mapnik&amp;marker=43.9592%2C12.7431"
+          loading="lazy"
+          title="Mappa Jet Ski Adriatic — Porto di Cattolica"
+          allowfullscreen></iframe>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=43.9592,12.7431" target="_blank" rel="noopener" class="contact-map-cta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+          Indicazioni stradali
+          <span>Apri in Google Maps</span>
+        </a>
       </div>
-      <div class="ci">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg></div>
-        <div><b>Telefono &amp; WhatsApp</b><span><a href="tel:+390000000000">+39 000 000 0000</a> · risposta in 5 minuti</span></div>
-      </div>
-      <div class="ci">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-        <div><b>Email</b><span><a href="mailto:ciao@jetskiadriatic.it">ciao@jetskiadriatic.it</a></span></div>
-      </div>
-      <div class="ci">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
-        <div><b>Orari stagione</b><span>Maggio → Settembre · 9:00—20:00 · 7/7</span></div>
+
+      <div class="contact-card">
+        <div class="ci-row">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><span class="ci-label">Base operativa</span><span class="ci-value">Via del Porto, Cattolica · 47841 Rimini (RN)</span></div>
+        </div>
+        <div class="ci-row">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><span class="ci-label">Telefono &amp; WhatsApp</span><span class="ci-value"><a href="tel:+390000000000">+39 000 000 0000</a> · risposta in 5 minuti</span></div>
+        </div>
+        <div class="ci-row">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><span class="ci-label">Email</span><span class="ci-value"><a href="mailto:ciao@jetskiadriatic.it">ciao@jetskiadriatic.it</a></span></div>
+        </div>
+        <div class="ci-row">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div><span class="ci-label">Orari stagione</span><span class="ci-value">Maggio → Settembre · 9:00—20:00 · 7/7</span></div>
+        </div>
       </div>
     </div>
 
@@ -644,6 +474,7 @@
         Scrivici su WhatsApp
       </a>
     </aside>
+
   </div>
 </section>
 
@@ -665,7 +496,7 @@
     <div class="foot-col">
       <h6>esperienze</h6>
       <ul>
-        <li><a href="#prezzi">Noleggio</a></li>
+        <li><a href="#esperienze">Noleggio</a></li>
         <li><a href="esperienze/the-proposal.html">The Proposal</a></li>
         <li><a href="esperienze/secret-romance.html">Secret Romance</a></li>
         <li><a href="esperienze/midday-brunch.html">Midday Brunch</a></li>
@@ -675,7 +506,7 @@
     <div class="foot-col">
       <h6>utili</h6>
       <ul>
-        <li><a href="#prezzi">Listino</a></li>
+        <li><a href="#contatti">Contatti</a></li>
         <li><a href="#">Buoni regalo</a></li>
         <li><a href="#">Come arrivare</a></li>
         <li><a href="#">Norme di sicurezza</a></li>
