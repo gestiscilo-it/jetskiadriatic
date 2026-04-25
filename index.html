@@ -20,12 +20,21 @@
 <!-- ============ TOP BAR ============ -->
 <div class="topbar">
   <div class="wrap">
-    <span>
+    <span class="topbar-l">
       <span class="status" id="statusBar" data-status="open"><span class="dot"></span><span class="status-label">Aperto</span></span>
       <span class="sep">·</span>
-      dalle 9:00 alle 20:00
+      <span>9:00 — 20:00</span>
+      <span class="sep hide-s">·</span>
+      <span class="hide-s">Cattolica (RN)</span>
     </span>
-    <span class="hide-s"><a href="tel:+390000000000">📞 +39 000 000 0000</a> · <a href="mailto:ciao@jetskiadriatic.it">ciao@jetskiadriatic.it</a> · Cattolica (RN)</span>
+    <span class="topbar-r hide-s">
+      <a href="tel:+390000000000">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
+        +39 000 000 0000
+      </a>
+      <span class="sep">·</span>
+      <a href="mailto:ciao@jetskiadriatic.it">ciao@jetskiadriatic.it</a>
+    </span>
   </div>
 </div>
 
@@ -37,8 +46,9 @@
   </a>
   <div class="nav-links">
     <a href="#esperienze">Esperienze</a>
+    <a href="#love">Love</a>
     <a href="#flotta">Flotta</a>
-    <a href="esperienze/the-proposal.html">The Proposal</a>
+    <a href="#meteo">Meteo</a>
     <a href="#contatti">Contatti</a>
   </div>
   <a href="#contatti" class="nav-cta" data-book="">
@@ -63,9 +73,9 @@
 
   <nav class="menu-nav">
     <a href="#esperienze"><em>01</em><span>Esperienze</span></a>
-    <a href="#flotta"><em>02</em><span>Flotta</span></a>
-    <a href="#prezzi"><em>03</em><span>Listino</span></a>
-    <a href="esperienze/the-proposal.html"><em>04</em><span>The Proposal</span></a>
+    <a href="#love"><em>02</em><span>Love</span></a>
+    <a href="#flotta"><em>03</em><span>Flotta</span></a>
+    <a href="#meteo"><em>04</em><span>Meteo</span></a>
     <a href="#contatti"><em>05</em><span>Contatti</span></a>
   </nav>
 
@@ -93,7 +103,7 @@
 
     <div class="hero-body">
       <h1 class="hero-h">
-        <em>Adriatico,</em><br/>chiavi in mano.
+        <em>L'Adriatico,</em><br/>chiavi in mano.
       </h1>
       <p class="hero-lead">
         Per chi vuole sentire <strong>il sale in faccia</strong> e dimenticare il resto.<br/>
@@ -135,7 +145,7 @@
       <ul class="exp-tags"><li>15/30/60 min</li><li>mezza giornata</li><li>full day</li></ul>
       <div class="exp-foot">
         <div class="exp-price"><b>da 50€</b><span>15 minuti</span></div>
-        <a href="#contatti" class="exp-go">Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a href="#contatti" class="exp-go" data-book="">Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       </div>
     </article>
 
@@ -163,6 +173,25 @@
       </div>
     </article>
 
+  </div>
+</section>
+
+<section class="section manifesto">
+  <div class="timbro" style="top:50px;right:6vw;color:var(--ochre);border-color:var(--ochre);opacity:.8">
+    Certificato<br/>Capitaneria<small>Rimini · IT</small>
+  </div>
+  <div class="wrap reveal">
+    <p class="big">
+      Non <s>affittiamo</s> moto d'acqua.<br/>
+      Apriamo <span class="ornate">l'Adriatico</span>,<br/>
+      e ti diamo le <em>chiavi.</em>
+    </p>
+    <div class="manifesto-stats">
+      <div class="m"><b>2026</b><span>Stagione inaugurale</span></div>
+      <div class="m"><b>4</b><span>Istruttori brevettati</span></div>
+      <div class="m"><b>9</b><span>Moto d'acqua in flotta</span></div>
+      <div class="m"><b>0</b><span>Acconto richiesto</span></div>
+    </div>
   </div>
 </section>
 
@@ -229,23 +258,54 @@
   </div>
 </section>
 
-<section class="section manifesto">
-  <div class="timbro" style="top:50px;right:6vw;color:var(--ochre);border-color:var(--ochre);opacity:.8">
-    Certificato<br/>Capitaneria<small>Rimini · IT</small>
-  </div>
-  <div class="wrap reveal">
-    <p class="big">
-      Non <s>affittiamo</s> moto d'acqua.<br/>
-      Apriamo <span class="ornate">l'Adriatico</span>,<br/>
-      e ti diamo le <em>chiavi.</em>
-    </p>
-    <div class="manifesto-stats">
-      <div class="m"><b>2026</b><span>Stagione inaugurale</span></div>
-      <div class="m"><b>4</b><span>Istruttori brevettati</span></div>
-      <div class="m"><b>9</b><span>Moto d'acqua in flotta</span></div>
-      <div class="m"><b>0</b><span>Acconto richiesto</span></div>
+<!-- ============ MEDIA — capability showcase: drone, GoPro, fotografo ============ -->
+<section class="section media">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">le foto e i video</span>
+      <h2 class="sh">Le tue uscite,<br/>diventano una <em>storia</em>.</h2>
     </div>
+    <p class="lead">Drone 4K, GoPro POV, fotografo dedicato. Tu ridi in mezzo all'Adriatico, noi catturiamo tutto da tre angolazioni diverse. Al rientro ricevi via AirDrop il video già editato e la galleria pronta per Instagram — nessuno scatto grezzo da gestire, nessuna cartella infinita da scaricare.</p>
   </div>
+
+  <div class="container media-grid reveal-s">
+
+    <article class="media-card">
+      <span class="media-num">01</span>
+      <div class="media-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="4" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M5.5 5.5l3 3M18.5 5.5l-3 3M5.5 18.5l3-3M18.5 18.5l-3-3"/></svg>
+      </div>
+      <h3>Dal cielo</h3>
+      <p>Drone 4K professionale che vi segue nei momenti chiave: partenza dal porto, virate al largo, rientro al tramonto. Editing cinematografico, colonna sonora, formato Reel verticale e orizzontale.</p>
+      <span class="media-meta">Video 60–90 sec · 4K · IG/TikTok ready</span>
+    </article>
+
+    <article class="media-card">
+      <span class="media-num">02</span>
+      <div class="media-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <h3>In prima persona</h3>
+      <p>GoPro 4K montata sul manubrio, dal briefing al ritorno. Il rumore del motore, lo spruzzo sul casco, lo sguardo di chi è dietro di te quando capisce. Tutto registrato, file grezzo per editare quando vuoi.</p>
+      <span class="media-meta">5–15 min · 4K · file via AirDrop</span>
+    </article>
+
+    <article class="media-card">
+      <span class="media-num">03</span>
+      <div class="media-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M9 3h6l1 3"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <h3>Dal paparazzo</h3>
+      <p>Uno del nostro staff vi scatta dal pontile, da terra o dalla barca appoggio. Teleobiettivo professionale, vi segue senza farsi vedere — i ritratti più belli sono quelli che non sapete di aver fatto.</p>
+      <span class="media-meta">30–50 scatti · alta risoluzione · galleria 24h</span>
+    </article>
+
+  </div>
+
+  <p class="media-foot reveal">
+    Le combinazioni più richieste sono i bundle <strong>Social Star</strong> (drone + GoPro) e <strong>The Proposal</strong> (drone + paparazzo + pergamena GPS). Le aggiungi in prenotazione o al check-in.
+  </p>
+
 </section>
 
 <!-- ============ IL MEZZO (Sportender JST-30) ============ -->
@@ -300,7 +360,7 @@
       </ul>
 
       <div class="mezzo-cta-row">
-        <a href="#contatti" class="btn btn-dark">
+        <a href="#contatti" class="btn btn-dark" data-book="">
           Prenota ora
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
@@ -341,7 +401,7 @@
 
 
 <!-- ============ METEO — controlla prima di prenotare ============ -->
-<section class="section meteo">
+<section class="section meteo" id="meteo">
   <div class="section-head reveal">
     <div>
       <span class="kicker">il meteo</span>
@@ -376,6 +436,25 @@
 </section>
 
 
+<!-- ============ FAQ ============ -->
+<section class="section faq">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">le domande</span>
+      <h2 class="sh">Rispondiamo<br/><em>prima</em> che tu chieda.</h2>
+    </div>
+    <p class="lead">Se la tua domanda non è qui, scrivici su WhatsApp. In stagione rispondiamo entro pochi minuti — a volte anche con la barca in acqua.</p>
+  </div>
+  <div class="faq-list reveal-s">
+    <div class="fa"><div class="fq"><span class="num">01</span><h5>Serve la patente nautica?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Per navigare liberamente sì, è obbligatoria. Senza patente offriamo i format Taste e Ride in area controllata con radio VHF e istruttore a vista — nessun esame, solo briefing di 10 minuti.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">02</span><h5>Da che età si può salire?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Il conducente deve avere 18 anni compiuti. I passeggeri sono benvenuti dai 6 anni accompagnati da un adulto. Giubbotto sempre obbligatorio — taglie da 15 kg in su.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">03</span><h5>Se il mare è brutto?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Se annulliamo noi per meteo, riprogrammi senza costi o rimborso integrale in 24 ore. Decidiamo insieme il giorno prima guardando le previsioni.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">04</span><h5>Cosa serve portare?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Costume e crema solare resistente all'acqua. Giubbotto salvagente, occhialini, dry-bag per il telefono e asciugamano a richiesta li forniamo noi.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">05</span><h5>Come si paga?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Al check-in in carta, bancomat o contanti. Cauzione di 300€ preautorizzata sulla carta e svincolata a fine uscita se tutto è in ordine. Nessun acconto online.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">06</span><h5>Fate buoni regalo?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Sì. Voucher digitale personalizzato in 24 ore, valido 12 mesi su qualsiasi esperienza. Il Champagne lo mettiamo noi.</p></div></div>
+  </div>
+</section>
+
 <!-- ============ GALLERY ============ -->
 <section class="section gallery">
   <div class="section-head reveal">
@@ -394,25 +473,6 @@
     <div class="g-item g6" style="background-image:url('https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop')"><span class="g-lbl">Vallugola</span></div>
     <div class="g-item g7" style="background-image:url('https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1200&auto=format&fit=crop')"><span class="g-lbl">Briefing a riva</span></div>
     <div class="g-item g8" style="background-image:url('https://images.unsplash.com/photo-1524061508355-90afbf7fcf03?q=85&w=900&auto=format&fit=crop')"><span class="g-lbl">Il pontile</span></div>
-  </div>
-</section>
-
-<!-- ============ FAQ ============ -->
-<section class="section faq">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">le domande</span>
-      <h2 class="sh">Rispondiamo<br/><em>prima</em> che tu chieda.</h2>
-    </div>
-    <p class="lead">Se la tua domanda non è qui, scrivici su WhatsApp. In stagione rispondiamo entro pochi minuti — a volte anche con la barca in acqua.</p>
-  </div>
-  <div class="faq-list reveal-s">
-    <div class="fa"><div class="fq"><span class="num">01</span><h5>Serve la patente nautica?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Per navigare liberamente sì, è obbligatoria. Senza patente offriamo i format Taste e Ride in area controllata con radio VHF e istruttore a vista — nessun esame, solo briefing di 10 minuti.</p></div></div>
-    <div class="fa"><div class="fq"><span class="num">02</span><h5>Da che età si può salire?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Il conducente deve avere 18 anni compiuti. I passeggeri sono benvenuti dai 6 anni accompagnati da un adulto. Giubbotto sempre obbligatorio — taglie da 15 kg in su.</p></div></div>
-    <div class="fa"><div class="fq"><span class="num">03</span><h5>Se il mare è brutto?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Se annulliamo noi per meteo, riprogrammi senza costi o rimborso integrale in 24 ore. Decidiamo insieme il giorno prima guardando le previsioni.</p></div></div>
-    <div class="fa"><div class="fq"><span class="num">04</span><h5>Cosa serve portare?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Costume e crema solare resistente all'acqua. Giubbotto salvagente, occhialini, dry-bag per il telefono e asciugamano a richiesta li forniamo noi.</p></div></div>
-    <div class="fa"><div class="fq"><span class="num">05</span><h5>Come si paga?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Al check-in in carta, bancomat o contanti. Cauzione di 300€ preautorizzata sulla carta e svincolata a fine uscita se tutto è in ordine. Nessun acconto online.</p></div></div>
-    <div class="fa"><div class="fq"><span class="num">06</span><h5>Fate buoni regalo?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Sì. Voucher digitale personalizzato in 24 ore, valido 12 mesi su qualsiasi esperienza. Il Champagne lo mettiamo noi.</p></div></div>
   </div>
 </section>
 
@@ -465,14 +525,16 @@
     <aside class="contact-cta reveal">
       <h3>Pronto a salire?</h3>
       <p>Componi la tua uscita in 3 step. Ti confermiamo su WhatsApp in 5 minuti, paghi solo al check-in.</p>
-      <button type="button" class="btn btn-primary" data-book="">
-        Inizia la prenotazione
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </button>
-      <a href="https://wa.me/390000000000" target="_blank" rel="noopener" class="btn btn-wa">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12 2C6.48 2 2 6.48 2 12c0 1.74.46 3.37 1.26 4.78L2 22l5.35-1.4C8.72 21.49 10.3 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-        Scrivici su WhatsApp
-      </a>
+      <div class="contact-cta-btns">
+        <a href="https://wa.me/390000000000" target="_blank" rel="noopener" class="btn btn-wa">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12 2C6.48 2 2 6.48 2 12c0 1.74.46 3.37 1.26 4.78L2 22l5.35-1.4C8.72 21.49 10.3 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          Scrivici su WhatsApp
+        </a>
+        <button type="button" class="btn btn-primary" data-book="">
+          Inizia la prenotazione
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </div>
     </aside>
 
   </div>
@@ -494,9 +556,8 @@
       </div>
     </div>
     <div class="foot-col">
-      <h6>esperienze</h6>
+      <h6>love experience</h6>
       <ul>
-        <li><a href="#esperienze">Noleggio</a></li>
         <li><a href="esperienze/the-proposal.html">The Proposal</a></li>
         <li><a href="esperienze/secret-romance.html">Secret Romance</a></li>
         <li><a href="esperienze/midday-brunch.html">Midday Brunch</a></li>
@@ -504,21 +565,21 @@
       </ul>
     </div>
     <div class="foot-col">
-      <h6>utili</h6>
+      <h6>il sito</h6>
       <ul>
-        <li><a href="#contatti">Contatti</a></li>
-        <li><a href="#">Buoni regalo</a></li>
-        <li><a href="#">Come arrivare</a></li>
-        <li><a href="#">Norme di sicurezza</a></li>
+        <li><a href="#esperienze">Esperienze</a></li>
+        <li><a href="#flotta">Il mezzo</a></li>
+        <li><a href="#meteo">Meteo &amp; sicurezza</a></li>
+        <li><a href="#contatti">Dove ci trovi</a></li>
       </ul>
     </div>
     <div class="foot-col">
-      <h6>contatti</h6>
+      <h6>parla con noi</h6>
       <ul>
-        <li><a href="tel:+390000000000">+39 000 000 0000</a></li>
         <li><a href="https://wa.me/390000000000" target="_blank" rel="noopener">WhatsApp</a></li>
-        <li><a href="mailto:ciao@jetskiadriatic.it">Email</a></li>
-        <li><a href="#contatti" data-book="">Prenota</a></li>
+        <li><a href="tel:+390000000000">+39 000 000 0000</a></li>
+        <li><a href="mailto:ciao@jetskiadriatic.it">ciao@jetskiadriatic.it</a></li>
+        <li><a href="#contatti" data-book="">Prenota ora</a></li>
       </ul>
     </div>
   </div>
@@ -631,7 +692,6 @@
 
   <div class="bk-trust" aria-hidden="true">
     <span>✓ Paghi al check-in</span>
-    <span>✓ Zero acconto</span>
     <span>✓ Cancelli gratis fino a 24 h prima</span>
   </div>
 

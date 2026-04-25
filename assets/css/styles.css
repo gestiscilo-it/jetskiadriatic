@@ -133,8 +133,10 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
   padding:11px 4vw;
   display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
 }
-.topbar a{color:var(--on-dark);transition:color .2s}
+.topbar a{color:var(--on-dark);transition:color .2s;display:inline-flex;align-items:center;gap:6px}
 .topbar a:hover{color:var(--tramonto)}
+.topbar a svg{width:12px;height:12px;flex:0 0 12px}
+.topbar-l,.topbar-r{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
 .topbar .status{margin-right:2px;white-space:nowrap}
 .topbar .dot{
   width:8px;height:8px;border-radius:50%;background:#666;
@@ -640,6 +642,8 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 .exp-go:hover{background:var(--spuma);transform:translateX(3px)}
 .exp-go svg{width:14px;height:14px;transition:transform .2s var(--ease)}
 .exp-go:hover svg{transform:translateX(3px)}
+.experiences .exp-go::after{content:'';position:absolute;inset:0;z-index:1}
+.experiences .exp-go:hover{transform:none}
 
 /* ==============================================================
    TOURS — image-first posters
@@ -989,6 +993,111 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
   color:var(--abisso);
   border-color:var(--abisso);
 }
+.mezzo-cta-row .btn-ghost:hover{background:var(--abisso);color:var(--spuma)}
+
+/* ==============================================================
+   MEDIA — capability showcase (drone, GoPro, fotografo)
+============================================================== */
+.media{background:var(--abisso);color:var(--spuma)}
+.media .sh{color:var(--spuma)}
+.media .sh em{color:var(--tramonto)}
+.media .kicker{color:var(--acqua)}
+.media .kicker::before{background:var(--acqua)}
+.media .lead{color:var(--on-dark)}
+
+.media-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:18px;
+}
+@media (max-width:900px){.media-grid{grid-template-columns:1fr}}
+
+.media-card{
+  position:relative;
+  padding:30px 28px 26px;
+  background:rgba(244,241,234,.04);
+  border:1px solid rgba(244,241,234,.14);
+  border-radius:var(--r-lg);
+  display:flex;flex-direction:column;gap:14px;
+  color:var(--spuma);
+  transition:transform .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease);
+}
+.media-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--acqua);
+  background:rgba(111,179,216,.06);
+}
+
+.media-num{
+  position:absolute;top:24px;right:28px;
+  font-family:var(--f-serif);font-style:italic;
+  font-size:24px;
+  color:var(--acqua);opacity:.55;
+  line-height:1;
+}
+
+.media-icon{
+  width:52px;height:52px;
+  border-radius:14px;
+  background:rgba(111,179,216,.16);
+  color:var(--acqua-l);
+  display:grid;place-items:center;
+}
+.media-icon svg{width:26px;height:26px}
+
+.media-card h3{
+  font-family:var(--f-display);
+  font-size:24px;font-weight:700;
+  letter-spacing:-.02em;
+  line-height:1.05;
+  color:var(--spuma);
+  margin-top:4px;
+}
+.media-card h3 em{
+  font-family:var(--f-serif);font-style:italic;font-weight:400;
+  color:var(--tramonto);
+  letter-spacing:-.01em;
+}
+.media-card p{
+  font-size:14.5px;
+  line-height:1.55;
+  color:var(--on-dark);
+  flex:1;
+}
+.media-meta{
+  display:inline-block;
+  align-self:flex-start;
+  margin-top:6px;
+  padding:5px 11px;
+  background:rgba(111,179,216,.1);
+  border-radius:var(--r-pill);
+  font-size:10.5px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--acqua-l);
+}
+
+/* Footer della sezione media — soft hint sui bundle */
+.media-foot{
+  max-width:1320px;
+  width:92vw;
+  margin:32px auto 0;
+  text-align:center;
+  font-size:14.5px;
+  color:var(--on-dark);
+  line-height:1.6;
+}
+.media-foot strong{color:var(--spuma);font-weight:600}
+.media-foot a{
+  color:var(--tramonto);
+  font-weight:600;
+  text-decoration:underline;
+  text-decoration-thickness:1.5px;
+  text-underline-offset:.2em;
+  transition:text-decoration-thickness .2s var(--ease);
+}
+.media-foot a:hover{text-decoration-thickness:2.5px}
 
 /* ==============================================================
    HOW IT WORKS
@@ -1090,8 +1199,10 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 .fcast-day:hover{border-color:var(--acqua-d);transform:translateY(-2px)}
 
 .fcast-day.today{
-  border:1.5px solid var(--abisso);
+  border:1.5px solid var(--tramonto);
+  background:rgba(255,107,61,.05);
 }
+.fcast-day.today:hover{border-color:var(--tramonto)}
 
 /* Wrapper data (DOW + NUM) — su desktop verticale, su mobile orizzontale */
 .fcast-date{
@@ -1854,14 +1965,14 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
   gap:14px;
 }
 
-/* Wrapper map + info — solo per raggruppare con piccolo gap */
+/* Wrapper map + info — fusi insieme, ognuno mantiene i propri angoli arrotondati */
 .contact-mapinfo{
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:0;
 }
 
-/* Map come card autonoma con i 4 angoli arrotondati */
+/* Map: card autonoma con tutti i 4 angoli arrotondati, sovrapposta sul contact-card sotto */
 .contact-map{
   position:relative;
   border-radius:var(--r-lg);
@@ -1870,6 +1981,9 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
   background:var(--spuma-d);
   min-height:380px;
   isolation:isolate;
+  margin-bottom:-32px;
+  z-index:2;
+  box-shadow:0 18px 36px -22px rgba(10,37,64,.25);
 }
 .contact-map iframe{
   position:absolute;inset:0;
@@ -1906,13 +2020,15 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 }
 .contact-map-cta:hover span{opacity:.8}
 
-/* Info card autonoma sotto la mappa */
+/* Info card sotto la mappa, sovrapposta. La map "copre" la parte alta. */
 .contact-card{
   background:var(--white);
-  padding:6px 22px;
+  padding:42px 22px 6px;
   display:flex;flex-direction:column;
   border:1px solid var(--border);
   border-radius:var(--r-lg);
+  position:relative;
+  z-index:1;
 }
 .ci-row{
   display:flex;gap:14px;align-items:center;
@@ -1958,6 +2074,8 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 }
 .contact-cta p{color:var(--on-dark);font-size:14.5px;line-height:1.55}
 .contact-cta .btn{justify-content:center}
+.contact-cta-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:500px){.contact-cta-btns{grid-template-columns:1fr}}
 
 /* ==============================================================
    FOOTER
