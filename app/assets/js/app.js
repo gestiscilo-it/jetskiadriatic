@@ -260,14 +260,12 @@
 
   const CATS = {
     esperienze: [
-      { id: 'all',       label: 'Tutti',     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/></svg>' },
       { id: 'noleggio',  label: 'Noleggio',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>' },
       { id: 'tour',      label: 'Tour',      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>' },
       { id: 'famiglia',  label: 'Famiglie',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="7" r="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 14h2a3 3 0 0 1 3 3v2"/></svg>' },
       { id: 'eventi',    label: 'Eventi',    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 9h18"/></svg>' }
     ],
     love: [
-      { id: 'all',       label: 'Tutti',     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 21s-7-4.5-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-7 10-7 10s-2 0-4 0z"/></svg>' },
       { id: 'romance',   label: 'Romance',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="9" r="4"/><path d="M12 13v8M8 18h8"/></svg>' },
       { id: 'food',      label: 'Brunch',    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11h18a8 8 0 0 1-9 8 8 8 0 0 1-9-8z"/><path d="M7 8c0-2 1-3 2-3M11 8c0-2 1-3 2-3M15 8c0-2 1-3 2-3"/></svg>' },
       { id: 'adventure', label: 'Avventura', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 21l6-13 5 8 3-5 4 10z"/></svg>' }
@@ -277,7 +275,7 @@
   // ============ STATE ============
   const state = {
     activeTab: 'esperienze',
-    activeCat: 'all',
+    activeCat: 'noleggio',
     likes: new Set(JSON.parse(localStorage.getItem('jsa_likes') || '[]')),
     booking: {
       expId: null,
@@ -325,10 +323,7 @@
   function renderCards(){
     const grid = $('#cards');
     const empty = $('#emptyState');
-    let items = EXPERIENCES.filter(e => e.tab === state.activeTab);
-    if(state.activeCat !== 'all'){
-      items = items.filter(e => e.cat === state.activeCat);
-    }
+    let items = EXPERIENCES.filter(e => e.tab === state.activeTab && e.cat === state.activeCat);
 
     if(!items.length){
       grid.innerHTML = '';
@@ -425,24 +420,22 @@
   // ============ TAB SWITCHING ============
   function setTab(tab){
     state.activeTab = tab;
-    state.activeCat = 'all';
+    state.activeCat = CATS[tab][0].id;
     document.body.dataset.activeTab = tab;
     $$('.tab').forEach(t => {
       const on = t.dataset.tab === tab;
       t.classList.toggle('is-active', on);
       t.setAttribute('aria-selected', on ? 'true' : 'false');
     });
-    if(tab === 'love'){
-      $('#feedTitle').textContent = 'Quando un\'ora diventa un momento.';
-      $('#feedSub').textContent = 'Esperienze signature. Fiori, Champagne, drone 4K, paparazzo.';
-      $('#searchTitle').textContent = 'Per chi · Per quando · Per cosa';
-      $('#searchSub').textContent = 'The Proposal · Diamond · Romance · Brunch';
-    }else{
-      $('#feedTitle').textContent = 'In mare in 5 minuti.';
-      $('#feedSub').textContent = 'Senza patente, senza pensieri. Cattolica · Rimini';
-      $('#searchTitle').textContent = 'Cosa vuoi fare in mare?';
-      $('#searchSub').textContent = 'Qualsiasi data · Qualsiasi esperienza';
-    }
+    const t = tab === 'love' ? {
+      title: 'Quando un\'ora diventa un momento.',
+      sub:   'Esperienze signature. Fiori, Champagne, drone 4K, paparazzo.'
+    } : {
+      title: 'In mare in 5 minuti.',
+      sub:   'Senza patente, senza pensieri. Cattolica · Rimini'
+    };
+    $('#feedTitle').textContent = t.title;
+    $('#feedSub').textContent = t.sub;
     renderCats();
     renderCards();
   }
@@ -484,6 +477,70 @@
   document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape' && openSheets.length){ closeSheet(); }
   });
+
+  // ============ DRAG-TO-CLOSE (mobile only) ============
+  function isMobileSheet(){ return window.matchMedia('(max-width: 959px)').matches; }
+  function attachDragClose(sheetId){
+    const sheet = document.getElementById(sheetId);
+    if(!sheet) return;
+    const grab = sheet.querySelector('.sheet-grab');
+    if(!grab) return;
+
+    let startY = 0;
+    let dy = 0;
+    let dragging = false;
+    let startTime = 0;
+
+    function onDown(e){
+      if(!isMobileSheet()) return;
+      startY = e.clientY;
+      dy = 0;
+      dragging = true;
+      startTime = Date.now();
+      sheet.style.transition = 'none';
+      grab.classList.add('is-dragging');
+      try{ grab.setPointerCapture(e.pointerId); }catch(_){}
+    }
+    function onMove(e){
+      if(!dragging) return;
+      dy = e.clientY - startY;
+      if(dy > 0){
+        sheet.style.transform = `translateY(${dy}px)`;
+      }else{
+        // small upward bounce: dampened
+        sheet.style.transform = `translateY(${dy * 0.15}px)`;
+      }
+    }
+    function onUp(){
+      if(!dragging) return;
+      dragging = false;
+      grab.classList.remove('is-dragging');
+      const elapsed = Date.now() - startTime;
+      const velocity = dy / Math.max(elapsed, 1);
+      // close if dragged past 100px or fast flick down
+      if(dy > 100 || velocity > 0.7){
+        // continue the gesture down to fully closed
+        sheet.style.transition = 'transform .26s cubic-bezier(.32,.72,.24,1)';
+        sheet.style.transform = 'translateY(100%)';
+        setTimeout(() => {
+          sheet.style.transform = '';
+          sheet.style.transition = '';
+          closeSheet(sheetId);
+        }, 260);
+      }else{
+        // snap back
+        sheet.style.transition = '';
+        sheet.style.transform = '';
+      }
+      dy = 0;
+    }
+
+    grab.addEventListener('pointerdown', onDown);
+    grab.addEventListener('pointermove', onMove);
+    grab.addEventListener('pointerup', onUp);
+    grab.addEventListener('pointercancel', onUp);
+  }
+  ['bookingSheet','meteoSheet'].forEach(attachDragClose);
 
   // ============ DETAIL SHEET ============
   function openDetail(id){
@@ -596,11 +653,9 @@
   function updateBookingStep(){
     const step = state.bkStep;
     $$('.bk-pane').forEach(p => p.classList.toggle('is-active', Number(p.dataset.bkPane) === step));
-    $('#bkStepBadge').textContent = `${step} di 3`;
-    $('#bkProgress').style.width = `${(step/3)*100}%`;
     $('#bkBack').hidden = step === 1;
-    $('#bkNext').hidden = step === 3;
-    $('#bkSubmit').hidden = step !== 3;
+    // Single primary button — relabels on the final step
+    $('#bkNext').textContent = step === 3 ? 'Conferma prenotazione' : 'Avanti';
   }
 
   function getCurrentExp(){
@@ -663,16 +718,18 @@
     if(state.bkStep > 1){ state.bkStep--; updateBookingStep(); }
   });
   $('#bkNext').addEventListener('click', () => {
-    if(state.bkStep < 3){ state.bkStep++; updateBookingStep(); }
-  });
-  $('#bkSubmit').addEventListener('click', () => {
+    if(state.bkStep < 3){
+      state.bkStep++;
+      updateBookingStep();
+      return;
+    }
+    // Final step → submit
     state.booking.name = $('#bkName').value.trim();
     state.booking.phone = $('#bkPhone').value.trim();
     state.booking.email = $('#bkEmail').value.trim();
     state.booking.notes = $('#bkNotes').value.trim();
 
     if(!state.booking.name || !state.booking.phone){
-      // simple validation visual
       if(!state.booking.name) $('#bkName').focus();
       else if(!state.booking.phone) $('#bkPhone').focus();
       return;
@@ -697,22 +754,12 @@
     closeSheet('bookingSheet');
   });
 
-  // search pill opens booking with default
-  $('#searchPill').addEventListener('click', () => openBooking());
 
-  // ============ BOTTOM NAV ============
-  $$('.bn').forEach(b => {
+  // ============ TOPBAR DATA-NAV BUTTONS ============
+  $$('[data-nav]').forEach(b => {
     b.addEventListener('click', () => {
-      $$('.bn').forEach(x => x.classList.remove('is-active'));
-      b.classList.add('is-active');
       const which = b.dataset.nav;
       if(which === 'meteo'){ openMeteo(); }
-      else if(which === 'login'){ openSheet('loginSheet'); }
-      else if(which === 'esplora'){
-        // close any open sheets; scroll to top
-        closeAllSheets();
-        window.scrollTo({top: 0, behavior:'smooth'});
-      }
     });
   });
 
@@ -758,10 +805,6 @@
     if(w === 'caution' || (code >= 51 && code < 80)) return 'caution';
     return 'go';
   }
-  function verdictDot(v){
-    return v === 'go' ? '✓' : (v === 'caution' ? '·' : '✕');
-  }
-
   let meteoLoaded = false;
   async function loadMeteo(){
     if(meteoLoaded) return;
@@ -774,13 +817,13 @@
       if(data.current){
         $('#meteoNow').innerHTML = `
           <div class="meteo-now-ico">${pickIcon(data.current.weather_code)}</div>
-          <div>
+          <div class="meteo-now-c">
             <div class="meteo-now-temp">${Math.round(data.current.temperature_2m)}°</div>
             <div class="meteo-now-meta">Cattolica · ora</div>
           </div>
           <div class="meteo-now-r">
-            Vento<br/>
-            <b>${Math.round(data.current.wind_speed_10m)} km/h</b>
+            <small>Vento</small>
+            <b>${Math.round(data.current.wind_speed_10m)}<span> km/h</span></b>
           </div>
         `;
       }
@@ -795,16 +838,19 @@
 
       grid.innerHTML = dates.map((dt,i) => {
         const v = verdictFromCode(codes[i], wmax[i]);
+        const vLabel = v === 'go' ? 'Esci sereno' : (v === 'caution' ? 'Verifichiamo' : 'Sconsigliato');
         return `
-          <article class="md-day">
-            <div class="md-dow">${dayShort(dt).replace('.','')}<small>${dayNum(dt)}</small></div>
+          <article class="md-day" data-v="${v}">
+            <div class="md-dow">
+              <b>${dayShort(dt).replace('.','')}</b>
+              <small>${dayNum(dt)}</small>
+            </div>
             <div class="md-icon">${pickIcon(codes[i])}</div>
             <div class="md-tx">
-              <b>${Math.round(tmax[i])}° / ${Math.round(tmin[i])}°</b>
-              <span>Vento ${Math.round(wmax[i])} km/h</span>
+              <b>${Math.round(tmax[i])}° <span class="dim">/ ${Math.round(tmin[i])}°</span></b>
+              <small>Vento ${Math.round(wmax[i])} km/h</small>
             </div>
-            <div class="md-temp">${classifyWind(wmax[i]) === 'go' ? 'Mare ok' : classifyWind(wmax[i]) === 'caution' ? 'Da verificare' : 'Mosso'}</div>
-            <div class="md-verdict" data-v="${v}">${verdictDot(v)}</div>
+            <span class="md-verdict" data-v="${v}" aria-label="${vLabel}"></span>
           </article>
         `;
       }).join('');
@@ -832,6 +878,22 @@
       status === 'open' ? 'Aperto' : (status === 'whatsapp' ? 'Solo WhatsApp' : 'Chiuso');
   }
 
+  // ============ SCROLL ELEVATION ============
+  const topbar = document.querySelector('.topbar');
+  let scrollTicking = false;
+  function onScroll(){
+    if(!scrollTicking){
+      requestAnimationFrame(() => {
+        if(topbar){
+          topbar.classList.toggle('is-scrolled', window.scrollY > 8);
+        }
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
   // ============ INIT ============
   function init(){
     document.body.dataset.activeTab = state.activeTab;
@@ -839,6 +901,7 @@
     renderCards();
     tickStatus();
     setInterval(tickStatus, 60_000);
+    onScroll();
 
     // pre-set deep link
     if(location.hash === '#love'){ setTab('love'); }

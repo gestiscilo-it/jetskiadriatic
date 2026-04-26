@@ -18,22 +18,36 @@
 </head>
 <body>
 
-<!-- ============ APP SHELL ============ -->
-<div class="app">
-
-  <!-- ============ TOP BAR ============ -->
-  <header class="topbar">
-    <div class="topbar-inner">
-
-      <!-- Brand -->
-      <a class="brand" href="#esplora" aria-label="Jet Ski Adriatic">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/><path d="M8 12V7a2 2 0 0 1 2-2h5"/></svg>
-        </span>
-        <span class="brand-name">Jet Ski <em>Adriatic</em></span>
+<!-- ============ INFO STRIP (status + hours + contact) ============ -->
+<div class="info-strip">
+  <div class="info-strip-inner">
+    <span class="info-l">
+      <span class="status" id="statusPill" data-status="open">
+        <span class="dot"></span>
+        <span class="status-label">Aperto</span>
+      </span>
+      <span class="sep">·</span>
+      <span>dalle 9:00 alle 20:00</span>
+      <span class="sep hide-s">·</span>
+      <a href="#contatti" class="hide-s">Cattolica (RN)</a>
+    </span>
+    <span class="info-r hide-s">
+      <a href="tel:+390000000000">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
+        +39 000 000 0000
       </a>
+      <span class="sep">·</span>
+      <a href="mailto:info@jetskiadriatic.it">info@jetskiadriatic.it</a>
+    </span>
+  </div>
+</div>
 
-      <!-- Two-tab switcher (Airbnb-style) -->
+<!-- ============ TOP BAR (full-width, outside .app) ============ -->
+<header class="topbar">
+
+    <!-- Row 1 — Tabs · Profile (no brand, no status) -->
+    <div class="topbar-row topbar-row--main">
+      <!-- Underline tabs -->
       <nav class="tabs" role="tablist" aria-label="Categoria principale">
         <button type="button" class="tab is-active" role="tab" aria-selected="true" data-tab="esperienze">
           <span class="tab-ico" aria-hidden="true">
@@ -49,40 +63,24 @@
         </button>
       </nav>
 
-      <!-- Top right: status + WhatsApp icon -->
+      <!-- Right: meteo (icon only, all sizes) -->
       <div class="topbar-right">
-        <span class="status-pill" id="statusPill" data-status="open">
-          <span class="dot"></span>
-          <span class="status-label">Aperto</span>
-        </span>
-      </div>
-
-    </div>
-
-    <!-- Search pill -->
-    <div class="search-shell">
-      <button type="button" class="search-pill" id="searchPill">
-        <span class="search-ico" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        </span>
-        <span class="search-body">
-          <b id="searchTitle">Cosa vuoi fare in mare?</b>
-          <small id="searchSub">Qualsiasi data · Qualsiasi esperienza</small>
-        </span>
-        <span class="search-filter" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
-        </span>
-      </button>
-    </div>
-
-    <!-- Horizontal category pills -->
-    <div class="cat-shell">
-      <div class="cats" id="cats" role="tablist" aria-label="Categoria">
-        <!-- Populated by JS based on tab -->
+        <button type="button" class="topbar-icon-only" data-nav="meteo" aria-label="Meteo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.83 1.5A4 4 0 0 0 6 19h11.5z"/><circle cx="6" cy="6" r="2.5"/></svg>
+        </button>
       </div>
     </div>
+
+    <!-- Filter bar — bottom on mobile (fixed), under tabs on desktop -->
+    <nav class="cat-bar" aria-label="Filtra esperienze">
+      <div class="cats" id="cats" role="tablist" aria-label="Categoria"></div>
+    </nav>
+
   </header>
 
+
+<!-- ============ APP SHELL ============ -->
+<div class="app">
 
   <!-- ============ MAIN: FEED ============ -->
   <main class="feed" id="feed">
@@ -93,10 +91,6 @@
         <h1 id="feedTitle">In mare in 5 minuti.</h1>
         <p id="feedSub">Senza patente, senza pensieri. Cattolica · Rimini</p>
       </div>
-      <button type="button" class="btn-map" aria-label="Mostra sulla mappa">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5-2V4l5 2 6-2 5 2v14l-5-2-6 2z"/><path d="M9 6v14M15 4v14"/></svg>
-        Mappa
-      </button>
     </div>
 
     <!-- Card grid (populated by JS) -->
@@ -126,27 +120,6 @@
   </a>
 
 
-  <!-- ============ BOTTOM NAV ============ -->
-  <nav class="bottom-nav" aria-label="Navigazione principale">
-    <button type="button" class="bn is-active" data-nav="esplora" aria-current="page">
-      <span class="bn-ico" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15 9-2 5-5 2 2-5z"/></svg>
-      </span>
-      <span class="bn-lbl">Esplora</span>
-    </button>
-    <button type="button" class="bn" data-nav="meteo">
-      <span class="bn-ico" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.83 1.5A4 4 0 0 0 6 19h11.5z"/><circle cx="6" cy="6" r="2.5"/></svg>
-      </span>
-      <span class="bn-lbl">Meteo</span>
-    </button>
-    <button type="button" class="bn" data-nav="login">
-      <span class="bn-ico" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h12M3 12h9M3 18h12"/><path d="m17 8 4 4-4 4M21 12h-9"/></svg>
-      </span>
-      <span class="bn-lbl">Login</span>
-    </button>
-  </nav>
 
 </div><!-- /.app -->
 
@@ -186,19 +159,10 @@
 
 
 <!-- ============ BOOKING SHEET ============ -->
-<div class="sheet" id="bookingSheet" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="bkTitle">
-  <div class="sheet-handle" aria-hidden="true"></div>
-  <header class="sheet-topbar sheet-topbar--centered">
-    <button type="button" class="icon-btn" data-close-sheet="bookingSheet" aria-label="Chiudi">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M6 18L18 6"/></svg>
-    </button>
-    <h2 id="bkTitle">Prenota la tua uscita</h2>
-    <span class="sheet-step" id="bkStepBadge">1 di 3</span>
-  </header>
-
-  <div class="sheet-progress" aria-hidden="true">
-    <span class="sheet-progress-bar" id="bkProgress"></span>
-  </div>
+<div class="sheet" id="bookingSheet" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Prenota la tua uscita">
+  <button type="button" class="sheet-grab" aria-label="Trascina giù per chiudere">
+    <span class="sheet-handle" aria-hidden="true"></span>
+  </button>
 
   <div class="sheet-body">
 
@@ -358,34 +322,26 @@
     <div class="sheet-footbar-r">
       <button type="button" class="btn btn-ghost" id="bkBack" hidden>Indietro</button>
       <button type="button" class="btn btn-primary" id="bkNext">Avanti</button>
-      <button type="button" class="btn btn-primary" id="bkSubmit" hidden>
-        Conferma su WhatsApp
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12 2C6.48 2 2 6.48 2 12c0 1.74.46 3.37 1.26 4.78L2 22l5.35-1.4C8.72 21.49 10.3 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-      </button>
     </div>
   </footer>
 </div>
 
 
 <!-- ============ METEO SHEET ============ -->
-<div class="sheet" id="meteoSheet" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="meteoTitle">
-  <div class="sheet-handle" aria-hidden="true"></div>
-  <header class="sheet-topbar sheet-topbar--centered">
-    <button type="button" class="icon-btn" data-close-sheet="meteoSheet" aria-label="Chiudi">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M6 18L18 6"/></svg>
-    </button>
-    <h2 id="meteoTitle">Meteo Cattolica</h2>
-    <span></span>
-  </header>
+<div class="sheet" id="meteoSheet" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Meteo Cattolica">
+  <button type="button" class="sheet-grab" aria-label="Trascina giù per chiudere">
+    <span class="sheet-handle" aria-hidden="true"></span>
+  </button>
 
-  <div class="sheet-body">
-    <p class="meteo-lead">Non usciamo se il mare non è perfetto. Controlliamo Capitaneria, Windy e Meteomar ogni mattina alle 8:00.</p>
+  <div class="sheet-body sheet-body--meteo">
+    <header class="sheet-section-head">
+      <h2>Meteo <em>Cattolica</em></h2>
+    </header>
 
     <div class="meteo-now" id="meteoNow">
       <!-- populated by JS -->
     </div>
 
-    <h4 class="meteo-h">Le prossime 7 giornate</h4>
     <div class="meteo-grid" id="meteoGrid">
       <article class="md-day skel"></article>
       <article class="md-day skel"></article>
@@ -397,48 +353,12 @@
     </div>
 
     <ul class="meteo-legend">
-      <li><i data-v="go"></i>Perfetto · esci sereno</li>
-      <li><i data-v="caution"></i>Verifichiamo · sentiamoci la mattina</li>
-      <li><i data-v="no"></i>Sconsigliato · meglio rimandare</li>
+      <li><i data-v="go"></i>Esci sereno</li>
+      <li><i data-v="caution"></i>Verifica</li>
+      <li><i data-v="no"></i>Sconsigliato</li>
     </ul>
 
-    <p class="meteo-foot">Dati Open-Meteo · Cattolica 43.96°N 12.74°E · aggiornati ogni mattina.</p>
-  </div>
-</div>
-
-
-<!-- ============ LOGIN SHEET ============ -->
-<div class="sheet" id="loginSheet" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="loginTitle">
-  <div class="sheet-handle" aria-hidden="true"></div>
-  <header class="sheet-topbar sheet-topbar--centered">
-    <button type="button" class="icon-btn" data-close-sheet="loginSheet" aria-label="Chiudi">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M6 18L18 6"/></svg>
-    </button>
-    <h2 id="loginTitle">Accedi</h2>
-    <span></span>
-  </header>
-
-  <div class="sheet-body">
-    <p class="login-lead">Salva esperienze, ritrova le tue prenotazioni e ricevi prima i posti tramonto.</p>
-
-    <div class="login-stack">
-      <button type="button" class="login-btn login-btn--wa">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12 2C6.48 2 2 6.48 2 12c0 1.74.46 3.37 1.26 4.78L2 22l5.35-1.4C8.72 21.49 10.3 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-        Continua con WhatsApp
-      </button>
-      <button type="button" class="login-btn login-btn--google">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.09a6.6 6.6 0 0 1 0-4.18V7.07H2.18a11 11 0 0 0 0 9.86l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
-        Continua con Google
-      </button>
-      <div class="login-or"><span>oppure</span></div>
-      <div class="bk-field">
-        <label for="loginEmail">Email</label>
-        <input type="email" id="loginEmail" placeholder="ciao@esempio.it" autocomplete="email" inputmode="email" />
-      </div>
-      <button type="button" class="login-btn login-btn--primary">Continua con Email</button>
-    </div>
-
-    <p class="login-foot">Ancora niente account? Si crea da solo al primo accesso. Niente password fino a quando non vuoi tu.</p>
+    <p class="meteo-foot">Open-Meteo · 43.96°N 12.74°E</p>
   </div>
 </div>
 
