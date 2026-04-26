@@ -2673,6 +2673,131 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 }
 
 /* ==============================================================
+   PINNED HORIZONTAL SCROLL — used by Love + Gallery
+   The section is taller than viewport; an inner stage sticks while
+   the user scrolls and a JS-driven translateX moves the track.
+   On narrow viewports, falls back to native swipe + scroll-snap.
+============================================================== */
+.hscroll-pin{
+  position:relative;
+  padding:0 !important; /* override .section padding — handled by stage */
+}
+.hscroll-pin-stage{
+  position:sticky;
+  top:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  padding:clamp(72px, 9vw, 120px) 0 clamp(40px, 5vw, 70px);
+  box-sizing:border-box;
+}
+.hscroll-pin-stage > .section-head{
+  flex:0 0 auto;
+  margin-bottom:clamp(18px, 2.4vw, 32px);
+}
+.hscroll-progress{
+  flex:0 0 auto;
+  width:min(320px, 36vw);
+  height:3px;
+  background:var(--faint);
+  border-radius:999px;
+  margin:0 auto clamp(18px, 2.4vw, 32px);
+  overflow:hidden;
+}
+.hscroll-progress-bar{
+  height:100%;
+  width:0%;
+  background:var(--tramonto);
+  border-radius:999px;
+  transition:width .08s linear;
+}
+.hscroll-viewport{
+  flex:1 1 auto;
+  min-height:0;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  position:relative;
+}
+.hscroll-track{
+  display:flex;
+  gap:clamp(16px, 1.8vw, 28px);
+  padding:0 max(5vw, 40px);
+  will-change:transform;
+  height:100%;
+  align-items:center;
+}
+.hscroll-track > *{flex:0 0 auto}
+
+/* Sizing per-section */
+.love-flagship.hscroll-pin .hscroll-track > .exp{
+  width:clamp(300px, 32vw, 440px);
+  height:auto;
+  max-height:100%;
+}
+/* Shrink the card image inside the pinned variant so the card fits in 100vh */
+.love-flagship.hscroll-pin .hscroll-track > .exp--love .exp-illu{
+  height:clamp(160px, 22vh, 240px);
+}
+.gallery.hscroll-pin .hscroll-track > .g-item{
+  width:clamp(240px, 26vw, 340px);
+  height:clamp(280px, 50vh, 460px);
+  border-radius:var(--r-md);
+}
+
+/* Compact the section-head when inside a pinned stage */
+.hscroll-pin-stage > .section-head{
+  margin-bottom:clamp(14px, 2vw, 24px);
+}
+.hscroll-pin-stage > .section-head .sh{
+  font-size:clamp(28px, 3.6vw, 56px);
+  line-height:1.05;
+}
+.hscroll-pin-stage > .section-head .lead{
+  font-size:14px;
+  line-height:1.55;
+}
+
+/* Mobile fallback — native horizontal scroll with snap, no pinning */
+@media (max-width:900px){
+  .hscroll-pin{
+    padding:clamp(60px, 9vw, 100px) 0 !important;
+    height:auto !important;
+  }
+  .hscroll-pin-stage{
+    position:static;
+    height:auto;
+    overflow:visible;
+    padding:0;
+  }
+  .hscroll-progress{display:none}
+  .hscroll-viewport{
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding-bottom:8px;
+  }
+  .hscroll-viewport::-webkit-scrollbar{display:none}
+  .hscroll-track{
+    transform:none !important;
+    transition:none !important;
+    height:auto;
+    align-items:stretch;
+  }
+  .hscroll-track > *{scroll-snap-align:start}
+  .love-flagship.hscroll-pin .hscroll-track > .exp{
+    width:min(82vw, 360px);
+  }
+  .gallery.hscroll-pin .hscroll-track > .g-item{
+    width:min(72vw, 320px);
+    height:280px;
+  }
+}
+
+/* ==============================================================
    RESPONSIVE TWEAKS
 ============================================================== */
 @media (max-width:640px){
