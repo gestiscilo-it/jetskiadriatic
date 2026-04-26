@@ -120,7 +120,7 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 /* ==============================================================
    TOP BAR
 ============================================================== */
-.site-header{position:sticky;top:var(--topbar-h,36px);z-index:90;transition:transform .3s ease;padding:8px 1.5vw}
+.site-header{position:sticky;top:var(--topbar-h,36px);z-index:90;transition:transform .3s ease;background:var(--abisso-d);border-bottom:1px solid rgba(255,255,255,.06)}
 .site-header.header--hidden{transform:translateY(-100%)}
 .topbar{position:sticky;top:0;z-index:91;
   background:var(--abisso-d);
@@ -173,15 +173,12 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 ============================================================== */
 .nav{
   z-index:80;
-  background:rgba(10,37,64,.88);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
+  background:transparent;
   color:var(--spuma);
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:16px;
-  box-shadow:0 8px 32px -8px rgba(6,24,42,.5);
   display:flex;align-items:center;justify-content:space-between;
-  padding:10px 20px 10px 16px;
+  padding:14px 4vw;
+  max-width:1480px;
+  margin:0 auto;
 }
 .brand{display:flex;align-items:center;gap:12px;font-weight:600}
 .brand-mark{
@@ -2730,19 +2727,22 @@ h1 u::after,h2 u::after,h3 u::after,.sh u::after{
 }
 .hscroll-track > *{flex:0 0 auto}
 
-/* Sizing per-section */
+/* Sizing per-section — tuned so 3 cards fit in the initial viewport */
 .love-flagship.hscroll-pin .hscroll-track > .exp{
-  width:clamp(300px, 32vw, 440px);
+  width:clamp(260px, 27vw, 360px);
   height:auto;
   max-height:100%;
+  padding:22px 22px 20px;
 }
 /* Shrink the card image inside the pinned variant so the card fits in 100vh */
 .love-flagship.hscroll-pin .hscroll-track > .exp--love .exp-illu{
-  height:clamp(160px, 22vh, 240px);
+  height:clamp(150px, 20vh, 220px);
+  width:calc(100% + 44px);
+  margin:-22px -22px 0;
 }
 .gallery.hscroll-pin .hscroll-track > .g-item{
-  width:clamp(240px, 26vw, 340px);
-  height:clamp(280px, 50vh, 460px);
+  width:clamp(240px, 27vw, 360px);
+  height:clamp(280px, 48vh, 440px);
   border-radius:var(--r-md);
 }
 
