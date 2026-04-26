@@ -79,10 +79,60 @@ document.querySelectorAll('.fa').forEach(it => it.addEventListener('click', () =
 const burger = document.getElementById('burger');
 const menu = document.getElementById('menu');
 const mclose = document.getElementById('mclose');
-function setM(o){menu.classList.toggle('open', o);document.body.style.overflow = o ? 'hidden' : ''}
+function setM(o){ menu.classList.toggle('open', o); document.body.style.overflow = o ? 'hidden' : ''; }
 burger?.addEventListener('click', () => setM(true));
 mclose?.addEventListener('click', () => setM(false));
 menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(false)));
+
+/* Manifesto scroll-lock */
+(() => {
+  const section = document.querySelector('.manifesto');
+  if (!section) return;
+
+  const THRESHOLD = 600;
+  let accumulated = 0;
+  let locked = false;
+  let done = false;
+
+  window.addEventListener('wheel', (e) => {
+    if (done) return;
+
+    const sTop = section.offsetTop;
+    const y    = window.scrollY;
+    const next = y + e.deltaY;
+
+    if (!locked && e.deltaY > 0 && y < sTop + 60 && next > sTop - 80) {
+      locked = true;
+      accumulated = 0;
+      e.preventDefault();
+      return;
+    }
+
+    if (!locked) return;
+    e.preventDefault();
+
+    if (e.deltaY < 0) {
+      locked = false;
+      accumulated = 0;
+      section.style.setProperty('--lock-p', 0);
+      return;
+    }
+
+    accumulated += e.deltaY;
+    section.style.setProperty('--lock-p', Math.min(accumulated / THRESHOLD, 1));
+
+    if (accumulated >= THRESHOLD) {
+      locked = false;
+      done = true;
+      accumulated = 0;
+      section.style.setProperty('--lock-p', 0);
+    }
+  }, { passive: false });
+
+  window.addEventListener('scroll', () => {
+    if (done && window.scrollY < section.offsetTop - window.innerHeight * 0.5) done = false;
+  }, { passive: true });
+})();
 
 /* ==============================================================
    BOOKING DRAWER

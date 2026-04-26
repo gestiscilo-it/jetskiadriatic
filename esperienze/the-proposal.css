@@ -47,10 +47,10 @@
 .lp-back{
   display:inline-flex;align-items:center;gap:8px;
   padding:9px 16px 9px 14px;
-  background:rgba(244,241,234,.1);
+  background:rgba(255,255,255,.1);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
-  border:1px solid rgba(244,241,234,.22);
+  border:1px solid rgba(255,255,255,.22);
   border-radius:var(--r-pill);
   color:var(--spuma);
   font-size:12px;
@@ -59,7 +59,7 @@
   text-transform:uppercase;
   transition:background .2s var(--ease), transform .2s var(--ease);
 }
-.lp-back:hover{background:rgba(244,241,234,.2);transform:translateX(-3px)}
+.lp-back:hover{background:rgba(255,255,255,.2);transform:translateX(-3px)}
 .lp-back svg{width:14px;height:14px}
 .lp-hero-meta{
   font-size:12px;
@@ -109,8 +109,8 @@
   grid-template-columns:repeat(4, auto);
   gap:28px;
   padding:22px 0 28px;
-  border-top:1px solid rgba(244,241,234,.16);
-  border-bottom:1px solid rgba(244,241,234,.16);
+  border-top:1px solid rgba(255,255,255,.16);
+  border-bottom:1px solid rgba(255,255,255,.16);
   margin-bottom:28px;
   justify-content:flex-start;
 }
@@ -193,18 +193,18 @@
 @media (max-width:960px){.lp-inc-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:620px){.lp-inc-grid{grid-template-columns:1fr}}
 .lp-inc{
-  background:rgba(244,241,234,.04);
-  border:1px solid rgba(244,241,234,.12);
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.12);
   border-radius:var(--r-lg);
   padding:28px 26px;
   display:flex;flex-direction:column;gap:12px;
   transition:border-color .3s var(--ease), background .3s var(--ease), transform .3s var(--ease);
 }
-.lp-inc:hover{border-color:var(--tramonto);background:rgba(255,107,61,.06);transform:translateY(-4px)}
+.lp-inc:hover{border-color:var(--tramonto);background:rgba(31,182,216,.06);transform:translateY(-4px)}
 .lp-inc-ic{
   width:52px;height:52px;
   border-radius:14px;
-  background:rgba(255,107,61,.14);
+  background:rgba(31,182,216,.14);
   color:var(--tramonto);
   display:grid;place-items:center;
   margin-bottom:6px;
@@ -288,12 +288,12 @@
 }
 .lp-details-r{
   display:flex;flex-direction:column;
-  border-top:1px solid rgba(244,241,234,.14);
+  border-top:1px solid rgba(255,255,255,.14);
 }
 .lp-detail-row{
   display:flex;justify-content:space-between;align-items:baseline;
   padding:16px 2px;
-  border-bottom:1px solid rgba(244,241,234,.14);
+  border-bottom:1px solid rgba(255,255,255,.14);
   gap:20px;
 }
 .lp-detail-row span{
