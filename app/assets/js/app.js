@@ -1175,22 +1175,18 @@
 
   // ============ HIDE TOPBAR + CAT-BAR WHEN PAST PRODUCTS ============
   // The chrome (top tabs + bottom filter bar) is product-context UI.
-  // Once the user scrolls out of the feed into the contact or footer,
-  // it gets out of the way.
+  // Hide it only when the products feed is out of view — relying on
+  // contact/footer intersection breaks when the feed is short enough
+  // that products and contact can be on screen simultaneously.
   function setupChromeHideOnFooter(){
     if(!('IntersectionObserver' in window)) return;
-    const targets = $$('.contact, .footer');
-    if(!targets.length) return;
-    // Track which targets are currently intersecting; hide chrome if any are
-    const visible = new Set();
+    const feed = document.getElementById('feed');
+    if(!feed) return;
     const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if(e.isIntersecting) visible.add(e.target);
-        else visible.delete(e.target);
-      });
-      document.body.classList.toggle('is-past-products', visible.size > 0);
-    }, { rootMargin: '0px', threshold: 0 });
-    targets.forEach(t => obs.observe(t));
+      const e = entries[0];
+      document.body.classList.toggle('is-past-products', !e.isIntersecting);
+    }, { rootMargin: '-240px 0px 0px 0px', threshold: 0 });
+    obs.observe(feed);
   }
 
   // ============ FOOTER CATEGORY LINKS — switch tab/cat in-app ============
