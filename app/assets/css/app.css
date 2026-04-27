@@ -69,9 +69,7 @@ em{font-style:italic; font-family:var(--serif); font-weight:400}
 
 /* ---- app container ---- */
 .app{
-  min-height:100vh;
-  min-height:100dvh;
-  padding-bottom: calc(var(--cat-bar-h) + var(--safe-bottom) + 12px);
+  padding-bottom: calc(var(--safe-bottom) + 12px);
   margin: 0 auto;
   background: var(--bg);
   position: relative;
@@ -183,17 +181,15 @@ em{font-style:italic; font-family:var(--serif); font-weight:400}
   z-index: 50;
   background: var(--surface);
   border-bottom: 1px solid transparent;
-  /* max-height collapse instead of transform — transform on the topbar
-     would create a containing block, which would re-anchor the fixed
-     mobile cat-bar (its child in DOM) to the topbar instead of the
-     viewport, so it'd snap to the top of the page when the topbar moved. */
-  overflow: hidden;
-  max-height: 240px;
-  transition: max-height .3s ease, box-shadow .2s ease, border-color .2s ease;
+  /* animate the sticky `top` offset (not transform) so the whole header
+     slides as a single unit. transform would create a containing block
+     and re-anchor the fixed-bottom cat-bar on mobile; animating `top`
+     does not. */
+  transition: top .3s ease, box-shadow .2s ease, border-color .2s ease;
 }
-/* Hide both chrome bars once the user scrolls past the products into the footer */
+/* Slide the entire header up out of view once products are out of frame. */
 body.is-past-products .topbar{
-  max-height: 0;
+  top: -200px;
   border-bottom-color: transparent;
 }
 .topbar.is-scrolled{
@@ -217,8 +213,7 @@ body.is-past-products .topbar{
   justify-content: space-between;
   gap: 10px;
 }
-.topbar-row--main > .tabs        { justify-self: flex-start }
-.topbar-row--main > .topbar-right{ margin-left: auto }
+.topbar-row--main{ justify-content: flex-start }
 /* tabs — pill toggle (kept original UI) */
 .tabs{
   display: inline-flex;
@@ -267,17 +262,19 @@ body.is-past-products .topbar{
 .topbar-icon-btn svg{ width: 18px; height: 18px }
 .topbar-icon-btn:hover{ background: var(--bg) }
 
-/* icon-only round button (used for Meteo on all screen sizes) */
+/* icon-only round button (used for Meteo on all screen sizes) —
+   matches .tabs pill height + background so it reads as a sibling control */
 .topbar-icon-only{
-  width: 40px; height: 40px;
+  width: 46px; height: 46px;
+  align-self: stretch;
   border-radius: 50%;
   display: inline-grid; place-items: center;
-  color: var(--ink);
+  color: var(--ink-2);
   border: 1px solid var(--line);
-  background: var(--surface);
-  transition: background .15s ease, border-color .15s ease, transform .12s ease;
+  background: var(--bg);
+  transition: color .15s ease, border-color .15s ease, transform .12s ease;
 }
-.topbar-icon-only:hover{ background: var(--bg); border-color: var(--line-2) }
+.topbar-icon-only:hover{ color: var(--ink); border-color: var(--line-2) }
 .topbar-icon-only:active{ transform: scale(.95) }
 .topbar-icon-only svg{ width: 20px; height: 20px }
 
@@ -312,16 +309,16 @@ body.is-past-products .cat-bar{
 }
 .cats::-webkit-scrollbar{ display:none }
 .cat{
-  flex: 1 0 auto;
-  display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-  padding: 6px 10px;
+  flex: 1 1 0;
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  padding: 8px 6px;
   min-width: 0;
   color: var(--ink-3);
   font-size: 10.5px; font-weight: 600;
   letter-spacing: .01em;
   white-space: nowrap;
   position: relative;
-  opacity: .8;
+  opacity: .85;
 }
 .cat svg{ width: 22px; height: 22px; stroke-width: 1.7 }
 .cat:hover{ opacity: 1; color: var(--ink) }
@@ -336,7 +333,7 @@ body[data-active-tab="love"] .cat.is-active{ color: var(--rose) }
    FEED
    ===================================================== */
 .feed{
-  padding: 16px 16px 32px;
+  padding: 16px 16px 12px;
 }
 .feed-head{
   display: flex; justify-content: space-between; align-items: flex-end;
@@ -357,23 +354,46 @@ body[data-active-tab="love"] .cat.is-active{ color: var(--rose) }
   font-size: 13.5px;
   color: var(--ink-3);
 }
-/* cards */
+/* cards — horizontal scroll-snap row with next-card peek.
+   Uses a viewport-relative bleed so the row escapes .feed's max-width
+   AND padding at every breakpoint. 50% references parent content width;
+   the formula collapses to the .feed gutter when the viewport equals
+   the .feed width, and grows to reach viewport edges on wider screens. */
 .cards{
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: visible;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+  padding-block: 4px 12px;
+  /* % in scroll-padding references the scrollport (.cards), not the parent —
+     so calc(50vw - 50%) collapses to 0 here. Use an explicit gutter value
+     per breakpoint so snap aligns with .feed-head. */
+  scroll-padding-left: 16px;
 }
-@media (min-width: 600px){
-  .cards{ grid-template-columns: repeat(2, 1fr); gap: 28px }
-}
+.cards::-webkit-scrollbar{ display: none }
 
 .card{
   display: block;
   background: transparent;
   text-align: left;
   border: 0;
-  width: 100%;
   position: relative;
+  flex: 0 0 94%;
+  width: auto;
+  scroll-snap-align: start;
+}
+/* single-card row on mobile: fill the available width — no peek to hint at.
+   On larger viewports the row keeps the normal multi-card sizing so a
+   solo card doesn't visually balloon. */
+@media (max-width: 599px){
+  .card:only-child{ flex-basis: 100% }
 }
 .card{ cursor: pointer }
 .card-img{
@@ -383,7 +403,32 @@ body[data-active-tab="love"] .cat.is-active{ color: var(--rose) }
   border-radius: var(--radius);
   overflow: hidden;
   background: #d9e2eb center/cover no-repeat;
+  /* horizontal gesture is split between media-swipe and row-scroll by
+     the JS handler — disable the browser's native horizontal pan so it
+     doesn't fight us; vertical pan still passes through for page scroll */
+  touch-action: pan-y;
 }
+.card-media{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity .25s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.card-media.is-active{ opacity: 1 }
+.card-img-slide{
+  background: center/cover no-repeat;
+}
+.card-video{
+  object-fit: cover;
+  display: block;
+}
+.card-img > .card-badge,
+.card-img > .card-heart,
+.card-img > .card-dots{ z-index: 1 }
 .card-badge{
   position: absolute; top: 12px; left: 12px;
   display: inline-flex; align-items: center; gap: 6px;
@@ -517,6 +562,7 @@ body[data-active-tab="love"] .cat.is-active{ color: var(--rose) }
   position: fixed;
   right: 16px;
   bottom: calc(var(--cat-bar-h) + var(--safe-bottom) + 16px);
+  transition: transform .2s ease, bottom .28s ease;
   width: 52px; height: 52px;
   border-radius: 50%;
   background: #25D366;
@@ -524,7 +570,14 @@ body[data-active-tab="love"] .cat.is-active{ color: var(--rose) }
   display: grid; place-items: center;
   box-shadow: 0 10px 28px rgba(37,211,102,.45), 0 4px 10px rgba(37,211,102,.25);
   z-index: 40;
-  transition: transform .2s ease;
+}
+/* drop the FAB toward the viewport bottom once the cat-bar slides away —
+   only on mobile, where the cat-bar is fixed-bottom. On desktop the
+   cat-bar is at the top and the FAB never needs to dodge it. */
+@media (max-width: 959px){
+  body.is-past-products .fab-wa{
+    bottom: calc(var(--safe-bottom) + 16px);
+  }
 }
 .fab-wa:active{ transform: scale(.94) }
 .fab-wa svg{ width: 28px; height: 28px }
@@ -930,7 +983,18 @@ body[data-active-tab="love"] .btn-primary{
   aspect-ratio: 1.4 / 1;
   background: #c9d3dd center/cover no-repeat;
   margin-bottom: 18px;
+  overflow: hidden;
 }
+.dt-hero-video{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
+}
+.dt-hero > .dt-hero-actions{ z-index: 2 }
 /* Detail sheet: hero reaches the top of the sheet — float the
    drag handle over the image instead of sitting above it */
 #detailSheet .sheet-grab{
@@ -1387,9 +1451,11 @@ body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
   .feed-head h1{ font-size: 26px }
 
   .cards{
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px 22px;
+    padding-block: 4px 14px;
+    gap: 22px;
+    scroll-padding-left: 24px;
   }
+  .card{ flex: 0 0 78% }
 }
 
 /* =====================================================
@@ -1399,11 +1465,13 @@ body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
   /* container goes wide */
   .app{
     max-width: var(--max-w);
-    min-height: 0;
     padding-bottom: 40px;
     background: var(--bg);
   }
   body{ background: var(--bg) }
+
+  /* drag handle is mobile-only affordance */
+  .sheet-grab{ display: none }
 
   /* expose desktop controls */
   .desktop-only{ display: inline-flex !important }
@@ -1449,23 +1517,29 @@ body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
     padding-bottom: 0;
     z-index: auto;
   }
+  /* desktop cat-bar is static inside the topbar and slides with it via
+     the topbar's `top` animation — cancel the mobile slide-down */
+  body.is-past-products .cat-bar{
+    transform: none;
+  }
   .cats{
     max-width: var(--content-w);
     margin: 0 auto;
-    padding: 14px 40px;
+    padding: 14px 40px 0;
     justify-content: flex-start;
     gap: 0;
     overflow-x: auto;
   }
   .cat{
     flex: 0 0 auto;
+    flex-direction: row;
     padding: 4px 18px 12px;
     font-size: 12px;
     gap: 6px;
     border-bottom: 2px solid transparent;
     opacity: .7;
   }
-  .cat svg{ width: 26px; height: 26px }
+  .cat svg{ width: 18px; height: 18px; stroke-width: 1.8 }
   .cat.is-active{
     border-bottom-color: var(--ink);
   }
@@ -1483,9 +1557,12 @@ body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
   .feed-head h1{ font-size: 30px }
   .feed-head p{ font-size: 15px }
   .cards{
-    grid-template-columns: repeat(3, 1fr);
-    gap: 36px 24px;
+    padding-block: 4px 16px;
+    gap: 24px;
+    scroll-snap-type: x proximity;
+    scroll-padding-left: max(40px, calc((100vw - var(--content-w)) / 2 + 40px));
   }
+  .card{ flex: 0 0 47% }
   .card-img{ aspect-ratio: 1 / 1 }
   .card:hover .card-img{
     transform: translateY(-2px);
@@ -1521,9 +1598,9 @@ body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
 
   /* Detail sheet: wider modal than booking on desktop */
   #detailSheet{
-    width: min(720px, 94vw);
-    max-width: 720px;
-    max-height: 90dvh;
+    width: min(960px, 94vw);
+    max-width: 960px;
+    max-height: 92dvh;
   }
   #detailSheet .sheet-body{ padding: 0 }
   /* Hero is full-bleed at the top — sheet's overflow:hidden +
@@ -1534,8 +1611,33 @@ body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
     margin: 0 0 22px;
     width: 100%;
   }
-  .dt-body{ padding: 0 24px 24px }
+  .dt-body{
+    padding: 0 24px 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: dense;
+    column-gap: 18px;
+    row-gap: 18px;
+    align-items: start;
+  }
   .dt-body h1{ font-size: 32px }
+  /* title block + tags span full width */
+  .dt-body > h1,
+  .dt-body > .dt-meta,
+  .dt-body > .lead,
+  .dt-body > .dt-tags{
+    grid-column: 1 / -1;
+  }
+  /* Cosa è incluso, Durata, Politiche stack on the left column */
+  .dt-body > .dt-includes:not(.dt-meteo){
+    grid-column: 1;
+  }
+  /* Mare e meteo on the right column, spanning all 3 left-side rows */
+  .dt-body > .dt-meteo{
+    grid-column: 2;
+    grid-row: span 3;
+  }
+  .dt-body > .dt-includes{ margin-bottom: 0 }
 
   /* Booking sheet content padding */
   #bookingSheet .sheet-body,
@@ -1551,9 +1653,11 @@ body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
 @media (min-width: 1280px){
   .feed-head h1{ font-size: 32px }
   .cards{
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px 28px;
+    padding-block: 4px 16px;
+    gap: 28px;
+    scroll-padding-left: max(56px, calc((100vw - var(--content-w)) / 2 + 56px));
   }
+  .card{ flex: 0 0 32% }
   .info-strip-inner,
   .cats,
   .feed{ padding-left: 56px; padding-right: 56px }
@@ -1576,7 +1680,7 @@ body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
    ===================================================== */
 .contact{
   background: var(--bg);
-  padding: 48px 0 56px;
+  padding: 16px 0 40px;
 }
 .contact-head,
 .contact-grid{

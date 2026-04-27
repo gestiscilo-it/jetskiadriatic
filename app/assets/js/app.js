@@ -345,6 +345,20 @@
     }
   ];
 
+  // Sample jet ski clips from Pixabay's public CDN, assigned cyclically
+  // as placeholder media. Replace with real footage when available.
+  const SAMPLE_VIDEOS = [
+    'https://cdn.pixabay.com/video/2021/11/30/99435-653480287_tiny.mp4',
+    'https://cdn.pixabay.com/video/2019/09/21/27125-362142178_tiny.mp4',
+    'https://cdn.pixabay.com/video/2024/07/01/219047_tiny.mp4',
+    'https://cdn.pixabay.com/video/2020/07/07/44132-438259003_tiny.mp4',
+    'https://cdn.pixabay.com/video/2021/03/15/68033-524689133_tiny.mp4',
+    'https://cdn.pixabay.com/video/2020/09/25/50855-462059727_tiny.mp4'
+  ];
+  EXPERIENCES.forEach((e, i) => {
+    if(!e.video) e.video = SAMPLE_VIDEOS[i % SAMPLE_VIDEOS.length];
+  });
+
   const CATS = {
     noleggio: [
       { id: 'veloci',   label: 'Veloci',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>' },
@@ -423,13 +437,27 @@
     grid.innerHTML = items.map(e => {
       const liked = state.likes.has(e.id);
       const isLove = e.tab === 'experience';
-      const dotsCount = e.imgs ? e.imgs.length : 1;
-      const idx = state.cardCarousels[e.id] || 0;
+      // Build the media list: video first (if any), then images.
+      const media = [];
+      if (e.video) media.push({ type: 'video', src: e.video });
+      if (e.imgs && e.imgs.length) e.imgs.forEach(s => media.push({ type: 'image', src: s }));
+      else if (e.img) media.push({ type: 'image', src: e.img });
+      const idx = Math.min(state.cardCarousels[e.id] || 0, media.length - 1);
+      const dotsCount = media.length;
+
+      const mediaHtml = media.map((m, i) => {
+        const active = i === idx ? ' is-active' : '';
+        if (m.type === 'video') {
+          return `<video class="card-media card-video${active}" data-media-idx="${i}" src="${m.src}" muted loop playsinline preload="${i === 0 ? 'metadata' : 'none'}" autoplay></video>`;
+        }
+        return `<div class="card-media card-img-slide${active}" data-media-idx="${i}" style="background-image:url('${m.src}')"></div>`;
+      }).join('');
 
       const stars = (e.rating || 0).toFixed(2);
       return `
         <article class="card ${isLove ? 'card--love' : ''}" data-card="${e.id}">
-          <div class="card-img" data-card-img="${e.id}" style="background-image:url('${(e.imgs && e.imgs[idx]) || e.img}')">
+          <div class="card-img" data-card-img="${e.id}">
+            ${mediaHtml}
             <span class="card-badge ${isLove ? 'card-badge--love' : ''}">${e.badge}</span>
             <button type="button" class="card-heart ${liked ? 'is-liked' : ''}" data-heart="${e.id}" aria-label="Salva ${e.title.replace(/<[^>]+>/g, '')}">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -469,27 +497,64 @@
       });
     });
 
-    // simple swipe carousel on the image
+    // Carousel swipe on the image — short swipe changes media, long swipe
+    // hands off to a manual scroll of the .cards row. CSS sets pan-y on
+    // .card-img so the browser doesn't fight the gesture.
+    const MEDIA_SWIPE_MAX = 120;   // dx <= this = media change
+    const MEDIA_SWIPE_MIN = 30;    // dx < this = ignore (likely a tap)
     grid.querySelectorAll('[data-card-img]').forEach(img => {
-      let startX = null;
-      img.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, {passive:true});
-      img.addEventListener('touchend', (e) => {
+      let startX = null, startY = null, isHorizontal = null;
+      img.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isHorizontal = null;
+      }, {passive: true});
+      img.addEventListener('touchmove', (e) => {
         if(startX === null) return;
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+        if(isHorizontal === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)){
+          isHorizontal = Math.abs(dx) > Math.abs(dy);
+        }
+      }, {passive: true});
+      img.addEventListener('touchend', (e) => {
+        if(startX === null || isHorizontal !== true){ startX = null; return; }
         const dx = e.changedTouches[0].clientX - startX;
-        if(Math.abs(dx) < 30) return;
+        startX = null;
+        if(Math.abs(dx) < MEDIA_SWIPE_MIN) return;
+
         const id = img.dataset.cardImg;
         const exp = EXPERIENCES.find(x => x.id === id);
-        if(!exp || !exp.imgs || exp.imgs.length < 2) return;
-        const cur = state.cardCarousels[id] || 0;
-        const dir = dx < 0 ? 1 : -1;
-        const next = (cur + dir + exp.imgs.length) % exp.imgs.length;
-        state.cardCarousels[id] = next;
-        img.style.backgroundImage = `url('${exp.imgs[next]}')`;
-        const dotsEl = img.querySelector('[data-dots]');
-        if(dotsEl){
-          dotsEl.querySelectorAll('i').forEach((d,i) => d.classList.toggle('is-on', i === next));
+        if(!exp) return;
+        const total = (exp.video ? 1 : 0) + (exp.imgs ? exp.imgs.length : (exp.img ? 1 : 0));
+
+        if(Math.abs(dx) <= MEDIA_SWIPE_MAX && total >= 2){
+          // short swipe → cycle card media
+          const cur = state.cardCarousels[id] || 0;
+          const dir = dx < 0 ? 1 : -1;
+          const next = (cur + dir + total) % total;
+          state.cardCarousels[id] = next;
+          img.querySelectorAll('[data-media-idx]').forEach(el => {
+            const i = parseInt(el.dataset.mediaIdx, 10);
+            const wasActive = el.classList.contains('is-active');
+            const nowActive = i === next;
+            el.classList.toggle('is-active', nowActive);
+            if(el.tagName === 'VIDEO'){
+              if(nowActive){ el.play().catch(() => {}); }
+              else if(wasActive){ el.pause(); }
+            }
+          });
+          const dotsEl = img.querySelector('[data-dots]');
+          if(dotsEl){
+            dotsEl.querySelectorAll('i').forEach((d,i) => d.classList.toggle('is-on', i === next));
+          }
+        } else {
+          // long swipe → forward to the row's horizontal scroll
+          const row = img.closest('.cards');
+          if(row){
+            row.scrollBy({ left: -dx, behavior: 'smooth' });
+          }
         }
-        startX = null;
       });
     });
   }
@@ -659,6 +724,7 @@
 
     $('#detailBody').innerHTML = `
       <div class="dt-hero" style="background-image:url('${e.imgs ? e.imgs[0] : e.img}')">
+        ${e.video ? `<video class="dt-hero-video" src="${e.video}" muted loop playsinline preload="metadata" autoplay></video>` : ''}
         <div class="dt-hero-actions">
           <button type="button" class="dt-floating-btn" aria-label="Condividi" id="detailShare">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>
