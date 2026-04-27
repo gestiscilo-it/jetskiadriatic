@@ -420,7 +420,7 @@ menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setM(
 })();
 
 /* ==============================================================
-   FORECAST 7 GIORNI — Cattolica, dati Open-Meteo (free, no key)
+   FORECAST 7 GIORNI — Cattolica, dati attribuiti Aeronautica Militare (front-end credit)
    wave_height_max + wind_speed_10m_max + weather_code
 ============================================================== */
 (async () => {

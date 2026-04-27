@@ -19,8 +19,8 @@
         'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop'
       ],
-      badge: 'Entry · 15 min',
-      meta: '15 min effettivi · senza patente',
+      badge: '15 min',
+      meta: '15 min',
       duration: '15 minuti effettivi · +10 min omaggio per il rientro',
       priceFrom: 50,
       priceUnit: 'a moto',
@@ -47,7 +47,7 @@
         'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop'
       ],
       badge: '30 min',
-      meta: '30 min · senza pensieri',
+      meta: '30 min',
       duration: '30 minuti effettivi in mare',
       priceFrom: 85,
       priceUnit: 'a moto',
@@ -73,8 +73,8 @@
         'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop'
       ],
-      badge: 'Best seller',
-      meta: '45 min · best seller',
+      badge: '45 min',
+      meta: '45 min',
       duration: '45 minuti effettivi · best seller',
       priceFrom: 105,
       priceUnit: 'a moto',
@@ -92,7 +92,7 @@
     {
       id: 'sunset-hour',
       tab: 'noleggio',
-      cat: 'premium',
+      cat: 'tour',
       title: 'Sunset <em>Hour</em>',
       loc: 'Cattolica → Gabicce',
       img: 'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
@@ -100,8 +100,8 @@
         'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1400&auto=format&fit=crop'
       ],
-      badge: 'Premium · tramonto',
-      meta: '1 ora · ideale al tramonto',
+      badge: '1 ora',
+      meta: '1 ora',
       duration: '60 minuti effettivi · ideale al tramonto',
       priceFrom: 145,
       priceUnit: 'a moto',
@@ -128,8 +128,8 @@
         'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop'
       ],
-      badge: '4 ore · pranzo Falco',
-      meta: '4 ore · min 2 persone',
+      badge: '4 ore',
+      meta: '4 ore',
       duration: '4 ore · attracco e pranzo',
       priceFrom: 289,
       priceUnit: 'a persona',
@@ -361,8 +361,7 @@
 
   const CATS = {
     noleggio: [
-      { id: 'veloci',   label: 'Veloci',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>' },
-      { id: 'premium',  label: 'Premium',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>' },
+      { id: 'veloci',   label: 'Ride',     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>' },
       { id: 'tour',     label: 'Tour',     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>' },
       { id: 'famiglia', label: 'Under 12', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="7" r="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 14h2a3 3 0 0 1 3 3v2"/></svg>' }
     ],
@@ -497,66 +496,6 @@
       });
     });
 
-    // Carousel swipe on the image — short swipe changes media, long swipe
-    // hands off to a manual scroll of the .cards row. CSS sets pan-y on
-    // .card-img so the browser doesn't fight the gesture.
-    const MEDIA_SWIPE_MAX = 120;   // dx <= this = media change
-    const MEDIA_SWIPE_MIN = 30;    // dx < this = ignore (likely a tap)
-    grid.querySelectorAll('[data-card-img]').forEach(img => {
-      let startX = null, startY = null, isHorizontal = null;
-      img.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        isHorizontal = null;
-      }, {passive: true});
-      img.addEventListener('touchmove', (e) => {
-        if(startX === null) return;
-        const dx = e.touches[0].clientX - startX;
-        const dy = e.touches[0].clientY - startY;
-        if(isHorizontal === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)){
-          isHorizontal = Math.abs(dx) > Math.abs(dy);
-        }
-      }, {passive: true});
-      img.addEventListener('touchend', (e) => {
-        if(startX === null || isHorizontal !== true){ startX = null; return; }
-        const dx = e.changedTouches[0].clientX - startX;
-        startX = null;
-        if(Math.abs(dx) < MEDIA_SWIPE_MIN) return;
-
-        const id = img.dataset.cardImg;
-        const exp = EXPERIENCES.find(x => x.id === id);
-        if(!exp) return;
-        const total = (exp.video ? 1 : 0) + (exp.imgs ? exp.imgs.length : (exp.img ? 1 : 0));
-
-        if(Math.abs(dx) <= MEDIA_SWIPE_MAX && total >= 2){
-          // short swipe → cycle card media
-          const cur = state.cardCarousels[id] || 0;
-          const dir = dx < 0 ? 1 : -1;
-          const next = (cur + dir + total) % total;
-          state.cardCarousels[id] = next;
-          img.querySelectorAll('[data-media-idx]').forEach(el => {
-            const i = parseInt(el.dataset.mediaIdx, 10);
-            const wasActive = el.classList.contains('is-active');
-            const nowActive = i === next;
-            el.classList.toggle('is-active', nowActive);
-            if(el.tagName === 'VIDEO'){
-              if(nowActive){ el.play().catch(() => {}); }
-              else if(wasActive){ el.pause(); }
-            }
-          });
-          const dotsEl = img.querySelector('[data-dots]');
-          if(dotsEl){
-            dotsEl.querySelectorAll('i').forEach((d,i) => d.classList.toggle('is-on', i === next));
-          }
-        } else {
-          // long swipe → forward to the row's horizontal scroll
-          const row = img.closest('.cards');
-          if(row){
-            row.scrollBy({ left: -dx, behavior: 'smooth' });
-          }
-        }
-      });
-    });
   }
 
   function toggleHeart(id, btn){

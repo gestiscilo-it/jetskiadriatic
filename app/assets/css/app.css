@@ -403,10 +403,6 @@ body[data-active-tab="experience"] .cat.is-active{ color: var(--rose) }
   border-radius: var(--radius);
   overflow: hidden;
   background: #d9e2eb center/cover no-repeat;
-  /* horizontal gesture is split between media-swipe and row-scroll by
-     the JS handler — disable the browser's native horizontal pan so it
-     doesn't fight us; vertical pan still passes through for page scroll */
-  touch-action: pan-y;
 }
 .card-media{
   position: absolute;
@@ -1574,10 +1570,10 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   }
   .card-img{ transition: transform .2s ease, box-shadow .2s ease }
 
-  /* Floating WhatsApp: align with content edge */
+  /* Floating WhatsApp: pinned to viewport right */
   .fab-wa{
     bottom: 24px;
-    right: max(24px, calc(50vw - var(--max-w)/2 + 24px));
+    right: 24px;
     width: 56px; height: 56px;
   }
 
@@ -1985,7 +1981,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .foot-bottom{
   margin-top: 14px;
   padding-top: 14px;
-  border-top: 1px solid rgba(255,255,255,.08);
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1995,6 +1991,18 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   color: rgba(255,255,255,.5);
   letter-spacing: .02em;
 }
+.foot-bottom::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: rgba(255,255,255,.08);
+}
+@media (min-width: 640px){ .foot-bottom::before{ left: 24px; right: 24px } }
+@media (min-width: 960px){ .foot-bottom::before{ left: 40px; right: 40px } }
+@media (min-width: 1280px){ .foot-bottom::before{ left: 56px; right: 56px } }
 .fb-line{ display: block }
 .foot-bottom a{ color: rgba(255,255,255,.6); transition: color .15s ease }
 .foot-bottom a:hover{ color: var(--cyan) }
