@@ -1225,6 +1225,7 @@
     setupChromeHideOnFooter();
     wireFooterCatLinks();
     wireBookCtas();
+    wireDetailCtas();
 
     // pre-set deep link
     if(location.hash === '#experience' || location.hash === '#love'){ setTab('experience'); }
@@ -1241,6 +1242,22 @@
       ev.preventDefault();
       const expId = trigger.getAttribute('data-book');
       openBooking(expId || null);
+    });
+  }
+
+  // Delegated click handler: any element with [data-detail="<id>"] opens
+  // the existing product detail sheet. Used by the standalone card sections
+  // (Esperienze Standard / Love Flagship). A nested [data-book] wins —
+  // clicking an inner Prenota CTA still goes to the booking sheet.
+  function wireDetailCtas(){
+    document.addEventListener('click', (ev) => {
+      if(ev.target.closest('[data-book]')) return;
+      const trigger = ev.target.closest('[data-detail]');
+      if(!trigger) return;
+      const expId = trigger.getAttribute('data-detail');
+      if(!expId) return;
+      ev.preventDefault();
+      openDetail(expId);
     });
   }
 
