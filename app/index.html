@@ -12,19 +12,20 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
 
 <link rel="stylesheet" href="assets/css/app.css" />
 </head>
-<body>
+<body data-active-tab="esperienze">
 
 <!-- ============ INFO STRIP (status + hours + contact) ============ -->
 <div class="info-strip">
   <div class="info-strip-inner">
     <span class="info-l">
-      <span class="status" id="statusPill" data-status="open">
+      <span class="status" id="statusPill" data-status="loading" aria-live="polite">
         <span class="dot"></span>
-        <span class="status-label">Aperto</span>
+        <span class="status-label"><span class="status-skel" aria-hidden="true"></span><span class="sr-only">Verifica orari…</span></span>
       </span>
       <span class="sep">·</span>
       <span>dalle 9:00 alle 20:00</span>
@@ -124,22 +125,11 @@
 </div><!-- /.app -->
 
 
-<!-- ============ DETAIL SHEET (full-screen modal for a card) ============ -->
-<div class="sheet sheet--full" id="detailSheet" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="detailTitle">
-  <div class="sheet-handle" aria-hidden="true"></div>
-  <header class="sheet-topbar">
-    <button type="button" class="icon-btn" data-close-sheet="detailSheet" aria-label="Chiudi">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg>
-    </button>
-    <div class="sheet-actions">
-      <button type="button" class="icon-btn" aria-label="Condividi" id="detailShare">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>
-      </button>
-      <button type="button" class="icon-btn" aria-label="Salva" id="detailHeart">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </button>
-    </div>
-  </header>
+<!-- ============ DETAIL SHEET (bottom drawer) ============ -->
+<div class="sheet" id="detailSheet" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="detailTitle">
+  <button type="button" class="sheet-grab" aria-label="Trascina giù per chiudere">
+    <span class="sheet-handle" aria-hidden="true"></span>
+  </button>
 
   <div class="sheet-body" id="detailBody">
     <!-- populated by JS -->
@@ -338,8 +328,16 @@
       <h2>Meteo <em>Cattolica</em></h2>
     </header>
 
-    <div class="meteo-now" id="meteoNow">
-      <!-- populated by JS -->
+    <div class="meteo-now is-loading" id="meteoNow" aria-busy="true">
+      <div class="meteo-now-ico"><span class="skel-dot"></span></div>
+      <div class="meteo-now-c">
+        <div class="meteo-now-temp"><span class="skel-bar skel-bar--temp"></span></div>
+        <div class="meteo-now-meta"><span class="skel-bar skel-bar--meta"></span></div>
+      </div>
+      <div class="meteo-now-r">
+        <small><span class="skel-bar skel-bar--xs"></span></small>
+        <b><span class="skel-bar skel-bar--sm"></span></b>
+      </div>
     </div>
 
     <div class="meteo-grid" id="meteoGrid">
