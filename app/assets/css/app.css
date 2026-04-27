@@ -240,7 +240,7 @@ body.is-past-products .topbar{
   color: #fff;
   box-shadow: 0 2px 6px rgba(10,37,64,.18);
 }
-.tab.is-active[data-tab="love"]{
+.tab.is-active[data-tab="experience"]{
   background: var(--rose);
   color: #fff;
   box-shadow: 0 2px 6px rgba(232,79,107,.35);
@@ -327,7 +327,7 @@ body.is-past-products .cat-bar{
   color: var(--ink);
 }
 .cat.is-active svg{ stroke-width: 2.1 }
-body[data-active-tab="love"] .cat.is-active{ color: var(--rose) }
+body[data-active-tab="experience"] .cat.is-active{ color: var(--rose) }
 
 /* =====================================================
    FEED
@@ -440,7 +440,11 @@ body[data-active-tab="love"] .cat.is-active{ color: var(--rose) }
   letter-spacing: .02em;
   box-shadow: var(--sh-sm);
 }
-.card-badge--love{ background: rgba(232,79,107,.95); color:#fff }
+.card-badge--love{
+  background: var(--rose);
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(232,79,107,.35);
+}
 .card-heart{
   position: absolute; top: 8px; right: 8px;
   width: 38px; height: 38px;
@@ -775,7 +779,7 @@ body[data-active-tab="love"] .cat.is-active{ color: var(--rose) }
   box-shadow: 0 8px 18px rgba(10,37,64,.18), inset 0 1px 0 rgba(255,255,255,.06);
 }
 .btn-primary:hover{ filter: brightness(1.05) }
-body[data-active-tab="love"] .btn-primary{
+body[data-active-tab="experience"] .btn-primary{
   background: linear-gradient(180deg, #f06b85, var(--rose));
   box-shadow: 0 8px 18px rgba(232,79,107,.30), inset 0 1px 0 rgba(255,255,255,.1);
 }
@@ -1056,8 +1060,8 @@ body[data-active-tab="love"] .btn-primary{
 }
 .dt-body h1 em,
 .sheet-section-head h2 em{ color: var(--cyan-2); font-weight: 400 }
-body[data-active-tab="love"] .dt-body h1 em,
-body[data-active-tab="love"] .sheet-section-head h2 em{ color: var(--rose) }
+body[data-active-tab="experience"] .dt-body h1 em,
+body[data-active-tab="experience"] .sheet-section-head h2 em{ color: var(--rose) }
 .dt-body .dt-meta{
   font-size: 13.5px; color: var(--ink-3);
   margin: 0 0 16px;
@@ -1090,7 +1094,7 @@ body[data-active-tab="love"] .sheet-section-head h2 em{ color: var(--rose) }
   white-space: nowrap;
 }
 .dt-link:hover{ color: var(--cyan) }
-body[data-active-tab="love"] .dt-link{ color: var(--rose) }
+body[data-active-tab="experience"] .dt-link{ color: var(--rose) }
 
 /* Compact 7-day meteo list — embedded in the product sheet, days stacked vertically */
 .dt-meteo-note{
@@ -1179,7 +1183,7 @@ body[data-active-tab="love"] .dt-link{ color: var(--rose) }
   font-size: 14px;
 }
 .dt-includes li svg{ width: 18px; height: 18px; color: var(--cyan-2); margin-top: 2px }
-body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
+body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .dt-tags{
   display: flex; gap: 6px; flex-wrap: wrap;
   margin-bottom: 18px;
@@ -1543,7 +1547,7 @@ body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
   .cat.is-active{
     border-bottom-color: var(--ink);
   }
-  body[data-active-tab="love"] .cat.is-active{
+  body[data-active-tab="experience"] .cat.is-active{
     border-bottom-color: var(--rose);
   }
 
