@@ -7,49 +7,130 @@
 
   // ============ DATA ============
   const EXPERIENCES = [
+    // ============ NOLEGGIO ============
     {
-      id: 'noleggio',
-      tab: 'esperienze',
-      cat: 'noleggio',
-      title: 'Noleggio <em>libero</em>',
-      loc: 'Cattolica · Lungomare',
+      id: 'fast-fun',
+      tab: 'noleggio',
+      cat: 'veloci',
+      title: 'Fast <em>& Fun</em>',
+      loc: 'Cattolica · pontile',
       img: 'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
       imgs: [
         'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop'
+        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop'
       ],
-      badge: 'Senza patente',
-      meta: '15 min · 30 min · full day',
-      duration: 'Da 15 minuti a tutta la giornata',
+      badge: 'Entry · 15 min',
+      meta: '15 min effettivi · senza patente',
+      duration: '15 minuti effettivi · +10 min omaggio per il rientro',
       priceFrom: 50,
-      priceUnit: '15 minuti',
+      priceUnit: 'a moto',
       rating: 4.92,
       reviews: 184,
       includes: [
-        'Briefing di sicurezza 10 minuti',
+        'Briefing di sicurezza · 10 minuti',
         'Giubbotto salvagente in tutte le taglie',
-        'Radio VHF + GPS a bordo',
-        'Istruttore a vista in area controllata'
+        '15 minuti di navigazione effettiva',
+        '+10 minuti omaggio per il rientro'
       ],
-      tags: ['15 min', '30 min', '1h', 'mezza giornata', 'full day'],
-      lead: 'Sali, accendi, vai. Senza patente resti in area controllata; con patente, rotta libera.'
+      tags: ['15 min', 'entry', 'senza patente'],
+      lead: 'Adrenalina pura, in 15 minuti effettivi. Il tempo parte fuori dal porto, +10 minuti regalati per il rientro.'
     },
     {
-      id: 'vallugola-gold',
-      tab: 'esperienze',
-      cat: 'tour',
-      title: 'Vallugola <em>Gold</em>',
-      loc: 'Cattolica → Vallugola',
+      id: 'sprint',
+      tab: 'noleggio',
+      cat: 'veloci',
+      title: 'Sprint <em>30</em>',
+      loc: 'Cattolica · pontile',
+      img: 'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
+      imgs: [
+        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop'
+      ],
+      badge: '30 min',
+      meta: '30 min · senza pensieri',
+      duration: '30 minuti effettivi in mare',
+      priceFrom: 85,
+      priceUnit: 'a moto',
+      rating: 4.93,
+      reviews: 142,
+      includes: [
+        'Briefing di sicurezza · 10 minuti',
+        '30 minuti effettivi di navigazione',
+        'Sportender JST-30 · senza patente',
+        'Giubbotto in tutte le taglie'
+      ],
+      tags: ['30 min', 'divertimento'],
+      lead: 'La sessione ideale per chi vuole divertirsi senza pensieri. 30 minuti effettivi, dal pontile al largo.'
+    },
+    {
+      id: 'classic',
+      tab: 'noleggio',
+      cat: 'veloci',
+      title: 'Classic <em>45</em>',
+      loc: 'Cattolica · pontile',
       img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
       imgs: [
         'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop'
+      ],
+      badge: 'Best seller',
+      meta: '45 min · best seller',
+      duration: '45 minuti effettivi · best seller',
+      priceFrom: 105,
+      priceUnit: 'a moto',
+      rating: 4.95,
+      reviews: 246,
+      includes: [
+        'Briefing di sicurezza · 10 minuti',
+        '45 minuti effettivi in mare',
+        'Tempo per arrivare al largo e tornare con calma',
+        'Sportender JST-30 · senza patente'
+      ],
+      tags: ['45 min', 'best seller', 'rapporto qualità/prezzo'],
+      lead: 'Il miglior rapporto qualità/prezzo. 45 minuti effettivi: il tempo giusto per arrivare al largo e tornare con calma.'
+    },
+    {
+      id: 'sunset-hour',
+      tab: 'noleggio',
+      cat: 'premium',
+      title: 'Sunset <em>Hour</em>',
+      loc: 'Cattolica → Gabicce',
+      img: 'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
+      imgs: [
         'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop'
+        'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1400&auto=format&fit=crop'
+      ],
+      badge: 'Premium · tramonto',
+      meta: '1 ora · ideale al tramonto',
+      duration: '60 minuti effettivi · ideale al tramonto',
+      priceFrom: 145,
+      priceUnit: 'a moto',
+      rating: 4.96,
+      reviews: 92,
+      includes: [
+        '60 minuti effettivi al largo',
+        'Tour lungo costa Gabicce · San Bartolo',
+        'Estensione +1 ora · 100€',
+        'Briefing completo · radio a bordo'
+      ],
+      tags: ['1 ora', 'tramonto', 'premium'],
+      lead: 'L\'esperienza premium. Un\'ora effettiva, perfetta al tramonto o per un tour lungo costa.'
+    },
+    {
+      id: 'vallugola-gold',
+      tab: 'noleggio',
+      cat: 'tour',
+      title: 'Vallugola <em>Gold</em>',
+      loc: 'Cattolica → Vallugola',
+      img: 'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop',
+      imgs: [
+        'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop'
       ],
       badge: '4 ore · pranzo Falco',
       meta: '4 ore · min 2 persone',
-      duration: '4 ore · pranzo incluso',
+      duration: '4 ore · attracco e pranzo',
       priceFrom: 289,
       priceUnit: 'a persona',
       rating: 4.95,
@@ -57,99 +138,45 @@
       includes: [
         'Guida + barca appoggio fino a Vallugola',
         'Attracco nella caletta privata',
-        'Pranzo al Ristorante Falco (sconto dedicato)',
-        'Rientro al tramonto'
+        'Sconto al Ristorante Falco',
+        'Min. 2 persone'
       ],
-      tags: ['4 ore', 'pranzo', 'caletta privata', 'gruppo'],
-      lead: 'Quattro ore Cattolica → Vallugola con attracco e pranzo al Ristorante Falco. Il tour classico, con la caletta tutta vostra.'
-    },
-    {
-      id: 'famiglia',
-      tab: 'esperienze',
-      cat: 'famiglia',
-      title: 'Famiglie <em>& Gruppi</em>',
-      loc: 'Cattolica · Sportender JST-30',
-      img: 'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Bimbi dai 6 anni',
-      meta: 'Sportender · 3 posti',
-      duration: '30 min – 2 ore',
-      priceFrom: 75,
-      priceUnit: 'esperienza family',
-      rating: 4.97,
-      reviews: 41,
-      includes: [
-        'Sportender JST-30 (più stabile, senza elica)',
-        'Giubbotti taglia bambino dai 15 kg',
-        'Kids Academy inclusa per i piccoli',
-        'Possibilità gruppo intero'
-      ],
-      tags: ['family', 'gruppi >3 pers', 'kids academy', 'eventi privati'],
-      lead: 'Sportender JST-30 — più stabile del jet ski classico: bambini dai 6 anni, gruppi fino a 3 persone per moto.'
-    },
-    {
-      id: 'sunset-tour',
-      tab: 'esperienze',
-      cat: 'tour',
-      title: 'Sunset <em>San Bartolo</em>',
-      loc: 'Cattolica → Gabicce → Vallugola',
-      img: 'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Tramonto',
-      meta: '1h30 · ultima uscita 19:30',
-      duration: '90 minuti al tramonto',
-      priceFrom: 159,
-      priceUnit: 'a moto',
-      rating: 4.93,
-      reviews: 92,
-      includes: [
-        'Partenza 30 min prima del tramonto',
-        'Guida con conoscenza dei migliori spot',
-        'Punto fermo per foto al tramonto',
-        'Briefing completo · radio a bordo'
-      ],
-      tags: ['1h30', 'tramonto', 'guida', 'foto'],
-      lead: 'Il tratto più scenografico della Riviera, illuminato dal tramonto. Guida che conosce gli spot, ti porta dove vale.'
-    },
-    {
-      id: 'eventi',
-      tab: 'esperienze',
-      cat: 'eventi',
-      title: 'Eventi <em>privati</em>',
-      loc: 'Riviera Romagnola',
-      img: 'https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1400&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Su misura',
-      meta: 'Aziende · Compleanni · Addii',
-      duration: 'Mezza o intera giornata',
-      priceFrom: 1200,
-      priceUnit: 'da · gruppi',
-      rating: 5.0,
-      reviews: 12,
-      includes: [
-        'Flotta dedicata fino a 9 moto',
-        'Catering a bordo opzionale',
-        'Drone 4K + paparazzo dedicato',
-        'Coordinamento eventi end-to-end'
-      ],
-      tags: ['aziende', 'compleanni', 'addii al celibato', 'team building'],
-      lead: 'Mezza giornata, intera, una settimana. Coordinamento, mezzi, foto e video — pensiamo a tutto noi.'
+      tags: ['4 ore', 'pranzo', 'caletta privata', 'min 2 pers'],
+      lead: 'L\'escursione VIP. Cattolica → Vallugola con attracco e sconto al Ristorante Falco.'
     },
 
-    // ----- LOVE -----
+    // ============ EXPERIENCE ============
+    {
+      id: 'secret-romance',
+      tab: 'experience',
+      cat: 'coppia',
+      title: 'Secret <em>Romance</em>',
+      loc: 'Cattolica · al largo',
+      img: 'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1600&auto=format&fit=crop',
+      imgs: [
+        'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1600&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1400&auto=format&fit=crop'
+      ],
+      badge: 'Coppia',
+      meta: '1 ora · rose · champagne',
+      duration: '60 minuti privati',
+      priceFrom: 320,
+      priceUnit: 'a coppia',
+      rating: 4.96,
+      reviews: 28,
+      includes: [
+        'Noleggio Sportender · 1 ora',
+        'Mazzo di rose preparato in segreto nel gavone',
+        'Bottiglia di Champagne (formato piccolo)',
+        'Coordinamento staff per la sorpresa'
+      ],
+      tags: ['1 ora', 'rose', 'champagne', 'segreto'],
+      lead: 'L\'inizio di un sogno. Un\'ora privata, rose preparate in segreto, Champagne fresco. Per sorprendere, non annunciare.'
+    },
     {
       id: 'the-proposal',
-      tab: 'love',
-      cat: 'romance',
+      tab: 'experience',
+      cat: 'coppia',
       title: 'The <em>Proposal</em>',
       loc: 'Cattolica · al largo',
       img: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1600&auto=format&fit=crop',
@@ -159,80 +186,86 @@
         'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1400&auto=format&fit=crop'
       ],
       badge: 'Signature',
-      meta: '1h30 · coppia · drone 4K',
+      meta: '1h30 · drone · paparazzo',
       duration: '90 minuti orchestrati',
       priceFrom: 490,
       priceUnit: 'a coppia',
       rating: 5.0,
       reviews: 7,
       includes: [
-        'Fiori a bordo + Champagne premium',
-        'Drone 4K che vi segue dall\'alto',
-        'Paparazzo: 30+ scatti dal pontile',
-        'Pergamena con coordinate GPS del sì'
+        'Noleggio · 1.5 ore',
+        'Rose rosse a gambo lungo',
+        'Champagne 750ml',
+        'Drone VIP Movie',
+        'Foto Paparazzo dallo staff',
+        'Certificato d\'Amore su pergamena · coordinate GPS del sì'
       ],
-      tags: ['1h30', 'coppia', 'drone 4K', 'paparazzo', 'pergamena GPS'],
-      lead: 'Il momento che non si prepara da soli. Fiori, Champagne, drone 4K e pergamena con le coordinate GPS del sì.'
+      tags: ['1h30', 'drone', 'paparazzo', 'pergamena GPS'],
+      lead: 'Il pacchetto definitivo per chiedere la mano in mezzo al mare. Rose, Champagne, drone, paparazzo. E un certificato con le coordinate del sì.'
     },
     {
-      id: 'vallugola-diamond',
-      tab: 'love',
-      cat: 'adventure',
-      title: 'Vallugola <em>Diamond</em>',
-      loc: 'Cattolica → Vallugola',
+      id: 'sinfonia-amore',
+      tab: 'experience',
+      cat: 'coppia',
+      title: 'Sinfonia <em>d\'Amore</em>',
+      loc: 'Cattolica · al largo · su prenotazione',
       img: 'https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1600&auto=format&fit=crop',
       imgs: [
         'https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop'
+        'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1400&auto=format&fit=crop'
+      ],
+      badge: 'Elite · novità',
+      meta: '1h30–2h · regia cinematografica',
+      duration: '90–120 minuti su prenotazione',
+      priceFrom: 890,
+      priceUnit: 'a coppia',
+      rating: 5.0,
+      reviews: 0,
+      includes: [
+        'Noleggio · 1.5–2 ore',
+        'Seconda moto d\'acqua per consegna scenografica delle rose',
+        'Musicista dal vivo · chitarrista o violinista',
+        'Champagne 750ml',
+        'Certificato d\'Amore su pergamena',
+        'Foto Paparazzo dallo staff',
+        'Drone VIP Movie disponibile come extra'
+      ],
+      tags: ['elite', '1h30–2h', 'musicista', 'regia', 'novità'],
+      lead: 'Il lusso assoluto, con regia cinematografica. Seconda moto che consegna le rose tra le onde, musicista dal vivo per una serenata privata.'
+    },
+    {
+      id: 'vallugola-diamond',
+      tab: 'experience',
+      cat: 'coppia',
+      title: 'Vallugola <em>Diamond</em>',
+      loc: 'Cattolica → Vallugola',
+      img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1600&auto=format&fit=crop',
+      imgs: [
+        'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1600&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop'
       ],
       badge: 'All inclusive',
-      meta: '4 ore · pranzo · drone',
-      duration: '4 ore di lusso vero',
+      meta: '4 ore · drone · champagne',
+      duration: '4 ore verso Vallugola',
       priceFrom: 850,
       priceUnit: 'a coppia',
       rating: 4.98,
       reviews: 14,
       includes: [
-        'Pranzo gourmet al Ristorante Falco',
-        'Fiori freschi a bordo',
-        'Drone 4K + 2 bottiglie Champagne',
-        'Servizio paparazzo opzionale'
+        '4 ore di navigazione verso Vallugola',
+        'Fiori a bordo',
+        'Drone Movie',
+        'Aperitivo a bordo · 2 bottiglie di Champagne'
       ],
-      tags: ['4 ore', 'pranzo Falco', 'champagne', 'drone 4K'],
-      lead: 'Quattro ore da Cattolica al Porto di Vallugola. Pranzo al Ristorante Falco, fiori a bordo, drone 4K, due bottiglie di Champagne.'
-    },
-    {
-      id: 'secret-romance',
-      tab: 'love',
-      cat: 'romance',
-      title: 'Secret <em>Romance</em>',
-      loc: 'Cattolica · al largo',
-      img: 'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1600&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Anniversario',
-      meta: '1 ora · coppia · GoPro',
-      duration: '60 minuti privati',
-      priceFrom: 320,
-      priceUnit: 'a coppia',
-      rating: 4.96,
-      reviews: 28,
-      includes: [
-        '12 rose rosse fresche a bordo',
-        'Champagne ghiacciato nel gavone',
-        'GoPro POV già accesa',
-        'Foto rapide AirDrop al rientro'
-      ],
-      tags: ['1 ora', 'rose', 'champagne', 'GoPro POV'],
-      lead: 'Un\'ora in mare, rose a bordo, Champagne nel gavone. GoPro accesa quando serve. Per chi vuole sorprendere, non annunciare.'
+      tags: ['4 ore', 'fiori', 'champagne', 'drone'],
+      lead: 'L\'esperienza di navigazione più completa verso Vallugola. Fiori a bordo, drone Movie, aperitivo con due bottiglie di Champagne.'
     },
     {
       id: 'midday-brunch',
-      tab: 'love',
-      cat: 'food',
+      tab: 'experience',
+      cat: 'brunch',
       title: 'Midday <em>Brunch</em>',
       loc: 'Cattolica · al largo',
       img: 'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1600&auto=format&fit=crop',
@@ -248,34 +281,88 @@
       rating: 4.91,
       reviews: 19,
       includes: [
-        'Brunch box di lusso',
-        'Drink premium a bordo',
-        'Tavolo apparecchiato sul ponte',
-        'Salviette + dry-bag forniti'
+        'Noleggio · 1 ora',
+        'Luxury Brunch Box',
+        'Drink',
+        'Set-up del tavolo a bordo'
       ],
-      tags: ['1 ora', 'brunch', 'drink premium', 'coppia'],
-      lead: 'Un\'ora al largo con brunch box di lusso, drink a bordo, tavolo apparecchiato. Il mare come sala da pranzo privata.'
+      tags: ['1 ora', 'brunch', 'drink', 'coppia'],
+      lead: 'Pausa di stile a metà giornata. Brunch box di lusso, drink, tavolo apparecchiato. Il mare come sala da pranzo privata.'
+    },
+    {
+      id: 'kids-academy',
+      tab: 'noleggio',
+      cat: 'famiglia',
+      title: 'Kids <em>Academy</em>',
+      loc: 'Cattolica · area protetta',
+      img: 'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
+      imgs: [
+        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop'
+      ],
+      badge: 'Battesimo del mare',
+      meta: '15–20 min · genitore + bambino',
+      duration: '15–20 minuti in area controllata',
+      priceFrom: 75,
+      priceUnit: 'esperienza family',
+      rating: 4.97,
+      reviews: 41,
+      includes: [
+        'Noleggio breve · 15–20 minuti',
+        'Genitore guida · bambino partecipa attivamente',
+        'Foto ricordo',
+        'Diploma cartaceo "Piccolo Pilota"'
+      ],
+      tags: ['15–20 min', 'bambini', 'diploma', 'family'],
+      lead: 'Il battesimo del mare. Genitore guida, bambino partecipa attivamente. A fine uscita, diploma di Piccolo Pilota.'
+    },
+    {
+      id: 'blind-date',
+      tab: 'experience',
+      cat: 'social',
+      title: 'Blind <em>Date</em>',
+      loc: 'Cattolica · su iscrizione social',
+      img: 'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
+      imgs: [
+        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop'
+      ],
+      badge: 'Single · social',
+      meta: '30 min · 2 persone',
+      duration: '30 minuti · uno guida, l\'altro dietro',
+      priceFrom: 45,
+      priceUnit: 'a persona',
+      rating: 4.88,
+      reviews: 9,
+      includes: [
+        'Target single · iscrizione social',
+        '30 minuti di navigazione',
+        'Uno guida, l\'altro sta dietro',
+        'La complicità messa alla prova'
+      ],
+      tags: ['30 min', 'single', 'social'],
+      lead: 'Appuntamento al buio in mare. 30 minuti dove uno guida e l\'altro sta dietro: la complicità messa alla prova.'
     }
   ];
 
   const CATS = {
-    esperienze: [
-      { id: 'noleggio',  label: 'Noleggio',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>' },
-      { id: 'tour',      label: 'Tour',      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>' },
-      { id: 'famiglia',  label: 'Famiglie',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="7" r="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 14h2a3 3 0 0 1 3 3v2"/></svg>' },
-      { id: 'eventi',    label: 'Eventi',    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 9h18"/></svg>' }
+    noleggio: [
+      { id: 'veloci',   label: 'Veloci',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>' },
+      { id: 'premium',  label: 'Premium',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>' },
+      { id: 'tour',     label: 'Tour',     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>' },
+      { id: 'famiglia', label: 'Under 12', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="7" r="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 14h2a3 3 0 0 1 3 3v2"/></svg>' }
     ],
-    love: [
-      { id: 'romance',   label: 'Romance',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="9" r="4"/><path d="M12 13v8M8 18h8"/></svg>' },
-      { id: 'food',      label: 'Brunch',    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11h18a8 8 0 0 1-9 8 8 8 0 0 1-9-8z"/><path d="M7 8c0-2 1-3 2-3M11 8c0-2 1-3 2-3M15 8c0-2 1-3 2-3"/></svg>' },
-      { id: 'adventure', label: 'Avventura', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 21l6-13 5 8 3-5 4 10z"/></svg>' }
+    experience: [
+      { id: 'coppia',   label: 'Coppia',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-7 10-7 10s-2 0-4 0z"/></svg>' },
+      { id: 'brunch',   label: 'Brunch',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11h18a8 8 0 0 1-9 8 8 8 0 0 1-9-8z"/><path d="M7 8c0-2 1-3 2-3M11 8c0-2 1-3 2-3M15 8c0-2 1-3 2-3"/></svg>' },
+      { id: 'social',   label: 'Social',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M14 18a4 4 0 0 1 7 0"/></svg>' }
     ]
   };
 
   // ============ STATE ============
   const state = {
-    activeTab: 'esperienze',
-    activeCat: 'noleggio',
+    activeTab: 'noleggio',
+    activeCat: 'veloci',
     likes: new Set(JSON.parse(localStorage.getItem('jsa_likes') || '[]')),
     booking: {
       expId: null,
@@ -289,7 +376,8 @@
       notes: ''
     },
     bkStep: 1,
-    cardCarousels: {} // id -> currentIndex
+    cardCarousels: {}, // id -> currentIndex
+    returnToDetail: null // when set, closing meteo reopens this detail id
   };
 
   // ============ HELPERS ============
@@ -334,7 +422,7 @@
 
     grid.innerHTML = items.map(e => {
       const liked = state.likes.has(e.id);
-      const isLove = e.tab === 'love';
+      const isLove = e.tab === 'experience';
       const dotsCount = e.imgs ? e.imgs.length : 1;
       const idx = state.cardCarousels[e.id] || 0;
 
@@ -427,9 +515,9 @@
       t.classList.toggle('is-active', on);
       t.setAttribute('aria-selected', on ? 'true' : 'false');
     });
-    const t = tab === 'love' ? {
+    const t = tab === 'experience' ? {
       title: 'Quando un\'ora diventa un momento.',
-      sub:   'Esperienze signature. Fiori, Champagne, drone 4K, paparazzo.'
+      sub:   'Esperienze signature. Coppia, brunch, famiglia, community.'
     } : {
       title: 'In mare in 5 minuti.',
       sub:   'Senza patente, senza pensieri. Cattolica · Rimini'
@@ -456,9 +544,20 @@
   function closeSheet(id){
     const sh = id ? document.getElementById(id) : (openSheets.length ? document.getElementById(openSheets[openSheets.length-1]) : null);
     if(!sh) return;
+    const closingId = sh.id;
     sh.classList.remove('is-open');
     sh.setAttribute('aria-hidden','true');
-    openSheets = openSheets.filter(s => s !== sh.id);
+    openSheets = openSheets.filter(s => s !== closingId);
+
+    // If meteo was opened from a product sheet, return to that product on close
+    if(closingId === 'meteoSheet' && state.returnToDetail){
+      const returnId = state.returnToDetail;
+      state.returnToDetail = null;
+      // wait for the close transition to finish, then reopen the detail
+      setTimeout(() => openDetail(returnId), 280);
+      return; // keep backdrop and body lock; openDetail will manage them
+    }
+
     if(openSheets.length === 0){
       backdrop.classList.remove('is-open');
       document.body.style.overflow = '';
@@ -540,30 +639,14 @@
     grab.addEventListener('pointerup', onUp);
     grab.addEventListener('pointercancel', onUp);
   }
-  ['bookingSheet','meteoSheet'].forEach(attachDragClose);
+  ['bookingSheet','meteoSheet','detailSheet'].forEach(attachDragClose);
 
   // ============ DETAIL SHEET ============
   function openDetail(id){
     const e = EXPERIENCES.find(x => x.id === id);
     if(!e) return;
     const liked = state.likes.has(id);
-    const isLove = e.tab === 'love';
-
-    $('#detailHeart').classList.toggle('is-liked', liked);
-    $('#detailHeart').onclick = () => {
-      const btn = $('#detailHeart');
-      if(state.likes.has(id)){
-        state.likes.delete(id);
-        btn.classList.remove('is-liked');
-      }else{
-        state.likes.add(id);
-        btn.classList.add('is-liked');
-      }
-      saveLikes();
-      // also update card heart if visible
-      const cardBtn = $(`[data-heart="${id}"]`);
-      if(cardBtn){ cardBtn.classList.toggle('is-liked', state.likes.has(id)); }
-    };
+    const isLove = e.tab === 'experience';
 
     $('#detailPrice').textContent = `da ${e.priceFrom}€`;
     $('#detailPriceUnit').textContent = e.priceUnit;
@@ -575,7 +658,16 @@
     const stars = (e.rating || 0).toFixed(2);
 
     $('#detailBody').innerHTML = `
-      <div class="dt-hero" style="background-image:url('${e.imgs ? e.imgs[0] : e.img}')"></div>
+      <div class="dt-hero" style="background-image:url('${e.imgs ? e.imgs[0] : e.img}')">
+        <div class="dt-hero-actions">
+          <button type="button" class="dt-floating-btn" aria-label="Condividi" id="detailShare">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>
+          </button>
+          <button type="button" class="dt-floating-btn${liked ? ' is-liked' : ''}" aria-label="Salva" id="detailHeart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+      </div>
       <div class="dt-body">
         <h1>${e.title}</h1>
         <p class="dt-meta">
@@ -608,8 +700,43 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Riprogrammazione gratis se annulliamo per meteo</span></li>
           </ul>
         </div>
+
+        <div class="dt-includes dt-meteo">
+          <h4>Mare e meteo</h4>
+          <p class="dt-meteo-note">L'uscita dipende dalle condizioni del mare. Riprogrammiamo gratis se non si esce.</p>
+          <button type="button" class="dt-meteo-strip" id="dtMeteoStrip" data-open-meteo aria-label="Apri il meteo a 7 giorni"></button>
+          <a class="dt-link" data-open-meteo href="#meteo">Vedi previsioni complete →</a>
+        </div>
       </div>
     `;
+
+    // open meteo from the disclaimer block (strip + link) — close detail, then open meteo
+    // store the product id so closing meteo reopens this detail
+    $$('#detailBody [data-open-meteo]').forEach(el => {
+      el.onclick = (ev) => {
+        ev.preventDefault();
+        state.returnToDetail = id;
+        closeSheet('detailSheet');
+        setTimeout(() => openMeteo(), 280);
+      };
+    });
+
+    // populate the compact meteo strip (uses cached data if available)
+    loadCompactMeteo($('#dtMeteoStrip'));
+
+    $('#detailHeart').onclick = () => {
+      const btn = $('#detailHeart');
+      if(state.likes.has(id)){
+        state.likes.delete(id);
+        btn.classList.remove('is-liked');
+      }else{
+        state.likes.add(id);
+        btn.classList.add('is-liked');
+      }
+      saveLikes();
+      const cardBtn = $(`[data-heart="${id}"]`);
+      if(cardBtn){ cardBtn.classList.toggle('is-liked', state.likes.has(id)); }
+    };
 
     openSheet('detailSheet');
   }
@@ -666,8 +793,8 @@
     const people = state.booking.people;
     let base = e.priceFrom;
     // a rough estimation logic — multiply by people for some types
-    const perPersonIds = ['vallugola-gold'];
-    const perCoupleIds = ['the-proposal','vallugola-diamond','secret-romance','midday-brunch'];
+    const perPersonIds = ['vallugola-gold','blind-date'];
+    const perCoupleIds = ['the-proposal','vallugola-diamond','secret-romance','midday-brunch','sinfonia-amore'];
     let total;
     if(perPersonIds.includes(e.id)){
       total = base * people;
@@ -805,58 +932,173 @@
     if(w === 'caution' || (code >= 51 && code < 80)) return 'caution';
     return 'go';
   }
-  let meteoLoaded = false;
-  async function loadMeteo(){
-    if(meteoLoaded) return;
-    try{
-      const url = 'https://api.open-meteo.com/v1/forecast?latitude=43.96&longitude=12.74&current=temperature_2m,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max&timezone=Europe%2FRome&forecast_days=7';
+  function meteoNowSkeleton(){
+    return `
+      <div class="meteo-now-ico"><span class="skel-dot"></span></div>
+      <div class="meteo-now-c">
+        <div class="meteo-now-temp"><span class="skel-bar skel-bar--temp"></span></div>
+        <div class="meteo-now-meta"><span class="skel-bar skel-bar--meta"></span></div>
+      </div>
+      <div class="meteo-now-r">
+        <small><span class="skel-bar skel-bar--xs"></span></small>
+        <b><span class="skel-bar skel-bar--sm"></span></b>
+      </div>
+    `;
+  }
+  function meteoGridSkeleton(){
+    return Array.from({length: 7}, () =>
+      '<article class="md-day skel" aria-hidden="true"></article>'
+    ).join('');
+  }
+  function showMeteoLoading(){
+    const now  = $('#meteoNow');
+    const grid = $('#meteoGrid');
+    if(now){
+      now.classList.add('is-loading');
+      now.setAttribute('aria-busy', 'true');
+      now.innerHTML = meteoNowSkeleton();
+    }
+    if(grid){
+      grid.setAttribute('aria-busy', 'true');
+      grid.innerHTML = meteoGridSkeleton();
+    }
+  }
+
+  function vLabel(v){
+    return v === 'go' ? 'Esci sereno' : (v === 'caution' ? 'Verifichiamo' : 'Sconsigliato');
+  }
+
+  // Render targets — populate from a fetched data object
+  function renderMeteoNow(data){
+    const now = $('#meteoNow');
+    if(!now || !data.current) return;
+    now.innerHTML = `
+      <div class="meteo-now-ico">${pickIcon(data.current.weather_code)}</div>
+      <div class="meteo-now-c">
+        <div class="meteo-now-temp">${Math.round(data.current.temperature_2m)}°</div>
+        <div class="meteo-now-meta">Cattolica · ora</div>
+      </div>
+      <div class="meteo-now-r">
+        <small>Vento</small>
+        <b>${Math.round(data.current.wind_speed_10m)}<span> km/h</span></b>
+      </div>
+    `;
+    now.classList.remove('is-loading');
+    now.removeAttribute('aria-busy');
+  }
+  function renderMeteoGrid(data){
+    const grid = $('#meteoGrid');
+    if(!grid) return;
+    const dates = data.daily.time;
+    const codes = data.daily.weather_code;
+    const tmax = data.daily.temperature_2m_max;
+    const tmin = data.daily.temperature_2m_min;
+    const wmax = data.daily.wind_speed_10m_max;
+    grid.innerHTML = dates.map((dt,i) => {
+      const v = verdictFromCode(codes[i], wmax[i]);
+      return `
+        <article class="md-day" data-v="${v}">
+          <div class="md-dow">
+            <b>${dayShort(dt).replace('.','')}</b>
+            <small>${dayNum(dt)}</small>
+          </div>
+          <div class="md-icon">${pickIcon(codes[i])}</div>
+          <div class="md-tx">
+            <b>${Math.round(tmax[i])}° <span class="dim">/ ${Math.round(tmin[i])}°</span></b>
+            <small>Vento ${Math.round(wmax[i])} km/h</small>
+          </div>
+          <span class="md-verdict" data-v="${v}" aria-label="${vLabel(v)}"></span>
+        </article>
+      `;
+    }).join('');
+    grid.removeAttribute('aria-busy');
+  }
+  function renderCompactMeteo(container, data){
+    if(!container || !data || !data.daily) return;
+    const dates = data.daily.time;
+    const codes = data.daily.weather_code;
+    const tmax = data.daily.temperature_2m_max;
+    const wmax = data.daily.wind_speed_10m_max;
+    container.innerHTML = dates.map((dt,i) => {
+      const v = verdictFromCode(codes[i], wmax[i]);
+      const day = new Date(dt).toLocaleDateString('it-IT', { weekday: 'short' })
+        .replace('.','').slice(0,3);
+      return `
+        <article class="dt-md" data-v="${v}" aria-label="${day} · ${vLabel(v)}">
+          <small>${day}</small>
+          <span class="dt-md-ico">${pickIcon(codes[i])}</span>
+          <b>${Math.round(tmax[i])}°</b>
+          <span class="dt-md-verdict" aria-hidden="true"></span>
+        </article>
+      `;
+    }).join('');
+    container.removeAttribute('aria-busy');
+  }
+  function compactMeteoSkeleton(){
+    return Array.from({length: 7}, () =>
+      '<article class="dt-md skel" aria-hidden="true"></article>'
+    ).join('');
+  }
+
+  // Single source of truth — fetch once, cache for the session
+  let meteoData = null;
+  let meteoFetchPromise = null;
+  async function ensureMeteoData(){
+    if(meteoData) return meteoData;
+    if(meteoFetchPromise) return meteoFetchPromise;
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=43.96&longitude=12.74&current=temperature_2m,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max&timezone=Europe%2FRome&forecast_days=7';
+    meteoFetchPromise = (async () => {
       const r = await fetch(url);
-      const data = await r.json();
+      if(!r.ok) throw new Error('http ' + r.status);
+      meteoData = await r.json();
+      return meteoData;
+    })();
+    try {
+      return await meteoFetchPromise;
+    } finally {
+      meteoFetchPromise = null;
+    }
+  }
 
-      // current
-      if(data.current){
-        $('#meteoNow').innerHTML = `
-          <div class="meteo-now-ico">${pickIcon(data.current.weather_code)}</div>
-          <div class="meteo-now-c">
-            <div class="meteo-now-temp">${Math.round(data.current.temperature_2m)}°</div>
-            <div class="meteo-now-meta">Cattolica · ora</div>
-          </div>
-          <div class="meteo-now-r">
-            <small>Vento</small>
-            <b>${Math.round(data.current.wind_speed_10m)}<span> km/h</span></b>
-          </div>
-        `;
-      }
-
-      // 7-day
-      const grid = $('#meteoGrid');
-      const dates = data.daily.time;
-      const codes = data.daily.weather_code;
-      const tmax = data.daily.temperature_2m_max;
-      const tmin = data.daily.temperature_2m_min;
-      const wmax = data.daily.wind_speed_10m_max;
-
-      grid.innerHTML = dates.map((dt,i) => {
-        const v = verdictFromCode(codes[i], wmax[i]);
-        const vLabel = v === 'go' ? 'Esci sereno' : (v === 'caution' ? 'Verifichiamo' : 'Sconsigliato');
-        return `
-          <article class="md-day" data-v="${v}">
-            <div class="md-dow">
-              <b>${dayShort(dt).replace('.','')}</b>
-              <small>${dayNum(dt)}</small>
-            </div>
-            <div class="md-icon">${pickIcon(codes[i])}</div>
-            <div class="md-tx">
-              <b>${Math.round(tmax[i])}° <span class="dim">/ ${Math.round(tmin[i])}°</span></b>
-              <small>Vento ${Math.round(wmax[i])} km/h</small>
-            </div>
-            <span class="md-verdict" data-v="${v}" aria-label="${vLabel}"></span>
-          </article>
-        `;
-      }).join('');
-      meteoLoaded = true;
+  async function loadMeteo(){
+    // If cached, paint immediately. Otherwise show skeleton and fetch.
+    if(meteoData){
+      renderMeteoNow(meteoData);
+      renderMeteoGrid(meteoData);
+      return;
+    }
+    showMeteoLoading();
+    try{
+      const data = await ensureMeteoData();
+      renderMeteoNow(data);
+      renderMeteoGrid(data);
     }catch(err){
-      $('#meteoGrid').innerHTML = '<p style="text-align:center;color:var(--ink-3);font-size:13px">Impossibile caricare il meteo. <a href="https://wa.me/390000000000" style="color:var(--cyan-2);text-decoration:underline">Scrivici su WhatsApp</a> per il punto del giorno.</p>';
+      const now  = $('#meteoNow');
+      const grid = $('#meteoGrid');
+      if(now){ now.classList.remove('is-loading'); now.removeAttribute('aria-busy'); }
+      if(grid){
+        grid.removeAttribute('aria-busy');
+        grid.innerHTML = '<p style="text-align:center;color:var(--ink-3);font-size:13px">Impossibile caricare il meteo. <a href="https://wa.me/390000000000" style="color:var(--cyan-2);text-decoration:underline">Scrivici su WhatsApp</a> per il punto del giorno.</p>';
+      }
+    }
+  }
+
+  async function loadCompactMeteo(container){
+    if(!container) return;
+    if(meteoData){
+      renderCompactMeteo(container, meteoData);
+      return;
+    }
+    container.setAttribute('aria-busy', 'true');
+    container.innerHTML = compactMeteoSkeleton();
+    try{
+      const data = await ensureMeteoData();
+      // Container may have been replaced if the user closed/reopened the sheet
+      const live = $('#dtMeteoStrip');
+      if(live) renderCompactMeteo(live, data);
+    }catch(err){
+      container.removeAttribute('aria-busy');
+      container.innerHTML = '<p class="dt-md-fail">Meteo non disponibile in questo momento.</p>';
     }
   }
 
@@ -873,9 +1115,13 @@
     const wa  = (h >= 7 && h < 9) || (h >= 20 && h < 22);
     const status = open ? 'open' : (wa ? 'whatsapp' : 'closed');
     const pill = $('#statusPill');
+    if(!pill) return;
     pill.dataset.status = status;
-    pill.querySelector('.status-label').textContent =
-      status === 'open' ? 'Aperto' : (status === 'whatsapp' ? 'Solo WhatsApp' : 'Chiuso');
+    const label = pill.querySelector('.status-label');
+    if(label){
+      label.textContent =
+        status === 'open' ? 'Aperto' : (status === 'whatsapp' ? 'Solo WhatsApp' : 'Chiuso');
+    }
   }
 
   // ============ SCROLL ELEVATION ============
@@ -894,6 +1140,78 @@
   }
   window.addEventListener('scroll', onScroll, { passive: true });
 
+  // ============ INFO STRIP MARQUEE (mobile) ============
+  function setupInfoStripMarquee(){
+    if(window.innerWidth > 720) return;
+    const wrap = document.querySelector('.info-strip-inner');
+    if(!wrap || wrap.querySelector('.info-strip-marquee-inner')) return;
+
+    const track = document.createElement('div');
+    track.className = 'info-strip-track';
+
+    // Move all existing children into the track, with · separators between them
+    [...wrap.children].forEach((el, i) => {
+      if(i > 0){
+        const sep = document.createElement('span');
+        sep.className = 'sep';
+        sep.textContent = '·';
+        track.appendChild(sep);
+      }
+      track.appendChild(el);
+    });
+
+    const clone = track.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+
+    const inner = document.createElement('div');
+    inner.className = 'info-strip-marquee-inner';
+    inner.appendChild(track);
+    inner.appendChild(clone);
+    wrap.appendChild(inner);
+
+    // tell CSS to switch the wrap into marquee layout
+    wrap.classList.add('has-marquee');
+  }
+
+  // ============ HIDE TOPBAR + CAT-BAR WHEN PAST PRODUCTS ============
+  // The chrome (top tabs + bottom filter bar) is product-context UI.
+  // Once the user scrolls out of the feed into the contact or footer,
+  // it gets out of the way.
+  function setupChromeHideOnFooter(){
+    if(!('IntersectionObserver' in window)) return;
+    const targets = $$('.contact, .footer');
+    if(!targets.length) return;
+    // Track which targets are currently intersecting; hide chrome if any are
+    const visible = new Set();
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if(e.isIntersecting) visible.add(e.target);
+        else visible.delete(e.target);
+      });
+      document.body.classList.toggle('is-past-products', visible.size > 0);
+    }, { rootMargin: '0px', threshold: 0 });
+    targets.forEach(t => obs.observe(t));
+  }
+
+  // ============ FOOTER CATEGORY LINKS — switch tab/cat in-app ============
+  function wireFooterCatLinks(){
+    $$('.foot-col a[data-tab]').forEach(a => {
+      a.addEventListener('click', (ev) => {
+        const tab = a.dataset.tab;
+        const cat = a.dataset.cat;
+        if(!tab) return;
+        ev.preventDefault();
+        if(tab !== state.activeTab) setTab(tab);
+        if(cat){
+          state.activeCat = cat;
+          renderCats();
+          renderCards();
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  }
+
   // ============ INIT ============
   function init(){
     document.body.dataset.activeTab = state.activeTab;
@@ -902,9 +1220,12 @@
     tickStatus();
     setInterval(tickStatus, 60_000);
     onScroll();
+    setupInfoStripMarquee();
+    setupChromeHideOnFooter();
+    wireFooterCatLinks();
 
     // pre-set deep link
-    if(location.hash === '#love'){ setTab('love'); }
+    if(location.hash === '#experience' || location.hash === '#love'){ setTab('experience'); }
     if(location.hash === '#meteo'){ openMeteo(); }
   }
 
