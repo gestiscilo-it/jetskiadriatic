@@ -1399,6 +1399,7 @@ body[data-active-tab="love"] .dt-includes li svg{ color: var(--rose) }
   /* container goes wide */
   .app{
     max-width: var(--max-w);
+    min-height: 0;
     padding-bottom: 40px;
     background: var(--bg);
   }
