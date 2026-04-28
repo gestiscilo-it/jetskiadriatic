@@ -85,6 +85,20 @@ window.JSA.applyClears = function(product, selections, changedGroupId){
   return out;
 };
 
+window.JSA.parseDeepLink = function(hashStr){
+  const h = (hashStr || '').replace(/^#/, '');
+  if(!h) return null;
+  const parts = h.split('&').map(s => s.split('=')).filter(p => p.length === 2);
+  const map = Object.fromEntries(parts.map(([k,v]) => [decodeURIComponent(k), decodeURIComponent(v)]));
+  if(!map.p) return null;
+  const preselect = {};
+  for(const k of Object.keys(map)){
+    if(k === 'p') continue;
+    preselect[k] = map[k].includes(',') ? new Set(map[k].split(',')) : map[k];
+  }
+  return { id: map.p, preselect };
+};
+
 (function(){
   'use strict';
 

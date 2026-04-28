@@ -184,6 +184,26 @@
       eq(out.bundle, 'social-star');
     });
 
+    test('parseDeepLink — empty hash returns null', () => {
+      eq(window.JSA.parseDeepLink(''), null);
+      eq(window.JSA.parseDeepLink('#'), null);
+    });
+
+    test('parseDeepLink — only product id', () => {
+      eq(window.JSA.parseDeepLink('#p=classic'), { id: 'classic', preselect: {} });
+    });
+
+    test('parseDeepLink — id + single + multi (csv)', () => {
+      const r = window.JSA.parseDeepLink('#p=noleggio-sportender&durata=45&media=drone,gopro');
+      eq(r.id, 'noleggio-sportender');
+      eq(r.preselect.durata, '45');
+      eq([...r.preselect.media].sort(), ['drone','gopro']);
+    });
+
+    test('parseDeepLink — non-p hash returns null', () => {
+      eq(window.JSA.parseDeepLink('#meteo'), null);
+    });
+
     summary.textContent = `${passed} passed, ${failed} failed`;
     summary.className = failed ? 'summary bad' : 'summary ok';
   }
