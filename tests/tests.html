@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>JSA tests</title>
+<style>
+  body{font:14px/1.5 ui-monospace,Menlo,monospace;background:#0f1417;color:#e8eaec;padding:24px}
+  h1{font-size:18px;margin:0 0 16px}
+  .pass{color:#7CDB8F}
+  .fail{color:#FF7A7A;font-weight:700}
+  .summary{padding:8px 12px;border-radius:6px;margin-bottom:16px}
+  .summary.ok{background:rgba(124,219,143,.15)}
+  .summary.bad{background:rgba(255,122,122,.15)}
+  ol{padding-left:20px}
+  li{margin:2px 0}
+</style>
+</head>
+<body>
+<h1>JSA test runner</h1>
+<div id="summary" class="summary">running…</div>
+<ol id="results"></ol>
+<script src="../assets/js/app.js"></script>
+<script src="tests.js"></script>
+</body>
+</html>
