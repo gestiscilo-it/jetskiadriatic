@@ -136,6 +136,54 @@
       eq(window.JSA.validateRequiredVariants(product, { a: '1' }), ['b']);
     });
 
+    test('resolveAlias — non-alias returns same product', () => {
+      const catalog = [{ id: 'p1', basePrice: 100 }];
+      const r = window.JSA.resolveAlias(catalog, 'p1');
+      eq(r.product.id, 'p1');
+      eq(r.preselect, {});
+    });
+
+    test('resolveAlias — alias resolves to canonical with preselect', () => {
+      const catalog = [
+        { id: 'noleggio-sportender', basePrice: 50 },
+        { id: 'classic', aliasOf: 'noleggio-sportender', preselect: { durata: '45' } }
+      ];
+      const r = window.JSA.resolveAlias(catalog, 'classic');
+      eq(r.product.id, 'noleggio-sportender');
+      eq(r.preselect, { durata: '45' });
+      eq(r.aliasId, 'classic');
+    });
+
+    test('resolveAlias — unknown id returns null', () => {
+      eq(window.JSA.resolveAlias([], 'nope'), null);
+    });
+
+    test('applyClears — selecting an option whose group has clears wipes the cleared group', () => {
+      const product = {
+        variantGroups: [
+          { id: 'media', selection: 'multi', options: [{id:'drone'},{id:'gopro'}] },
+          { id: 'bundle', selection: 'single', clears: ['media'], options: [{id:'social-star'}] }
+        ]
+      };
+      const sel = { media: new Set(['drone','gopro']), bundle: 'social-star' };
+      const out = window.JSA.applyClears(product, sel, 'bundle');
+      eq([...out.media], []);
+      eq(out.bundle, 'social-star');
+    });
+
+    test('applyClears — selecting in cleared group does NOT clear the bundle group', () => {
+      const product = {
+        variantGroups: [
+          { id: 'media', selection: 'multi', options: [{id:'drone'}] },
+          { id: 'bundle', selection: 'single', clears: ['media'], options: [{id:'social-star'}] }
+        ]
+      };
+      const sel = { media: new Set(['drone']), bundle: 'social-star' };
+      const out = window.JSA.applyClears(product, sel, 'media');
+      // bundle stays — clears is one-way (bundle clears media, not the other way)
+      eq(out.bundle, 'social-star');
+    });
+
     summary.textContent = `${passed} passed, ${failed} failed`;
     summary.className = failed ? 'summary bad' : 'summary ok';
   }

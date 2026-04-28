@@ -53,6 +53,38 @@ window.JSA.validateRequiredVariants = function(product, selections){
   return missing;
 };
 
+window.JSA.resolveAlias = function(catalog, id){
+  if(!Array.isArray(catalog)) return null;
+  const entry = catalog.find(p => p.id === id);
+  if(!entry) return null;
+  if(!entry.aliasOf){
+    return { product: entry, preselect: {}, aliasId: null };
+  }
+  const canonical = catalog.find(p => p.id === entry.aliasOf);
+  if(!canonical) return null;
+  return { product: canonical, preselect: { ...(entry.preselect || {}) }, aliasId: entry.id };
+};
+
+// Apply cross-group `clears` rule: if the just-changed group declares
+// `clears: ['otherId']`, wipe selections of those other groups.
+// Returns a new selections object (input is not mutated).
+window.JSA.applyClears = function(product, selections, changedGroupId){
+  const out = {};
+  for(const k of Object.keys(selections || {})){
+    const v = selections[k];
+    out[k] = (v instanceof Set) ? new Set(v) : (Array.isArray(v) ? [...v] : v);
+  }
+  const group = (product.variantGroups || []).find(g => g.id === changedGroupId);
+  if(!group || !group.clears) return out;
+  for(const targetId of group.clears){
+    const target = (product.variantGroups || []).find(g => g.id === targetId);
+    if(!target) continue;
+    if(target.selection === 'multi') out[targetId] = new Set();
+    else delete out[targetId];
+  }
+  return out;
+};
+
 (function(){
   'use strict';
 
