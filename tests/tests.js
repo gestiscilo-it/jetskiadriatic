@@ -101,6 +101,31 @@
       eq(window.JSA.computeTotal(product, { media: new Set(['drone','gopro']) }, 1), 50 + 99 + 15);
     });
 
+    test('validateRequiredVariants — no required groups returns []', () => {
+      const product = { variantGroups: [{ id: 'media', required: false, options: [] }] };
+      eq(window.JSA.validateRequiredVariants(product, {}), []);
+    });
+
+    test('validateRequiredVariants — required + missing returns the id', () => {
+      const product = { variantGroups: [{ id: 'durata', required: true, selection: 'single', options: [] }] };
+      eq(window.JSA.validateRequiredVariants(product, {}), ['durata']);
+    });
+
+    test('validateRequiredVariants — required + filled returns []', () => {
+      const product = { variantGroups: [{ id: 'durata', required: true, selection: 'single', options: [] }] };
+      eq(window.JSA.validateRequiredVariants(product, { durata: '45' }), []);
+    });
+
+    test('validateRequiredVariants — multi required with empty Set is missing', () => {
+      const product = { variantGroups: [{ id: 'm', required: true, selection: 'multi', options: [] }] };
+      eq(window.JSA.validateRequiredVariants(product, { m: new Set() }), ['m']);
+    });
+
+    test('validateRequiredVariants — multi required with one selection is filled', () => {
+      const product = { variantGroups: [{ id: 'm', required: true, selection: 'multi', options: [] }] };
+      eq(window.JSA.validateRequiredVariants(product, { m: new Set(['x']) }), []);
+    });
+
     summary.textContent = `${passed} passed, ${failed} failed`;
     summary.className = failed ? 'summary bad' : 'summary ok';
   }

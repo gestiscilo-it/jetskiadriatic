@@ -39,6 +39,20 @@ window.JSA.computeTotal = function(product, selections, people){
   return total;
 };
 
+window.JSA.validateRequiredVariants = function(product, selections){
+  const sel = selections || {};
+  const missing = [];
+  for(const g of (product.variantGroups || [])){
+    if(!g.required) continue;
+    const raw = sel[g.id];
+    if(raw == null){ missing.push(g.id); continue; }
+    if(raw instanceof Set){ if(raw.size === 0) missing.push(g.id); continue; }
+    if(Array.isArray(raw)){ if(raw.length === 0) missing.push(g.id); continue; }
+    if(raw === '') missing.push(g.id);
+  }
+  return missing;
+};
+
 (function(){
   'use strict';
 
