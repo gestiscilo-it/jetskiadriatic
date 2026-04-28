@@ -555,7 +555,152 @@ window.JSA.parseDeepLink = function(hashStr){
             { id: 'refresh', label: 'VIP Refresh Kit', priceMode: 'add', price: 15 }
           ] }
       ]
-    }
+    },
+
+    // ============ YACHT ============
+    {
+      id: 'yacht-sunset',
+      tab: 'yacht', cat: 'sunset',
+      title: 'Sunset <em>Cruise</em>',
+      loc: 'Cattolica · al largo',
+      img: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop',
+      imgs: ['https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop'],
+      badge: '2 ore', meta: '2 ore · skipper · aperitivo',
+      duration: '2 ore al tramonto',
+      basePrice: 690, priceUnit: 'a barca', perPerson: false,
+      minPeople: 1, maxPeople: 8,
+      slots: ['18:30'],
+      rating: 4.95, reviews: 0,
+      includes: ['Skipper a bordo', 'Aperitivo standard (taglieri + bollicine)', 'Carburante incluso', 'Fino a 8 ospiti'],
+      tags: ['2 ore', 'fino a 8 px', 'aperitivo', 'skipper'],
+      lead: 'Due ore al tramonto, aperitivo a bordo con bollicine e taglieri, fino a 8 ospiti. Partenza 18:30, rientro al buio sotto Cattolica illuminata.',
+      variantGroups: [
+        { id: 'catering-aperitivo', label: 'Aperitivo', selection: 'single', required: false,
+          options: [
+            { id: 'standard', label: 'Aperitivo standard', priceMode: 'add', price: 0, sublabel: 'incluso', default: true },
+            { id: 'premium',  label: 'Aperitivo premium',  priceMode: 'add', price: 120, sublabel: 'crudo + ostriche + champagne' }
+          ] },
+        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
+          options: [
+            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
+            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
+            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
+            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
+            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
+            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
+          ] }
+      ]
+    },
+    {
+      id: 'yacht-day-charter',
+      tab: 'yacht', cat: 'day',
+      title: 'Day <em>Charter</em>',
+      loc: 'Cattolica → Vallugola → Gabicce',
+      img: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=85&w=1600&auto=format&fit=crop',
+      imgs: ['https://images.unsplash.com/photo-1540541338287-41700207dee6?q=85&w=1600&auto=format&fit=crop'],
+      badge: 'full day', meta: '8 ore · 10 px · pranzo',
+      duration: '8 ore di mare aperto',
+      basePrice: 1890, priceUnit: 'a barca', perPerson: false,
+      minPeople: 1, maxPeople: 10,
+      slots: ['09:00', '10:00'],
+      rating: 4.95, reviews: 0,
+      includes: ['Skipper + hostess', 'Tender a bordo per le calette', 'Set snorkeling', 'Carburante incluso', 'Fino a 10 ospiti'],
+      tags: ['full day', 'fino a 10 px', 'pranzo', 'tender + snorkel'],
+      lead: 'Otto ore tra Cattolica, Vallugola e Gabicce. Pranzo a bordo o al Falco, snorkeling, tender per le calette.',
+      variantGroups: [
+        { id: 'pranzo', label: 'Pranzo', selection: 'single', required: true,
+          options: [
+            { id: 'a-bordo', label: 'Pranzo a bordo', priceMode: 'add', price: 0, sublabel: 'incluso', default: true },
+            { id: 'falco',   label: 'Pranzo al Ristorante Falco (Vallugola)', priceMode: 'add', price: 0, sublabel: 'a consumo · da confermare' }
+          ] },
+        { id: 'snorkel-set', label: 'Extra acquatici', selection: 'multi', required: false,
+          options: [
+            { id: 'tender-extra', label: 'Tender extra time', priceMode: 'add', price: 80 }
+          ] },
+        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
+          options: [
+            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
+            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
+            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
+            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
+            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
+            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
+          ] }
+      ]
+    },
+    {
+      id: 'yacht-private-event',
+      tab: 'yacht', cat: 'event',
+      title: 'Private <em>Event</em>',
+      loc: 'Cattolica · al largo',
+      img: 'https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=85&w=1600&auto=format&fit=crop',
+      imgs: ['https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=85&w=1600&auto=format&fit=crop'],
+      badge: '4 ore', meta: '4 ore · 12 px · catering',
+      duration: '4 ore con ponte allestito',
+      basePrice: 1490, priceUnit: 'a barca', perPerson: false,
+      minPeople: 1, maxPeople: 12,
+      rating: 5.0, reviews: 0,
+      includes: ['Skipper + hostess', 'Catering standard', 'Ponte allestito', 'Fino a 12 ospiti'],
+      tags: ['4 ore', 'fino a 12 px', 'catering', 'DJ opzionale'],
+      lead: 'Compleanni, addii al celibato, brindisi aziendali. Catering on demand, DJ opzionale, ponte allestito.',
+      variantGroups: [
+        { id: 'catering', label: 'Catering', selection: 'single', required: true,
+          options: [
+            { id: 'standard', label: 'Catering standard', priceMode: 'add', price: 0, sublabel: 'incluso', default: true },
+            { id: 'premium',  label: 'Catering premium',  priceMode: 'add', price: 400 },
+            { id: 'chef',     label: 'Chef a bordo',      priceMode: 'add', price: 800 }
+          ] },
+        { id: 'dj', label: 'DJ', selection: 'single', required: false,
+          options: [
+            { id: 'no',  label: 'Senza DJ',    priceMode: 'add', price: 0, default: true },
+            { id: 'yes', label: 'DJ a bordo',  priceMode: 'add', price: 250 }
+          ] },
+        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
+          options: [
+            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
+            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
+            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
+            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
+            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
+            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
+          ] }
+      ]
+    },
+    {
+      id: 'yacht-weekend',
+      tab: 'yacht', cat: 'weekend',
+      title: 'Riviera <em>Weekend</em>',
+      loc: 'Marche · Emilia',
+      img: 'https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop',
+      imgs: ['https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop'],
+      badge: '2 gg · 1 notte', meta: 'cabina · colazione',
+      duration: '2 giorni, 1 notte a bordo',
+      basePrice: 2490, priceUnit: 'a coppia', perPerson: false,
+      minPeople: 2, maxPeople: 2,
+      rating: 5.0, reviews: 0,
+      includes: ['Cabina privata', 'Colazione continental a bordo', 'Skipper', 'Rotta libera tra Marche ed Emilia'],
+      tags: ['2 gg · 1 notte', 'coppia', 'cabina', 'colazione'],
+      lead: 'Due giorni, una notte. Cabina privata, colazione a bordo, rotta libera tra le coste delle Marche e dell\'Emilia.',
+      variantGroups: [
+        { id: 'colazione', label: 'Colazione', selection: 'single', required: false,
+          options: [
+            { id: 'continental', label: 'Continental', priceMode: 'add', price: 0, sublabel: 'inclusa', default: true },
+            { id: 'specialty',   label: 'Specialty',   priceMode: 'add', price: 60 }
+          ] },
+        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
+          options: [
+            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
+            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
+            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
+            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
+            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
+            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
+          ] }
+      ]
+    },
+
+    // Yacht hero CTA on yacht.html — alias to sunset cruise
+    { id: 'yacht', tab: 'yacht', aliasOf: 'yacht-sunset', preselect: {} },
   ];
 
   // Sample jet ski clips from Pixabay's public CDN, assigned cyclically
