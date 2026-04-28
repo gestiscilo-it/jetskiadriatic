@@ -265,7 +265,8 @@ window.JSA.parseDeepLink = function(hashStr){
       badge: 'Coppia',
       meta: '1 ora · rose · champagne',
       duration: '60 minuti privati',
-      priceFrom: 320,
+      basePrice: 320,
+      perPerson: false, minPeople: 1, maxPeople: 2,
       priceUnit: 'a coppia',
       rating: 4.96,
       reviews: 28,
@@ -276,7 +277,28 @@ window.JSA.parseDeepLink = function(hashStr){
         'Coordinamento staff per la sorpresa'
       ],
       tags: ['1 ora', 'rose', 'champagne', 'segreto'],
-      lead: 'L\'inizio di un sogno. Un\'ora privata, rose preparate in segreto, Champagne fresco. Per sorprendere, non annunciare.'
+      lead: 'L\'inizio di un sogno. Un\'ora privata, rose preparate in segreto, Champagne fresco. Per sorprendere, non annunciare.',
+      variantGroups: [
+        { id: 'champagne-upgrade', label: 'Champagne', selection: 'single', required: false,
+          options: [
+            { id: 'piccolo', label: 'Champagne piccolo', priceMode: 'add', price: 0, sublabel: 'incluso', default: true },
+            { id: '750ml',   label: 'Champagne 750ml',   priceMode: 'add', price: 30, sublabel: '+30€' }
+          ] },
+        { id: 'media-extra', label: 'Media extra', selection: 'multi', required: false,
+          options: [
+            { id: 'drone',     label: 'Drone VIP Movie', priceMode: 'add', price: 99 },
+            { id: 'paparazzo', label: 'Paparazzo',       priceMode: 'add', price: 50 }
+          ] },
+        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
+          options: [
+            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
+            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
+            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
+            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
+            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
+            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
+          ] }
+      ]
     },
     {
       id: 'the-proposal',
@@ -293,7 +315,8 @@ window.JSA.parseDeepLink = function(hashStr){
       badge: 'Signature',
       meta: '1h30 · drone · paparazzo',
       duration: '90 minuti orchestrati',
-      priceFrom: 490,
+      basePrice: 490,
+      perPerson: false, minPeople: 1, maxPeople: 2,
       priceUnit: 'a coppia',
       rating: 5.0,
       reviews: 7,
@@ -306,7 +329,21 @@ window.JSA.parseDeepLink = function(hashStr){
         'Certificato d\'Amore su pergamena · coordinate GPS del sì'
       ],
       tags: ['1h30', 'drone', 'paparazzo', 'pergamena GPS'],
-      lead: 'Il pacchetto definitivo per chiedere la mano in mezzo al mare. Rose, Champagne, drone, paparazzo. E un certificato con le coordinate del sì.'
+      lead: 'Il pacchetto definitivo per chiedere la mano in mezzo al mare. Rose, Champagne, drone, paparazzo. E un certificato con le coordinate del sì.',
+      variantGroups: [
+        { id: 'champagne-upgrade', label: 'Champagne (default 750ml incluso)', selection: 'single', required: false,
+          options: [
+            { id: 'incluso',      label: 'Champagne 750ml incluso', priceMode: 'add', price: 0,   default: true },
+            { id: 'moet',         label: 'Upgrade Moët',             priceMode: 'add', price: 100 },
+            { id: 'veuve',        label: 'Upgrade Veuve Clicquot',   priceMode: 'add', price: 110 },
+            { id: 'ruinart',      label: 'Upgrade Ruinart',          priceMode: 'add', price: 160 },
+            { id: 'dom-perignon', label: 'Upgrade Dom Pérignon',     priceMode: 'add', price: 420 }
+          ] },
+        { id: 'extras', label: 'Extra', selection: 'multi', required: false,
+          options: [
+            { id: 'musicista', label: 'Musicista dal vivo', priceMode: 'add', price: 250, sublabel: 'chitarrista o violinista — upsell verso Sinfonia' }
+          ] }
+      ]
     },
     {
       id: 'sinfonia-amore',
@@ -323,7 +360,8 @@ window.JSA.parseDeepLink = function(hashStr){
       badge: 'Elite · novità',
       meta: '1h30–2h · regia cinematografica',
       duration: '90–120 minuti su prenotazione',
-      priceFrom: 890,
+      basePrice: 890,
+      perPerson: false, minPeople: 1, maxPeople: 2,
       priceUnit: 'a coppia',
       rating: 5.0,
       reviews: 0,
@@ -337,7 +375,23 @@ window.JSA.parseDeepLink = function(hashStr){
         'Drone VIP Movie disponibile come extra'
       ],
       tags: ['elite', '1h30–2h', 'musicista', 'regia', 'novità'],
-      lead: 'Il lusso assoluto, con regia cinematografica. Seconda moto che consegna le rose tra le onde, musicista dal vivo per una serenata privata.'
+      lead: 'Il lusso assoluto, con regia cinematografica. Seconda moto che consegna le rose tra le onde, musicista dal vivo per una serenata privata.',
+      variantGroups: [
+        { id: 'drone-add', label: 'Drone VIP', selection: 'single', required: false,
+          options: [
+            { id: 'no',  label: 'No drone', priceMode: 'add', price: 0, default: true },
+            { id: 'yes', label: 'Drone VIP Movie', priceMode: 'add', price: 99 }
+          ] },
+        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
+          options: [
+            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
+            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
+            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
+            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
+            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
+            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
+          ] }
+      ]
     },
     {
       id: 'vallugola-diamond',
@@ -354,7 +408,8 @@ window.JSA.parseDeepLink = function(hashStr){
       badge: 'All inclusive',
       meta: '4 ore · drone · champagne',
       duration: '4 ore verso Vallugola',
-      priceFrom: 850,
+      basePrice: 850,
+      perPerson: false, minPeople: 1, maxPeople: 2,
       priceUnit: 'a coppia',
       rating: 4.98,
       reviews: 14,
@@ -365,7 +420,22 @@ window.JSA.parseDeepLink = function(hashStr){
         'Aperitivo a bordo · 2 bottiglie di Champagne'
       ],
       tags: ['4 ore', 'fiori', 'champagne', 'drone'],
-      lead: 'L\'esperienza di navigazione più completa verso Vallugola. Fiori a bordo, drone Movie, aperitivo con due bottiglie di Champagne.'
+      lead: 'L\'esperienza di navigazione più completa verso Vallugola. Fiori a bordo, drone Movie, aperitivo con due bottiglie di Champagne.',
+      variantGroups: [
+        { id: 'media-extra', label: 'Media extra (drone già incluso)', selection: 'multi', required: false,
+          options: [
+            { id: 'paparazzo', label: 'Paparazzo', priceMode: 'add', price: 50 }
+          ] },
+        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
+          options: [
+            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
+            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
+            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
+            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
+            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
+            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
+          ] }
+      ]
     },
     {
       id: 'midday-brunch',
@@ -381,7 +451,8 @@ window.JSA.parseDeepLink = function(hashStr){
       badge: 'Brunch a bordo',
       meta: '1 ora · brunch box',
       duration: '60 minuti al largo',
-      priceFrom: 220,
+      basePrice: 220,
+      perPerson: false, minPeople: 1, maxPeople: 2,
       priceUnit: 'a coppia',
       rating: 4.91,
       reviews: 19,
@@ -392,7 +463,23 @@ window.JSA.parseDeepLink = function(hashStr){
         'Set-up del tavolo a bordo'
       ],
       tags: ['1 ora', 'brunch', 'drink', 'coppia'],
-      lead: 'Pausa di stile a metà giornata. Brunch box di lusso, drink, tavolo apparecchiato. Il mare come sala da pranzo privata.'
+      lead: 'Pausa di stile a metà giornata. Brunch box di lusso, drink, tavolo apparecchiato. Il mare come sala da pranzo privata.',
+      variantGroups: [
+        { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
+          options: [
+            { id: 'drone',     label: 'Drone VIP Movie', priceMode: 'add', price: 99 },
+            { id: 'paparazzo', label: 'Paparazzo',       priceMode: 'add', price: 50 }
+          ] },
+        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
+          options: [
+            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
+            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
+            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
+            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
+            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
+            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
+          ] }
+      ]
     },
     {
       id: 'kids-academy',
@@ -443,7 +530,8 @@ window.JSA.parseDeepLink = function(hashStr){
       badge: 'Single · social',
       meta: '30 min · 2 persone',
       duration: '30 minuti · uno guida, l\'altro dietro',
-      priceFrom: 45,
+      basePrice: 45,
+      perPerson: true, minPeople: 1, maxPeople: 8,
       priceUnit: 'a persona',
       rating: 4.88,
       reviews: 9,
@@ -454,7 +542,19 @@ window.JSA.parseDeepLink = function(hashStr){
         'La complicità messa alla prova'
       ],
       tags: ['30 min', 'single', 'social'],
-      lead: 'Appuntamento al buio in mare. 30 minuti dove uno guida e l\'altro sta dietro: la complicità messa alla prova.'
+      lead: 'Appuntamento al buio in mare. 30 minuti dove uno guida e l\'altro sta dietro: la complicità messa alla prova.',
+      variantGroups: [
+        { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
+          options: [
+            { id: 'gopro', label: 'GoPro POV',       priceMode: 'add', price: 15 },
+            { id: 'drone', label: 'Drone VIP Movie', priceMode: 'add', price: 99 }
+          ] },
+        { id: 'accessori', label: 'Accessori', selection: 'multi', required: false,
+          options: [
+            { id: 'kasko',   label: 'Kasko Light',     priceMode: 'add', price: 10 },
+            { id: 'refresh', label: 'VIP Refresh Kit', priceMode: 'add', price: 15 }
+          ] }
+      ]
     }
   ];
 
