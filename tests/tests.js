@@ -126,6 +126,16 @@
       eq(window.JSA.validateRequiredVariants(product, { m: new Set(['x']) }), []);
     });
 
+    test('validateRequiredVariants — multiple required groups, some missing', () => {
+      const product = {
+        variantGroups: [
+          { id: 'a', required: true, selection: 'single', options: [] },
+          { id: 'b', required: true, selection: 'single', options: [] }
+        ]
+      };
+      eq(window.JSA.validateRequiredVariants(product, { a: '1' }), ['b']);
+    });
+
     summary.textContent = `${passed} passed, ${failed} failed`;
     summary.className = failed ? 'summary bad' : 'summary ok';
   }
