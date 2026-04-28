@@ -6,8 +6,38 @@
 // and for any future inline scripts that need pricing or validation logic.
 window.JSA = window.JSA || {};
 
-// Stub — replaced in Task 3 with the real pricing function.
-window.JSA.computeTotal = function(){ return 0; };
+window.JSA.computeTotal = function(product, selections, people){
+  if(!product) return 0;
+  const sel = selections || {};
+  const pp  = Math.max(1, people || 1);
+  const groups = product.variantGroups || [];
+
+  // Find the active "replace" variant if any. Only the first one wins
+  // (only one group ever uses replace per product — durata, by convention).
+  let base = product.basePrice || 0;
+  for(const g of groups){
+    if(g.selection !== 'single') continue;
+    const optId = sel[g.id];
+    if(!optId) continue;
+    const opt = (g.options || []).find(o => o.id === optId);
+    if(opt && opt.priceMode === 'replace'){ base = opt.price || 0; break; }
+  }
+
+  let total = product.perPerson ? base * pp : base;
+
+  // Sum all "add" options across groups (single + multi, with Set support).
+  for(const g of groups){
+    const raw = sel[g.id];
+    if(raw == null) continue;
+    const ids = (raw instanceof Set) ? [...raw] : (Array.isArray(raw) ? raw : [raw]);
+    for(const id of ids){
+      const opt = (g.options || []).find(o => o.id === id);
+      if(opt && opt.priceMode === 'add') total += (opt.price || 0);
+    }
+  }
+
+  return total;
+};
 
 (function(){
   'use strict';
