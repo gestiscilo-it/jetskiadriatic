@@ -104,115 +104,108 @@ window.JSA.parseDeepLink = function(hashStr){
 
   // ============ DATA ============
   const EXPERIENCES = [
-    // ============ NOLEGGIO ============
+    // ============ NOLEGGIO — canonical ride product ============
     {
-      id: 'fast-fun',
+      id: 'noleggio-sportender',
       tab: 'noleggio',
       cat: 'veloci',
-      title: 'Fast <em>& Fun</em>',
-      loc: 'Cattolica · pontile',
-      img: 'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: '15 min',
-      meta: '15 min',
-      duration: '15 minuti effettivi · +10 min omaggio per il rientro',
-      priceFrom: 50,
-      priceUnit: 'a moto',
-      rating: 4.92,
-      reviews: 184,
-      includes: [
-        'Briefing di sicurezza · 10 minuti',
-        'Giubbotto salvagente in tutte le taglie',
-        '15 minuti di navigazione effettiva',
-        '+10 minuti omaggio per il rientro'
-      ],
-      tags: ['15 min', 'entry', 'senza patente'],
-      lead: 'Adrenalina pura, in 15 minuti effettivi. Il tempo parte fuori dal porto, +10 minuti regalati per il rientro.'
-    },
-    {
-      id: 'sprint',
-      tab: 'noleggio',
-      cat: 'veloci',
-      title: 'Sprint <em>30</em>',
-      loc: 'Cattolica · pontile',
-      img: 'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: '30 min',
-      meta: '30 min',
-      duration: '30 minuti effettivi in mare',
-      priceFrom: 85,
-      priceUnit: 'a moto',
-      rating: 4.93,
-      reviews: 142,
-      includes: [
-        'Briefing di sicurezza · 10 minuti',
-        '30 minuti effettivi di navigazione',
-        'Sportender JST-30 · senza patente',
-        'Giubbotto in tutte le taglie'
-      ],
-      tags: ['30 min', 'divertimento'],
-      lead: 'La sessione ideale per chi vuole divertirsi senza pensieri. 30 minuti effettivi, dal pontile al largo.'
-    },
-    {
-      id: 'classic',
-      tab: 'noleggio',
-      cat: 'veloci',
-      title: 'Classic <em>45</em>',
+      title: 'Noleggio <em>Sportender</em>',
       loc: 'Cattolica · pontile',
       img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
       imgs: [
         'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop'
+        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop'
       ],
-      badge: '45 min',
-      meta: '45 min',
-      duration: '45 minuti effettivi · best seller',
-      priceFrom: 105,
+      badge: 'Best seller',
+      meta: '15/30/45/60 min',
+      duration: 'Tu scegli la durata · da 15 minuti a 2 ore',
+      basePrice: 50,
       priceUnit: 'a moto',
-      rating: 4.95,
-      reviews: 246,
+      perPerson: false,
+      minPeople: 1,
+      maxPeople: 3,
+      rating: 4.94,
+      reviews: 572,
       includes: [
         'Briefing di sicurezza · 10 minuti',
-        '45 minuti effettivi in mare',
-        'Tempo per arrivare al largo e tornare con calma',
-        'Sportender JST-30 · senza patente'
+        'Sportender JST-30 · senza patente',
+        'Giubbotto in tutte le taglie',
+        'Tempo effettivo in mare (timer parte fuori dal porto)'
       ],
-      tags: ['45 min', 'best seller', 'rapporto qualità/prezzo'],
-      lead: 'Il miglior rapporto qualità/prezzo. 45 minuti effettivi: il tempo giusto per arrivare al largo e tornare con calma.'
+      tags: ['senza patente', 'sportender JST-30', 'best seller'],
+      lead: 'Sali, accendi, vai. Scegli la durata che vuoi: 15 minuti per provare, 45 per il tour costiero, 1 ora per il tramonto.',
+      variantGroups: [
+        {
+          id: 'durata', label: 'Durata', selection: 'single', required: true,
+          options: [
+            { id: '15',  label: '15 min',     priceMode: 'replace', price: 50 },
+            { id: '30',  label: '30 min',     priceMode: 'replace', price: 85 },
+            { id: '45',  label: '45 min',     priceMode: 'replace', price: 105, default: true, sublabel: 'best seller' },
+            { id: '60',  label: '1 ora',      priceMode: 'replace', price: 145, sublabel: 'tramonto' },
+            { id: '120', label: '2 ore',      priceMode: 'replace', price: 245, sublabel: '1h + Extra Hour' }
+          ]
+        },
+        {
+          id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
+          options: [
+            { id: 'gopro', label: 'GoPro POV',         priceMode: 'add', price: 15, sublabel: '4K · file via AirDrop' },
+            { id: 'photo', label: 'Photo Kit Staff',   priceMode: 'add', price: 50, sublabel: 'scatti dallo staff' },
+            { id: 'drone', label: 'Drone VIP Movie',   priceMode: 'add', price: 99, sublabel: 'reel 4K · IG/TikTok ready' }
+          ]
+        },
+        {
+          id: 'bundle', label: 'Bundle media', selection: 'single', required: false, clears: ['media'],
+          options: [
+            { id: 'social-star', label: 'Social Star', priceMode: 'add', price: 100, sublabel: 'Drone + GoPro · risparmi 14€' }
+          ]
+        },
+        {
+          id: 'accessori', label: 'Accessori', selection: 'multi', required: false,
+          options: [
+            { id: 'kasko',   label: 'Kasko Light',     priceMode: 'add', price: 10, sublabel: 'graffi/scocca coperti' },
+            { id: 'refresh', label: 'VIP Refresh Kit', priceMode: 'add', price: 15, sublabel: 'sacca stagna + acqua + crema' },
+            { id: 'glasses', label: 'Occhiali Floating', priceMode: 'add', price: 20, sublabel: 'polarizzati Wave Bros' }
+          ]
+        },
+        {
+          id: 'relax-bundle', label: 'Bundle accessori', selection: 'single', required: false, clears: ['accessori'],
+          options: [
+            { id: 'total-relax', label: 'Total Relax', priceMode: 'add', price: 20, sublabel: 'Kasko + Refresh' }
+          ]
+        }
+      ]
     },
-    {
-      id: 'sunset-hour',
-      tab: 'noleggio',
-      cat: 'tour',
-      title: 'Sunset <em>Hour</em>',
-      loc: 'Cattolica → Gabicce',
+
+    // ============ NOLEGGIO — marketing aliases (point to canonical) ============
+    { id: 'fast-fun',   tab: 'noleggio', cat: 'veloci', aliasOf: 'noleggio-sportender', preselect: { durata: '15' },
+      title: 'Fast <em>& Fun</em>', loc: 'Cattolica · pontile',
+      img: 'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
+      badge: '15 min', meta: '15 min', priceFromOverride: 50,
+      tags: ['15 min', 'entry', 'senza patente'],
+      lead: 'Adrenalina pura, in 15 minuti effettivi. Il tempo parte fuori dal porto, +10 minuti regalati per il rientro.' },
+
+    { id: 'sprint',     tab: 'noleggio', cat: 'veloci', aliasOf: 'noleggio-sportender', preselect: { durata: '30' },
+      title: 'Sprint <em>30</em>', loc: 'Cattolica · pontile',
+      img: 'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
+      badge: '30 min', meta: '30 min', priceFromOverride: 85,
+      tags: ['30 min', 'divertimento'],
+      lead: 'La sessione ideale per chi vuole divertirsi senza pensieri. 30 minuti effettivi, dal pontile al largo.' },
+
+    { id: 'classic',    tab: 'noleggio', cat: 'veloci', aliasOf: 'noleggio-sportender', preselect: { durata: '45' },
+      title: 'Classic <em>45</em>', loc: 'Cattolica · pontile',
+      img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
+      badge: '45 min · best seller', meta: '45 min', priceFromOverride: 105,
+      tags: ['45 min', 'best seller'],
+      lead: 'Il miglior rapporto qualità/prezzo. 45 minuti effettivi: il tempo giusto per arrivare al largo e tornare con calma.' },
+
+    { id: 'sunset-hour',tab: 'noleggio', cat: 'tour',   aliasOf: 'noleggio-sportender', preselect: { durata: '60' },
+      title: 'Sunset <em>Hour</em>', loc: 'Cattolica → Gabicce',
       img: 'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: '1 ora',
-      meta: '1 ora',
-      duration: '60 minuti effettivi · ideale al tramonto',
-      priceFrom: 145,
-      priceUnit: 'a moto',
-      rating: 4.96,
-      reviews: 92,
-      includes: [
-        '60 minuti effettivi al largo',
-        'Tour lungo costa Gabicce · San Bartolo',
-        'Estensione +1 ora · 100€',
-        'Briefing completo · radio a bordo'
-      ],
+      badge: '1 ora', meta: '1 ora', priceFromOverride: 145,
       tags: ['1 ora', 'tramonto', 'premium'],
-      lead: 'L\'esperienza premium. Un\'ora effettiva, perfetta al tramonto o per un tour lungo costa.'
-    },
+      lead: 'L\'esperienza premium. Un\'ora effettiva, perfetta al tramonto o per un tour lungo costa.' },
+
     {
       id: 'vallugola-gold',
       tab: 'noleggio',
@@ -228,8 +221,9 @@ window.JSA.parseDeepLink = function(hashStr){
       badge: '4 ore',
       meta: '4 ore',
       duration: '4 ore · attracco e pranzo',
-      priceFrom: 289,
+      basePrice: 289,
       priceUnit: 'a persona',
+      perPerson: true, minPeople: 2, maxPeople: 3,
       rating: 4.95,
       reviews: 67,
       includes: [
@@ -239,7 +233,21 @@ window.JSA.parseDeepLink = function(hashStr){
         'Min. 2 persone'
       ],
       tags: ['4 ore', 'pranzo', 'caletta privata', 'min 2 pers'],
-      lead: 'L\'escursione VIP. Cattolica → Vallugola con attracco e sconto al Ristorante Falco.'
+      lead: 'L\'escursione VIP. Cattolica → Vallugola con attracco e sconto al Ristorante Falco.',
+      variantGroups: [
+        { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
+          options: [
+            { id: 'gopro', label: 'GoPro POV',         priceMode: 'add', price: 15, sublabel: '4K · file via AirDrop' },
+            { id: 'photo', label: 'Photo Kit Staff',   priceMode: 'add', price: 50, sublabel: 'scatti dallo staff' },
+            { id: 'drone', label: 'Drone VIP Movie',   priceMode: 'add', price: 99, sublabel: 'reel 4K · IG/TikTok ready' }
+          ] },
+        { id: 'accessori', label: 'Accessori', selection: 'multi', required: false,
+          options: [
+            { id: 'kasko',   label: 'Kasko Light',     priceMode: 'add', price: 10 },
+            { id: 'refresh', label: 'VIP Refresh Kit', priceMode: 'add', price: 15 },
+            { id: 'glasses', label: 'Occhiali Floating', priceMode: 'add', price: 20 }
+          ] }
+      ]
     },
 
     // ============ EXPERIENCE ============
@@ -400,8 +408,9 @@ window.JSA.parseDeepLink = function(hashStr){
       badge: 'Battesimo del mare',
       meta: '15–20 min · genitore + bambino',
       duration: '15–20 minuti in area controllata',
-      priceFrom: 75,
+      basePrice: 75,
       priceUnit: 'esperienza family',
+      perPerson: false, minPeople: 1, maxPeople: 2,
       rating: 4.97,
       reviews: 41,
       includes: [
@@ -411,7 +420,14 @@ window.JSA.parseDeepLink = function(hashStr){
         'Diploma cartaceo "Piccolo Pilota"'
       ],
       tags: ['15–20 min', 'bambini', 'diploma', 'family'],
-      lead: 'Il battesimo del mare. Genitore guida, bambino partecipa attivamente. A fine uscita, diploma di Piccolo Pilota.'
+      lead: 'Il battesimo del mare. Genitore guida, bambino partecipa attivamente. A fine uscita, diploma di Piccolo Pilota.',
+      variantGroups: [
+        { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
+          options: [
+            { id: 'photo', label: 'Photo Kit Staff', priceMode: 'add', price: 50 },
+            { id: 'drone', label: 'Drone VIP Movie', priceMode: 'add', price: 99 }
+          ] }
+      ]
     },
     {
       id: 'blind-date',
