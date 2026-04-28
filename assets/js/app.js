@@ -546,6 +546,19 @@ window.JSA.parseDeepLink = function(hashStr){
     }
     empty.hidden = true;
 
+    const priceFor = (e) => {
+      if(typeof e.priceFromOverride === 'number') return e.priceFromOverride;
+      if(typeof e.basePrice === 'number') return e.basePrice;
+      if(typeof e.priceFrom === 'number') return e.priceFrom; // legacy
+      // Resolve aliases
+      if(e.aliasOf){
+        const canon = EXPERIENCES.find(p => p.id === e.aliasOf);
+        if(canon) return priceFor(canon);
+      }
+      return 0;
+    };
+    const unitFor = (e) => e.priceUnit || (e.aliasOf ? (EXPERIENCES.find(p => p.id === e.aliasOf) || {}).priceUnit : '') || '';
+
     grid.innerHTML = items.map(e => {
       const liked = state.likes.has(e.id);
       const isLove = e.tab === 'experience';
@@ -587,7 +600,7 @@ window.JSA.parseDeepLink = function(hashStr){
             </div>
             <p class="card-loc">${e.loc}</p>
             <p class="card-meta">${e.meta}</p>
-            <p class="card-price"><b>da ${e.priceFrom}€</b> · ${e.priceUnit}</p>
+            <p class="card-price"><b>da ${priceFor(e)}€</b> · ${unitFor(e)}</p>
           </div>
         </article>
       `;
