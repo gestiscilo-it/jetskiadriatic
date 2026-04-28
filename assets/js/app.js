@@ -2,6 +2,13 @@
    JET SKI ADRIATIC — APP SHELL
    ===================================================== */
 
+// Pure-function namespace — exposed for tests in /tests/tests.js
+// and for any future inline scripts that need pricing or validation logic.
+window.JSA = window.JSA || {};
+
+// Stub — replaced in Task 3 with the real pricing function.
+window.JSA.computeTotal = function(){ return 0; };
+
 (function(){
   'use strict';
 

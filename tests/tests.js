@@ -26,6 +26,11 @@
 
     // Tests will be added below in subsequent tasks.
 
+    test('window.JSA exists and exposes computeTotal', () => {
+      if(typeof window.JSA !== 'object') throw new Error('JSA not exported');
+      if(typeof window.JSA.computeTotal !== 'function') throw new Error('computeTotal missing');
+    });
+
     summary.textContent = `${passed} passed, ${failed} failed`;
     summary.className = failed ? 'summary bad' : 'summary ok';
   }
