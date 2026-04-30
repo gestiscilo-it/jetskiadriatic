@@ -3048,9 +3048,16 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   z-index:3;
   pointer-events:none;
   display:block;
+  /* Symbol fill uses currentColor — default matches the surrounding
+     off-white slab. Override per-instance to connect the wave to the
+     element below (e.g. the topbar uses --surface = #FFFFFF). */
+  color: var(--bg);
 }
 .hero-edge--top{ top: 0 }
 .hero-edge--bot{ bottom: 0 }
+/* First hero is followed by the white topbar — paint the bottom wave
+   white so it connects seamlessly with the tab selector below. */
+#top.hero > .hero-edge--bot{ color: var(--surface) }
 
 .hero-video{
   position:absolute;inset:0;z-index:0;

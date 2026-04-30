@@ -727,6 +727,12 @@ window.JSA.parseDeepLink = function(hashStr){
       { id: 'coppia',   label: 'Coppia',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-7 10-7 10s-2 0-4 0z"/></svg>' },
       { id: 'brunch',   label: 'Brunch',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11h18a8 8 0 0 1-9 8 8 8 0 0 1-9-8z"/><path d="M7 8c0-2 1-3 2-3M11 8c0-2 1-3 2-3M15 8c0-2 1-3 2-3"/></svg>' },
       { id: 'social',   label: 'Social',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M14 18a4 4 0 0 1 7 0"/></svg>' }
+    ],
+    yacht: [
+      { id: 'sunset',   label: 'Sunset',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="3.5"/><path d="M12 6v2M5 14H3M21 14h-2M6.5 8.5L5 7M19 7l-1.5 1.5"/><path d="M3 19h18"/></svg>' },
+      { id: 'day',      label: 'Day',      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>' },
+      { id: 'event',    label: 'Event',    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6l1.5 4.5L18 12l-4.5 1.5L12 18l-1.5-4.5L6 12l4.5-1.5z"/><path d="M5 3v3M3.5 4.5h3M19 18v3M17.5 19.5h3"/></svg>' },
+      { id: 'weekend',  label: 'Weekend',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>' }
     ]
   };
 
@@ -890,13 +896,21 @@ window.JSA.parseDeepLink = function(hashStr){
       t.classList.toggle('is-active', on);
       t.setAttribute('aria-selected', on ? 'true' : 'false');
     });
-    const t = tab === 'experience' ? {
-      title: 'Quando un\'ora diventa un momento.',
-      sub:   'Esperienze signature. Coppia, brunch, famiglia, community.'
-    } : {
-      title: 'In mare in 5 minuti.',
-      sub:   'Senza patente, senza pensieri. Cattolica · Rimini'
+    const FEED_COPY = {
+      noleggio: {
+        title: 'In mare in 5 minuti.',
+        sub:   'Senza patente, senza pensieri. Cattolica · Rimini'
+      },
+      experience: {
+        title: 'Quando un\'ora diventa un momento.',
+        sub:   'Esperienze signature. Coppia, brunch, famiglia, community.'
+      },
+      yacht: {
+        title: '15 metri di Adriatico.',
+        sub:   'Charter ed esperienze a bordo. Equipaggio, skipper, dettagli su misura.'
+      }
     };
+    const t = FEED_COPY[tab] || FEED_COPY.noleggio;
     $('#feedTitle').textContent = t.title;
     $('#feedSub').textContent = t.sub;
     renderCats();
@@ -1549,11 +1563,12 @@ window.JSA.parseDeepLink = function(hashStr){
     wrap.classList.add('has-marquee');
   }
 
-  // ============ HIDE TOPBAR + CAT-BAR WHEN PAST PRODUCTS ============
+  // ============ HIDE TOPBAR + CAT-BAR WHEN OUTSIDE PRODUCTS ============
   // The chrome (top tabs + bottom filter bar) is product-context UI.
-  // Hide it only when the products feed is out of view — relying on
-  // contact/footer intersection breaks when the feed is short enough
-  // that products and contact can be on screen simultaneously.
+  // The hero now sits ABOVE the feed, so the cat-bar must hide both
+  // before (hero) and after (other sections) the feed — not only past it.
+  // Inset both top and bottom of the rootMargin so the feed only counts
+  // as "in view" once it occupies the central band of the viewport.
   function setupChromeHideOnFooter(){
     if(!('IntersectionObserver' in window)) return;
     const feed = document.getElementById('feed');
@@ -1561,7 +1576,7 @@ window.JSA.parseDeepLink = function(hashStr){
     const obs = new IntersectionObserver((entries) => {
       const e = entries[0];
       document.body.classList.toggle('is-past-products', !e.isIntersecting);
-    }, { rootMargin: '-240px 0px 0px 0px', threshold: 0 });
+    }, { rootMargin: '-30% 0px -45% 0px', threshold: 0 });
     obs.observe(feed);
   }
 

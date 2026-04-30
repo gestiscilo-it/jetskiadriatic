@@ -23,11 +23,11 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="hero-edge-top" viewBox="0 0 1440 80" preserveAspectRatio="none">
-      <path d="M0,0 L0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,0 Z" fill="#F6F7F8"/>
+      <path d="M0,0 L0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,0 Z" fill="currentColor"/>
       <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
     </symbol>
     <symbol id="hero-edge-bot" viewBox="0 0 1440 80" preserveAspectRatio="none">
-      <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,80 L0,80 Z" fill="#F6F7F8"/>
+      <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,80 L0,80 Z" fill="currentColor"/>
       <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
     </symbol>
   </defs>
@@ -57,7 +57,41 @@
   </div>
 </div>
 
-<!-- ============ TOP BAR (full-width, outside .app) ============ -->
+<!-- ============ HERO (video) ============ -->
+<section class="hero" id="top">
+  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
+         poster="https://images.unsplash.com/photo-1505867798796-639ec7e8cdf5?q=90&w=2400&auto=format&fit=crop">
+    <source src="https://videos.pexels.com/video-files/35077130/14859106_960_540_60fps.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-overlay"></div>
+
+  <svg class="hero-edge hero-edge--bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-bot"/></svg>
+
+  <div class="hero-inner">
+    <div class="hero-body">
+      <h1 class="hero-h">
+        Il primo <em>Jet Ski</em> <br/>senza patente <br/>a <em>Rimini</em>.
+      </h1>
+      <p class="hero-lead">
+        Per chi vuole <strong>velocità e libertà</strong> in mare <br/>— e per chi vuole un momento che <strong>nessun altro in Riviera</strong> può darti.<br/>
+        Pensiamo a tutto noi.
+      </p>
+      <div class="cta-row">
+        <a href="#contatti" class="btn btn-primary" data-book="">
+          Prenota un'uscita
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#flotta" class="btn btn-ghost">
+          Scopri il mezzo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ TOP BAR — under hero, sticky from here ============ -->
 <header class="topbar">
 
     <!-- Row 1 — Tabs · Profile (no brand, no status) -->
@@ -74,16 +108,15 @@
           <span class="tab-ico" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>
           </span>
-          <span>Experience</span>
+          <span>Escursioni</span>
+        </button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="yacht">
+          <span class="tab-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10"/><path d="M12 4l6 10H6z"/><path d="M3 18h18l-2 3H5z"/></svg>
+          </span>
+          <span>Yacht</span>
         </button>
       </nav>
-
-      <!-- Right: meteo (icon only, all sizes) -->
-      <div class="topbar-right">
-        <button type="button" class="topbar-icon-only" data-nav="meteo" aria-label="Meteo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.83 1.5A4 4 0 0 0 6 19h11.5z"/><circle cx="6" cy="6" r="2.5"/></svg>
-        </button>
-      </div>
     </div>
 
     <!-- Filter bar — bottom on mobile (fixed), under tabs on desktop -->
@@ -131,46 +164,6 @@
 
 
 </div><!-- /.app -->
-
-
-<!-- ============================================================
-     MIGRATED SECTIONS (from old/index.html)
-     Each section is full-width and lives below the products feed.
-============================================================ -->
-
-<!-- ============ HERO (video) ============ -->
-<section class="hero" id="top">
-  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
-         poster="https://images.unsplash.com/photo-1505867798796-639ec7e8cdf5?q=90&w=2400&auto=format&fit=crop">
-    <source src="https://videos.pexels.com/video-files/35077130/14859106_960_540_60fps.mp4" type="video/mp4" />
-  </video>
-  <div class="hero-overlay"></div>
-
-  <svg class="hero-edge hero-edge--top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-top"/></svg>
-  <svg class="hero-edge hero-edge--bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-bot"/></svg>
-
-  <div class="hero-inner">
-    <div class="hero-body">
-      <h1 class="hero-h">
-        Il primo <em>Jet Ski</em> <br/>senza patente <br/>a <em>Rimini</em>.
-      </h1>
-      <p class="hero-lead">
-        Per chi vuole <strong>velocità e libertà</strong> in mare <br/>— e per chi vuole un momento che <strong>nessun altro in Riviera</strong> può darti.<br/>
-        Pensiamo a tutto noi.
-      </p>
-      <div class="cta-row">
-        <a href="#contatti" class="btn btn-primary" data-book="">
-          Prenota un'uscita
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#flotta" class="btn btn-ghost">
-          Scopri il mezzo
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ============ ESPERIENZE STANDARD ============ -->
 <section class="section experiences section--tight-top section--tight-bot" id="esperienze">
@@ -925,7 +918,7 @@
 <div class="sheet-backdrop" id="sheetBackdrop" aria-hidden="true"></div>
 
 
-<script src="assets/js/app.js"></script>
+<script src="assets/js/app.js?v=2026.04.30.2"></script>
 
 </body>
 </html>
