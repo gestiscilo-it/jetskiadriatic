@@ -2088,48 +2088,50 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
    ===========================================================
 ============================================================== */
 
-/* ---- Old design tokens — remapped to the new app palette so the
-   migrated sections inherit the products-feed look (soft off-white
-   page, white cards, navy ink, single cyan accent). ---- */
+/* ---- Italian-named alias layer (Riviera DS).
+   Hex values live in the primary :root at the top of the file; this
+   block aliases via var() so there is exactly one source of truth.
+   See design-systems/riviera/DESIGN.md in the design-skills repo. ---- */
 :root{
-  /* Navy / ink — share with --navy / --navy-2 / --ink */
-  --abisso:#0A2540;       /* === --navy / --ink */
-  --abisso-d:#06182A;     /* === --navy-2 (footer) */
-  --abisso-l:#122F4F;     /* === --navy-3 */
+  /* Navy / ink */
+  --abisso: var(--navy);
+  --abisso-d: var(--navy-2);
+  --abisso-l: var(--navy-3);
 
-  /* Cyan accent — share with --cyan / --cyan-2 */
-  --tramonto:#1FB6D8;     /* === --cyan */
-  --tramonto-d:#19A0BF;   /* === --cyan-2 */
+  /* Cyan accent */
+  --tramonto: var(--cyan);
+  --tramonto-d: var(--cyan-2);
 
-  /* Aqua family — kept for the dark-section accents (media, how) */
+  /* Aqua family — atmospheric blues used on dark sections */
   --acqua:#6FB3D8;
   --acqua-l:#A8D4E8;
   --acqua-d:#3D89B0;
 
-  /* Surfaces. --spuma stays #FFF for text-on-dark legibility; section
-     backgrounds use --bg explicitly. Cards inside use --surface (white). */
-  --spuma:#FFFFFF;
-  --spuma-d:#EAF4FA;      /* placeholder tint for image loading slots */
+  /* Surfaces */
+  --spuma: var(--surface);
+  --spuma-d:#EAF4FA;            /* placeholder tint */
   --inchiostro:#0F1417;
-  --white:#FFFFFF;
+  --white: var(--surface);
 
-  /* Borders & muted text — aligned to --line / --ink-2 */
-  --muted:#4A5563;        /* === --ink-2 */
+  /* Borders & muted text */
+  --muted: var(--ink-2);
   --faint:rgba(10,37,64,.06);
-  --border:#E8EAEC;       /* === --line */
-  --border-s:#D8DBDE;     /* === --line-2 */
+  --border: var(--line);
+  --border-s: var(--line-2);
   --on-dark:rgba(255,255,255,.72);
   --on-dark-faint:rgba(255,255,255,.14);
 
-  --f-display:'Archivo', system-ui, -apple-system, sans-serif;
-  --f-serif:'Instrument Serif', Georgia, serif;
-  --f-body:'Archivo', system-ui, -apple-system, sans-serif;
+  /* Type aliases */
+  --f-display: var(--sans);
+  --f-serif: var(--serif);
+  --f-body: var(--sans);
 
+  /* Radius scale (extends the primary --radius / --radius-sm / --radius-pill) */
   --r-sm:10px;
   --r-md:16px;
   --r-lg:24px;
   --r-xl:36px;
-  --r-pill:999px;
+  --r-pill: var(--radius-pill);
 
   --ease:cubic-bezier(.22,.8,.36,1);
   --ease-bounce:cubic-bezier(.2,.9,.3,1.25);
@@ -3025,7 +3027,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .hero{
   --hero-wave-h: clamp(40px, 5vw, 70px);
   position:relative;
-  height:clamp(520px, 78svh, 820px);
+  height:clamp(580px, 92svh, 960px);
   overflow:hidden;
   color:var(--white);
   isolation:isolate;

@@ -19,6 +19,20 @@
 </head>
 <body data-active-tab="noleggio">
 
+<!-- ============ SVG SYMBOL DEFS (Riviera DS — hero wave edges) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="hero-edge-top" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,0 L0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,0 Z" fill="#F6F7F8"/>
+      <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="hero-edge-bot" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,80 L0,80 Z" fill="#F6F7F8"/>
+      <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
 <!-- ============ INFO STRIP (status + hours + contact) ============ -->
 <div class="info-strip">
   <div class="info-strip-inner">
@@ -132,22 +146,13 @@
   </video>
   <div class="hero-overlay"></div>
 
-  <!-- Two static SVG overlays paint the surrounding grey over the top and
-       bottom of the hero with a wavy edge. Cheaper than a CSS mask: each
-       overlay is just one fill path + one stroke path, no compositing. -->
-  <svg class="hero-edge hero-edge--top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0,0 L0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,0 Z" fill="#F6F7F8"/>
-    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
-  </svg>
-  <svg class="hero-edge hero-edge--bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,80 L0,80 Z" fill="#F6F7F8"/>
-    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
-  </svg>
+  <svg class="hero-edge hero-edge--top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-top"/></svg>
+  <svg class="hero-edge hero-edge--bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-bot"/></svg>
 
   <div class="hero-inner">
     <div class="hero-body">
       <h1 class="hero-h">
-        Il primo <em>Jet Ski</em> <br/>senza patente <br/>di <em>Rimini</em>.
+        Il primo <em>Jet Ski</em> <br/>senza patente <br/>a <em>Rimini</em>.
       </h1>
       <p class="hero-lead">
         Per chi vuole <strong>velocità e libertà</strong> in mare <br/>— e per chi vuole un momento che <strong>nessun altro in Riviera</strong> può darti.<br/>
@@ -169,14 +174,6 @@
 
 <!-- ============ ESPERIENZE STANDARD ============ -->
 <section class="section experiences section--tight-top section--tight-bot" id="esperienze">
-<!--  <div class="section-head reveal">-->
-<!--    <div>-->
-<!--      <span class="kicker">Noleggi senza patente</span>-->
-<!--      <h2 class="sh">In mare in 5 minuti.<br/>La patente <em>non serve</em>.</h2>-->
-<!--    </div>-->
-<!--    <p class="lead">Noleggio libero, tour guidati, uscite per famiglie e gruppi. <br/>Paghi al check-in, cancelli gratis fino a 24 h prima.</p>-->
-<!--  </div>-->
-
   <div class="container exp-grid reveal-s">
 
     <article class="exp" data-detail="classic">
@@ -235,7 +232,6 @@
     </div>
 
     <div class="mezzo-r">
-<!--      <h3 class="mezzo-name sh">Sportender <em>JST-30</em></h3>-->
       <p class="mezzo-desc">L'abbiamo scelto perché apre il mare a chi di solito resta a guardare. Più stabile del jet ski classico, comodo per tre adulti, sicuro per i bambini dai 6 anni. <br/>Famiglie incluse, senza compromessi sul divertimento.</p>
 
       <div class="mezzo-specs">
@@ -358,50 +354,8 @@
   </div>
 </section>
 
-<!-- ============ GALLERY ============ -->
-<!--<section class="section gallery">-->
-<!--&lt;!&ndash;  <div class="section-head reveal">&ndash;&gt;-->
-<!--&lt;!&ndash;    <div>&ndash;&gt;-->
-<!--&lt;!&ndash;      <span class="kicker">la riviera che ti aspetta</span>&ndash;&gt;-->
-<!--&lt;!&ndash;      <h2 class="sh">Le coordinate del<br/><em>tuo</em> ricordo.</h2>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;    <p class="lead">Cattolica, Vallugola, San Bartolo, il tramonto in Conca. I luoghi che vedrai dalla tua moto d'acqua. Le tue foto saranno le prossime.</p>&ndash;&gt;-->
-<!--&lt;!&ndash;  </div>&ndash;&gt;-->
-
-<!--  &lt;!&ndash; Decorative single-line wave accents &ndash;&gt;-->
-<!--  <div class="wave-splash" aria-hidden="true" style="top:42%;right:3vw;width:clamp(180px,22vw,320px);height:clamp(46px,5.5vw,76px);opacity:.5">-->
-<!--    <svg viewBox="0 0 320 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">-->
-<!--      <path d="M0 35 C53 7 107 63 160 35 C213 7 267 63 320 35" stroke="#1FB6D8" stroke-width="2.5"/>-->
-<!--    </svg>-->
-<!--  </div>-->
-<!--  <div class="wave-splash" aria-hidden="true" style="bottom:4%;left:8vw;width:clamp(160px,18vw,260px);height:clamp(40px,5vw,70px);opacity:.45">-->
-<!--    <svg viewBox="0 0 260 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">-->
-<!--      <path d="M0 30 C44 54 88 6 132 30 C176 54 220 6 264 30" stroke="#6FB3D8" stroke-width="2.5"/>-->
-<!--    </svg>-->
-<!--  </div>-->
-
-<!--  <div class="g-grid reveal">-->
-<!--    <div class="g-item g1" style="background-image:url('https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1600&auto=format&fit=crop')"><span class="g-lbl">Lungomare Cattolica</span></div>-->
-<!--    <div class="g-item g2" style="background-image:url('https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1200&auto=format&fit=crop')"><span class="g-lbl">Sunset San Bartolo</span></div>-->
-<!--    <div class="g-item g3" style="background-image:url('https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=900&auto=format&fit=crop')"><span class="g-lbl">Vista aerea</span></div>-->
-<!--    <div class="g-item g4" style="background-image:url('https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1200&auto=format&fit=crop')"><span class="g-lbl">Private event</span></div>-->
-<!--    <div class="g-item g5" style="background-image:url('https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=900&auto=format&fit=crop')"><span class="g-lbl">Wake &amp; spray</span></div>-->
-<!--    <div class="g-item g6" style="background-image:url('https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop')"><span class="g-lbl">Vallugola</span></div>-->
-<!--    <div class="g-item g7" style="background-image:url('https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1200&auto=format&fit=crop')"><span class="g-lbl">Briefing a riva</span></div>-->
-<!--    <div class="g-item g8" style="background-image:url('https://images.unsplash.com/photo-1524061508355-90afbf7fcf03?q=85&w=900&auto=format&fit=crop')"><span class="g-lbl">Il pontile</span></div>-->
-<!--  </div>-->
-<!--</section>-->
-
 <!-- ============ FLAGSHIP OVERVIEW (Yacht + Love mix) ============ -->
 <section class="section flagship-overview section--tight-top section--tight-bot" id="yacht">
-<!--  <div class="section-head reveal">-->
-<!--    <div>-->
-<!--      <span class="kicker">i nostri flagship</span>-->
-<!--      <h2 class="sh">Quando il mare<br/>diventa <em>un momento.</em></h2>-->
-<!--    </div>-->
-<!--    <p class="lead">Yacht charter ed esperienze signature. Equipaggio, fiori, Champagne, drone 4K — tu metti la storia, noi orchestriamo il resto.</p>-->
-<!--  </div>-->
-
   <div class="container exp-grid exp-grid--love reveal-s">
 
     <a class="exp exp--love" href="yacht.html">
@@ -463,15 +417,8 @@
   </video>
   <div class="hero-overlay"></div>
 
-  <!-- Wavy edges, top + bottom -->
-  <svg class="hero-edge hero-edge--top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0,0 L0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,0 Z" fill="#F6F7F8"/>
-    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
-  </svg>
-  <svg class="hero-edge hero-edge--bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,80 L0,80 Z" fill="#F6F7F8"/>
-    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
-  </svg>
+  <svg class="hero-edge hero-edge--top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-top"/></svg>
+  <svg class="hero-edge hero-edge--bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-bot"/></svg>
 
   <div class="hero-inner">
     <div class="hero-body">
