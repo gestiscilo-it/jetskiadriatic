@@ -134,7 +134,7 @@ window.JSA.parseDeepLink = function(hashStr){
         'Tempo effettivo in mare (timer parte fuori dal porto)'
       ],
       tags: ['senza patente', 'sportender JST-30', 'best seller'],
-      lead: 'Sali, accendi, vai. Scegli la durata che vuoi: 15 minuti per provare, 45 per il tour costiero, 1 ora per il tramonto.',
+      lead: 'Sali a bordo, dieci minuti di briefing con l\'istruttore, poi il motore risponde solo a te — il timer parte quando sei fuori dai pali del porto.',
       variantGroups: [
         {
           id: 'durata', label: 'Durata', selection: 'single', required: true,
@@ -183,28 +183,28 @@ window.JSA.parseDeepLink = function(hashStr){
       img: 'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
       badge: '15 min', meta: '15 min', priceFromOverride: 50,
       tags: ['15 min', 'entry', 'senza patente'],
-      lead: 'Adrenalina pura, in 15 minuti effettivi. Il tempo parte fuori dal porto, +10 minuti regalati per il rientro.' },
+      lead: 'Quindici minuti effettivi al largo: il timer parte fuori dal porto, non dal momento in cui sali sul mezzo, con dieci minuti extra inclusi per rientrare con calma.' },
 
     { id: 'sprint',     tab: 'noleggio', cat: 'veloci', aliasOf: 'noleggio-sportender', preselect: { durata: '30' },
       title: 'Sprint <em>30</em>', loc: 'Cattolica · pontile',
       img: 'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
       badge: '30 min', meta: '30 min', priceFromOverride: 85,
       tags: ['30 min', 'divertimento'],
-      lead: 'La sessione ideale per chi vuole divertirsi senza pensieri. 30 minuti effettivi, dal pontile al largo.' },
+      lead: 'Trenta minuti effettivi per capire cosa fa questo mezzo quando spingi davvero — abbastanza per uscire al largo, fare il giro e tornare con qualcosa da raccontare.' },
 
     { id: 'classic',    tab: 'noleggio', cat: 'veloci', aliasOf: 'noleggio-sportender', preselect: { durata: '45' },
       title: 'Classic <em>45</em>', loc: 'Cattolica · pontile',
       img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
       badge: '45 min · best seller', meta: '45 min', priceFromOverride: 105,
       tags: ['45 min', 'best seller'],
-      lead: 'Il miglior rapporto qualità/prezzo. 45 minuti effettivi: il tempo giusto per arrivare al largo e tornare con calma.' },
+      lead: 'Quarantacinque minuti effettivi: abbastanza per spingere al largo, fare il giro costiero e rientrare con calma. Il formato più richiesto, con il timer che parte fuori dai pali del porto.' },
 
     { id: 'sunset-hour',tab: 'noleggio', cat: 'tour',   aliasOf: 'noleggio-sportender', preselect: { durata: '60' },
       title: 'Sunset <em>Hour</em>', loc: 'Cattolica → Gabicce',
       img: 'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
       badge: '1 ora', meta: '1 ora', priceFromOverride: 145,
       tags: ['1 ora', 'tramonto', 'premium'],
-      lead: 'L\'esperienza premium. Un\'ora effettiva, perfetta al tramonto o per un tour lungo costa.' },
+      lead: 'Un\'ora effettiva verso Gabicce o lungo costa al tramonto — il momento in cui la luce cambia e l\'Adriatico smette di sembrare piatto. Il timer parte fuori dal porto.' },
 
     {
       id: 'vallugola-gold',
@@ -233,7 +233,7 @@ window.JSA.parseDeepLink = function(hashStr){
         'Min. 2 persone'
       ],
       tags: ['4 ore', 'pranzo', 'caletta privata', 'min 2 pers'],
-      lead: 'L\'escursione VIP. Cattolica → Vallugola con attracco e sconto al Ristorante Falco.',
+      lead: 'Rotta aperta da Cattolica fino al Porticciolo di Vallugola, con guida inclusa, attracco nella caletta privata e pranzo al Ristorante Falco: quattro ore di navigazione in cui il mezzo risponde solo a te.',
       variantGroups: [
         { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
           options: [
@@ -277,7 +277,7 @@ window.JSA.parseDeepLink = function(hashStr){
         'Coordinamento staff per la sorpresa'
       ],
       tags: ['1 ora', 'rose', 'champagne', 'segreto'],
-      lead: 'L\'inizio di un sogno. Un\'ora privata, rose preparate in segreto, Champagne fresco. Per sorprendere, non annunciare.',
+      lead: 'Un\'ora privata in mare aperto, con le rose preparate nel gavone prima della partenza e lo Champagne già freddo — per sorprendere, non per annunciare.',
       variantGroups: [
         { id: 'champagne-upgrade', label: 'Champagne', selection: 'single', required: false,
           options: [
@@ -329,7 +329,7 @@ window.JSA.parseDeepLink = function(hashStr){
         'Certificato d\'Amore su pergamena · coordinate GPS del sì'
       ],
       tags: ['1h30', 'drone', 'paparazzo', 'pergamena GPS'],
-      lead: 'Il pacchetto definitivo per chiedere la mano in mezzo al mare. Rose, Champagne, drone, paparazzo. E un certificato con le coordinate del sì.',
+      lead: 'Novanta minuti orchestrati in mare aperto: rose nel gavone, Champagne 750ml, drone 4K per riprendere il momento, un paparazzo discreto dallo staff e un certificato su pergamena con le coordinate GPS del sì.',
       variantGroups: [
         { id: 'champagne-upgrade', label: 'Champagne (default 750ml incluso)', selection: 'single', required: false,
           options: [
@@ -375,7 +375,7 @@ window.JSA.parseDeepLink = function(hashStr){
         'Drone VIP Movie disponibile come extra'
       ],
       tags: ['elite', '1h30–2h', 'musicista', 'regia', 'novità'],
-      lead: 'Il lusso assoluto, con regia cinematografica. Seconda moto che consegna le rose tra le onde, musicista dal vivo per una serenata privata.',
+      lead: 'La seconda moto arriva tra le onde con le rose mentre il musicista suona sul ponte — chitarra o violino, a scelta, in mezzo all\'Adriatico. Regia cinematografica inclusa.',
       variantGroups: [
         { id: 'drone-add', label: 'Drone VIP', selection: 'single', required: false,
           options: [
@@ -420,7 +420,7 @@ window.JSA.parseDeepLink = function(hashStr){
         'Aperitivo a bordo · 2 bottiglie di Champagne'
       ],
       tags: ['4 ore', 'fiori', 'champagne', 'drone'],
-      lead: 'L\'esperienza di navigazione più completa verso Vallugola. Fiori a bordo, drone Movie, aperitivo con due bottiglie di Champagne.',
+      lead: 'Quattro ore verso Vallugola con fiori a bordo, Drone Movie incluso e aperitivo con due bottiglie di Champagne nel momento in cui la costa del San Bartolo prende la luce del pomeriggio.',
       variantGroups: [
         { id: 'media-extra', label: 'Media extra (drone già incluso)', selection: 'multi', required: false,
           options: [
@@ -463,7 +463,7 @@ window.JSA.parseDeepLink = function(hashStr){
         'Set-up del tavolo a bordo'
       ],
       tags: ['1 ora', 'brunch', 'drink', 'coppia'],
-      lead: 'Pausa di stile a metà giornata. Brunch box di lusso, drink, tavolo apparecchiato. Il mare come sala da pranzo privata.',
+      lead: 'Un\'ora al largo a metà giornata, con il brunch box già apparecchiato a bordo prima della partenza — due miglia dalla riva, nessun altro intorno, tavolo con vista sull\'Adriatico.',
       variantGroups: [
         { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
           options: [
@@ -507,7 +507,7 @@ window.JSA.parseDeepLink = function(hashStr){
         'Diploma cartaceo "Piccolo Pilota"'
       ],
       tags: ['15–20 min', 'bambini', 'diploma', 'family'],
-      lead: 'Il battesimo del mare. Genitore guida, bambino partecipa attivamente. A fine uscita, diploma di Piccolo Pilota.',
+      lead: 'Quindici o venti minuti in area protetta con il genitore al manubrio e il bambino che mette le mani sul mezzo: a fine uscita, diploma di Piccolo Pilota consegnato di persona.',
       variantGroups: [
         { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
           options: [
@@ -542,7 +542,7 @@ window.JSA.parseDeepLink = function(hashStr){
         'La complicità messa alla prova'
       ],
       tags: ['30 min', 'single', 'social'],
-      lead: 'Appuntamento al buio in mare. 30 minuti dove uno guida e l\'altro sta dietro: la complicità messa alla prova.',
+      lead: 'Trenta minuti in coppia: uno guida, l\'altro sta dietro e capisce subito se siete compatibili — il mezzo non perdona le esitazioni, ed è meglio saperlo prima.',
       variantGroups: [
         { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
           options: [
@@ -573,7 +573,7 @@ window.JSA.parseDeepLink = function(hashStr){
       rating: 4.95, reviews: 0,
       includes: ['Skipper a bordo', 'Aperitivo standard (taglieri + bollicine)', 'Carburante incluso', 'Fino a 8 ospiti'],
       tags: ['2 ore', 'fino a 8 px', 'aperitivo', 'skipper'],
-      lead: 'Due ore al tramonto, aperitivo a bordo con bollicine e taglieri, fino a 8 ospiti. Partenza 18:30, rientro al buio sotto Cattolica illuminata.',
+      lead: 'Due ore al tramonto con aperitivo a bordo — bollicine, taglieri e fino a otto ospiti — partenza alle 18:30 e rientro al buio con le luci di Cattolica che si accendono sulla costa.',
       variantGroups: [
         { id: 'catering-aperitivo', label: 'Aperitivo', selection: 'single', required: false,
           options: [
@@ -606,7 +606,7 @@ window.JSA.parseDeepLink = function(hashStr){
       rating: 4.95, reviews: 0,
       includes: ['Skipper + hostess', 'Tender a bordo per le calette', 'Set snorkeling', 'Carburante incluso', 'Fino a 10 ospiti'],
       tags: ['full day', 'fino a 10 px', 'pranzo', 'tender + snorkel'],
-      lead: 'Otto ore tra Cattolica, Vallugola e Gabicce. Pranzo a bordo o al Falco, snorkeling, tender per le calette.',
+      lead: 'Otto ore di navigazione tra Cattolica, Vallugola e Gabicce: pranzo a bordo o al Ristorante Falco, snorkeling nelle calette con il tender, skipper e hostess inclusi. La giornata che ti porti a casa.',
       variantGroups: [
         { id: 'pranzo', label: 'Pranzo', selection: 'single', required: true,
           options: [
@@ -642,7 +642,7 @@ window.JSA.parseDeepLink = function(hashStr){
       rating: 5.0, reviews: 0,
       includes: ['Skipper + hostess', 'Catering standard', 'Ponte allestito', 'Fino a 12 ospiti'],
       tags: ['4 ore', 'fino a 12 px', 'catering', 'DJ opzionale'],
-      lead: 'Compleanni, addii al celibato, brindisi aziendali. Catering on demand, DJ opzionale, ponte allestito.',
+      lead: 'Quattro ore con il ponte allestito, catering a scelta e DJ opzionale — il pretesto lo porti tu, il resto lo gestiamo noi. Fino a dodici ospiti, nessun estraneo a bordo.',
       variantGroups: [
         { id: 'catering', label: 'Catering', selection: 'single', required: true,
           options: [
@@ -680,7 +680,7 @@ window.JSA.parseDeepLink = function(hashStr){
       rating: 5.0, reviews: 0,
       includes: ['Cabina privata', 'Colazione continental a bordo', 'Skipper', 'Rotta libera tra Marche ed Emilia'],
       tags: ['2 gg · 1 notte', 'coppia', 'cabina', 'colazione'],
-      lead: 'Due giorni, una notte. Cabina privata, colazione a bordo, rotta libera tra le coste delle Marche e dell\'Emilia.',
+      lead: 'Due giorni, una notte in cabina privata con colazione continental a bordo e rotta libera tra le coste delle Marche e dell\'Emilia — il mare come hotel galleggiante, con lo skipper incluso.',
       variantGroups: [
         { id: 'colazione', label: 'Colazione', selection: 'single', required: false,
           options: [
@@ -723,7 +723,7 @@ window.JSA.parseDeepLink = function(hashStr){
         'Equipaggio: capitano, marinaio e hostess dedicata'
       ],
       tags: ['all-in', 'DJ', 'jet ski incluso', 'drone', 'fino a 20 px'],
-      lead: 'Lo Yacht Valbruna — 20 metri di club privato galleggiante. DJ, jet ski, drone, open bar e buffet tutto incluso. €4.500 fino a 10 ospiti; +€150/persona fino a 20.',
+      lead: 'Venti metri di club galleggiante privato: rotta verso Vallugola, DJ set professionale, un\'ora di moto d\'acqua portata allo yacht in sosta, drone e servizio fotografico inclusi, open bar e buffet per tutta la navigazione. Fino a venti ospiti, esclusiva totale, nessun estraneo a bordo.',
       variantGroups: [
         { id: 'format', label: 'Formato evento', selection: 'single', required: true,
           options: [
@@ -933,16 +933,16 @@ window.JSA.parseDeepLink = function(hashStr){
     });
     const FEED_COPY = {
       noleggio: {
-        title: 'In mare in 5 minuti.',
-        sub:   'Senza patente, senza pensieri. Cattolica · Rimini'
+        title: 'Il timer parte solo quando sei fuori dal porto.',
+        sub:   '38 nodi, nessuna patente. Cattolica · Rimini'
       },
       experience: {
-        title: 'Quando un\'ora diventa un momento.',
-        sub:   'Esperienze signature. Coppia, brunch, famiglia, community.'
+        title: 'Un\'ora in mare aperto cambia la prospettiva.',
+        sub:   'Esperienze signature — coppia, brunch, famiglia, community.'
       },
       yacht: {
-        title: '15 metri di Adriatico.',
-        sub:   'Charter ed esperienze a bordo. Equipaggio, skipper, dettagli su misura.'
+        title: 'Due yacht, equipaggio incluso, rotte su misura.',
+        sub:   'Dal tramonto di due ore al weekend con notte a bordo.'
       }
     };
     const t = FEED_COPY[tab] || FEED_COPY.noleggio;
