@@ -934,7 +934,7 @@ window.JSA.parseDeepLink = function(hashStr){
     const FEED_COPY = {
       noleggio: {
         title: 'Il timer parte solo quando sei fuori dal porto.',
-        sub:   '38 nodi, nessuna patente. Cattolica · Rimini'
+        sub:   '70 km/h in mare, nessuna patente. Cattolica · Rimini'
       },
       experience: {
         title: 'Un\'ora in mare aperto cambia la prospettiva.',
