@@ -50,7 +50,7 @@
 html,body{margin:0;padding:0}
 /* Ensure the [hidden] attribute always wins over component display rules */
 [hidden]{ display: none !important }
-html{-webkit-text-size-adjust:100%; text-rendering:optimizeLegibility; scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%; text-rendering:optimizeLegibility; scroll-behavior:smooth; background:var(--navy-2)}
 body{
   font-family:var(--sans);
   background:var(--bg);
@@ -191,10 +191,6 @@ em{font-style:italic; font-family:var(--serif); font-weight:400}
 body.is-past-products .topbar{
   top: -200px;
   border-bottom-color: transparent;
-}
-.topbar.is-scrolled{
-  border-bottom-color: var(--line);
-  box-shadow: 0 1px 8px rgba(10,37,64,.04);
 }
 
 /* generic row */
@@ -1485,10 +1481,6 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     background: var(--surface);
     border: 0;
     box-shadow: none;
-  }
-  .topbar.is-scrolled{
-    box-shadow: 0 1px 6px rgba(10,37,64,.04);
-    border-bottom: 1px solid var(--line);
   }
 
   .info-strip-inner{ padding: 9px 40px }
@@ -3054,7 +3046,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   color: var(--bg);
 }
 .hero-edge--top{ top: 0 }
-.hero-edge--bot{ bottom: 0 }
+.hero-edge--bot{ bottom: -2px; overflow: visible }
 /* First hero is followed by the white topbar — paint the bottom wave
    white so it connects seamlessly with the tab selector below. */
 #top.hero > .hero-edge--bot{ color: var(--surface) }
