@@ -699,6 +699,42 @@ window.JSA.parseDeepLink = function(hashStr){
       ]
     },
 
+    // ============ YACHT — Ultra-Platinum (Valbruna) ============
+    {
+      id: 'valbruna-ultra-platinum',
+      tab: 'yacht', cat: 'ultra',
+      title: 'Valbruna <em>Ultra-Platinum</em>',
+      loc: 'Cattolica → Vallugola · baia privata',
+      img: 'https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop',
+      imgs: ['https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop'],
+      badge: 'All-in · fino a 20 px', meta: 'DJ · jet ski · drone · open bar',
+      duration: '3 formati · da 4 a 8 ore',
+      basePrice: 4500, priceUnit: 'a barca (fino a 10 px)', perPerson: false,
+      minPeople: 4, maxPeople: 20,
+      rating: 5.0, reviews: 0,
+      includes: [
+        'Esclusiva totale · nessun estraneo a bordo',
+        'Rotta Vallugola · 2 ore navigazione panoramica · carburante incluso',
+        'DJ set privato con professionista a bordo',
+        '1 ora moto d\'acqua portata allo yacht in sosta',
+        'Servizio fotografico e video con drone incluso',
+        'Snorkeling kit · maschere e pinne',
+        'Open Bar (bollicine, soft drink, mixology) + buffet finger food',
+        'Equipaggio: capitano, marinaio e hostess dedicata'
+      ],
+      tags: ['all-in', 'DJ', 'jet ski incluso', 'drone', 'fino a 20 px'],
+      lead: 'Lo Yacht Valbruna — 20 metri di club privato galleggiante. DJ, jet ski, drone, open bar e buffet tutto incluso. €4.500 fino a 10 ospiti; +€150/persona fino a 20.',
+      variantGroups: [
+        { id: 'format', label: 'Formato evento', selection: 'single', required: true,
+          options: [
+            { id: 'sunrise', label: 'Sunrise Gold · Alba',     priceMode: 'add', price: 0, sublabel: 'colazione gourmet per tutti', default: true },
+            { id: 'sunset',  label: 'Sunset Elite · Tramonto', priceMode: 'add', price: 0, sublabel: 'aperitivo lungo + DJ set al tramonto' },
+            { id: 'after',   label: 'After Party Supreme',      priceMode: 'add', price: 0, sublabel: 'festa notturna + colazione rigenerante' }
+          ]
+        }
+      ]
+    },
+
     // Yacht hero CTA on yacht.html — alias to sunset cruise
     { id: 'yacht', tab: 'yacht', aliasOf: 'yacht-sunset', preselect: {} },
   ];
@@ -732,7 +768,8 @@ window.JSA.parseDeepLink = function(hashStr){
       { id: 'sunset',   label: 'Sunset',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="3.5"/><path d="M12 6v2M5 14H3M21 14h-2M6.5 8.5L5 7M19 7l-1.5 1.5"/><path d="M3 19h18"/></svg>' },
       { id: 'day',      label: 'Day',      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>' },
       { id: 'event',    label: 'Event',    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6l1.5 4.5L18 12l-4.5 1.5L12 18l-1.5-4.5L6 12l4.5-1.5z"/><path d="M5 3v3M3.5 4.5h3M19 18v3M17.5 19.5h3"/></svg>' },
-      { id: 'weekend',  label: 'Weekend',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>' }
+      { id: 'weekend',  label: 'Weekend',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>' },
+      { id: 'ultra',    label: 'Ultra VIP', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' }
     ]
   };
 
