@@ -933,15 +933,15 @@ window.JSA.parseDeepLink = function(hashStr){
     });
     const FEED_COPY = {
       noleggio: {
-        title: 'Il timer parte solo quando sei fuori dal porto.',
+        title: 'Prenota online, parti oggi.',
         sub:   'Senza patente, tutta la velocità. Cattolica · Rimini'
       },
       experience: {
-        title: 'Un\'ora in mare aperto cambia la prospettiva.',
+        title: 'Prenota online, sorprendi chi ami.',
         sub:   'Esperienze signature — coppia, brunch, famiglia, community.'
       },
       yacht: {
-        title: 'Due yacht, equipaggio incluso, rotte su misura.',
+        title: 'Prenota online, lo skipper pensa a tutto.',
         sub:   'Dal tramonto di due ore al weekend con notte a bordo.'
       }
     };
