@@ -569,7 +569,7 @@ body[data-active-tab="experience"] .cat.is-active{ color: var(--rose) }
   color: #fff;
   display: grid; place-items: center;
   box-shadow: 0 10px 28px rgba(37,211,102,.45), 0 4px 10px rgba(37,211,102,.25);
-  z-index: 40;
+  z-index: 70;
 }
 /* drop the FAB toward the viewport bottom once the cat-bar slides away —
    only on mobile, where the cat-bar is fixed-bottom. On desktop the
