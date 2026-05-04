@@ -1676,9 +1676,9 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 .contact-head,
 .contact-grid{
-  max-width: var(--content-w);
+  max-width: 1320px;
+  width: 92vw;
   margin: 0 auto;
-  padding: 0 16px;
 }
 .contact-head{
   text-align: left;

@@ -177,29 +177,29 @@ window.JSA.parseDeepLink = function(hashStr){
       ]
     },
 
-    // ============ NOLEGGIO — marketing aliases (point to canonical) ============
-    { id: 'fast-fun',   tab: 'noleggio', cat: 'veloci', aliasOf: 'noleggio-sportender', preselect: { durata: '15' },
+    // ============ NOLEGGIO — marketing aliases (point to canonical, not shown in feed) ============
+    { id: 'fast-fun',   aliasOf: 'noleggio-sportender', preselect: { durata: '15' },
       title: 'Fast <em>& Fun</em>', loc: 'Cattolica · pontile',
       img: 'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
       badge: '15 min', meta: '15 min', priceFromOverride: 50,
       tags: ['15 min', 'entry', 'senza patente'],
       lead: 'Quindici minuti effettivi al largo: il timer parte fuori dal porto, non dal momento in cui sali sul mezzo, con dieci minuti extra inclusi per rientrare con calma.' },
 
-    { id: 'sprint',     tab: 'noleggio', cat: 'veloci', aliasOf: 'noleggio-sportender', preselect: { durata: '30' },
+    { id: 'sprint',     aliasOf: 'noleggio-sportender', preselect: { durata: '30' },
       title: 'Sprint <em>30</em>', loc: 'Cattolica · pontile',
       img: 'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
       badge: '30 min', meta: '30 min', priceFromOverride: 85,
       tags: ['30 min', 'divertimento'],
       lead: 'Trenta minuti effettivi per capire cosa fa questo mezzo quando spingi davvero — abbastanza per uscire al largo, fare il giro e tornare con qualcosa da raccontare.' },
 
-    { id: 'classic',    tab: 'noleggio', cat: 'veloci', aliasOf: 'noleggio-sportender', preselect: { durata: '45' },
+    { id: 'classic',    aliasOf: 'noleggio-sportender', preselect: { durata: '45' },
       title: 'Classic <em>45</em>', loc: 'Cattolica · pontile',
       img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
       badge: '45 min · best seller', meta: '45 min', priceFromOverride: 105,
       tags: ['45 min', 'best seller'],
       lead: 'Quarantacinque minuti effettivi: abbastanza per spingere al largo, fare il giro costiero e rientrare con calma. Il formato più richiesto, con il timer che parte fuori dai pali del porto.' },
 
-    { id: 'sunset-hour',tab: 'noleggio', cat: 'tour',   aliasOf: 'noleggio-sportender', preselect: { durata: '60' },
+    { id: 'sunset-hour', aliasOf: 'noleggio-sportender', preselect: { durata: '60' },
       title: 'Sunset <em>Hour</em>', loc: 'Cattolica → Gabicce',
       img: 'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
       badge: '1 ora', meta: '1 ora', priceFromOverride: 145,
