@@ -107,8 +107,8 @@ window.JSA.parseDeepLink = function(hashStr){
     // ============ NOLEGGIO — canonical ride product ============
     {
       id: 'noleggio-sportender',
-      tab: 'noleggio',
-      cat: 'veloci',
+      tab: 'moto',
+      cat: 'ride',
       title: 'Noleggio <em>Sportender</em>',
       loc: 'Cattolica · pontile',
       img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
@@ -208,7 +208,7 @@ window.JSA.parseDeepLink = function(hashStr){
 
     {
       id: 'vallugola-gold',
-      tab: 'noleggio',
+      tab: 'moto',
       cat: 'tour',
       title: 'Vallugola <em>Gold</em>',
       loc: 'Cattolica → Vallugola',
@@ -253,8 +253,8 @@ window.JSA.parseDeepLink = function(hashStr){
     // ============ EXPERIENCE ============
     {
       id: 'secret-romance',
-      tab: 'experience',
-      cat: 'coppia',
+      tab: 'love',
+      cat: 'love-moto',
       title: 'Secret <em>Romance</em>',
       loc: 'Cattolica · al largo',
       img: 'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1600&auto=format&fit=crop',
@@ -302,8 +302,8 @@ window.JSA.parseDeepLink = function(hashStr){
     },
     {
       id: 'the-proposal',
-      tab: 'experience',
-      cat: 'coppia',
+      tab: 'love',
+      cat: 'love-moto',
       title: 'The <em>Proposal</em>',
       loc: 'Cattolica · al largo',
       img: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1600&auto=format&fit=crop',
@@ -347,8 +347,8 @@ window.JSA.parseDeepLink = function(hashStr){
     },
     {
       id: 'sinfonia-amore',
-      tab: 'experience',
-      cat: 'coppia',
+      tab: 'love',
+      cat: 'love-moto',
       title: 'Sinfonia <em>d\'Amore</em>',
       loc: 'Cattolica · al largo · su prenotazione',
       img: 'https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1600&auto=format&fit=crop',
@@ -395,8 +395,8 @@ window.JSA.parseDeepLink = function(hashStr){
     },
     {
       id: 'vallugola-diamond',
-      tab: 'experience',
-      cat: 'coppia',
+      tab: 'love',
+      cat: 'love-moto',
       title: 'Vallugola <em>Diamond</em>',
       loc: 'Cattolica → Vallugola',
       img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1600&auto=format&fit=crop',
@@ -439,8 +439,8 @@ window.JSA.parseDeepLink = function(hashStr){
     },
     {
       id: 'midday-brunch',
-      tab: 'experience',
-      cat: 'brunch',
+      tab: 'love',
+      cat: 'love-moto',
       title: 'Midday <em>Brunch</em>',
       loc: 'Cattolica · al largo',
       img: 'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1600&auto=format&fit=crop',
@@ -483,8 +483,8 @@ window.JSA.parseDeepLink = function(hashStr){
     },
     {
       id: 'kids-academy',
-      tab: 'noleggio',
-      cat: 'famiglia',
+      tab: 'moto',
+      cat: 'under12',
       title: 'Kids <em>Academy</em>',
       loc: 'Cattolica · area protetta',
       img: 'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
@@ -518,8 +518,8 @@ window.JSA.parseDeepLink = function(hashStr){
     },
     {
       id: 'blind-date',
-      tab: 'experience',
-      cat: 'social',
+      tab: 'love',
+      cat: 'love-moto',
       title: 'Blind <em>Date</em>',
       loc: 'Cattolica · su iscrizione social',
       img: 'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
@@ -560,7 +560,7 @@ window.JSA.parseDeepLink = function(hashStr){
     // ============ YACHT ============
     {
       id: 'yacht-sunset',
-      tab: 'yacht', cat: 'day',
+      tab: 'party', cat: 'day',
       title: 'Sunset <em>Cruise</em>',
       loc: 'Cattolica · al largo',
       img: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop',
@@ -593,7 +593,7 @@ window.JSA.parseDeepLink = function(hashStr){
     },
     {
       id: 'yacht-day-charter',
-      tab: 'yacht', cat: 'day',
+      tab: 'escursioni', cat: 'esc-yacht',
       title: 'Day <em>Charter</em>',
       loc: 'Cattolica → Vallugola → Gabicce',
       img: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=85&w=1600&auto=format&fit=crop',
@@ -630,7 +630,7 @@ window.JSA.parseDeepLink = function(hashStr){
     },
     {
       id: 'yacht-private-event',
-      tab: 'yacht', cat: 'event',
+      tab: 'party', cat: 'night',
       title: 'Private <em>Event</em>',
       loc: 'Cattolica · al largo',
       img: 'https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=85&w=1600&auto=format&fit=crop',
@@ -668,7 +668,7 @@ window.JSA.parseDeepLink = function(hashStr){
     },
     {
       id: 'yacht-weekend',
-      tab: 'yacht', cat: 'event',
+      tab: 'love', cat: 'love-yacht',
       title: 'Riviera <em>Weekend</em>',
       loc: 'Marche · Emilia',
       img: 'https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop',
@@ -702,7 +702,7 @@ window.JSA.parseDeepLink = function(hashStr){
     // ============ YACHT — Ultra-Platinum (Valbruna) ============
     {
       id: 'valbruna-ultra-platinum',
-      tab: 'yacht', cat: 'ultra',
+      tab: 'party', cat: 'night',
       title: 'Valbruna <em>Ultra-Platinum</em>',
       loc: 'Cattolica → Vallugola · baia privata',
       img: 'https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop',
@@ -735,6 +735,29 @@ window.JSA.parseDeepLink = function(hashStr){
       ]
     },
 
+    // Duplicates for multi-tab appearance
+    { id: 'yacht-sunset-love',         aliasOf: 'yacht-sunset',       tab: 'love',      cat: 'love-yacht',
+      title: 'Sunset <em>Cruise</em>',       loc: 'Cattolica · al largo',
+      img: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop',
+      badge: '2 ore', meta: '2 ore · skipper · aperitivo', basePrice: 690, priceUnit: 'a barca',
+      perPerson: false, minPeople: 1, maxPeople: 8, rating: 4.95, reviews: 0,
+      tags: ['2 ore', 'fino a 8 px', 'aperitivo', 'skipper'],
+      lead: 'Due ore al tramonto con aperitivo a bordo — bollicine, taglieri e fino a otto ospiti — partenza alle 18:30 e rientro al buio con le luci di Cattolica che si accendono sulla costa.' },
+    { id: 'yacht-day-charter-party',   aliasOf: 'yacht-day-charter',  tab: 'party',     cat: 'day',
+      title: 'Day <em>Charter</em>',         loc: 'Cattolica → Vallugola → Gabicce',
+      img: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=85&w=1600&auto=format&fit=crop',
+      badge: 'full day', meta: '8 ore · 10 px · pranzo', basePrice: 1890, priceUnit: 'a barca',
+      perPerson: false, minPeople: 1, maxPeople: 10, rating: 4.95, reviews: 0,
+      tags: ['full day', 'fino a 10 px', 'pranzo', 'tender + snorkel'],
+      lead: 'Otto ore di navigazione tra Cattolica, Vallugola e Gabicce: pranzo a bordo o al Ristorante Falco, snorkeling nelle calette con il tender, skipper e hostess inclusi.' },
+    { id: 'vallugola-gold-esc',        aliasOf: 'vallugola-gold',     tab: 'escursioni', cat: 'esc-moto',
+      title: 'Vallugola <em>Gold</em>',      loc: 'Cattolica → Vallugola',
+      img: 'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop',
+      badge: '4 ore', meta: '4 ore', basePrice: 289, priceUnit: 'a persona',
+      perPerson: true, minPeople: 2, maxPeople: 3, rating: 4.95, reviews: 67,
+      tags: ['4 ore', 'pranzo', 'caletta privata', 'min 2 pers'],
+      lead: 'Rotta aperta da Cattolica fino al Porticciolo di Vallugola, con guida inclusa, attracco nella caletta privata e pranzo al Ristorante Falco: quattro ore di navigazione in cui il mezzo risponde solo a te.' },
+
     // Yacht hero CTA on yacht.html — alias to sunset cruise
     { id: 'yacht', tab: 'yacht', aliasOf: 'yacht-sunset', preselect: {} },
   ];
@@ -754,27 +777,29 @@ window.JSA.parseDeepLink = function(hashStr){
   });
 
   const CATS = {
-    noleggio: [
-      { id: 'veloci',   label: 'Ride',     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>' },
-      { id: 'tour',     label: 'Tour',     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>' },
-      { id: 'famiglia', label: 'Under 12', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="7" r="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 14h2a3 3 0 0 1 3 3v2"/></svg>' }
+    moto: [
+      { id: 'ride',    label: 'Ride',     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>' },
+      { id: 'tour',    label: 'Tour',     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>' },
+      { id: 'under12', label: 'Under 12', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="7" r="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 14h2a3 3 0 0 1 3 3v2"/></svg>' }
     ],
-    experience: [
-      { id: 'coppia',   label: 'Coppia',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-7 10-7 10s-2 0-4 0z"/></svg>' },
-      { id: 'brunch',   label: 'Brunch',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 11h18a8 8 0 0 1-9 8 8 8 0 0 1-9-8z"/><path d="M7 8c0-2 1-3 2-3M11 8c0-2 1-3 2-3M15 8c0-2 1-3 2-3"/></svg>' },
-      { id: 'social',   label: 'Social',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M14 18a4 4 0 0 1 7 0"/></svg>' }
+    love: [
+      { id: 'love-moto',  label: 'Moto d\'acqua', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/></svg>' },
+      { id: 'love-yacht', label: 'Yacht',          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10"/><path d="M12 4l6 10H6z"/><path d="M3 18h18l-2 3H5z"/></svg>' }
     ],
-    yacht: [
-      { id: 'day',   label: 'Crociere', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="3.5"/><path d="M12 6v2M5 14H3M21 14h-2M6.5 8.5L5 7M19 7l-1.5 1.5"/><path d="M3 19h18"/></svg>' },
-      { id: 'event', label: 'Privé',    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6l1.5 4.5L18 12l-4.5 1.5L12 18l-1.5-4.5L6 12l4.5-1.5z"/><path d="M5 3v3M3.5 4.5h3M19 18v3M17.5 19.5h3"/></svg>' },
-      { id: 'ultra', label: 'Premium', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' }
+    party: [
+      { id: 'day',   label: 'Day',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="3.5"/><path d="M12 6v2M5 14H3M21 14h-2M6.5 8.5L5 7M19 7l-1.5 1.5"/><path d="M3 19h18"/></svg>' },
+      { id: 'night', label: 'Night', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>' }
+    ],
+    escursioni: [
+      { id: 'esc-yacht', label: 'Yacht',        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10"/><path d="M12 4l6 10H6z"/><path d="M3 18h18l-2 3H5z"/></svg>' },
+      { id: 'esc-moto',  label: 'Moto d\'Acqua', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/></svg>' }
     ]
   };
 
   // ============ STATE ============
   const state = {
-    activeTab: 'noleggio',
-    activeCat: 'veloci',
+    activeTab: 'moto',
+    activeCat: 'ride',
     likes: new Set(JSON.parse(localStorage.getItem('jsa_likes') || '[]')),
     booking: {
       expId: null,
@@ -847,7 +872,7 @@ window.JSA.parseDeepLink = function(hashStr){
 
     grid.innerHTML = items.map(e => {
       const liked = state.likes.has(e.id);
-      const isLove = e.tab === 'experience';
+      const isLove = e.tab === 'love';
       // Build the media list: video first (if any), then images.
       const media = [];
       if (e.video) media.push({ type: 'video', src: e.video });
@@ -886,7 +911,10 @@ window.JSA.parseDeepLink = function(hashStr){
             </div>
             <p class="card-loc">${e.loc}</p>
             <p class="card-meta">${e.meta}</p>
-            <p class="card-price"><b>da ${priceFor(e)}€</b> · ${unitFor(e)}</p>
+            <div class="card-foot">
+              <p class="card-price"><b>da ${priceFor(e)}€</b><small>${unitFor(e)}</small></p>
+              <span class="card-cta" aria-hidden="true">Scopri<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+            </div>
           </div>
         </article>
       `;
@@ -926,30 +954,46 @@ window.JSA.parseDeepLink = function(hashStr){
     state.activeTab = tab;
     state.activeCat = CATS[tab][0].id;
     document.body.dataset.activeTab = tab;
+    let activeTabEl = null;
     $$('.tab').forEach(t => {
       const on = t.dataset.tab === tab;
       t.classList.toggle('is-active', on);
       t.setAttribute('aria-selected', on ? 'true' : 'false');
+      if(on) activeTabEl = t;
     });
+    // Scroll the tab pill so the newly-selected chip is fully visible
+    // (the .topbar-row--main becomes a horizontal scroller on mobile
+    // when chips overflow the viewport width).
+    if(activeTabEl && typeof activeTabEl.scrollIntoView === 'function'){
+      activeTabEl.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+    }
     const FEED_COPY = {
-      noleggio: {
+      moto: {
         title: 'Prenota online, conferma in 5 minuti.',
         sub:   'Senza patente, tutta la velocità. Cattolica · Rimini'
       },
-      experience: {
+      love: {
         title: 'Prenota online, conferma in 5 minuti.',
-        sub:   'Esperienze signature — coppia, brunch, famiglia, community.'
+        sub:   'Esperienze romantiche — moto d\'acqua e yacht.'
       },
-      yacht: {
+      party: {
         title: 'Prenota online, conferma in 5 minuti.',
-        sub:   'Dal tramonto di due ore al weekend con notte a bordo.'
+        sub:   'Feste in mare — dal tramonto aperitivo alla notte privé.'
+      },
+      escursioni: {
+        title: 'Prenota online, conferma in 5 minuti.',
+        sub:   'Escursioni guidate — yacht e moto d\'acqua verso Vallugola.'
       }
     };
-    const t = FEED_COPY[tab] || FEED_COPY.noleggio;
+    const t = FEED_COPY[tab] || FEED_COPY.moto;
     $('#feedTitle').textContent = t.title;
     $('#feedSub').textContent = t.sub;
     renderCats();
     renderCards();
+    // Reset the cards row to its starting position so the user always
+    // lands on the first card of the newly-selected tab.
+    const cardsEl = $('#cards');
+    if(cardsEl) cardsEl.scrollTo({ left: 0, behavior: 'instant' in cardsEl.scrollTo ? 'instant' : 'auto' });
   }
 
   // ============ SHEETS ============
@@ -1070,7 +1114,7 @@ window.JSA.parseDeepLink = function(hashStr){
     const e = EXPERIENCES.find(x => x.id === id);
     if(!e) return;
     const liked = state.likes.has(id);
-    const isLove = e.tab === 'experience';
+    const isLove = e.tab === 'love';
 
     $('#detailPrice').textContent = `da ${e.priceFrom}€`;
     $('#detailPriceUnit').textContent = e.priceUnit;
@@ -1390,7 +1434,7 @@ window.JSA.parseDeepLink = function(hashStr){
   }
 
   function vLabel(v){
-    return v === 'go' ? 'Esci sereno' : (v === 'caution' ? 'Verifichiamo' : 'Sconsigliato');
+    return v === 'go' ? 'Esci sereno' : (v === 'caution' ? 'Mare mosso' : 'Sconsigliato');
   }
 
   // Render targets — populate from a fetched data object
@@ -1611,7 +1655,7 @@ window.JSA.parseDeepLink = function(hashStr){
     const obs = new IntersectionObserver((entries) => {
       const e = entries[0];
       document.body.classList.toggle('is-past-products', !e.isIntersecting);
-    }, { rootMargin: '-30% 0px -45% 0px', threshold: 0 });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
     obs.observe(feed);
   }
 
@@ -1649,7 +1693,9 @@ window.JSA.parseDeepLink = function(hashStr){
     wireDetailCtas();
 
     // pre-set deep link
-    if(location.hash === '#experience' || location.hash === '#love'){ setTab('experience'); }
+    if(location.hash === '#love'){ setTab('love'); }
+    if(location.hash === '#escursioni'){ setTab('escursioni'); }
+    if(location.hash === '#party'){ setTab('party'); }
     if(location.hash === '#meteo'){ openMeteo(); }
   }
 
@@ -1794,7 +1840,7 @@ window.JSA.parseDeepLink = function(hashStr){
          || (typeof wind === 'number' && wind > 22)
          || (code >= 51 && code <= 64)
          || (code >= 80 && code <= 81)
-         || (code >= 45 && code <= 48)) return { level: 'caution', label: 'Verifichiamo' };
+         || (code >= 45 && code <= 48)) return { level: 'caution', label: 'Mare mosso' };
       return { level: 'go', label: 'Perfetto' };
     }
 

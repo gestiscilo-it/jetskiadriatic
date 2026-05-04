@@ -17,18 +17,18 @@
 
 <link rel="stylesheet" href="assets/css/app.css" />
 </head>
-<body data-active-tab="noleggio">
+<body data-active-tab="moto">
 
 <!-- ============ SVG SYMBOL DEFS (Riviera DS — hero wave edges) ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="hero-edge-top" viewBox="0 0 1440 80" preserveAspectRatio="none">
       <path d="M0,0 L0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,0 Z" fill="currentColor"/>
-      <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
     </symbol>
     <symbol id="hero-edge-bot" viewBox="0 0 1440 80" preserveAspectRatio="none">
       <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,86 L0,86 Z" fill="currentColor"/>
-      <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
     </symbol>
   </defs>
 </svg>
@@ -97,23 +97,29 @@
     <div class="topbar-row topbar-row--main">
       <!-- Underline tabs -->
       <nav class="tabs" role="tablist" aria-label="Categoria principale">
-        <button type="button" class="tab is-active" role="tab" aria-selected="true" data-tab="noleggio">
+        <button type="button" class="tab is-active" role="tab" aria-selected="true" data-tab="moto">
           <span class="tab-ico" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/></svg>
           </span>
-          <span>Noleggio</span>
+          <span>Moto d'acqua</span>
         </button>
-        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="experience">
+        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="love">
           <span class="tab-ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </span>
+          <span>Love Experience</span>
+        </button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="party">
+          <span class="tab-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6l1.5 4.5L18 12l-4.5 1.5L12 18l-1.5-4.5L6 12l4.5-1.5z"/><path d="M5 3v3M3.5 4.5h3M19 18v3M17.5 19.5h3"/></svg>
+          </span>
+          <span>Yacht Party</span>
+        </button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="escursioni">
+          <span class="tab-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
           </span>
           <span>Escursioni</span>
-        </button>
-        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="yacht">
-          <span class="tab-ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10"/><path d="M12 4l6 10H6z"/><path d="M3 18h18l-2 3H5z"/></svg>
-          </span>
-          <span>Yacht</span>
         </button>
       </nav>
     </div>
@@ -155,6 +161,11 @@
   </main>
 
 
+  <!-- ============ FLOATING CALL ============ -->
+  <a class="fab-call" href="tel:+390000000000" aria-label="Chiama">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.27 6.27l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+  </a>
+
   <!-- ============ FLOATING WHATSAPP ============ -->
   <a class="fab-wa" href="https://wa.me/390000000000" target="_blank" rel="noopener" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>
@@ -163,6 +174,39 @@
 
 
 </div><!-- /.app -->
+
+<!-- ============ LOVE EXPERIENCES VIDEO ============ -->
+<section class="hero hero--love" id="love">
+  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
+         poster="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=90&w=2400&auto=format&fit=crop">
+    <source src="https://videos.pexels.com/video-files/3017773/3017773-hd_1920_1080_25fps.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-overlay"></div>
+
+  <svg class="hero-edge hero-edge--top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-top"/></svg>
+  <svg class="hero-edge hero-edge--bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-bot"/></svg>
+
+  <div class="hero-inner">
+    <div class="hero-body">
+      <h1 class="hero-h">
+        Il mare,<br/><em>per due</em>.
+      </h1>
+      <p class="hero-lead">
+        Tramonto a bordo, calette private, champagne sul ponte. Le nostre <strong>Love Experience</strong> sono progettate per chi vuole che quel momento sia impossibile da dimenticare.
+      </p>
+      <div class="cta-row">
+        <a href="#contatti" class="btn btn-primary" data-book="">
+          Prenota l'esperienza
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://wa.me/390000000000" class="btn btn-ghost" target="_blank" rel="noopener">
+          Chiedi su WhatsApp
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ ESPERIENZE STANDARD ============ -->
 <section class="section experiences section--tight-top section--tight-bot" id="esperienze">
@@ -207,112 +251,6 @@
   </div>
 </section>
 
-<!-- ============ IL MEZZO (Sportender JST-30) ============ -->
-<section class="section fleet" id="flotta">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">il mezzo</span>
-      <h2 class="sh">Sportender <em>JST-30</em>.<br/>70 km/h, propulsione a getto, <u>nessun esame</u>.</h2>
-    </div>
-  </div>
-
-  <div class="container mezzo-wrap reveal">
-    <div class="mezzo-l">
-      <div class="mezzo-illu" style="background-image:url('https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1600&auto=format&fit=crop')">
-        <span class="mezzo-badge">Stagione 2026</span>
-      </div>
-    </div>
-
-    <div class="mezzo-r">
-      <p class="mezzo-desc">Propulsione a getto senza elica esterna: più stabile del classico, risposta immediata all'acceleratore, tre adulti a bordo senza limitazioni di peso. Il mezzo che usiamo da quando abbiamo aperto.</p>
-
-      <div class="mezzo-specs">
-        <div class="mezzo-spec">
-          <span>sicurezza</span>
-          <b>Senza elica</b>
-          <small>propulsione a getto</small>
-        </div>
-        <div class="mezzo-spec">
-          <span>capacità</span>
-          <b>3 posti</b>
-          <small>pilota + 2 passeggeri</small>
-        </div>
-        <div class="mezzo-spec">
-          <span>età minima</span>
-          <b>6 anni</b>
-          <small>come passeggero</small>
-        </div>
-        <div class="mezzo-spec">
-          <span>patente</span>
-          <b>Non richiesta</b>
-          <small>briefing di 10 minuti</small>
-        </div>
-      </div>
-
-      <ul class="mezzo-list">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Giubbotti salvagente in tutte le taglie, bambino incluso</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Gavone stagno per effetti personali e smartphone</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Tagliando settimanale certificato, cronologia pubblica</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Radio VHF e GPS a bordo, in contatto diretto con il pontile</li>
-      </ul>
-
-      <div class="mezzo-cta-row">
-        <a href="#contatti" class="btn btn-dark" data-book="">
-          Prenota ora
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#contatti" class="btn btn-ghost" data-book="classic">Prova il Classic · 105€</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Wave divider: light → dark -->
-<div class="wave-band wave-band--into-dark" aria-hidden="true">
-  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,80 L0,80 Z" fill="#06182A"/>
-    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
-  </svg>
-</div>
-
-<!-- ============ HOW IT WORKS ============ -->
-<section class="section how">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">come si fa</span>
-      <h2 class="sh">Dal messaggio al largo:<br/><em>meno di dieci minuti</em>.</h2>
-    </div>
-    <p class="lead">Scrivi su WhatsApp, ricevi conferma in cinque minuti, arrivi al pontile con costume e documento — il resto lo gestiamo noi. Paghi al check-in, cancelli gratis fino a 24 ore prima.</p>
-  </div>
-
-  <div class="container how-grid reveal-s">
-    <div class="step">
-      <div class="step-n">1</div>
-      <h4>Scrivi su WhatsApp o prenota qui</h4>
-      <p>Scegli esperienza, data e orario sul sito o direttamente su WhatsApp. Durante la stagione rispondiamo entro cinque minuti con conferma e indicazioni precise per raggiungere il pontile.</p>
-    </div>
-    <div class="step">
-      <div class="step-n">2</div>
-      <h4>Arrivi al pontile</h4>
-      <p>Parcheggio gratuito, doccia e spogliatoio, bar e ristorante a trenta metri. Dieci minuti di briefing di sicurezza con l'istruttore, giubbotto in taglia e si parte.</p>
-    </div>
-    <div class="step">
-      <div class="step-n">3</div>
-      <h4>Spingi</h4>
-      <p>L'istruttore ti segue i primi minuti fuori dal porto, poi il mezzo è tuo. A fine uscita foto e video via AirDrop — il cronometro si è fermato, il ricordo no.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Wave divider: dark → light -->
-<div class="wave-band wave-band--from-dark" aria-hidden="true">
-  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,0 L0,0 Z" fill="#06182A"/>
-    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
-  </svg>
-</div>
-
-
 <!-- ============ MANIFESTO ============ -->
 <section class="section manifesto">
   <div class="timbro" style="top:50px;right:6vw;color:var(--ochre);border-color:var(--ochre);opacity:.8">
@@ -322,12 +260,12 @@
   <!-- Decorative single-line wave accents -->
   <div class="wave-splash" aria-hidden="true" style="top:14%;right:5vw;width:clamp(160px,18vw,260px);height:clamp(40px,5vw,70px);opacity:.55">
     <svg viewBox="0 0 260 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 30 C44 6 88 54 132 30 C176 6 220 54 264 30" stroke="#1FB6D8" stroke-width="2.5"/>
+      <path d="M0 30 C44 6 88 54 132 30 C176 6 220 54 264 30" stroke="currentColor" stroke-width="2.5"/>
     </svg>
   </div>
   <div class="wave-splash" aria-hidden="true" style="bottom:10%;left:3vw;width:clamp(200px,24vw,360px);height:clamp(50px,6vw,80px);opacity:.5">
     <svg viewBox="0 0 360 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 35 C60 5 120 65 180 35 C240 5 300 65 360 35" stroke="#1FB6D8" stroke-width="2.5"/>
+      <path d="M0 35 C60 5 120 65 180 35 C240 5 300 65 360 35" stroke="currentColor" stroke-width="2.5"/>
     </svg>
   </div>
 
@@ -435,38 +373,162 @@
   </div>
 </section>
 
-<!-- ============ METEO — controlla prima di prenotare ============ -->
-<section class="section meteo wave-bg-pattern" id="meteo-section">
+<!-- ============ FLAGSHIP OVERVIEW (Yacht) ============ -->
+<section class="section flagship-overview section--tight-top section--tight-bot">
+  <div class="container exp-grid exp-grid--love reveal-s">
 
+    <article class="exp exp--love" data-detail="yacht-sunset">
+      <div class="exp-n">01</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Sunset <em>Cruise</em></h3>
+      <p>Due ore al tramonto, aperitivo con bollicine e taglieri, fino a 8 ospiti. Partenza 18:30, rientro al buio sotto Cattolica illuminata.</p>
+      <ul class="exp-tags"><li>2 ore</li><li>fino a 8 px</li><li>aperitivo</li><li>skipper</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 690€</b><span>a barca</span></div>
+        <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+    <article class="exp exp--love" data-detail="yacht-private-event">
+      <div class="exp-n">02</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Private <em>Event</em></h3>
+      <p>Compleanni, addii al celibato, brindisi aziendali. 4 ore con ponte allestito, catering on demand, DJ opzionale, fino a 12 ospiti.</p>
+      <ul class="exp-tags"><li>4 ore</li><li>fino a 12 px</li><li>catering</li><li>DJ opzionale</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 1.490€</b><span>a barca</span></div>
+        <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+    <article class="exp exp--love" data-detail="yacht-day-charter">
+      <div class="exp-n">03</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1540541338287-41700207dee6?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Day <em>Charter</em></h3>
+      <p>Otto ore tra Cattolica, Vallugola e Gabicce. Pranzo a bordo o al Ristorante Falco, snorkeling, tender per le calette.</p>
+      <ul class="exp-tags"><li>full day</li><li>fino a 10 px</li><li>pranzo</li><li>tender + snorkel</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 1.890€</b><span>a barca</span></div>
+        <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+    <article class="exp exp--love" data-detail="valbruna-ultra-platinum">
+      <div class="exp-n">04</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Valbruna <em>Ultra-Platinum</em></h3>
+      <p>20 metri di club privato galleggiante. DJ, jet ski, drone, open bar e buffet tutto incluso. Fino a 20 ospiti — esclusiva totale.</p>
+      <ul class="exp-tags"><li>all-in</li><li>DJ · jet ski · drone</li><li>fino a 20 px</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 4.500€</b><span>a barca (fino a 10 px)</span></div>
+        <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- Wave divider: light → dark -->
+<div class="wave-band wave-band--into-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,80 L0,80 Z" fill="#06182A"/>
+    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section how">
   <div class="section-head reveal">
     <div>
-      <span class="kicker">il meteo</span>
-      <h2 class="sh">Controlla <em>prima</em><br/>di prenotare.</h2>
+      <span class="kicker">come si fa</span>
+      <h2 class="sh">Dal messaggio al largo:<br/><em>meno di dieci minuti</em>.</h2>
     </div>
-    <p class="lead">Non usciamo se le condizioni non sono all'altezza, e non vogliamo che paghi per qualcosa che non sarà perfetto. Controlliamo Capitaneria, <a href="https://www.windy.com/?43.96,12.74,11" target="_blank" rel="noopener">Windy su Cattolica</a> e Meteomar ogni mattina alle 8:00. Se hai dubbi su una data, <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20info%20sul%20meteo%20per%20una%20prenotazione" target="_blank" rel="noopener">scrivici su WhatsApp</a> e controlliamo insieme.</p>
+    <p class="lead">Scrivi su WhatsApp, ricevi conferma in cinque minuti, arrivi al pontile con costume e documento — il resto lo gestiamo noi. Paghi al check-in, cancelli gratis fino a 24 ore prima.</p>
   </div>
 
-  <div class="container fcast-wrap reveal">
-    <div class="fcast-head">
-      <span class="fcast-tag">Le prossime 7 giornate</span>
-      <span class="fcast-source">Fonte: Servizio Meteorologico dell'<a href="https://www.meteoam.it/it/home" target="_blank" rel="noopener">Aeronautica Militare</a> · aggiornamento giornaliero</span>
+  <div class="container how-grid reveal-s">
+    <div class="step">
+      <div class="step-n">1</div>
+      <h4>Scrivi su WhatsApp o prenota qui</h4>
+      <p>Scegli esperienza, data e orario sul sito o direttamente su WhatsApp. Durante la stagione rispondiamo entro cinque minuti con conferma e indicazioni precise per raggiungere il pontile.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <h4>Arrivi al pontile</h4>
+      <p>Parcheggio gratuito, doccia e spogliatoio, bar e ristorante a trenta metri. Dieci minuti di briefing di sicurezza con l'istruttore, giubbotto in taglia e si parte.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <h4>Spingi</h4>
+      <p>L'istruttore ti segue i primi minuti fuori dal porto, poi il mezzo è tuo. A fine uscita foto e video via AirDrop — il cronometro si è fermato, il ricordo no.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider: dark → light -->
+<div class="wave-band wave-band--from-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,0 L0,0 Z" fill="#06182A"/>
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- ============ IL MEZZO (Sportender JST-30) ============ -->
+<section class="section fleet" id="flotta">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">il mezzo</span>
+      <h2 class="sh">Sportender <em>JST-30</em>.<br/>70 km/h, propulsione a getto, <u>nessun esame</u>.</h2>
+    </div>
+  </div>
+
+  <div class="container mezzo-wrap reveal">
+    <div class="mezzo-l">
+      <div class="mezzo-illu" style="background-image:url('https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1600&auto=format&fit=crop')">
+        <span class="mezzo-badge">Stagione 2026</span>
+      </div>
     </div>
 
-    <div class="forecast-7d" id="fcastGrid" aria-live="polite">
-      <!-- skeleton placeholders, popolati via JS -->
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-    </div>
+    <div class="mezzo-r">
+      <p class="mezzo-desc">Propulsione a getto senza elica esterna: più stabile del classico, risposta immediata all'acceleratore, tre adulti a bordo senza limitazioni di peso. Il mezzo che usiamo da quando abbiamo aperto.</p>
 
-    <div class="fcast-legend">
-      <span><i data-v="go"></i>Perfetto · esci sereno</span>
-      <span><i data-v="caution"></i>Verifichiamo · sentiamoci la mattina</span>
-      <span><i data-v="no"></i>Sconsigliato · meglio rimandare</span>
+      <div class="mezzo-specs">
+        <div class="mezzo-spec">
+          <span>sicurezza</span>
+          <b>Senza elica</b>
+          <small>propulsione a getto</small>
+        </div>
+        <div class="mezzo-spec">
+          <span>capacità</span>
+          <b>3 posti</b>
+          <small>pilota + 2 passeggeri</small>
+        </div>
+        <div class="mezzo-spec">
+          <span>età minima</span>
+          <b>6 anni</b>
+          <small>come passeggero</small>
+        </div>
+        <div class="mezzo-spec">
+          <span>patente</span>
+          <b>Non richiesta</b>
+          <small>briefing di 10 minuti</small>
+        </div>
+      </div>
+
+      <ul class="mezzo-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Giubbotti salvagente in tutte le taglie, bambino incluso</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Gavone stagno per effetti personali e smartphone</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Tagliando settimanale certificato, cronologia pubblica</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Radio VHF e GPS a bordo, in contatto diretto con il pontile</li>
+      </ul>
+
+      <div class="mezzo-cta-row">
+        <a href="#contatti" class="btn btn-dark" data-book="">
+          Prenota ora
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#contatti" class="btn btn-ghost" data-book="classic">Prova il Classic · 105€</a>
+      </div>
     </div>
   </div>
 </section>
@@ -475,7 +537,7 @@
 <div class="wave-band wave-band--into-dark" aria-hidden="true">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,80 L0,80 Z" fill="#06182A"/>
-    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
   </svg>
 </div>
 
@@ -530,9 +592,45 @@
 <div class="wave-band wave-band--from-dark" aria-hidden="true">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,0 L0,0 Z" fill="#06182A"/>
-    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
   </svg>
 </div>
+
+<!-- ============ METEO — controlla prima di prenotare ============ -->
+<section class="section meteo wave-bg-pattern" id="meteo-section">
+
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">il meteo</span>
+      <h2 class="sh">Controlla <em>prima</em><br/>di prenotare.</h2>
+    </div>
+    <p class="lead">Non usciamo se le condizioni non sono all'altezza, e non vogliamo che paghi per qualcosa che non sarà perfetto. Controlliamo Capitaneria, <a href="https://www.windy.com/?43.96,12.74,11" target="_blank" rel="noopener">Windy su Cattolica</a> e Meteomar ogni mattina alle 8:00. Se hai dubbi su una data, <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20info%20sul%20meteo%20per%20una%20prenotazione" target="_blank" rel="noopener">scrivici su WhatsApp</a> e controlliamo insieme.</p>
+  </div>
+
+  <div class="container fcast-wrap reveal">
+    <div class="fcast-head">
+      <span class="fcast-tag">Le prossime 7 giornate</span>
+      <span class="fcast-source">Fonte: Servizio Meteorologico dell'<a href="https://www.meteoam.it/it/home" target="_blank" rel="noopener">Aeronautica Militare</a> · aggiornamento giornaliero</span>
+    </div>
+
+    <div class="forecast-7d" id="fcastGrid" aria-live="polite">
+      <!-- skeleton placeholders, popolati via JS -->
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+    </div>
+
+    <div class="fcast-legend">
+      <span><i data-v="go"></i>Perfetto · esci sereno</span>
+      <span><i data-v="caution"></i>Mare mosso · esci, ma fai attenzione</span>
+      <span><i data-v="no"></i>Sconsigliato · meglio rimandare</span>
+    </div>
+  </div>
+</section>
 
 <!-- ============ FAQ ============ -->
 <section class="section faq wave-bg-pattern">
@@ -610,7 +708,7 @@
       <path d="M0 30 C240 0 480 60 720 30 C960 0 1200 60 1440 30 L1440 60 L0 60 Z"
             fill="currentColor" stroke="none"/>
       <path d="M0 30 C240 0 480 60 720 30 C960 0 1200 60 1440 30"
-            fill="none" stroke="#1FB6D8" stroke-width="2.5" stroke-opacity=".55" stroke-linecap="round"/>
+            fill="none" stroke="currentColor" stroke-width="2.5" stroke-opacity=".55" stroke-linecap="round"/>
     </svg>
   </div>
 
@@ -903,7 +1001,7 @@
 
     <ul class="meteo-legend">
       <li><i data-v="go"></i>Esci sereno</li>
-      <li><i data-v="caution"></i>Verifica</li>
+      <li><i data-v="caution"></i>Mare mosso</li>
       <li><i data-v="no"></i>Sconsigliato</li>
     </ul>
 

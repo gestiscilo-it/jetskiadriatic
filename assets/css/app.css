@@ -3,6 +3,9 @@
    Mobile-first, Airbnb-inspired, navy + cyan brand
    ===================================================== */
 
+/* Active-tab accent — drives topbar, cat-bar, hero wave, and active pill */
+body{ --tab-color: var(--tab-accent, var(--navy)); }
+
 :root{
   /* Brand */
   --navy:        #0A2540;
@@ -180,13 +183,13 @@ em{font-style:italic; font-family:var(--serif); font-weight:400}
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--surface);
+  background: var(--tab-color);
   border-bottom: 1px solid transparent;
   /* animate the sticky `top` offset (not transform) so the whole header
      slides as a single unit. transform would create a containing block
      and re-anchor the fixed-bottom cat-bar on mobile; animating `top`
      does not. */
-  transition: top .3s ease, box-shadow .2s ease, border-color .2s ease;
+  transition: top .3s ease, background .35s ease, box-shadow .2s ease, border-color .2s ease;
 }
 /* Slide the entire header up out of view once products are out of frame. */
 body.is-past-products .topbar{
@@ -233,14 +236,10 @@ body.is-past-products .topbar{
 .tab .tab-ico svg{ width: 16px; height: 16px }
 .tab:hover{ color: var(--ink) }
 .tab.is-active{
-  background: var(--navy);
+  background: var(--tab-color);
   color: #fff;
-  box-shadow: 0 2px 6px rgba(10,37,64,.18);
-}
-.tab.is-active[data-tab="experience"]{
-  background: var(--rose);
-  color: #fff;
-  box-shadow: 0 2px 6px rgba(232,79,107,.35);
+  box-shadow: 0 2px 6px rgba(0,0,0,.22);
+  transition: background .35s ease;
 }
 
 .topbar-right{
@@ -283,8 +282,9 @@ body.is-past-products .topbar{
   bottom: 0;
   left: 0; right: 0;
   z-index: 60;
-  background: var(--bg);
-  border-top: 1px solid var(--line);
+  background: var(--tab-color);
+  border-top: 1px solid rgba(255,255,255,.1);
+  transition: background .35s ease, transform .28s ease;
   padding-bottom: var(--safe-bottom);
   transition: transform .28s ease;
   will-change: transform;
@@ -310,18 +310,17 @@ body.is-past-products .cat-bar{
   display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
   padding: 8px 6px;
   min-width: 0;
-  color: var(--ink-3);
+  color: rgba(255,255,255,.55);
   font-size: 10.5px; font-weight: 600;
   letter-spacing: .01em;
   white-space: nowrap;
   position: relative;
-  opacity: .85;
+  opacity: 1;
 }
 .cat svg{ width: 22px; height: 22px; stroke-width: 1.7 }
-.cat:hover{ opacity: 1; color: var(--ink) }
+.cat:hover{ color: rgba(255,255,255,.85) }
 .cat.is-active{
-  opacity: 1;
-  color: var(--ink);
+  color: #fff;
 }
 .cat.is-active svg{ stroke-width: 2.1 }
 body[data-active-tab="experience"] .cat.is-active{ color: var(--rose) }
@@ -555,6 +554,32 @@ body[data-active-tab="experience"] .cat.is-active{ color: var(--rose) }
 /* =====================================================
    FLOATING WHATSAPP
    ===================================================== */
+.fab-call{
+  position: fixed;
+  right: 16px;
+  bottom: calc(var(--cat-bar-h) + var(--safe-bottom) + 84px);
+  transition: transform .2s ease, bottom .28s ease;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  display: grid; place-items: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,.14), 0 1px 4px rgba(0,0,0,.08);
+  z-index: 70;
+}
+@media (max-width: 959px){
+  body.is-past-products .fab-call{
+    bottom: calc(var(--safe-bottom) + 84px);
+  }
+}
+.fab-call:active{ transform: scale(.94) }
+.fab-call svg{ width: 24px; height: 24px }
+@media (min-width: 760px){
+  .fab-call{
+    right: max(16px, calc(50vw - var(--max-w)/2 + 16px));
+  }
+}
+
 .fab-wa{
   position: fixed;
   right: 16px;
@@ -1506,7 +1531,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   .cat-bar{
     position: static;
     background: transparent;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(255,255,255,.1);
     padding-bottom: 0;
     z-index: auto;
   }
@@ -1534,7 +1559,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   }
   .cat svg{ width: 18px; height: 18px; stroke-width: 1.8 }
   .cat.is-active{
-    border-bottom-color: var(--ink);
+    border-bottom-color: #fff;
   }
   body[data-active-tab="experience"] .cat.is-active{
     border-bottom-color: var(--rose);
@@ -3049,9 +3074,8 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 .hero-edge--top{ top: -2px; overflow: visible }
 .hero-edge--bot{ bottom: -2px; overflow: visible }
-/* First hero is followed by the white topbar — paint the bottom wave
-   white so it connects seamlessly with the tab selector below. */
-#top.hero > .hero-edge--bot{ color: var(--surface) }
+/* Wave fill tracks the active tab accent so it flows into the topbar. */
+#top.hero > .hero-edge--bot{ color: var(--tab-color); transition: color .35s ease; }
 
 .hero-video{
   position:absolute;inset:0;z-index:0;
@@ -3127,4 +3151,345 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 @media (max-width:640px){
   .hero{height:clamp(440px, 72svh, 640px)}
   .hero-body{padding-bottom:48px}
+}
+
+/* ==============================================================
+   PER-TAB ACCENT — each tab paints the rides section with its
+   own colour, and the cards mirror the showcase .exp visual.
+============================================================== */
+:root{
+  --tab-accent:    var(--cyan);
+  --tab-accent-d:  var(--cyan-2);
+  --tab-on-accent: #06182A;
+  --tab-tint:      rgba(31,182,216,.14);
+  --tab-tint-2:    rgba(31,182,216,.28);
+  --tab-glow:      rgba(31,182,216,.38);
+}
+body[data-active-tab="moto"]{
+  --tab-accent:    #1FB6D8;
+  --tab-accent-d:  #19A0BF;
+  --tab-on-accent: #06182A;
+  --tab-tint:      rgba(31,182,216,.14);
+  --tab-tint-2:    rgba(31,182,216,.28);
+  --tab-glow:      rgba(31,182,216,.38);
+}
+body[data-active-tab="love"]{
+  --tab-accent:    #E84F6B;
+  --tab-accent-d:  #C9304F;
+  --tab-on-accent: #fff;
+  --tab-tint:      rgba(232,79,107,.16);
+  --tab-tint-2:    rgba(232,79,107,.30);
+  --tab-glow:      rgba(232,79,107,.42);
+}
+body[data-active-tab="party"]{
+  --tab-accent:    #E8A33D;
+  --tab-accent-d:  #C68220;
+  --tab-on-accent: #06182A;
+  --tab-tint:      rgba(232,163,61,.18);
+  --tab-tint-2:    rgba(232,163,61,.32);
+  --tab-glow:      rgba(232,163,61,.42);
+}
+body[data-active-tab="escursioni"]{
+  --tab-accent:    #2DBFA1;
+  --tab-accent-d:  #1F8C77;
+  --tab-on-accent: #06182A;
+  --tab-tint:      rgba(45,191,161,.16);
+  --tab-tint-2:    rgba(45,191,161,.30);
+  --tab-glow:      rgba(45,191,161,.40);
+}
+
+/* ----- Mobile: let the whole tab pill slide horizontally when the
+   chips exceed the viewport width ----- */
+@media (max-width: 959px){
+  .topbar-row--main{
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .topbar-row--main::-webkit-scrollbar{ display: none }
+  .tabs{ flex: 0 0 auto }
+}
+
+/* ----- Tab pills — coloured per active tab (overrides line 235) ----- */
+.tab.is-active{
+  background: var(--tab-accent);
+  color: var(--tab-on-accent);
+  box-shadow: 0 2px 10px var(--tab-glow);
+}
+.tab[data-tab="moto"]:hover:not(.is-active)        { color: #19A0BF }
+.tab[data-tab="love"]:hover:not(.is-active)        { color: #E84F6B }
+.tab[data-tab="party"]:hover:not(.is-active)       { color: #C68220 }
+.tab[data-tab="escursioni"]:hover:not(.is-active)  { color: #1F8C77 }
+
+/* ----- Filter bar (cats) — pull tab accent into active state ----- */
+.cat.is-active{ color: var(--tab-accent) }
+.cat.is-active::after{
+  /* small accent dot under the active filter on mobile */
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  width: 18px; height: 3px;
+  background: var(--tab-accent);
+  border-radius: 999px;
+  transform: translateX(-50%);
+}
+@media (min-width: 960px){
+  .cat.is-active{ border-bottom-color: var(--tab-accent) }
+  .cat.is-active::after{ display: none }
+}
+/* Subtle tinted hairline at the top of the bottom cat-bar — gives
+   the whole section a hint of the active tab's colour on mobile */
+.cat-bar{
+  background:
+    linear-gradient(180deg, var(--tab-tint) 0, transparent 4px),
+    var(--bg);
+}
+@media (min-width: 960px){
+  .cat-bar{ background: transparent }
+}
+
+/* ==============================================================
+   RIDES CARDS — restyled to echo the .exp showcase cards
+============================================================== */
+.feed{ background: transparent }
+.feed-head h1 em{
+  color: var(--tab-accent);
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+/* Horizontal scroll-snap row. Slight bump of the scrollport's bottom
+   padding so a soft, vertically-restrained shadow fits inside it. */
+.cards{ padding-block: 6px 32px }
+@media (min-width: 640px){ .cards{ padding-block: 6px 36px } }
+@media (min-width: 960px){ .cards{ padding-block: 8px 38px } }
+@media (min-width: 1280px){ .cards{ padding-block: 8px 40px } }
+
+.card{
+  background: linear-gradient(170deg, var(--navy) 0%, var(--navy-2) 55%, var(--navy-3) 100%);
+  color: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 0;
+  position: relative;
+  isolation: isolate;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+  /* Layered shadow: a tight close one + softer mid + barely-there
+     far one. The further they go down the lower the alpha — the
+     small bit that escapes the scrollport's clip is invisible. */
+  box-shadow:
+    0 4px 10px rgba(10,37,64,.22),
+    0 8px 18px rgba(10,37,64,.10),
+    0 14px 28px rgba(10,37,64,.04);
+}
+.card:hover{
+  transform: translateY(-3px);
+  box-shadow:
+    0 6px 14px var(--tab-glow),
+    0 10px 22px rgba(10,37,64,.14),
+    0 16px 32px rgba(10,37,64,.06);
+}
+
+/* Image: bleed to card edges (no inner radius), add a darker bottom
+   gradient and a glowing tab-accent line at the seam with the body */
+.card-img{
+  border-radius: 0;
+  background: #0A2540 center/cover no-repeat;
+}
+.card-img::after{
+  content: "";
+  position: absolute; inset: auto 0 0 0;
+  height: 55%;
+  background: linear-gradient(180deg, transparent 0%, rgba(6,24,42,.78) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+.card-img::before{
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--tab-accent) 50%, transparent 100%);
+  z-index: 2;
+  opacity: .9;
+}
+
+/* Badge: tinted in tab colour */
+.card-badge{
+  background: var(--tab-accent);
+  color: var(--tab-on-accent);
+  box-shadow: 0 2px 10px var(--tab-glow);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+}
+.card-badge--love{
+  background: var(--rose);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(232,79,107,.45);
+}
+
+/* Heart sits on dark imagery — translucent surface with white outline,
+   liked uses the tab accent */
+.card-heart{
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.card-heart svg{
+  width: 18px; height: 18px;
+  fill: rgba(10,37,64,.0);
+  stroke: #fff;
+  stroke-width: 2.2;
+  filter: none;
+}
+.card-heart.is-liked{
+  background: rgba(255,255,255,.92);
+  border-color: rgba(255,255,255,.92);
+}
+.card-heart.is-liked svg{
+  fill: var(--tab-accent);
+  stroke: var(--tab-accent);
+}
+
+/* Body — dark surface with breathing padding, exp-style typography */
+.card-body{
+  padding: 16px 18px 18px;
+  background: linear-gradient(180deg, var(--navy-2) 0%, var(--navy-3) 100%);
+  position: relative;
+  z-index: 1;
+}
+.card-row{ align-items: flex-start }
+.card-title{
+  color: #fff;
+  font-family: var(--f-display);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  line-height: 1.18;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+.card-title em{
+  color: var(--tab-accent);
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+.card--love .card-title em{ color: var(--rose) }
+
+/* Rating — subtle pill on a dark surface */
+.card-rating{
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 9px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+.card-rating svg{
+  width: 11px; height: 11px;
+  fill: var(--tab-accent);
+}
+
+.card-loc{
+  margin: 6px 0 0;
+  color: rgba(255,255,255,.66);
+  font-size: 13.5px;
+}
+
+/* Meta becomes a pill, like .exp-tags */
+.card-meta{
+  display: inline-block;
+  margin: 10px 0 0;
+  padding: 5px 11px;
+  background: var(--tab-tint);
+  color: var(--tab-accent);
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  border: 1px solid var(--tab-tint-2);
+}
+
+/* Price + CTA row — flex split, divider hairline above */
+.card-foot{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+.card-foot .card-price{
+  margin: 0;
+  display: flex; flex-direction: column; gap: 1px;
+  border: 0;
+  padding: 0;
+}
+.card-foot .card-price b{
+  font-family: var(--f-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -.015em;
+  text-decoration: none;
+}
+.card-foot .card-price small{
+  font-size: 11.5px;
+  color: rgba(255,255,255,.62);
+  letter-spacing: .06em;
+}
+.card-cta{
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 14px;
+  background: var(--tab-accent);
+  color: var(--tab-on-accent);
+  border-radius: var(--radius-pill);
+  font-family: var(--f-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  flex: 0 0 auto;
+  transition: transform .2s var(--ease), background .2s var(--ease);
+  box-shadow: 0 4px 12px var(--tab-glow);
+}
+.card-cta svg{ width: 14px; height: 14px }
+.card:hover .card-cta{ transform: translateX(3px) }
+
+/* Legacy single-line .card-price (rendered when JS fallback emits the
+   old structure) — kept dark-friendly so nothing looks broken */
+.card-body > .card-price{
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.12);
+  color: #fff;
+}
+.card-body > .card-price b{
+  color: #fff;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 700;
+}
+.card-body > .card-price span{ color: rgba(255,255,255,.62) }
+
+/* Empty-state message lives inside the dark feed — tweak its tone */
+.empty{ background: var(--surface); border-radius: var(--radius) }
+
+/* Desktop: hover lift uses the tab glow */
+@media (min-width: 960px){
+  .card:hover .card-img{
+    transform: none;          /* the whole card lifts now, no nested move */
+    box-shadow: none;
+  }
 }
