@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1" />
+<meta name="theme-color" content="#06182A" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Yacht Party — Jet Ski Adriatic" />
+<title>Yacht Party · Jet Ski Adriatic — Cattolica, Rimini</title>
+<meta name="description" content="Yacht party privato a Cattolica. Compleanni, addii al celibato, eventi aziendali in mare aperto. Due yacht, catering su misura, DJ opzionale, fino a 20 ospiti." />
+<meta property="og:title" content="Yacht Party · Jet Ski Adriatic" />
+<meta property="og:description" content="Compleanni, addii al celibato, brindisi aziendali in mare aperto. Due yacht, catering su misura, DJ opzionale, fino a 20 ospiti." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
+<link rel="stylesheet" href="assets/css/app.css" />
+
+<style>
+  .reveal,
+  .reveal-s > * { opacity: 1 !important; transform: none !important; }
+
+  /* Override tramonto to ochre for the party theme */
+  .section { --tramonto: #E8A33D; --tramonto-d: #C68220; }
+
+  /* Floating back button */
+  .back-btn--floating {
+    position: absolute;
+    top: clamp(16px, 2.6vw, 32px);
+    left: max(4vw, calc((100vw - 1320px) / 2));
+    z-index: 5;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(6,24,42,.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.18);
+    color: #fff;
+    font-size: 13px; font-weight: 600; letter-spacing: .01em;
+    text-decoration: none;
+    transition: background .25s, border-color .25s;
+  }
+  .back-btn--floating svg { width: 16px; height: 16px }
+  .back-btn--floating:hover {
+    background: rgba(6,24,42,.78);
+    border-color: rgba(255,255,255,.32);
+  }
+  @media (max-width: 640px) {
+    .back-btn--floating { padding: 10px; gap: 0 }
+    .back-btn--floating .btn-label { display: none }
+  }
+
+  /* Package cards in a dark format */
+  .pkg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 720px) { .pkg-grid { grid-template-columns: 1fr } }
+
+  .pkg {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--r-lg);
+    padding: 28px 26px 26px;
+    display: flex; flex-direction: column; gap: 16px;
+    transition: background .25s, border-color .25s, transform .25s;
+  }
+  .pkg:hover {
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.18);
+    transform: translateY(-3px);
+  }
+  .pkg-n {
+    font-family: var(--f-serif);
+    font-size: 42px; font-weight: 400; font-style: italic; line-height: 1;
+    color: #E8A33D;
+    letter-spacing: -.02em;
+    margin-bottom: 4px;
+  }
+  .pkg-meta {
+    display: block;
+    font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--acqua); font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .pkg-body { display: flex; flex-direction: column; flex: 1 1 auto; }
+  .pkg-body h3 {
+    font-family: var(--f-display);
+    font-size: 24px; font-weight: 600; line-height: 1.15; letter-spacing: -.01em;
+    color: var(--white);
+    margin: 0 0 12px;
+  }
+  .pkg-body h3 em {
+    font-family: var(--f-serif); font-style: italic; font-weight: 400;
+    color: #E8A33D;
+  }
+  .pkg-body p {
+    font-size: 14.5px; line-height: 1.6;
+    color: rgba(255,255,255,.72);
+    margin: 0 0 16px;
+  }
+  .pkg-tags {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .pkg-tags li {
+    display: inline-flex; flex-direction: column;
+    padding: 8px 12px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    color: var(--white); font-weight: 600; font-size: 13px;
+  }
+  .pkg-foot {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+    margin-top: auto; padding-top: 20px;
+  }
+  .pkg-price { display: flex; flex-direction: column; gap: 2px; }
+  .pkg-price b { color: var(--white); font-weight: 700; font-size: 22px; letter-spacing: -.02em; }
+  .pkg-price span { color: rgba(255,255,255,.55); font-size: 12px; letter-spacing: .04em; }
+  .pkg-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 18px;
+    border-radius: 999px;
+    background: #E8A33D;
+    color: var(--abisso);
+    font-size: 13.5px; font-weight: 600; letter-spacing: .01em;
+    text-decoration: none;
+    transition: background .2s;
+    margin-left: auto;
+  }
+  .pkg-cta svg { width: 14px; height: 14px }
+  .pkg-cta:hover { background: #3FCDED; }
+
+  /* Flotta — entire .mezzo-wrap is clickable, links to #contatti */
+  .mezzo-wrap--link{
+    text-decoration:none;
+    color:inherit;
+    cursor:pointer;
+    transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .mezzo-wrap--link:hover{
+    transform:translateY(-3px);
+  }
+  .mezzo-wrap--link:hover .mezzo-illu{
+    box-shadow:0 30px 60px -28px rgba(10,37,64,.45);
+  }
+  .mezzo-wrap--link .mezzo-cta{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:12px 22px;
+    border-radius:999px;
+    background:var(--abisso);
+    color:var(--white);
+    font-size:14px;font-weight:600;letter-spacing:.01em;
+    margin-top:6px;
+    align-self:flex-start;
+    transition:background .2s var(--ease), transform .2s var(--ease);
+  }
+  .mezzo-wrap--link .mezzo-cta svg{width:14px;height:14px}
+  .mezzo-wrap--link:hover .mezzo-cta{
+    background:#E8A33D;
+    color:var(--abisso);
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ INFO STRIP ============ -->
+<div class="info-strip">
+  <div class="info-strip-inner">
+    <span class="info-l">
+      <span class="status" data-status="open" aria-live="polite">
+        <span class="dot"></span>
+        <span class="status-label">Aperto</span>
+      </span>
+      <span class="sep">·</span>
+      <span>dalle 9:00 alle 20:00</span>
+      <span class="sep hide-s">·</span>
+      <a href="#contatti" class="hide-s">Cattolica (RN)</a>
+    </span>
+    <span class="info-r hide-s">
+      <a href="tel:+390000000000">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
+        +39 000 000 0000
+      </a>
+      <span class="sep">·</span>
+      <a href="mailto:info@jetskiadriatic.it">info@jetskiadriatic.it</a>
+    </span>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero hero--party" id="top">
+  <a class="back-btn--floating" href="index.html" aria-label="Torna alla home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <span class="btn-label">Torna alla home</span>
+  </a>
+
+  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
+         poster="https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=90&w=2400&auto=format&fit=crop">
+    <source src="https://videos.pexels.com/video-files/26830092/12016061_1920_1080_50fps.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-overlay"></div>
+
+  <svg class="hero-edge hero-edge--bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,80 L0,80 Z" fill="#F6F7F8"/>
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#E8A33D" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-body">
+      <h1 class="hero-h">
+        Il tuo party,<br/><em>a bordo</em>.
+      </h1>
+      <p class="hero-lead">
+        Compleanni, addii al celibato, brindisi aziendali in mare aperto. Due yacht, catering su misura, DJ opzionale — fino a <strong>20 ospiti</strong> senza compromessi.
+      </p>
+      <div class="cta-row">
+        <a href="#contatti" class="btn btn-primary">
+          Richiedi un preventivo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#pacchetti" class="btn btn-ghost">
+          I pacchetti
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PACCHETTI (dark slab) ============ -->
+<section class="section how" id="pacchetti" style="padding:clamp(56px,7vw,96px) 0 clamp(72px,9vw,120px)">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">i pacchetti</span>
+      <h2 class="sh">Quattro format,<br/><em>un solo pontile</em>.</h2>
+    </div>
+    <p class="lead">Dal sunset aperitivo di gruppo al club galleggiante all-inclusive. Ogni pacchetto è un punto di partenza: personalizziamo catering, DJ, drone e rotta in base a quello che avete in testa.</p>
+  </div>
+
+  <div class="container pkg-grid reveal-s">
+
+    <article class="pkg">
+      <span class="pkg-n">01</span>
+      <div class="pkg-body">
+        <span class="pkg-meta">2 ore · aperitivo</span>
+        <h3>Sunset <em>Party</em></h3>
+        <p>Due ore al tramonto, aperitivo con bollicine e taglieri, fino a 8 ospiti. Partenza alle 18:30, rientro al buio sotto Cattolica illuminata. Lo yacht Day &amp; Sunset, pronto.</p>
+        <ul class="pkg-tags"><li>2 ore</li><li>fino a 8 px</li><li>aperitivo</li><li>skipper</li></ul>
+      </div>
+      <div class="pkg-foot">
+        <div class="pkg-price"><b>da 690€</b><span>a barca</span></div>
+        <a class="pkg-cta" href="#contatti">
+          Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="pkg">
+      <span class="pkg-n">02</span>
+      <div class="pkg-body">
+        <span class="pkg-meta">4 ore · catering · DJ</span>
+        <h3>Private <em>Event</em></h3>
+        <p>Compleanni, addii al celibato, brindisi aziendali. Quattro ore con ponte allestito, catering on demand, DJ opzionale, fino a 12 ospiti. Il party che si ricorda.</p>
+        <ul class="pkg-tags"><li>4 ore</li><li>fino a 12 px</li><li>catering</li><li>DJ opzionale</li></ul>
+      </div>
+      <div class="pkg-foot">
+        <div class="pkg-price"><b>da 1.490€</b><span>a barca</span></div>
+        <a class="pkg-cta" href="#contatti">
+          Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="pkg">
+      <span class="pkg-n">03</span>
+      <div class="pkg-body">
+        <span class="pkg-meta">full day · pranzo a bordo</span>
+        <h3>Day Charter <em>Gruppo</em></h3>
+        <p>Otto ore tra Cattolica, Vallugola e Gabicce. Pranzo a bordo preparato dall'hostess, snorkeling, tender per le calette, fino a 10 ospiti. La giornata che vi portate a casa.</p>
+        <ul class="pkg-tags"><li>full day</li><li>fino a 10 px</li><li>pranzo</li><li>tender + snorkel</li></ul>
+      </div>
+      <div class="pkg-foot">
+        <div class="pkg-price"><b>da 1.890€</b><span>a barca</span></div>
+        <a class="pkg-cta" href="#contatti">
+          Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="pkg">
+      <span class="pkg-n">04</span>
+      <div class="pkg-body">
+        <span class="pkg-meta">all-inclusive · fino a 20 px</span>
+        <h3>Valbruna <em>Ultra-Platinum</em></h3>
+        <p>Il club galleggiante: DJ, jet ski a seguire, drone 4K, open bar e buffet tutto incluso. Fino a 20 ospiti, esclusiva totale sullo yacht 15 metri. Niente è opzionale — tutto è già dentro.</p>
+        <ul class="pkg-tags"><li>all-in</li><li>DJ · jet ski · drone</li><li>fino a 20 px</li><li>open bar</li></ul>
+      </div>
+      <div class="pkg-foot">
+        <div class="pkg-price"><b>da 4.500€</b><span>a barca (fino a 10 px)</span></div>
+        <a class="pkg-cta" href="#contatti">
+          Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- Wave divider: dark → light -->
+<div class="wave-band wave-band--from-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,0 L0,0 Z" fill="#06182A"/>
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#E8A33D" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="section manifesto">
+  <div class="wave-splash" aria-hidden="true" style="top:14%;right:5vw;width:clamp(160px,18vw,260px);height:clamp(40px,5vw,70px);opacity:.55">
+    <svg viewBox="0 0 260 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 30 C44 6 88 54 132 30 C176 6 220 54 264 30" stroke="#E8A33D" stroke-width="2.5"/>
+    </svg>
+  </div>
+  <div class="wave-splash" aria-hidden="true" style="bottom:12%;left:3vw;width:clamp(200px,24vw,360px);height:clamp(50px,6vw,80px);opacity:.45">
+    <svg viewBox="0 0 360 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 35 C60 5 120 65 180 35 C240 5 300 65 360 35" stroke="#E8A33D" stroke-width="2.5"/>
+    </svg>
+  </div>
+
+  <div class="wrap reveal">
+    <p class="big">
+      Due yacht, catering su misura,<br/>
+      DJ opzionale —<br/>
+      la festa che vuoi, <span class="ornate">dove vuoi</span>.
+    </p>
+    <div class="manifesto-stats">
+      <div class="m"><b>2</b><span>Yacht in flotta</span></div>
+      <div class="m"><b>20</b><span>Ospiti max Valbruna</span></div>
+      <div class="m"><b>4</b><span>Format evento</span></div>
+      <div class="m"><b>250 mn</b><span>Autonomia massima</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LA FLOTTA ============ -->
+<section class="section fleet" id="flotta">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">la flotta</span>
+      <h2 class="sh">Due barche.<br/><em>Una</em> per ogni party.</h2>
+    </div>
+    <p class="lead">Skipper certificato Capitaneria, assicurazione kasko e manutenzione settimanale su entrambe le imbarcazioni. Scegli in base al numero di ospiti — il resto lo organizziamo noi.</p>
+  </div>
+
+  <!-- Yacht 1 — Day & Sunset / fino a 12 ospiti -->
+  <a class="container mezzo-wrap mezzo-wrap--link reveal" href="#contatti">
+    <div class="mezzo-l">
+      <div class="mezzo-illu" style="background-image:url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop')">
+        <span class="mezzo-badge">Sunset &amp; Private Event</span>
+      </div>
+    </div>
+
+    <div class="mezzo-r">
+      <p class="mezzo-desc">Open day-cruiser 2×350 hp: sundeck prendisole, prua spaziosa, frigo, doccia di poppa. 38 nodi disponibili. Perfetto per il Sunset Party e il Private Event fino a 12 ospiti — ponte aperto ideale per DJ e catering.</p>
+
+      <div class="mezzo-specs">
+        <div class="mezzo-spec">
+          <span>lunghezza</span>
+          <b>12 m</b>
+          <small>fuori tutto</small>
+        </div>
+        <div class="mezzo-spec">
+          <span>capacità</span>
+          <b>12 ospiti</b>
+          <small>+ skipper</small>
+        </div>
+        <div class="mezzo-spec">
+          <span>motori</span>
+          <b>2 × 350 hp</b>
+          <small>fuoribordo</small>
+        </div>
+        <div class="mezzo-spec">
+          <span>velocità</span>
+          <b>38 nodi</b>
+          <small>crociera 25 nodi</small>
+        </div>
+      </div>
+
+      <ul class="mezzo-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Skipper certificato Capitaneria, ogni uscita</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Impianto audio Bluetooth, frigo, doccia di poppa</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Ponte aperto per allestimento DJ e catering</li>
+      </ul>
+
+      <span class="mezzo-cta">
+        Richiedi preventivo
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </a>
+
+  <!-- Yacht 2 — Weekend & Event / fino a 20 ospiti -->
+  <a class="container mezzo-wrap mezzo-wrap--link reveal" href="#contatti" style="margin-top:64px">
+    <div class="mezzo-r">
+      <p class="mezzo-desc">Yacht cabinato 15 metri — il flagship per il Valbruna Ultra-Platinum e gli eventi da 20 ospiti. Due aree prendisole, dinette interna per DJ set, cucina attrezzata, due cabine. 250 miglia di autonomia.</p>
+
+      <div class="mezzo-specs">
+        <div class="mezzo-spec">
+          <span>lunghezza</span>
+          <b>15 m</b>
+          <small>fuori tutto</small>
+        </div>
+        <div class="mezzo-spec">
+          <span>capacità</span>
+          <b>20 day · 6 notte</b>
+          <small>+ skipper &amp; hostess</small>
+        </div>
+        <div class="mezzo-spec">
+          <span>cabine</span>
+          <b>2</b>
+          <small>+ dinette convertibile</small>
+        </div>
+        <div class="mezzo-spec">
+          <span>autonomia</span>
+          <b>250 mn</b>
+          <small>raggio di azione</small>
+        </div>
+      </div>
+
+      <ul class="mezzo-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Equipaggio (skipper + hostess) incluso negli eventi</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Dinette interna con spazio per DJ set e amplificazione</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Catering, fiori, drone e jet ski a seguire su richiesta</li>
+      </ul>
+
+      <span class="mezzo-cta">
+        Richiedi preventivo
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+
+    <div class="mezzo-l">
+      <div class="mezzo-illu" style="background-image:url('https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop')">
+        <span class="mezzo-badge">Day Charter &amp; Valbruna</span>
+      </div>
+    </div>
+  </a>
+</section>
+
+<!-- Wave divider: light → dark -->
+<div class="wave-band wave-band--into-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,80 L0,80 Z" fill="#06182A"/>
+    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="#E8A33D" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- ============ COME ORGANIZZIAMO (dark slab) ============ -->
+<section class="section how experiences">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">come organizziamo</span>
+      <h2 class="sh">Dal preventivo<br/><em>al party perfetto</em>.</h2>
+    </div>
+    <p class="lead">Dimmi quante persone, che occasione e che budget — il resto lo gestiamo noi. Catering, DJ, allestimento ponte, rotta su misura: ogni evento è costruito da zero sulla vostra giornata.</p>
+  </div>
+
+  <div class="container how-grid reveal-s">
+    <div class="step">
+      <div class="step-n">1</div>
+      <h4>Raccontaci il gruppo</h4>
+      <p>Numero di ospiti, tipo di occasione (compleanno, addio al celibato, evento aziendale), data preferita e budget indicativo. Basta un messaggio su WhatsApp — in stagione rispondiamo entro un'ora con una proposta concreta.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <h4>Personalizziamo tutto</h4>
+      <p>Scegliamo insieme catering, musica, allestimento del ponte, jet ski a seguire e drone. Coordiniamo direttamente noi con i fornitori: niente da organizzare da parte vostra, tutto coordinato dal nostro concierge.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <h4>Il party è vostro</h4>
+      <p>Il giorno dell'evento lo yacht è pronto quando arrivate al pontile: ponte allestito, catering a bordo, equipaggio in posizione. Il capitano gestisce la rotta, voi gestite il party. Lo skipper vi riporta a riva quando siete pronti.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider: dark → light -->
+<div class="wave-band wave-band--from-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,0 L0,0 Z" fill="#06182A"/>
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#E8A33D" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- ============ FAQ ============ -->
+<section class="section faq wave-bg-pattern">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">le domande</span>
+      <h2 class="sh">Rispondiamo<br/><em>prima</em> che tu chieda.</h2>
+    </div>
+    <p class="lead">Le domande più frequenti sugli eventi a bordo. Se manca la tua, scrivici su WhatsApp — in stagione rispondiamo entro pochi minuti.</p>
+  </div>
+  <div class="faq-list reveal-s">
+    <div class="fa"><div class="fq"><span class="num">01</span><h5>Quante persone possono salire a bordo?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Lo yacht Day &amp; Sunset ospita fino a 10 persone in giornata. Il Weekend &amp; Event arriva a 12 di giorno, 6 in notte. Per il Valbruna Ultra-Platinum saliamo a 20 ospiti di giorno con accorgimenti specifici. Per gruppi più grandi contattateci — valutiamo soluzioni dedicate.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">02</span><h5>Serve la patente nautica?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>No. Lo skipper è sempre incluso e a bordo per ogni uscita. Voi siete ospiti: ci pensate noi alla navigazione, voi pensate alla festa.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">03</span><h5>Il catering è incluso nel prezzo?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Per i pacchetti Sunset Party e Day Charter il catering è opzionale e va concordato separatamente. Nel Private Event il catering è disponibile a menu su richiesta. Nel Valbruna Ultra-Platinum buffet e open bar sono già inclusi nel prezzo base.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">04</span><h5>Si può portare un DJ?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Sì. Abbiamo una lista di DJ convenzionati disponibili per eventi a bordo, oppure potete portare il vostro. Lo yacht ha impianto audio Bluetooth di serie — per i pacchetti evento forniamo amplificazione dedicata su richiesta.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">05</span><h5>Cosa succede se il mare è brutto?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Se il mare supera Forza 3 o le condizioni non garantiscono una festa dignitosa, spostiamo la data senza costi aggiuntivi o rimborsiamo integralmente. Controlliamo le previsioni insieme la sera prima e decidiamo insieme.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">06</span><h5>Come funziona il deposito?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Per i pacchetti Sunset Party e Private Event non chiediamo deposito. Per Day Charter e Valbruna Ultra-Platinum applichiamo una caparra del 30% alla conferma e una cauzione preautorizzata svincolata al rientro.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ CONTACT + MAP ============ -->
+<section class="contact" id="contatti" aria-labelledby="contactTitle">
+  <div class="contact-head">
+    <span class="kicker">dove ci trovi</span>
+    <h2 id="contactTitle">Sul <em>pontile</em>, a Cattolica.</h2>
+    <p class="lead">Parcheggio gratuito, doccia, spogliatoio. Bar e ristorante a 30 metri dal pontile yacht. A due passi dal lungomare, con il parco di San Bartolo sullo sfondo.</p>
+  </div>
+
+  <div class="contact-grid">
+
+    <div class="contact-map">
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=12.726%2C43.949%2C12.760%2C43.969&amp;layer=mapnik&amp;marker=43.9592%2C12.7431"
+        loading="lazy"
+        title="Mappa Jet Ski Adriatic — Porto di Cattolica"
+        allowfullscreen></iframe>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=43.9592,12.7431" target="_blank" rel="noopener" class="contact-map-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+        <span class="contact-map-cta-l">
+          <b>Indicazioni stradali</b>
+          <small>Apri in Google Maps</small>
+        </span>
+        <svg class="contact-map-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="contact-card">
+      <div class="ci-row">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+        <span class="ci-c"><span class="ci-label">Pontile yacht</span><span class="ci-value"><a href="https://www.google.com/maps/dir/?api=1&amp;destination=43.9592,12.7431" target="_blank" rel="noopener">Via del Porto, Cattolica · 47841 Rimini (RN)</a></span></span>
+      </div>
+      <div class="ci-row">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg></span>
+        <span class="ci-c"><span class="ci-label">Telefono &amp; WhatsApp</span><span class="ci-value"><a href="tel:+390000000000">+39 000 000 0000</a></span></span>
+      </div>
+      <div class="ci-row">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+        <span class="ci-c"><span class="ci-label">Email</span><span class="ci-value"><a href="mailto:eventi@jetskiadriatic.it">eventi@jetskiadriatic.it</a></span></span>
+      </div>
+      <div class="ci-row">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+        <span class="ci-c"><span class="ci-label">Orari stagione</span><span class="ci-value">9:00—20:00 · 7/7</span></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="foot-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 30 C240 0 480 60 720 30 C960 0 1200 60 1440 30 L1440 60 L0 60 Z"
+            fill="currentColor" stroke="none"/>
+      <path d="M0 30 C240 0 480 60 720 30 C960 0 1200 60 1440 30"
+            fill="none" stroke="#E8A33D" stroke-width="2.5" stroke-opacity=".55" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="foot-top">
+
+    <div class="foot-brand">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/><path d="M8 12V7a2 2 0 0 1 2-2h5"/></svg>
+        </span>
+        <span class="brand-name"><b>Jet Ski Adriatic</b><small>Cattolica · Rimini</small></span>
+      </a>
+      <p>Yacht party, noleggio moto d'acqua e Love Experience sulla Riviera Romagnola. Certificati Capitaneria di Porto, assicurati, ossessionati dal mare.</p>
+      <div class="foot-socials">
+        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1z"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      </div>
+    </div>
+
+    <div class="foot-col">
+      <h6>navigazione</h6>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="yacht-party.html">Yacht Party</a></li>
+        <li><a href="love.html">Love Experience</a></li>
+        <li><a href="yacht.html">Yacht charter</a></li>
+      </ul>
+    </div>
+
+    <div class="foot-col">
+      <h6>contatti</h6>
+      <ul>
+        <li><a href="https://wa.me/390000000000" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href="tel:+390000000000">+39 000 000 0000</a></li>
+        <li><a href="mailto:eventi@jetskiadriatic.it">eventi@jetskiadriatic.it</a></li>
+        <li><a href="#contatti">Dove ci trovi</a></li>
+      </ul>
+    </div>
+
+    <div class="foot-col">
+      <h6>documenti</h6>
+      <ul>
+        <li><a href="legal/condizioni-noleggio.html">Condizioni di noleggio</a></li>
+        <li><a href="legal/privacy.html">Privacy policy</a></li>
+        <li><a href="legal/cookie.html">Cookie policy</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <ul class="foot-trust" aria-label="Le nostre garanzie">
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>Skipper certificato Capitaneria a bordo, sempre</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>Catering, DJ e allestimento coordinati dal concierge</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>Rimborso integrale se il meteo blocca la partenza</li>
+  </ul>
+
+  <div class="foot-bottom">
+    <span class="fb-line fb-entity">© 2026 Jet Ski Adriatic SRL · Cattolica (RN)</span>
+    <span class="fb-line fb-ids">P.IVA 00000000000 · REA RN-000000</span>
+    <span class="fb-line fb-credit">powered by <a href="https://gestiscilo.it" target="_blank" rel="noopener">gestiscilo.it</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

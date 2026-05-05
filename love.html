@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1" />
+<meta name="theme-color" content="#06182A" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Love Experience — Jet Ski Adriatic" />
+<title>Love Experience · Jet Ski Adriatic — Cattolica, Rimini</title>
+<meta name="description" content="Love Experience in moto d'acqua a Cattolica. Tramonto a due, proposta di matrimonio, anniversari. Rose nel gavone, champagne, drone 4K e coordinate GPS incluse." />
+<meta property="og:title" content="Love Experience · Jet Ski Adriatic" />
+<meta property="og:description" content="Il tramonto, le rose, il drone. Quattro esperienze progettate per chi vuole che quel momento sia impossibile da dimenticare." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
+<link rel="stylesheet" href="assets/css/app.css" />
+
+<style>
+  .reveal,
+  .reveal-s > * { opacity: 1 !important; transform: none !important; }
+
+  /* Override tramonto to rose for the love theme */
+  .section { --tramonto: #E84F6B; --tramonto-d: #C9304F; }
+  /* app.css sets exp--love .exp-n to ochre — override to rose */
+  .exp--love .exp-n { color: #E84F6B; }
+
+  /* Floating back button */
+  .back-btn--floating {
+    position: absolute;
+    top: clamp(16px, 2.6vw, 32px);
+    left: max(4vw, calc((100vw - 1320px) / 2));
+    z-index: 5;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(6,24,42,.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.18);
+    color: #fff;
+    font-size: 13px; font-weight: 600; letter-spacing: .01em;
+    text-decoration: none;
+    transition: background .25s, border-color .25s;
+  }
+  .back-btn--floating svg { width: 16px; height: 16px }
+  .back-btn--floating:hover {
+    background: rgba(6,24,42,.78);
+    border-color: rgba(255,255,255,.32);
+  }
+  @media (max-width: 640px) {
+    .back-btn--floating { padding: 10px; gap: 0 }
+    .back-btn--floating .btn-label { display: none }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ INFO STRIP ============ -->
+<div class="info-strip">
+  <div class="info-strip-inner">
+    <span class="info-l">
+      <span class="status" data-status="open" aria-live="polite">
+        <span class="dot"></span>
+        <span class="status-label">Aperto</span>
+      </span>
+      <span class="sep">·</span>
+      <span>dalle 9:00 alle 20:00</span>
+      <span class="sep hide-s">·</span>
+      <a href="#contatti" class="hide-s">Cattolica (RN)</a>
+    </span>
+    <span class="info-r hide-s">
+      <a href="tel:+390000000000">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
+        +39 000 000 0000
+      </a>
+      <span class="sep">·</span>
+      <a href="mailto:info@jetskiadriatic.it">info@jetskiadriatic.it</a>
+    </span>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero hero--love" id="top">
+  <a class="back-btn--floating" href="index.html" aria-label="Torna alla home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <span class="btn-label">Torna alla home</span>
+  </a>
+
+  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
+         poster="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=90&w=2400&auto=format&fit=crop">
+    <source src="https://videos.pexels.com/video-files/7397243/7397243-hd_1920_1080_30fps.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-overlay"></div>
+
+  <svg class="hero-edge hero-edge--bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,80 L0,80 Z" fill="#F6F7F8"/>
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#E84F6B" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-body">
+      <h1 class="hero-h">
+        Un momento,<br/><em>per sempre</em>.
+      </h1>
+      <p class="hero-lead">
+        Tramonto a bordo, rose nel gavone, champagne sul ponte. Le nostre <strong>Love Experience</strong> sono costruite attorno a un solo obiettivo: che non dimentichiate mai.
+      </p>
+      <div class="cta-row">
+        <a href="#contatti" class="btn btn-primary">
+          Prenota l'esperienza
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://wa.me/390000000000" class="btn btn-ghost" target="_blank" rel="noopener">
+          Chiedi su WhatsApp
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ESPERIENZE ============ -->
+<section class="section experiences" style="padding:clamp(48px,6vw,88px) 0 clamp(72px,8vw,112px)">
+  <div class="container exp-grid exp-grid--love reveal-s">
+
+    <article class="exp exp--love" data-detail="tramonto-a-due">
+      <div class="exp-n">01</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Tramonto <em>a Due</em></h3>
+      <p>Novanta minuti con la moto tutta per voi: rotta verso il tramonto, fermata in caletta per aperitivo con champagne e fragole, foto al golden hour incluse.</p>
+      <ul class="exp-tags"><li>1h30</li><li>1 moto per coppia</li><li>champagne</li><li>golden hour</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 320€</b><span>a coppia</span></div>
+        <span class="exp-go">Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+    <article class="exp exp--love" data-detail="the-proposal">
+      <div class="exp-n">02</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>The <em>Proposal</em></h3>
+      <p>Novanta minuti orchestrati per chiedere la mano in mare aperto: rose nel gavone preparate prima della partenza, Champagne 750ml, drone 4K e un certificato con le coordinate GPS del momento esatto.</p>
+      <ul class="exp-tags"><li>1h30</li><li>drone 4K</li><li>pergamena GPS</li><li>rose</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 490€</b><span>a coppia</span></div>
+        <span class="exp-go">Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+    <article class="exp exp--love" data-detail="vallugola-gold">
+      <div class="exp-n">03</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Vallugola <em>Gold</em></h3>
+      <p>Rotta da Cattolica fino al porticciolo di Vallugola, attracco nella caletta privata e pranzo al Ristorante Falco: quattro ore di navigazione guidata, solo per voi due.</p>
+      <ul class="exp-tags"><li>4 ore</li><li>caletta privata</li><li>pranzo Falco</li><li>min 2 pers</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 289€</b><span>a persona</span></div>
+        <span class="exp-go">Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+    <article class="exp exp--love" data-detail="anniversario">
+      <div class="exp-n">04</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Notte <em>Bianca</em></h3>
+      <p>Due ore dopo il tramonto: luci di posizione accese, stelle sopra, mare nero sotto. Un'uscita serale riservata a una sola coppia, con kit degustazione vini locali al rientro.</p>
+      <ul class="exp-tags"><li>2 ore</li><li>serale</li><li>1 moto per coppia</li><li>vini locali</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 380€</b><span>a coppia</span></div>
+        <span class="exp-go">Prenota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="section manifesto">
+  <div class="wave-splash" aria-hidden="true" style="top:14%;right:5vw;width:clamp(160px,18vw,260px);height:clamp(40px,5vw,70px);opacity:.55">
+    <svg viewBox="0 0 260 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 30 C44 6 88 54 132 30 C176 6 220 54 264 30" stroke="#E84F6B" stroke-width="2.5"/>
+    </svg>
+  </div>
+  <div class="wave-splash" aria-hidden="true" style="bottom:12%;left:3vw;width:clamp(200px,24vw,360px);height:clamp(50px,6vw,80px);opacity:.45">
+    <svg viewBox="0 0 360 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 35 C60 5 120 65 180 35 C240 5 300 65 360 35" stroke="#E84F6B" stroke-width="2.5"/>
+    </svg>
+  </div>
+
+  <div class="wrap reveal">
+    <p class="big">
+      Rose nel gavone,<br/>
+      champagne al largo —<br/>
+      il drone ferma il momento <span class="ornate">esatto</span>.
+    </p>
+    <div class="manifesto-stats">
+      <div class="m"><b>4</b><span>Esperienze romantiche</span></div>
+      <div class="m"><b>1</b><span>Moto riservata per coppia</span></div>
+      <div class="m"><b>4K</b><span>Video drone incluso</span></div>
+      <div class="m"><b>GPS</b><span>Coordinate del momento</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider: light → dark -->
+<div class="wave-band wave-band--into-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,80 L0,80 Z" fill="#06182A"/>
+    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="#E84F6B" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- ============ COME FUNZIONA (dark slab) ============ -->
+<section class="section how experiences">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">come funziona</span>
+      <h2 class="sh">Dalla prenotazione<br/><em>al ricordo per sempre</em>.</h2>
+    </div>
+    <p class="lead">Ogni Love Experience si costruisce con qualche giorno di anticipo: coordiniamo rose, champagne, drone e rotta prima che arriviate al pontile. Il giorno dell'uscita non dovete pensare a nulla.</p>
+  </div>
+
+  <div class="container how-grid reveal-s">
+    <div class="step">
+      <div class="step-n">1</div>
+      <h4>Scrivici con anticipo</h4>
+      <p>Prenotazione minima 3 giorni prima per Tramonto a Due, Vallugola Gold e Notte Bianca. The Proposal richiede 7 giorni per coordinare drone, rose e pergamena. Hai bisogno solo di una data e un orario di tramonto.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <h4>Prepariamo tutto</h4>
+      <p>Rose nel gavone, champagne ghiacciato, drone prenotato sulla vostra rotta, fotografo a terra nel punto del golden hour. Arrivate con costume e documento — il resto è già pronto e al suo posto.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <h4>Il momento è vostro</h4>
+      <p>L'istruttore parte con voi per i primi minuti, poi la moto è tutta vostra. Nessun altro gruppo, nessuna altra moto sulla stessa rotta. Al rientro: video drone editato, galleria foto, e la pergamena GPS se la avete prenotata.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEDIA — drone, foto, pergamena GPS ============ -->
+<section class="section media">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">il ricordo</span>
+      <h2 class="sh">Drone 4K, foto al golden hour,<br/><em>coordinate GPS</em> su pergamena.</h2>
+    </div>
+    <p class="lead">Tu vivi il momento — noi lo catturiamo dal cielo, da terra e dal manubrio. Al rientro ricevi il video già editato con colonna sonora, la galleria foto in alta risoluzione e il certificato GPS stampato.</p>
+  </div>
+
+  <div class="container media-grid reveal-s">
+
+    <article class="media-card">
+      <span class="media-num">01</span>
+      <div class="media-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="4" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M5.5 5.5l3 3M18.5 5.5l-3 3M5.5 18.5l3-3M18.5 18.5l-3-3"/></svg>
+      </div>
+      <h3>Dal <em>cielo</em></h3>
+      <p>Il drone segue la vostra rotta — uscita dal porto, virata al largo, il momento della proposta, il tramonto. Il video arriva editato con colonna sonora, in formato Reel verticale e orizzontale, pronto da condividere.</p>
+      <span class="media-meta">Video 60–90 sec · 4K · IG/TikTok ready</span>
+    </article>
+
+    <article class="media-card">
+      <span class="media-num">02</span>
+      <div class="media-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <h3>Da <em>terra</em></h3>
+      <p>Un fotografo a terra cattura il golden hour, la partenza e il rientro dal pontile. Le foto vengono ritoccate e consegnate in alta risoluzione via AirDrop o link entro 24 ore dall'uscita.</p>
+      <span class="media-meta">30–50 scatti · RAW · consegna entro 24h</span>
+    </article>
+
+    <article class="media-card">
+      <span class="media-num">03</span>
+      <div class="media-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <h3>La <em>pergamena GPS</em></h3>
+      <p>Per The Proposal: le coordinate esatte del momento stampate su carta pergamena di qualità, con data, ora e firma dello skipper. Il documento che racconta dove è successo tutto.</p>
+      <span class="media-meta">Formato A5 · pergamena premium · spedita a casa</span>
+    </article>
+
+  </div>
+</section>
+
+<!-- Wave divider: dark → light -->
+<div class="wave-band wave-band--from-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,0 L0,0 Z" fill="#06182A"/>
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="#E84F6B" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- ============ FAQ ============ -->
+<section class="section faq wave-bg-pattern">
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">le domande</span>
+      <h2 class="sh">Rispondiamo<br/><em>prima</em> che tu chieda.</h2>
+    </div>
+    <p class="lead">Le domande più frequenti sulle Love Experience. Se manca la tua, scrivici su WhatsApp — in stagione rispondiamo entro pochi minuti.</p>
+  </div>
+  <div class="faq-list reveal-s">
+    <div class="fa"><div class="fq"><span class="num">01</span><h5>Con quanta anticipo devo prenotare?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Tramonto a Due, Vallugola Gold e Notte Bianca richiedono almeno 3 giorni di anticipo. The Proposal richiede 7 giorni per coordinare drone, rose, fotografo e pergamena GPS. Prima prenoti, meglio è.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">02</span><h5>Il mio partner deve sapere qualcosa in anticipo?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>No. Per The Proposal gestiamo tutto in silenzio: tu sai tutto, il partner scopre solo a bordo. L'unica cosa che devi dirgli è di portare costume e documento. Il resto è una sorpresa orchestrata da noi.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">03</span><h5>La moto è davvero solo per noi due?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Sì. Nessun'altra coppia sulla stessa rotta nelle stesse fasce orarie. L'istruttore vi accompagna i primi minuti fuori dal porto per il briefing, poi vi lascia la rotta libera.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">04</span><h5>Il drone è sempre incluso?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Il drone è incluso in The Proposal. Per Tramonto a Due è disponibile come upgrade opzionale. Notte Bianca e Vallugola Gold non includono il drone di default per ragioni di luce e logistica — ma puoi chiedercelo comunque.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">05</span><h5>Cosa succede se il mare è brutto?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Se il mare supera Forza 3 o il vento non ci permette un'uscita sicura, spostiamo senza costi aggiuntivi. Controlliamo le previsioni insieme la sera prima e decidiamo di comune accordo. Il rimborso integrale è garantito se la cancellazione dipende da noi.</p></div></div>
+    <div class="fa"><div class="fq"><span class="num">06</span><h5>Servono documenti o la patente nautica?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>No. Serve solo un documento di identità valido al check-in. La moto non richiede patente — l'istruttore vi fa un briefing di 10 minuti prima della partenza e poi siete pronti.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ CONTACT + MAP ============ -->
+<section class="contact" id="contatti" aria-labelledby="contactTitle">
+  <div class="contact-head">
+    <span class="kicker">dove ci trovi</span>
+    <h2 id="contactTitle">Sul <em>pontile</em>, a Cattolica.</h2>
+    <p class="lead">Parcheggio gratuito, doccia, spogliatoio. Bar e ristorante a 30 metri dal pontile. A due passi dal lungomare, con il parco di San Bartolo sullo sfondo.</p>
+  </div>
+
+  <div class="contact-grid">
+
+    <div class="contact-map">
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=12.726%2C43.949%2C12.760%2C43.969&amp;layer=mapnik&amp;marker=43.9592%2C12.7431"
+        loading="lazy"
+        title="Mappa Jet Ski Adriatic — Porto di Cattolica"
+        allowfullscreen></iframe>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=43.9592,12.7431" target="_blank" rel="noopener" class="contact-map-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+        <span class="contact-map-cta-l">
+          <b>Indicazioni stradali</b>
+          <small>Apri in Google Maps</small>
+        </span>
+        <svg class="contact-map-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="contact-card">
+      <div class="ci-row">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+        <span class="ci-c"><span class="ci-label">Pontile</span><span class="ci-value"><a href="https://www.google.com/maps/dir/?api=1&amp;destination=43.9592,12.7431" target="_blank" rel="noopener">Via del Porto, Cattolica · 47841 Rimini (RN)</a></span></span>
+      </div>
+      <div class="ci-row">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg></span>
+        <span class="ci-c"><span class="ci-label">Telefono &amp; WhatsApp</span><span class="ci-value"><a href="tel:+390000000000">+39 000 000 0000</a></span></span>
+      </div>
+      <div class="ci-row">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+        <span class="ci-c"><span class="ci-label">Email</span><span class="ci-value"><a href="mailto:info@jetskiadriatic.it">info@jetskiadriatic.it</a></span></span>
+      </div>
+      <div class="ci-row">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+        <span class="ci-c"><span class="ci-label">Orari stagione</span><span class="ci-value">9:00—20:00 · 7/7</span></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="foot-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 30 C240 0 480 60 720 30 C960 0 1200 60 1440 30 L1440 60 L0 60 Z"
+            fill="currentColor" stroke="none"/>
+      <path d="M0 30 C240 0 480 60 720 30 C960 0 1200 60 1440 30"
+            fill="none" stroke="#E84F6B" stroke-width="2.5" stroke-opacity=".55" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="foot-top">
+
+    <div class="foot-brand">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M3 12l6-3 3 1 6-3 3 1"/><path d="M8 12V7a2 2 0 0 1 2-2h5"/></svg>
+        </span>
+        <span class="brand-name"><b>Jet Ski Adriatic</b><small>Cattolica · Rimini</small></span>
+      </a>
+      <p>Moto d'acqua, Love Experience e yacht charter sulla Riviera Romagnola. Certificati Capitaneria di Porto, ossessionati dal mare.</p>
+      <div class="foot-socials">
+        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1z"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      </div>
+    </div>
+
+    <div class="foot-col">
+      <h6>navigazione</h6>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="love.html">Love Experience</a></li>
+        <li><a href="yacht-party.html">Yacht Party</a></li>
+        <li><a href="yacht.html">Yacht charter</a></li>
+      </ul>
+    </div>
+
+    <div class="foot-col">
+      <h6>contatti</h6>
+      <ul>
+        <li><a href="https://wa.me/390000000000" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href="tel:+390000000000">+39 000 000 0000</a></li>
+        <li><a href="mailto:info@jetskiadriatic.it">info@jetskiadriatic.it</a></li>
+        <li><a href="#contatti">Dove ci trovi</a></li>
+      </ul>
+    </div>
+
+    <div class="foot-col">
+      <h6>documenti</h6>
+      <ul>
+        <li><a href="legal/condizioni-noleggio.html">Condizioni di noleggio</a></li>
+        <li><a href="legal/privacy.html">Privacy policy</a></li>
+        <li><a href="legal/cookie.html">Cookie policy</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <ul class="foot-trust" aria-label="Le nostre garanzie">
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>Moto riservata esclusivamente per la coppia</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>Rose, champagne e drone coordinati in anticipo</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>Rimborso integrale se il meteo non ci permette di uscire</li>
+  </ul>
+
+  <div class="foot-bottom">
+    <span class="fb-line fb-entity">© 2026 Jet Ski Adriatic SRL · Cattolica (RN)</span>
+    <span class="fb-line fb-ids">P.IVA 00000000000 · REA RN-000000</span>
+    <span class="fb-line fb-credit">powered by <a href="https://gestiscilo.it" target="_blank" rel="noopener">gestiscilo.it</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
