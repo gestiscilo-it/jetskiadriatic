@@ -282,9 +282,9 @@ body.is-past-products .topbar{
   bottom: 0;
   left: 0; right: 0;
   z-index: 60;
-  background: var(--tab-color);
-  border-top: 1px solid rgba(255,255,255,.1);
-  transition: background .35s ease, transform .28s ease;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  transition: transform .28s ease;
   padding-bottom: var(--safe-bottom);
   transition: transform .28s ease;
   will-change: transform;
@@ -310,7 +310,7 @@ body.is-past-products .cat-bar{
   display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
   padding: 8px 6px;
   min-width: 0;
-  color: rgba(255,255,255,.55);
+  color: var(--ink-2);
   font-size: 10.5px; font-weight: 600;
   letter-spacing: .01em;
   white-space: nowrap;
@@ -318,23 +318,26 @@ body.is-past-products .cat-bar{
   opacity: 1;
 }
 .cat svg{ width: 22px; height: 22px; stroke-width: 1.7 }
-.cat:hover{ color: rgba(255,255,255,.85) }
+.cat:hover{ color: var(--ink) }
 .cat.is-active{
-  color: #fff;
+  color: var(--ink);
 }
 .cat.is-active svg{ stroke-width: 2.1 }
-body[data-active-tab="experience"] .cat.is-active{ color: var(--rose) }
 
 /* =====================================================
    FEED
    ===================================================== */
 .feed{
   padding: 16px 16px 12px;
+  position: relative;
 }
 .feed-head{
   display: flex; justify-content: space-between; align-items: flex-end;
   gap: 12px;
   margin-bottom: 14px;
+  position: relative;
+  overflow: visible;
+  min-height: 80px;
 }
 .feed-head h1{
   font-family: var(--sans);
@@ -557,27 +560,30 @@ body[data-active-tab="experience"] .cat.is-active{ color: var(--rose) }
 .fab-call{
   position: fixed;
   right: 16px;
-  bottom: calc(var(--cat-bar-h) + var(--safe-bottom) + 84px);
+  bottom: calc(var(--cat-bar-h) + var(--safe-bottom) + 80px);
   transition: transform .2s ease, bottom .28s ease;
   width: 52px; height: 52px;
   border-radius: 50%;
-  background: #fff;
-  color: #111;
+  background: var(--navy);
+  color: #fff;
   display: grid; place-items: center;
-  box-shadow: 0 4px 16px rgba(0,0,0,.14), 0 1px 4px rgba(0,0,0,.08);
+  box-shadow: 0 10px 28px rgba(10,37,64,.45), 0 4px 10px rgba(10,37,64,.25);
   z-index: 70;
 }
 @media (max-width: 959px){
   body.is-past-products .fab-call{
-    bottom: calc(var(--safe-bottom) + 84px);
+    bottom: calc(var(--safe-bottom) + 80px);
   }
 }
 .fab-call:active{ transform: scale(.94) }
-.fab-call svg{ width: 24px; height: 24px }
+.fab-call svg{ width: 26px; height: 26px }
 @media (min-width: 760px){
   .fab-call{
     right: max(16px, calc(50vw - var(--max-w)/2 + 16px));
   }
+}
+@media (min-width: 960px){
+  .fab-call{ bottom: calc(var(--safe-bottom) + 80px); }
 }
 
 .fab-wa{
@@ -607,6 +613,9 @@ body[data-active-tab="experience"] .cat.is-active{ color: var(--rose) }
   .fab-wa{
     right: max(16px, calc(50vw - var(--max-w)/2 + 16px));
   }
+}
+@media (min-width: 960px){
+  .fab-wa{ bottom: calc(var(--safe-bottom) + 16px); }
 }
 
 /* =====================================================
@@ -1504,7 +1513,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     top: 0;
     margin: 0;
     border-radius: 0;
-    background: var(--surface);
+    background: var(--tab-color);
     border: 0;
     box-shadow: none;
   }
@@ -1555,14 +1564,14 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     font-size: 12px;
     gap: 6px;
     border-bottom: 2px solid transparent;
-    opacity: .7;
+    color: color-mix(in srgb, var(--tab-on-accent) 60%, transparent);
+    opacity: 1;
   }
+  .cat:hover{ color: color-mix(in srgb, var(--tab-on-accent) 90%, transparent) }
   .cat svg{ width: 18px; height: 18px; stroke-width: 1.8 }
   .cat.is-active{
-    border-bottom-color: #fff;
-  }
-  body[data-active-tab="experience"] .cat.is-active{
-    border-bottom-color: var(--rose);
+    color: var(--tab-on-accent);
+    border-bottom-color: var(--tab-on-accent);
   }
 
   /* Feed: 3 columns */
@@ -3222,10 +3231,9 @@ body[data-active-tab="escursioni"]{
 .tab[data-tab="party"]:hover:not(.is-active)       { color: #C68220 }
 .tab[data-tab="escursioni"]:hover:not(.is-active)  { color: #1F8C77 }
 
-/* ----- Filter bar (cats) — pull tab accent into active state ----- */
-.cat.is-active{ color: var(--tab-accent) }
+/* ----- Filter bar (cats) — dark text on light surface ----- */
+.cat.is-active{ color: var(--ink) }
 .cat.is-active::after{
-  /* small accent dot under the active filter on mobile */
   content: "";
   position: absolute;
   bottom: 3px;
@@ -3236,18 +3244,15 @@ body[data-active-tab="escursioni"]{
   transform: translateX(-50%);
 }
 @media (min-width: 960px){
-  .cat.is-active{ border-bottom-color: var(--tab-accent) }
+  .cat.is-active{ color: var(--tab-on-accent); border-bottom-color: var(--tab-on-accent) }
   .cat.is-active::after{ display: none }
 }
-/* Subtle tinted hairline at the top of the bottom cat-bar — gives
-   the whole section a hint of the active tab's colour on mobile */
 .cat-bar{
-  background:
-    linear-gradient(180deg, var(--tab-tint) 0, transparent 4px),
-    var(--bg);
+  background: var(--surface);
+  border-top: 1px solid var(--line);
 }
 @media (min-width: 960px){
-  .cat-bar{ background: transparent }
+  .cat-bar{ background: transparent; border-top: 1px solid rgba(255,255,255,.1) }
 }
 
 /* ==============================================================
