@@ -3114,6 +3114,23 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   padding-bottom:clamp(60px, 8vw, 96px);
   max-width:1080px;
 }
+.hero-kicker{
+  font-family:var(--f-body);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--white);
+  display:inline-flex;align-items:center;gap:12px;
+  margin:0 0 22px;
+  opacity:.92;
+}
+.hero-kicker::before{
+  content:"";
+  width:32px;height:1px;
+  background:var(--tramonto);
+  display:inline-block;
+}
 .hero-h{
   font-family:var(--f-display);
   font-size:clamp(44px, 8vw, 112px);
