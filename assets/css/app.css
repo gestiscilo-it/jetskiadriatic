@@ -576,16 +576,12 @@ body.is-past-products .cat-bar{
   }
 }
 .fab-call:active{ transform: scale(.94) }
-.fab-call svg{ width: 26px; height: 26px }
+.fab-call svg{ width: 22px; height: 22px }
 @media (min-width: 760px){
   .fab-call{
     right: max(16px, calc(50vw - var(--max-w)/2 + 16px));
   }
 }
-@media (min-width: 960px){
-  .fab-call{ bottom: calc(var(--safe-bottom) + 80px); }
-}
-
 .fab-wa{
   position: fixed;
   right: 16px;
@@ -614,10 +610,6 @@ body.is-past-products .cat-bar{
     right: max(16px, calc(50vw - var(--max-w)/2 + 16px));
   }
 }
-@media (min-width: 960px){
-  .fab-wa{ bottom: calc(var(--safe-bottom) + 16px); }
-}
-
 /* =====================================================
    SHEETS (bottom drawer)
    ===================================================== */
@@ -1597,9 +1589,14 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   }
   .card-img{ transition: transform .2s ease, box-shadow .2s ease }
 
-  /* Floating WhatsApp: pinned to viewport right */
+  /* Floating buttons: pinned to viewport right */
   .fab-wa{
     bottom: 24px;
+    right: 24px;
+    width: 56px; height: 56px;
+  }
+  .fab-call{
+    bottom: 92px;
     right: 24px;
     width: 56px; height: 56px;
   }
@@ -1689,7 +1686,8 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   .feed{ padding-left: 56px; padding-right: 56px }
   /* Switch + meteo row stays slightly wider than other rails */
   .topbar-row--main{ padding-left: 42px; padding-right: 42px }
-  .fab-wa{
+  .fab-wa,
+  .fab-call{
     right: max(56px, calc(50vw - var(--max-w)/2 + 32px));
   }
 }
@@ -3169,7 +3167,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 :root{
   --tab-accent:    var(--cyan);
   --tab-accent-d:  var(--cyan-2);
-  --tab-on-accent: #06182A;
+  --tab-on-accent: #fff;
   --tab-tint:      rgba(31,182,216,.14);
   --tab-tint-2:    rgba(31,182,216,.28);
   --tab-glow:      rgba(31,182,216,.38);
@@ -3177,7 +3175,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 body[data-active-tab="moto"]{
   --tab-accent:    #1FB6D8;
   --tab-accent-d:  #19A0BF;
-  --tab-on-accent: #06182A;
+  --tab-on-accent: #fff;
   --tab-tint:      rgba(31,182,216,.14);
   --tab-tint-2:    rgba(31,182,216,.28);
   --tab-glow:      rgba(31,182,216,.38);
@@ -3193,7 +3191,7 @@ body[data-active-tab="love"]{
 body[data-active-tab="party"]{
   --tab-accent:    #E8A33D;
   --tab-accent-d:  #C68220;
-  --tab-on-accent: #06182A;
+  --tab-on-accent: #fff;
   --tab-tint:      rgba(232,163,61,.18);
   --tab-tint-2:    rgba(232,163,61,.32);
   --tab-glow:      rgba(232,163,61,.42);
@@ -3201,7 +3199,7 @@ body[data-active-tab="party"]{
 body[data-active-tab="escursioni"]{
   --tab-accent:    #2DBFA1;
   --tab-accent-d:  #1F8C77;
-  --tab-on-accent: #06182A;
+  --tab-on-accent: #fff;
   --tab-tint:      rgba(45,191,161,.16);
   --tab-tint-2:    rgba(45,191,161,.30);
   --tab-glow:      rgba(45,191,161,.40);
