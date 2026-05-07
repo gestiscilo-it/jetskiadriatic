@@ -3,8 +3,14 @@
    Mobile-first, Airbnb-inspired, navy + cyan brand
    ===================================================== */
 
-/* Active-tab accent — drives topbar, cat-bar, hero wave, and active pill */
-body{ --tab-color: var(--tab-accent, var(--navy)); }
+/* Active-tab accent — drives topbar, cat-bar, hero wave, and active pill.
+   --tab-header-shade is a deeper variant used only by the header block
+   (topbar + hero wave seam). Computed from the active tab's --tab-accent-d
+   so it follows the per-tab colour automatically. */
+body{
+  --tab-color: var(--tab-accent, var(--navy));
+  --tab-header-shade: color-mix(in srgb, var(--tab-accent-d, var(--navy)) 55%, #000);
+}
 
 :root{
   /* Brand */
@@ -557,6 +563,31 @@ body.is-past-products .cat-bar{
 /* =====================================================
    FLOATING WHATSAPP
    ===================================================== */
+.fab-book{
+  position: fixed;
+  right: 16px;
+  bottom: calc(var(--cat-bar-h) + var(--safe-bottom) + 144px);
+  transition: transform .2s ease, bottom .28s ease;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--ochre);
+  color: #fff;
+  display: grid; place-items: center;
+  box-shadow: 0 10px 28px rgba(232,163,61,.45), 0 4px 10px rgba(232,163,61,.25);
+  z-index: 70;
+}
+@media (max-width: 959px){
+  body.is-past-products .fab-book{
+    bottom: calc(var(--safe-bottom) + 144px);
+  }
+}
+.fab-book:active{ transform: scale(.94) }
+.fab-book svg{ width: 22px; height: 22px }
+@media (min-width: 760px){
+  .fab-book{
+    right: max(16px, calc(50vw - var(--max-w)/2 + 16px));
+  }
+}
 .fab-call{
   position: fixed;
   right: 16px;
@@ -1600,6 +1631,11 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     right: 24px;
     width: 56px; height: 56px;
   }
+  .fab-book{
+    bottom: 160px;
+    right: 24px;
+    width: 56px; height: 56px;
+  }
 
   /* Sheets become centered modals on desktop */
   .sheet{
@@ -1687,7 +1723,8 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   /* Switch + meteo row stays slightly wider than other rails */
   .topbar-row--main{ padding-left: 42px; padding-right: 42px }
   .fab-wa,
-  .fab-call{
+  .fab-call,
+  .fab-book{
     right: max(56px, calc(50vw - var(--max-w)/2 + 32px));
   }
 }
@@ -1705,6 +1742,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .contact{
   background: var(--bg);
   padding: 16px 0 40px;
+  position: relative;
 }
 .contact-head,
 .contact-grid{
@@ -2639,6 +2677,36 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   margin-top:6px;
 }
 
+/* Yacht block — entire .mezzo-wrap is clickable, links to #contatti */
+.mezzo-wrap--link{
+  text-decoration:none;
+  color:inherit;
+  cursor:pointer;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.mezzo-wrap--link:hover{
+  transform:translateY(-3px);
+}
+.mezzo-wrap--link:hover .mezzo-illu{
+  box-shadow:0 30px 60px -28px rgba(10,37,64,.45);
+}
+.mezzo-wrap--link .mezzo-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 22px;
+  border-radius:999px;
+  background:var(--abisso);
+  color:var(--white);
+  font-size:14px;font-weight:600;letter-spacing:.01em;
+  margin-top:6px;
+  align-self:flex-start;
+  transition:background .2s var(--ease), transform .2s var(--ease);
+}
+.mezzo-wrap--link .mezzo-cta svg{width:14px;height:14px}
+.mezzo-wrap--link:hover .mezzo-cta{
+  background:var(--tramonto);
+  color:var(--abisso);
+}
+
 /* ==============================================================
    HOW IT WORKS (dark slab, shares the footer's navy)
 ============================================================== */
@@ -3008,8 +3076,13 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   position:absolute;
   pointer-events:none;
   z-index:0;
+  color: var(--cyan);
 }
 .wave-splash svg{width:100%;height:100%;display:block;fill:none;stroke-linecap:round}
+
+/* Curve stroke on every section divider band paints in brand cyan; the
+   dark half (fill) keeps its navy fill from the inline SVG. */
+.wave-band{ color: var(--cyan); }
 
 .wave-bg-pattern{position:relative; isolation:isolate}
 .wave-bg-pattern::before{
@@ -3057,7 +3130,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .hero{
   --hero-wave-h: clamp(40px, 5vw, 70px);
   position:relative;
-  height:clamp(580px, 92svh, 960px);
+  height:clamp(460px, 72svh, 760px);
   color:var(--white);
   isolation:isolate;
   background:var(--abisso-d);
@@ -3081,8 +3154,9 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 .hero-edge--top{ top: -2px; overflow: visible }
 .hero-edge--bot{ bottom: -2px; overflow: visible }
-/* Wave fill tracks the active tab accent so it flows into the topbar. */
-#top.hero > .hero-edge--bot{ color: var(--tab-color); transition: color .35s ease; }
+/* Wave fill tracks the active tab accent so it flows into the topbar.
+   Uses --tab-header-shade to match the topbar's darker shade exactly. */
+#top.hero > .hero-edge--bot{ color: var(--tab-header-shade); transition: color .35s ease; }
 
 .hero-video{
   position:absolute;inset:0;z-index:0;
@@ -3173,7 +3247,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 
 @media (max-width:640px){
-  .hero{height:clamp(440px, 72svh, 640px)}
+  .hero{height:clamp(360px, 60svh, 520px)}
   .hero-body{padding-bottom:48px}
 }
 
@@ -3220,6 +3294,16 @@ body[data-active-tab="escursioni"]{
   --tab-tint:      rgba(45,191,161,.16);
   --tab-tint-2:    rgba(45,191,161,.30);
   --tab-glow:      rgba(45,191,161,.40);
+}
+
+/* The header block (topbar) uses --tab-header-shade — a clearly darker
+   variant of the active tab colour. Card / feed accents keep the brighter
+   --tab-accent. Both vars are overridden because --tab-color is computed
+   at body and inherited as a resolved value, so a local --tab-accent
+   override would not propagate to consumers that read --tab-color. */
+.topbar{
+  --tab-accent: var(--tab-header-shade);
+  --tab-color:  var(--tab-header-shade);
 }
 
 /* ----- Mobile: let the whole tab pill slide horizontally when the
@@ -3288,7 +3372,7 @@ body[data-active-tab="escursioni"]{
 @media (min-width: 1280px){ .cards{ padding-block: 8px 40px } }
 
 .card{
-  background: linear-gradient(170deg, var(--navy) 0%, var(--navy-2) 55%, var(--navy-3) 100%);
+  background: var(--abisso-d);
   color: #fff;
   border-radius: var(--radius);
   overflow: hidden;
@@ -3296,9 +3380,6 @@ body[data-active-tab="escursioni"]{
   position: relative;
   isolation: isolate;
   transition: transform .35s var(--ease), box-shadow .35s var(--ease);
-  /* Layered shadow: a tight close one + softer mid + barely-there
-     far one. The further they go down the lower the alpha — the
-     small bit that escapes the scrollport's clip is invisible. */
   box-shadow:
     0 4px 10px rgba(10,37,64,.22),
     0 8px 18px rgba(10,37,64,.10),
@@ -3312,27 +3393,16 @@ body[data-active-tab="escursioni"]{
     0 16px 32px rgba(10,37,64,.06);
 }
 
-/* Image: bleed to card edges (no inner radius), add a darker bottom
-   gradient and a glowing tab-accent line at the seam with the body */
 .card-img{
   border-radius: 0;
   background: #0A2540 center/cover no-repeat;
 }
 .card-img::after{
   content: "";
-  position: absolute; inset: auto 0 0 0;
-  height: 55%;
-  background: linear-gradient(180deg, transparent 0%, rgba(6,24,42,.78) 100%);
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(6,24,42,.55));
   pointer-events: none;
   z-index: 1;
-}
-.card-img::before{
-  content: "";
-  position: absolute; left: 0; right: 0; bottom: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, var(--tab-accent) 50%, transparent 100%);
-  z-index: 2;
-  opacity: .9;
 }
 
 /* Badge: tinted in tab colour */
@@ -3376,10 +3446,9 @@ body[data-active-tab="escursioni"]{
   stroke: var(--tab-accent);
 }
 
-/* Body — dark surface with breathing padding, exp-style typography */
 .card-body{
   padding: 16px 18px 18px;
-  background: linear-gradient(180deg, var(--navy-2) 0%, var(--navy-3) 100%);
+  background: transparent;
   position: relative;
   z-index: 1;
 }
