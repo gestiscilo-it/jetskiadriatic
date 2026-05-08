@@ -50,8 +50,8 @@ body{
   --cat-bar-h: 64px;             /* bottom filter bar */
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
-  --max-w: 1280px;               /* container expands on desktop */
-  --content-w: 1180px;           /* content alignment width */
+  --max-w: 1320px;               /* container expands on desktop — matches the hero rail */
+  --content-w: 1320px;           /* content alignment width — single rail used by topbar, feed and section containers */
 }
 
 /* ---- reset ---- */
@@ -189,7 +189,7 @@ em{font-style:italic; font-family:var(--serif); font-weight:400}
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--tab-color);
+  background: var(--navy-2);
   border-bottom: 1px solid transparent;
   /* animate the sticky `top` offset (not transform) so the whole header
      slides as a single unit. transform would create a containing block
@@ -566,7 +566,7 @@ body.is-past-products .cat-bar{
 .fab-book{
   position: fixed;
   right: 16px;
-  bottom: calc(var(--cat-bar-h) + var(--safe-bottom) + 144px);
+  bottom: calc(var(--safe-bottom) + 144px);
   transition: transform .2s ease, bottom .28s ease;
   width: 52px; height: 52px;
   border-radius: 50%;
@@ -576,22 +576,17 @@ body.is-past-products .cat-bar{
   box-shadow: 0 10px 28px rgba(232,163,61,.45), 0 4px 10px rgba(232,163,61,.25);
   z-index: 70;
 }
-@media (max-width: 959px){
-  body.is-past-products .fab-book{
-    bottom: calc(var(--safe-bottom) + 144px);
-  }
-}
 .fab-book:active{ transform: scale(.94) }
 .fab-book svg{ width: 22px; height: 22px }
 @media (min-width: 760px){
   .fab-book{
-    right: max(16px, calc(50vw - var(--max-w)/2 + 16px));
+    right: 24px;
   }
 }
 .fab-call{
   position: fixed;
   right: 16px;
-  bottom: calc(var(--cat-bar-h) + var(--safe-bottom) + 80px);
+  bottom: calc(var(--safe-bottom) + 80px);
   transition: transform .2s ease, bottom .28s ease;
   width: 52px; height: 52px;
   border-radius: 50%;
@@ -601,22 +596,17 @@ body.is-past-products .cat-bar{
   box-shadow: 0 10px 28px rgba(10,37,64,.45), 0 4px 10px rgba(10,37,64,.25);
   z-index: 70;
 }
-@media (max-width: 959px){
-  body.is-past-products .fab-call{
-    bottom: calc(var(--safe-bottom) + 80px);
-  }
-}
 .fab-call:active{ transform: scale(.94) }
 .fab-call svg{ width: 22px; height: 22px }
 @media (min-width: 760px){
   .fab-call{
-    right: max(16px, calc(50vw - var(--max-w)/2 + 16px));
+    right: 24px;
   }
 }
 .fab-wa{
   position: fixed;
   right: 16px;
-  bottom: calc(var(--cat-bar-h) + var(--safe-bottom) + 16px);
+  bottom: calc(var(--safe-bottom) + 16px);
   transition: transform .2s ease, bottom .28s ease;
   width: 52px; height: 52px;
   border-radius: 50%;
@@ -626,19 +616,11 @@ body.is-past-products .cat-bar{
   box-shadow: 0 10px 28px rgba(37,211,102,.45), 0 4px 10px rgba(37,211,102,.25);
   z-index: 70;
 }
-/* drop the FAB toward the viewport bottom once the cat-bar slides away —
-   only on mobile, where the cat-bar is fixed-bottom. On desktop the
-   cat-bar is at the top and the FAB never needs to dodge it. */
-@media (max-width: 959px){
-  body.is-past-products .fab-wa{
-    bottom: calc(var(--safe-bottom) + 16px);
-  }
-}
 .fab-wa:active{ transform: scale(.94) }
 .fab-wa svg{ width: 28px; height: 28px }
 @media (min-width: 760px){
   .fab-wa{
-    right: max(16px, calc(50vw - var(--max-w)/2 + 16px));
+    right: 24px;
   }
 }
 /* =====================================================
@@ -1536,7 +1518,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     top: 0;
     margin: 0;
     border-radius: 0;
-    background: var(--tab-color);
+    background: var(--navy-2);
     border: 0;
     box-shadow: none;
   }
@@ -1620,7 +1602,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   }
   .card-img{ transition: transform .2s ease, box-shadow .2s ease }
 
-  /* Floating buttons: pinned to viewport right */
+  /* Floating buttons: pinned bottom-right with matching gutter */
   .fab-wa{
     bottom: 24px;
     right: 24px;
@@ -1725,7 +1707,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   .fab-wa,
   .fab-call,
   .fab-book{
-    right: max(56px, calc(50vw - var(--max-w)/2 + 32px));
+    right: 24px;
   }
 }
 
@@ -1733,7 +1715,9 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
    ULTRAWIDE (≥ 1600px)
    ===================================================== */
 @media (min-width: 1600px){
-  :root{ --max-w: 1480px; --content-w: 1380px }
+  /* hero rail caps at 1320 — content-w stays in sync; --max-w widens
+     only for the FAB positioning math, which lives outside the rail */
+  :root{ --max-w: 1480px; --content-w: 1320px }
 }
 
 /* =====================================================
@@ -1746,9 +1730,10 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 .contact-head,
 .contact-grid{
-  max-width: 1320px;
-  width: 92vw;
+  max-width: var(--content-w);
   margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 .contact-head{
   text-align: left;
@@ -2072,11 +2057,11 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 /* ---- responsive ---- */
 @media (min-width: 640px){
   .contact{ padding: 64px 0 72px }
-  .contact-head,
-  .contact-grid,
   .foot-top,
   .foot-trust,
-  .foot-bottom{ padding-left: 24px; padding-right: 24px }
+  .foot-bottom,
+  .contact-head,
+  .contact-grid{ padding-left: 24px; padding-right: 24px }
   .contact-grid{
     grid-template-columns: 1.4fr 1fr;
     gap: 20px;
@@ -2091,11 +2076,11 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 @media (min-width: 960px){
   .contact{ padding: 80px 0 88px }
-  .contact-head,
-  .contact-grid,
   .foot-top,
   .foot-trust,
-  .foot-bottom{ padding-left: 40px; padding-right: 40px }
+  .foot-bottom,
+  .contact-head,
+  .contact-grid{ padding-left: 40px; padding-right: 40px }
   .contact-head{ margin-bottom: 36px }
   .contact-grid{
     grid-template-columns: 1.6fr 1fr;
@@ -2126,8 +2111,6 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   .fb-credit{ flex: 0 0 auto }
 }
 @media (min-width: 1280px){
-  .contact-head,
-  .contact-grid,
   .foot-top,
   .foot-trust,
   .foot-bottom{ padding-left: 56px; padding-right: 56px }
@@ -2409,7 +2392,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   overflow:hidden;
 }
 .manifesto .wrap{
-  max-width:1100px;
+  max-width:1320px;
   width:92vw;
   margin:0 auto;
   text-align:left;
@@ -3154,9 +3137,9 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 .hero-edge--top{ top: -2px; overflow: visible }
 .hero-edge--bot{ bottom: -2px; overflow: visible }
-/* Wave fill tracks the active tab accent so it flows into the topbar.
-   Uses --tab-header-shade to match the topbar's darker shade exactly. */
-#top.hero > .hero-edge--bot{ color: var(--tab-header-shade); transition: color .35s ease; }
+/* Wave fill matches the topbar's fixed announcement-bar color so the
+   bottom edge of the top hero flows seamlessly into the sticky header. */
+#top.hero > .hero-edge--bot{ color: var(--navy-2); transition: color .35s ease; }
 
 .hero-video{
   position:absolute;inset:0;z-index:0;
@@ -3227,7 +3210,6 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   line-height:1.55;
   margin:0 0 32px;
   opacity:.92;
-  white-space:nowrap;
 }
 .hero-lead strong{color:var(--white);font-weight:700}
 .hero-lead b{color:var(--acqua-l);font-weight:600}
@@ -3294,16 +3276,6 @@ body[data-active-tab="escursioni"]{
   --tab-tint:      rgba(45,191,161,.16);
   --tab-tint-2:    rgba(45,191,161,.30);
   --tab-glow:      rgba(45,191,161,.40);
-}
-
-/* The header block (topbar) uses --tab-header-shade — a clearly darker
-   variant of the active tab colour. Card / feed accents keep the brighter
-   --tab-accent. Both vars are overridden because --tab-color is computed
-   at body and inherited as a resolved value, so a local --tab-accent
-   override would not propagate to consumers that read --tab-color. */
-.topbar{
-  --tab-accent: var(--tab-header-shade);
-  --tab-color:  var(--tab-header-shade);
 }
 
 /* ----- Mobile: let the whole tab pill slide horizontally when the

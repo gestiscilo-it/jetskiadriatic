@@ -31,38 +31,6 @@
     transform:none !important;
   }
 
-  /* Floating back button — overlays the full-bleed hero video.
-     Horizontal alignment matches the inner content frame (max 1320px,
-     92vw fallback). On viewports >= 1320px, the button sits exactly
-     at the container's left edge; below that it tracks the 4vw gutter. */
-  .yacht-back--floating{
-    position:absolute;
-    top:clamp(16px, 2.6vw, 32px);
-    left:max(4vw, calc((100vw - 1320px) / 2));
-    z-index:5;
-    display:inline-flex;align-items:center;gap:8px;
-    padding:10px 16px;
-    border-radius:999px;
-    background:rgba(6,24,42,.55);
-    backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);
-    border:1px solid rgba(255,255,255,.18);
-    color:#fff;
-    font-size:13px;font-weight:600;letter-spacing:.01em;
-    text-decoration:none;
-    transition:background .25s var(--ease), border-color .25s var(--ease);
-  }
-  .yacht-back--floating svg{width:16px;height:16px}
-  .yacht-back--floating:hover{
-    background:rgba(6,24,42,.78);
-    border-color:rgba(255,255,255,.32);
-  }
-  /* Mobile: icon-only pill */
-  @media (max-width:640px){
-    .yacht-back--floating{ padding:10px; gap:0 }
-    .yacht-back-label{ display:none }
-  }
-
   /* Itinerari — dark cards on the dark slab. */
   .rotte-list{
     display:grid;
@@ -269,11 +237,6 @@
 
 <!-- ============ HERO YACHT — "La nostra bestia" ============ -->
 <section class="hero hero--yacht" id="top">
-  <!-- Floating back button (was previously in the topbar header) -->
-  <a class="yacht-back yacht-back--floating" href="index.html" aria-label="Torna alla home">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    <span class="yacht-back-label">Torna alla home</span>
-  </a>
   <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
          poster="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=90&w=2400&auto=format&fit=crop">
     <source src="https://videos.pexels.com/video-files/26830092/12016061_1920_1080_50fps.mp4" type="video/mp4" />
@@ -300,9 +263,13 @@
           Richiedi un preventivo
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
-        <a href="#flotta" class="btn btn-ghost">
-          Le imbarcazioni
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        <a href="tel:+390000000000" class="btn btn-ghost">
+          Chiama
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+        <a href="https://wa.me/390000000000" class="btn btn-ghost" target="_blank" rel="noopener">
+          Scrivici
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1zm0 0a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
         </a>
       </div>
     </div>

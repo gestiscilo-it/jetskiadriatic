@@ -26,34 +26,6 @@
   /* Override tramonto to ochre for the party theme */
   .section { --tramonto: #E8A33D; --tramonto-d: #C68220; }
 
-  /* Floating back button */
-  .back-btn--floating {
-    position: absolute;
-    top: clamp(16px, 2.6vw, 32px);
-    left: max(4vw, calc((100vw - 1320px) / 2));
-    z-index: 5;
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 16px;
-    border-radius: 999px;
-    background: rgba(6,24,42,.55);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,.18);
-    color: #fff;
-    font-size: 13px; font-weight: 600; letter-spacing: .01em;
-    text-decoration: none;
-    transition: background .25s, border-color .25s;
-  }
-  .back-btn--floating svg { width: 16px; height: 16px }
-  .back-btn--floating:hover {
-    background: rgba(6,24,42,.78);
-    border-color: rgba(255,255,255,.32);
-  }
-  @media (max-width: 640px) {
-    .back-btn--floating { padding: 10px; gap: 0 }
-    .back-btn--floating .btn-label { display: none }
-  }
-
   /* Package cards in a dark format */
   .pkg-grid {
     display: grid;
@@ -196,11 +168,6 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero hero--party" id="top">
-  <a class="back-btn--floating" href="index.html" aria-label="Torna alla home">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    <span class="btn-label">Torna alla home</span>
-  </a>
-
   <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
          poster="https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=90&w=2400&auto=format&fit=crop">
     <source src="https://videos.pexels.com/video-files/26830092/12016061_1920_1080_50fps.mp4" type="video/mp4" />
@@ -226,9 +193,13 @@
           Richiedi un preventivo
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
-        <a href="#pacchetti" class="btn btn-ghost">
-          I pacchetti
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        <a href="tel:+390000000000" class="btn btn-ghost">
+          Chiama
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+        <a href="https://wa.me/390000000000" class="btn btn-ghost" target="_blank" rel="noopener">
+          Scrivici
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1zm0 0a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
         </a>
       </div>
     </div>
