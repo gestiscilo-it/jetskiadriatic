@@ -224,10 +224,6 @@ body.is-past-products .topbar{
     pointer-events: none;
     z-index: 1;
   }
-  body.is-past-products .topbar-edge--bot{
-    opacity: 0;
-    transition: opacity .2s ease;
-  }
 }
 
 /* generic row */
