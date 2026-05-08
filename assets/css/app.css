@@ -267,10 +267,18 @@ body.is-past-products .topbar{
   color: var(--ink-2);
   transition: all .15s ease;
   white-space: nowrap;
+  /* Tabs sit inside .topbar-row--main (overflow-x: auto). Without
+     touch-action: manipulation, iOS Safari can interpret a tap with
+     even a few px of finger motion as a scroll attempt and cancel the
+     click — leaving the tab with a sticky :hover style (text colored)
+     but no is-active class (chip not filled). */
+  touch-action: manipulation;
 }
 .tab .tab-ico{ width: 16px; height: 16px; display:inline-grid; place-items:center }
 .tab .tab-ico svg{ width: 16px; height: 16px }
-.tab:hover{ color: var(--ink) }
+@media (hover: hover){
+  .tab:hover{ color: var(--ink) }
+}
 .tab.is-active{
   background: var(--tab-color);
   color: #fff;
@@ -352,9 +360,13 @@ body.is-past-products .cat-bar{
   white-space: nowrap;
   position: relative;
   opacity: 1;
+  /* See note on .tab — same overflow-x scroll context, same fix. */
+  touch-action: manipulation;
 }
 .cat svg{ width: 22px; height: 22px; stroke-width: 1.7 }
-.cat:hover{ color: var(--ink) }
+@media (hover: hover){
+  .cat:hover{ color: var(--ink) }
+}
 .cat.is-active{
   color: var(--ink);
 }
@@ -3347,10 +3359,12 @@ body[data-active-tab="escursioni"]{
   color: var(--tab-on-accent);
   box-shadow: 0 2px 10px var(--tab-glow);
 }
-.tab[data-tab="moto"]:hover:not(.is-active)        { color: #19A0BF }
-.tab[data-tab="love"]:hover:not(.is-active)        { color: #E84F6B }
-.tab[data-tab="party"]:hover:not(.is-active)       { color: #C68220 }
-.tab[data-tab="escursioni"]:hover:not(.is-active)  { color: #1F8C77 }
+@media (hover: hover){
+  .tab[data-tab="moto"]:hover:not(.is-active)        { color: #19A0BF }
+  .tab[data-tab="love"]:hover:not(.is-active)        { color: #E84F6B }
+  .tab[data-tab="party"]:hover:not(.is-active)       { color: #C68220 }
+  .tab[data-tab="escursioni"]:hover:not(.is-active)  { color: #1F8C77 }
+}
 
 /* ----- Filter bar (cats) — dark text on light surface ----- */
 .cat.is-active{ color: var(--ink) }
