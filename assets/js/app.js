@@ -757,24 +757,7 @@ window.JSA.parseDeepLink = function(hashStr){
       perPerson: true, minPeople: 2, maxPeople: 3, rating: 4.95, reviews: 67,
       tags: ['4 ore', 'pranzo', 'caletta privata', 'min 2 pers'],
       lead: 'Rotta aperta da Cattolica fino al Porticciolo di Vallugola, con guida inclusa, attracco nella caletta privata e pranzo al Ristorante Falco: quattro ore di navigazione in cui il mezzo risponde solo a te.' },
-
-    // Yacht hero CTA on yacht.html — alias to sunset cruise
-    { id: 'yacht', tab: 'yacht', aliasOf: 'yacht-sunset', preselect: {} },
   ];
-
-  // Sample jet ski clips from Pixabay's public CDN, assigned cyclically
-  // as placeholder media. Replace with real footage when available.
-  const SAMPLE_VIDEOS = [
-    'https://cdn.pixabay.com/video/2021/11/30/99435-653480287_tiny.mp4',
-    'https://cdn.pixabay.com/video/2019/09/21/27125-362142178_tiny.mp4',
-    'https://cdn.pixabay.com/video/2024/07/01/219047_tiny.mp4',
-    'https://cdn.pixabay.com/video/2020/07/07/44132-438259003_tiny.mp4',
-    'https://cdn.pixabay.com/video/2021/03/15/68033-524689133_tiny.mp4',
-    'https://cdn.pixabay.com/video/2020/09/25/50855-462059727_tiny.mp4'
-  ];
-  EXPERIENCES.forEach((e, i) => {
-    if(!e.video) e.video = SAMPLE_VIDEOS[i % SAMPLE_VIDEOS.length];
-  });
 
   const CATS = {
     moto: [

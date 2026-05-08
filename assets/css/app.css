@@ -109,8 +109,12 @@ em{font-style:italic; font-family:var(--serif); font-weight:400}
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.info-strip-inner::-webkit-scrollbar{ display: none }
 .info-strip a{
   color: rgba(255,255,255,.85);
   display: inline-flex;
@@ -121,7 +125,7 @@ em{font-style:italic; font-family:var(--serif); font-weight:400}
 .info-strip a:hover{ color: var(--cyan) }
 .info-strip a svg{ width: 12px; height: 12px; flex: 0 0 12px }
 .info-l, .info-r{
-  display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  display: inline-flex; align-items: center; gap: 8px; flex-wrap: nowrap; white-space: nowrap;
 }
 .info-strip .sep{ opacity: .35; margin: 0 2px }
 .info-strip .status{ display: inline-flex; align-items: center; gap: 8px; white-space: nowrap }
@@ -216,10 +220,13 @@ body.is-past-products .topbar{
   padding: 10px 6px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-.topbar-row--main{ justify-content: flex-start }
+.topbar-row--main::-webkit-scrollbar{ display: none }
 /* tabs — pill toggle (kept original UI) */
 .tabs{
   display: inline-flex;
@@ -2243,7 +2250,6 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   font-weight:600;
   color:var(--abisso);
   margin:0;
-  white-space:nowrap;
 }
 .section .sh em{color:var(--tramonto)}
 .section .sh u{
