@@ -630,6 +630,23 @@ body.is-past-products .cat-bar{
     right: 24px;
   }
 }
+
+/* On mobile, when the bottom filter bar (.cat-bar) is visible — i.e. the user
+   is inside the feed band — lift the FAB column above it so the WhatsApp
+   bubble doesn't sit underneath the bar. The .28s bottom transition on each
+   FAB makes this animate in sync with the cat-bar slide. */
+@media (max-width: 759px){
+  body:not(.is-past-products) .fab-wa{
+    bottom: calc(var(--safe-bottom) + 16px + var(--cat-bar-h));
+  }
+  body:not(.is-past-products) .fab-call{
+    bottom: calc(var(--safe-bottom) + 80px + var(--cat-bar-h));
+  }
+  body:not(.is-past-products) .fab-book{
+    bottom: calc(var(--safe-bottom) + 144px + var(--cat-bar-h));
+  }
+}
+
 /* =====================================================
    SHEETS (bottom drawer)
    ===================================================== */
