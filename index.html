@@ -77,7 +77,7 @@
         Dal pontile di Cattolica al largo in meno di dieci minuti, con un mezzo da <strong>70 km/h</strong> e un briefing di sicurezza che non dura più di quanto deve.
       </p>
       <div class="cta-row">
-        <a href="#contatti" class="btn btn-primary" data-book="">
+        <a href="#feed" class="btn btn-primary" data-book="">
           Prenota
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
@@ -133,6 +133,14 @@
     <nav class="cat-bar" aria-label="Filtra prodotti">
       <div class="cats" id="cats" role="tablist" aria-label="Categoria"></div>
     </nav>
+
+    <!-- Wavy bottom edge — mobile only, when the cat-bar is detached
+         to the viewport bottom and the topbar would otherwise end on a flat line.
+         Uses hero-edge-top (filled top, transparent bottom) so the navy
+         flows down from the topbar and the wave hangs into the page. -->
+    <svg class="topbar-edge topbar-edge--bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+      <use href="#hero-edge-top"/>
+    </svg>
 
   </header>
 
@@ -353,11 +361,11 @@
       </ul>
 
       <div class="mezzo-cta-row">
-        <a href="#contatti" class="btn btn-dark" data-book="">
+        <a href="#feed" class="btn btn-dark" data-book="">
           Prenota ora
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
-        <a href="#contatti" class="btn btn-ghost" data-book="classic">Prova il Classic · 105€</a>
+        <a href="#feed" class="btn btn-ghost" data-book="classic">Prova il Classic · 105€</a>
       </div>
     </div>
   </div>
@@ -584,7 +592,7 @@
   </div>
 
   <!-- Yacht 1 — Day & Sunset (inverted: content left, image right) -->
-  <a class="container mezzo-wrap mezzo-wrap--link reveal" href="#contatti">
+  <a class="container mezzo-wrap mezzo-wrap--link reveal" href="#feed">
     <div class="mezzo-r">
       <p class="mezzo-desc">Open day-cruiser 2×350 hp: sundeck prendisole, prua spaziosa, frigo, doccia di poppa. 38 nodi disponibili quando spingi, silenzioso quando vuoi. Tagliato per Day Charter e Sunset Cruise.</p>
 
@@ -631,7 +639,7 @@
   </a>
 
   <!-- Yacht 2 — Weekend & Event (inverted: image left, content right) -->
-  <a class="container mezzo-wrap mezzo-wrap--link reveal" href="#contatti" style="margin-top:64px">
+  <a class="container mezzo-wrap mezzo-wrap--link reveal" href="#feed" style="margin-top:64px">
     <div class="mezzo-l">
       <div class="mezzo-illu" style="background-image:url('https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop')">
         <span class="mezzo-badge">Weekend &amp; Event</span>

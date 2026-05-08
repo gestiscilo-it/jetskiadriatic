@@ -207,6 +207,29 @@ body.is-past-products .topbar{
   border-bottom-color: transparent;
 }
 
+/* Wavy bottom edge for the topbar — only on mobile, where the cat-bar
+   detaches to the viewport bottom and the topbar otherwise ends on a flat
+   line. Picks up navy-2 (the topbar bg) so the wave reads as a continuation
+   of the header rather than a separate element. */
+.topbar-edge{ display: none }
+@media (max-width: 759px){
+  .topbar-edge--bot{
+    display: block;
+    position: absolute;
+    left: 0; right: 0;
+    top: 100%;
+    width: 100%;
+    height: clamp(18px, 4vw, 28px);
+    color: var(--navy-2);
+    pointer-events: none;
+    z-index: 1;
+  }
+  body.is-past-products .topbar-edge--bot{
+    opacity: 0;
+    transition: opacity .2s ease;
+  }
+}
+
 /* generic row */
 .topbar-row{
   display: flex;
@@ -343,6 +366,10 @@ body.is-past-products .cat-bar{
 .feed{
   padding: 16px 16px 12px;
   position: relative;
+  /* Anchored "Prenota" CTAs land here. Pull the scroll target up
+     so the sticky topbar doesn't cover the feed-head and the user
+     sees a bit of context above before the cards start. */
+  scroll-margin-top: clamp(80px, 14vw, 140px);
 }
 .feed-head{
   display: flex; justify-content: space-between; align-items: flex-end;
