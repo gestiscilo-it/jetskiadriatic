@@ -101,6 +101,8 @@ em{font-style:italic; font-family:var(--serif); font-weight:400}
   padding-top: var(--safe-top);
 }
 .info-strip-inner{
+  /* Match the hero content container so the strip aligns visually with
+     the rest of the page (.hero-inner uses the same width/max-width). */
   width: 92vw;
   max-width: 1320px;
   margin: 0 auto;
@@ -256,12 +258,12 @@ body.is-past-products .topbar{
   gap: 2px;
 }
 .tab{
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 14px;
+  display: inline-flex; align-items: center; gap: 0;
+  padding: 8px 10px;
   border-radius: var(--radius-pill);
   font-weight: 600; font-size: 13.5px;
   color: var(--ink-2);
-  transition: all .15s ease;
+  transition: padding .28s ease, color .28s ease, background .28s ease, box-shadow .28s ease;
   white-space: nowrap;
   /* Tabs sit inside .topbar-row--main (overflow-x: auto). Without
      touch-action: manipulation, iOS Safari can interpret a tap with
@@ -270,8 +272,22 @@ body.is-past-products .topbar{
      but no is-active class (chip not filled). */
   touch-action: manipulation;
 }
-.tab .tab-ico{ width: 16px; height: 16px; display:inline-grid; place-items:center }
+.tab .tab-ico{ width: 16px; height: 16px; display:inline-grid; place-items:center; flex: 0 0 auto }
 .tab .tab-ico svg{ width: 16px; height: 16px }
+.tab > span:not(.tab-ico){
+  /* width: 0 → auto via interpolate-size (Chrome 132+, Firefox 142+,
+     Safari 18.4+) animates from 0 to the text's intrinsic width, so
+     the collapsing chip and the expanding chip stay perfectly in sync
+     across their full duration — no dead phase. */
+  interpolate-size: allow-keywords;
+  display: inline-block;
+  width: 0;
+  margin-left: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width .28s ease, opacity .28s ease, margin-left .28s ease;
+}
 @media (hover: hover){
   .tab:hover{ color: var(--ink) }
 }
@@ -279,7 +295,12 @@ body.is-past-products .topbar{
   background: var(--tab-color);
   color: #fff;
   box-shadow: 0 2px 6px rgba(0,0,0,.22);
-  transition: background .35s ease;
+  padding: 8px 14px 8px 12px;
+}
+.tab.is-active > span:not(.tab-ico){
+  width: auto;
+  margin-left: 6px;
+  opacity: 1;
 }
 
 .topbar-right{
@@ -442,11 +463,25 @@ body.is-past-products .cat-bar{
 @media (max-width: 599px){
   .card:only-child{ flex-basis: 100% }
 }
+/* Mobile: every card sits centered with symmetric prev/next peek. First
+   and last cards get no special alignment — the scrollport padding lets
+   them center identically to interior cards. */
+@media (max-width: 639px){
+  .cards{
+    padding-inline: 7.5vw;
+    scroll-padding-left: 0;
+    scroll-padding-right: 0;
+  }
+  .card{
+    flex-basis: 85vw;
+    scroll-snap-align: center;
+  }
+}
 .card{ cursor: pointer }
 .card-img{
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 16 / 9;
   border-radius: var(--radius);
   overflow: hidden;
   background: #d9e2eb center/cover no-repeat;
@@ -1584,10 +1619,11 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 
 
   .topbar-row{ max-width: var(--content-w); margin: 0 auto }
-  /* Switch + meteo row is slightly wider than other rails — the rounded
-     controls breathe a bit closer to the edges */
+  /* Macro tabs row gets a slightly tighter inset than the subcategories
+     (.cats use 40px / 88px) so the primary nav reads as one rung above
+     the secondary rail. */
   .topbar-row--main{
-    padding: 18px 28px;
+    padding: 18px 40px;
     gap: 24px;
   }
   /* tabs (pill) — slightly larger on desktop */
@@ -1597,7 +1633,18 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   }
   .tab{
     padding: 9px 18px;
+    gap: 6px;
     font-size: 14px;
+  }
+  .tab.is-active{ padding: 9px 18px }
+  /* Restore always-visible labels on desktop — bypass the mobile
+     width-collapse technique with a plain inline label */
+  .tab > span:not(.tab-ico){
+    display: inline;
+    width: auto;
+    margin-left: 0;
+    opacity: 1;
+    overflow: visible;
   }
 
   /* Filter bar moves into header on desktop — old top layout */
@@ -1640,7 +1687,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 
   /* Feed: 3 columns */
   .feed{
-    padding: 36px 40px 60px;
+    padding: 36px 64px 60px;
     max-width: var(--content-w);
     margin: 0 auto;
   }
@@ -1651,10 +1698,10 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     padding-block: 4px 16px;
     gap: 24px;
     scroll-snap-type: x proximity;
-    scroll-padding-left: max(40px, calc((100vw - var(--content-w)) / 2 + 40px));
+    scroll-padding-left: max(64px, calc((100vw - var(--content-w)) / 2 + 64px));
   }
   .card{ flex: 0 0 47% }
-  .card-img{ aspect-ratio: 1 / 1 }
+  .card-img{ aspect-ratio: 16 / 9 }
   .card:hover .card-img{
     transform: translateY(-2px);
     box-shadow: var(--sh-md);
@@ -1756,13 +1803,13 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   .cards{
     padding-block: 4px 16px;
     gap: 28px;
-    scroll-padding-left: max(56px, calc((100vw - var(--content-w)) / 2 + 56px));
+    scroll-padding-left: max(88px, calc((100vw - var(--content-w)) / 2 + 88px));
   }
   .card{ flex: 0 0 32% }
   .cats,
-  .feed{ padding-left: 56px; padding-right: 56px }
-  /* Switch + meteo row stays slightly wider than other rails */
-  .topbar-row--main{ padding-left: 42px; padding-right: 42px }
+  .feed{ padding-left: 88px; padding-right: 88px }
+  /* Macro tabs row stays a touch tighter than the subcategories rail */
+  .topbar-row--main{ padding-left: 80px; padding-right: 80px }
   .fab-wa,
   .fab-call,
   .fab-book{
@@ -1793,6 +1840,20 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   margin: 0 auto;
   padding-left: 16px;
   padding-right: 16px;
+}
+@media (min-width: 960px){
+  .contact-head,
+  .contact-grid{
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+@media (min-width: 1280px){
+  .contact-head,
+  .contact-grid{
+    padding-left: 56px;
+    padding-right: 56px;
+  }
 }
 .contact-head{
   text-align: left;
@@ -2342,6 +2403,8 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .experiences,
 .love-flagship{ background:var(--bg) }
 
+/* Product grids: always 3 columns on desktop. Card counts inside
+   should be a multiple of 3 to avoid orphan rows. */
 .exp-grid{
   display:grid;
   grid-template-columns:repeat(3, 1fr);
@@ -2349,96 +2412,149 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 @media (max-width:960px){.exp-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.exp-grid{grid-template-columns:1fr}}
-.exp-grid--love{grid-template-columns:1fr 1fr;gap:22px}
-@media (max-width:720px){.exp-grid--love{grid-template-columns:1fr}}
+.exp-grid--love{grid-template-columns:repeat(3, 1fr);gap:22px}
+@media (max-width:960px){.exp-grid--love{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.exp-grid--love{grid-template-columns:1fr}}
 
+/* Product cards (.exp) mirror the .card carousel aesthetic:
+   dark abisso surface, 16:9 image flush at the top, padded body,
+   hairline-divided foot with price + uppercase CTA pill. */
 .exp{
-  background:var(--abisso-d);
-  color:var(--white);
-  text-decoration:none;
-  border-radius:var(--r-lg);
-  overflow:hidden;
-  padding:26px 26px 24px;
-  position:relative;
-  display:flex;flex-direction:column;gap:16px;
-  cursor:pointer;
-  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
-  isolation:isolate;
+  background: var(--abisso-d);
+  color: var(--white);
+  text-decoration: none;
+  border-radius: var(--radius);
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  display: flex; flex-direction: column;
+  cursor: pointer;
+  isolation: isolate;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+  box-shadow:
+    0 4px 10px rgba(10,37,64,.22),
+    0 8px 18px rgba(10,37,64,.10),
+    0 14px 28px rgba(10,37,64,.04);
 }
-.exp:hover{transform:translateY(-6px);box-shadow:0 24px 48px -20px rgba(10,37,64,.5)}
-.exp:focus-visible{outline:2px solid var(--tramonto);outline-offset:3px}
-.exp-n{
-  position:absolute;top:22px;right:26px;
-  font-family:var(--f-serif);
-  font-style:italic;
-  font-size:22px;
-  color:var(--tramonto);
-  z-index:2;
+.exp:hover{
+  transform: translateY(-3px);
+  box-shadow:
+    0 6px 14px var(--tab-glow, rgba(46,128,160,.25)),
+    0 10px 22px rgba(10,37,64,.14),
+    0 16px 32px rgba(10,37,64,.06);
 }
-.exp--love .exp-n{color:#E8A33D}
+.exp:focus-visible{ outline: 2px solid var(--tab-accent, var(--tramonto)); outline-offset: 3px }
+
 .exp-illu{
-  width:calc(100% + 52px);
-  margin:-26px -26px 0;
-  height:240px;
-  background-size:cover;
-  background-position:center;
-  position:relative;
+  width: 100%;
+  margin: 0;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  background-size: cover;
+  background-position: center;
+  position: relative;
 }
-.exp--love .exp-illu{height:300px}
 .exp-illu::after{
-  content:"";
-  position:absolute;inset:0;
-  background:linear-gradient(180deg, transparent 60%, rgba(6,24,42,.55));
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(6,24,42,.55));
 }
-.exp h3{
-  font-family:var(--f-display);
-  font-size:30px;line-height:1.05;
-  color:var(--white);font-weight:600;
-  letter-spacing:-.02em;
-  margin:0;
+
+/* Numbered hero (01-04): italic serif numeral floating at the
+   top-right of the image — coloured by the page's active accent,
+   with a text shadow for readability on varied imagery. */
+.exp-n{
+  position: absolute;
+  top: 12px; right: 14px;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--tab-accent, var(--tramonto));
+  text-shadow: 0 1px 8px rgba(0,0,0,.45);
+  z-index: 2;
 }
-.exp h3 em{font-family:var(--f-serif);font-style:italic;font-weight:400;color:var(--tramonto)}
-.exp p{
-  font-size:14.5px;line-height:1.55;
-  color:var(--on-dark);
-  margin:0;
+
+/* Body content (everything after the illu) sits inside a padded column. */
+.exp > h3,
+.exp > p{
+  margin-inline: 18px;
 }
+.exp > h3{
+  margin-top: 16px;
+  margin-bottom: 0;
+  font-family: var(--f-display);
+  font-size: 19px; line-height: 1.18;
+  color: #fff; font-weight: 600;
+  letter-spacing: -.015em;
+}
+.exp > h3 em{
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--tab-accent, var(--tramonto));
+}
+.exp > p{
+  margin-top: 6px;
+  margin-bottom: 0;
+  font-size: 13.5px; line-height: 1.5;
+  color: rgba(255,255,255,.66);
+  font-weight: 400;
+}
+
 .exp-tags{
-  display:flex;flex-wrap:wrap;gap:6px;
-  list-style:none;
-  margin:auto 0 0;
-  padding:0;
+  display: flex; flex-wrap: wrap;
+  gap: 6px;
+  list-style: none; padding: 0;
+  margin: 10px 18px 0;
 }
 .exp-tags li{
-  padding:5px 11px;
-  background:rgba(111,179,216,.12);
-  color:var(--acqua-l);
-  border-radius:var(--r-pill);
-  font-size:12px;
-  font-weight:500;
-  letter-spacing:.04em;
+  padding: 4px 9px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.10);
+  color: rgba(255,255,255,.85);
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
 }
+
 .exp-foot{
-  display:flex;justify-content:space-between;align-items:center;
-  padding-top:18px;
-  border-top:1px solid rgba(255,255,255,.14);
-  margin-top:4px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  margin: 14px 18px 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.12);
 }
-.exp-price{display:flex;flex-direction:column;gap:2px}
-.exp-price b{font-family:var(--f-display);font-size:26px;color:var(--white);font-weight:700;letter-spacing:-.02em}
-.exp-price span{font-size:12px;color:var(--on-dark);letter-spacing:.06em}
+.exp-price{ display: flex; flex-direction: column; gap: 1px; margin: 0 }
+.exp-price b{
+  font-family: var(--f-display);
+  font-size: 22px;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: -.015em;
+}
+.exp-price span{
+  font-size: 11.5px;
+  color: rgba(255,255,255,.62);
+  letter-spacing: .06em;
+}
 .exp-go{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:10px 16px;
-  background:var(--tramonto);color:var(--abisso);
-  border-radius:var(--r-pill);
-  font-size:12px;font-weight:700;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  transition:transform .2s var(--ease), background .2s var(--ease);
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 14px;
+  background: var(--tab-accent, var(--tramonto));
+  color: var(--tab-on-accent, var(--abisso));
+  border-radius: var(--r-pill);
+  font-family: var(--f-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  flex: 0 0 auto;
+  transition: transform .2s var(--ease), background .2s var(--ease);
+  box-shadow: 0 4px 12px var(--tab-glow, rgba(46,128,160,.35));
 }
-.exp:hover .exp-go{background:var(--white);transform:translateX(3px)}
-.exp-go svg{width:14px;height:14px}
+.exp:hover .exp-go{ transform: translateX(3px) }
+.exp-go svg{ width: 14px; height: 14px }
 
 /* ==============================================================
    MANIFESTO
@@ -2501,8 +2617,15 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   letter-spacing:.02em;
 }
 .timbro{display:none}
+.manifesto-cta{
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-start;
+}
 @media (max-width:720px){
   .manifesto-stats{grid-template-columns:1fr 1fr;gap:18px}
+  .manifesto-cta{justify-content: stretch}
+  .manifesto-cta .btn{width: 100%; justify-content: center}
 }
 
 /* ==============================================================
@@ -3147,6 +3270,39 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   position:relative;
   z-index:1;
 }
+/* Page margin: non-grid section content rails follow the footer's
+   horizontal inset (.foot-top et al. use 40px / 56px on desktop) so the
+   page reads with one consistent text gutter. Card grids opt into the
+   wider feed inset below — they're the dominant block and align with the
+   first feed at the top of the page. */
+@media (min-width: 960px){
+  .section > .section-head,
+  .section > .container,
+  .section > .wrap,
+  .section > .media-foot,
+  .section > .faq-list,
+  .section > .g-grid{
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+@media (min-width: 1280px){
+  .section > .section-head,
+  .section > .container,
+  .section > .wrap,
+  .section > .media-foot,
+  .section > .faq-list,
+  .section > .g-grid{
+    padding-left: 56px;
+    padding-right: 56px;
+  }
+  /* Card grids match the .feed (Prenota online…) horizontal inset. */
+  .section > .container.exp-grid,
+  .section > .container.exp-grid--love{
+    padding-left: 88px;
+    padding-right: 88px;
+  }
+}
 
 @media (max-width:720px){
   .wave-splash{display:none}
@@ -3222,6 +3378,15 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   width:92vw;
   max-width:1320px;
   margin:0 auto;
+}
+/* Hero content (kicker, headline, lead, CTAs) inset by the footer's text
+   gutter on desktop so it aligns with the section content rail below.
+   The hero element itself stays full-bleed — only the inner content moves. */
+@media (min-width: 960px){
+  .hero-inner{ padding-left: 40px; padding-right: 40px }
+}
+@media (min-width: 1280px){
+  .hero-inner{ padding-left: 56px; padding-right: 56px }
 }
 .hero-body{
   flex:1 1 auto;
@@ -3303,7 +3468,10 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   --tab-tint-2:    rgba(31,182,216,.28);
   --tab-glow:      rgba(31,182,216,.38);
 }
-body[data-active-tab="moto"]{
+/* Theme variables cascade from any [data-active-tab] ancestor so a single
+   <section data-active-tab="..."> can locally re-theme its product cards
+   independently of the body's active tab. */
+[data-active-tab="moto"]{
   --tab-accent:    #1FB6D8;
   --tab-accent-d:  #19A0BF;
   --tab-on-accent: #fff;
@@ -3311,7 +3479,7 @@ body[data-active-tab="moto"]{
   --tab-tint-2:    rgba(31,182,216,.28);
   --tab-glow:      rgba(31,182,216,.38);
 }
-body[data-active-tab="love"]{
+[data-active-tab="love"]{
   --tab-accent:    #E84F6B;
   --tab-accent-d:  #C9304F;
   --tab-on-accent: #fff;
@@ -3319,7 +3487,7 @@ body[data-active-tab="love"]{
   --tab-tint-2:    rgba(232,79,107,.30);
   --tab-glow:      rgba(232,79,107,.42);
 }
-body[data-active-tab="party"]{
+[data-active-tab="party"]{
   --tab-accent:    #E8A33D;
   --tab-accent-d:  #C68220;
   --tab-on-accent: #fff;
@@ -3327,7 +3495,7 @@ body[data-active-tab="party"]{
   --tab-tint-2:    rgba(232,163,61,.32);
   --tab-glow:      rgba(232,163,61,.42);
 }
-body[data-active-tab="escursioni"]{
+[data-active-tab="escursioni"]{
   --tab-accent:    #2DBFA1;
   --tab-accent-d:  #1F8C77;
   --tab-on-accent: #fff;
