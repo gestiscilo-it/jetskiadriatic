@@ -444,23 +444,31 @@ body.is-past-products .cat-bar{
   width: auto;
   scroll-snap-align: start;
 }
-/* single-card row on mobile: fill the available width — no peek to hint at.
-   On larger viewports the row keeps the normal multi-card sizing so a
-   solo card doesn't visually balloon. */
-@media (max-width: 599px){
-  .card:only-child{ flex-basis: 100% }
-}
-/* Mobile: every card sits centered with symmetric prev/next peek. First
-   and last cards get no special alignment — the scrollport padding lets
-   them center identically to interior cards. */
+/* Mobile carousel — interior cards center with symmetric prev/next peek;
+   first/last cards snap to start/end so the outer edge sits with a
+   gap-width buffer (not the full symmetric peek where no neighbour can
+   be previewed). scroll-padding sets the snap offset equal to the gap
+   so the empty space mirrors the inter-card gap visually.
+   Single card (count < 2): no carousel — collapse the container padding
+   to gap-width so the lone card fills the row with the same buffer. */
 @media (max-width: 639px){
   .cards{
+    --cards-gap: 16px;
+    gap: var(--cards-gap);
     padding-inline: 7.5vw;
-    scroll-padding-left: 0;
-    scroll-padding-right: 0;
+    scroll-padding-inline: var(--cards-gap);
   }
   .card{
     flex-basis: 85vw;
+    scroll-snap-align: center;
+  }
+  .card:first-child:not(:only-child){ scroll-snap-align: start }
+  .card:last-child:not(:only-child){ scroll-snap-align: end }
+  .cards:has(.card:only-child){
+    padding-inline: var(--cards-gap);
+  }
+  .card:only-child{
+    flex-basis: 100%;
     scroll-snap-align: center;
   }
 }
