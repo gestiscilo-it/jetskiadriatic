@@ -2610,15 +2610,29 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   letter-spacing:.02em;
 }
 .timbro{display:none}
-.manifesto-cta{
-  margin-top: 40px;
-  display: flex;
-  justify-content: flex-start;
+.manifesto .big-link{
+  display: inline-flex;
+  align-items: center;
+  gap: .25em;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--tramonto);
+  letter-spacing: -.01em;
+  text-decoration: underline;
+  text-decoration-thickness: .04em;
+  text-underline-offset: .12em;
+  transition: color .2s ease;
 }
+.manifesto .big-link svg{
+  width: .7em;
+  height: .7em;
+  transition: transform .25s ease;
+}
+.manifesto .big-link:hover{ color: var(--abisso) }
+.manifesto .big-link:hover svg{ transform: translateX(.18em) }
 @media (max-width:720px){
   .manifesto-stats{grid-template-columns:1fr 1fr;gap:18px}
-  .manifesto-cta{justify-content: stretch}
-  .manifesto-cta .btn{width: 100%; justify-content: center}
 }
 
 /* ==============================================================
