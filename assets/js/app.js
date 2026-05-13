@@ -944,11 +944,13 @@ window.JSA.parseDeepLink = function(hashStr){
       t.setAttribute('aria-selected', on ? 'true' : 'false');
       if(on) activeTabEl = t;
     });
-    // Scroll the tab pill so the newly-selected chip is fully visible
-    // (the .topbar-row--main becomes a horizontal scroller on mobile
-    // when chips overflow the viewport width).
+    // Scroll the tab pill toward the left edge of the scroller so the
+    // newly-selected chip leads the row and the chips to its right stay
+    // in view. .topbar-row--main becomes a horizontal scroller on mobile
+    // when chips overflow the viewport width; scroll-padding-left on the
+    // scroller gives the active chip a small inset from the edge.
     if(activeTabEl && typeof activeTabEl.scrollIntoView === 'function'){
-      activeTabEl.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      activeTabEl.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
     }
     const FEED_COPY = {
       moto: {

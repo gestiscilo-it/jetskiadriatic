@@ -163,6 +163,10 @@ em{font-style:italic; font-family:var(--serif); font-weight:400}
 /* Marquee on mobile — replicates the main-site announcement bar */
 @media (max-width: 720px){
   .info-strip-inner.has-marquee{
+    /* Marquee runs edge-to-edge — drop the 92vw centered gutter so
+       the scrolling track fills the full viewport width. */
+    width: 100%;
+    max-width: none;
     overflow: hidden;
     padding: 0;
     flex-wrap: nowrap;
@@ -244,6 +248,9 @@ body.is-past-products .topbar{
   justify-content: flex-start;
   gap: 10px;
   overflow-x: auto;
+  /* Active tab uses scrollIntoView({inline:'start'}); give it a small
+     left inset so it doesn't sit flush against the viewport edge. */
+  scroll-padding-left: 32px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -258,12 +265,12 @@ body.is-past-products .topbar{
   gap: 2px;
 }
 .tab{
-  display: inline-flex; align-items: center; gap: 0;
-  padding: 8px 10px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
   border-radius: var(--radius-pill);
   font-weight: 600; font-size: 13.5px;
   color: var(--ink-2);
-  transition: padding .28s ease, color .28s ease, background .28s ease, box-shadow .28s ease;
+  transition: color .15s ease, background .35s ease, box-shadow .15s ease;
   white-space: nowrap;
   /* Tabs sit inside .topbar-row--main (overflow-x: auto). Without
      touch-action: manipulation, iOS Safari can interpret a tap with
@@ -274,20 +281,6 @@ body.is-past-products .topbar{
 }
 .tab .tab-ico{ width: 16px; height: 16px; display:inline-grid; place-items:center; flex: 0 0 auto }
 .tab .tab-ico svg{ width: 16px; height: 16px }
-.tab > span:not(.tab-ico){
-  /* width: 0 → auto via interpolate-size (Chrome 132+, Firefox 142+,
-     Safari 18.4+) animates from 0 to the text's intrinsic width, so
-     the collapsing chip and the expanding chip stay perfectly in sync
-     across their full duration — no dead phase. */
-  interpolate-size: allow-keywords;
-  display: inline-block;
-  width: 0;
-  margin-left: 0;
-  opacity: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: width .28s ease, opacity .28s ease, margin-left .28s ease;
-}
 @media (hover: hover){
   .tab:hover{ color: var(--ink) }
 }
@@ -295,12 +288,6 @@ body.is-past-products .topbar{
   background: var(--tab-color);
   color: #fff;
   box-shadow: 0 2px 6px rgba(0,0,0,.22);
-  padding: 8px 14px 8px 12px;
-}
-.tab.is-active > span:not(.tab-ico){
-  width: auto;
-  margin-left: 6px;
-  opacity: 1;
 }
 
 .topbar-right{
@@ -1637,15 +1624,6 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     font-size: 14px;
   }
   .tab.is-active{ padding: 9px 18px }
-  /* Restore always-visible labels on desktop — bypass the mobile
-     width-collapse technique with a plain inline label */
-  .tab > span:not(.tab-ico){
-    display: inline;
-    width: auto;
-    margin-left: 0;
-    opacity: 1;
-    overflow: visible;
-  }
 
   /* Filter bar moves into header on desktop — old top layout */
   .cat-bar{
@@ -3780,5 +3758,22 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   .card:hover .card-img{
     transform: none;          /* the whole card lifts now, no nested move */
     box-shadow: none;
+  }
+}
+
+/* =====================================================
+   .cta-row — mobile: secondary CTAs collapse to icon-only
+   chips, primary CTA keeps its full label. Pure visual rule;
+   no state, no toggle.
+   ===================================================== */
+@media (max-width: 759px){
+  .cta-row .btn-ghost{
+    font-size: 0;
+    gap: 0;
+    padding: 12px 14px;
+  }
+  .cta-row .btn-ghost svg{
+    width: 18px;
+    height: 18px;
   }
 }
