@@ -979,15 +979,6 @@ window.JSA.parseDeepLink = function(hashStr){
     // lands on the first card of the newly-selected tab.
     const cardsEl = $('#cards');
     if(cardsEl) cardsEl.scrollTo({ left: 0, behavior: 'instant' in cardsEl.scrollTo ? 'instant' : 'auto' });
-    // On mobile the cat-bar (filter chips) is fixed-bottom and hidden via
-    // is-past-products whenever #feed isn't in the central viewport. Tapping
-    // a tab from the hero would otherwise have no visible effect — the chips
-    // and cards are off-screen. Pull the user into the feed so the tab tap
-    // produces feedback. Skip if they're already inside or past the feed.
-    const feedEl = $('#feed');
-    if(feedEl && feedEl.getBoundingClientRect().top > 0){
-      feedEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   }
 
   // ============ SHEETS ============
