@@ -26,6 +26,20 @@
 </head>
 <body data-active-tab="moto">
 
+<!-- ============ SVG SYMBOL DEFS (hero wave edges) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="hero-edge-top" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,0 L0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,0 Z" fill="currentColor"/>
+      <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="hero-edge-bot" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,86 L0,86 Z" fill="currentColor"/>
+      <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
 <!-- ============ INFO STRIP ============ -->
 <div class="info-strip">
   <div class="info-strip-inner">
@@ -66,7 +80,7 @@
     <div class="hero-body">
       <span class="hero-kicker">la flotta</span>
       <h1 class="hero-h">
-        Nove moto, due yacht —<br/><em>uno solo pontile</em>.
+        Moto e yacht.<br/><em>Un pontile.</em>
       </h1>
       <p class="hero-lead">
         Sportender JST-30 senza patente per chi vuole il manubrio in mano, due yacht (12 e 15 metri) per chi preferisce farsi guidare. <strong>Tutto dallo stesso pontile di Cattolica</strong>, tagliando settimanale certificato.
@@ -89,8 +103,32 @@
   </div>
 </section>
 
+<!-- ============ JETSKI PROPOSALS VIDEO ============ -->
+<!--<section class="hero hero&#45;&#45;love" id="proposte-moto">-->
+<!--  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"-->
+<!--         poster="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=90&w=2400&auto=format&fit=crop">-->
+<!--    <source src="https://videos.pexels.com/video-files/7397243/7397243-hd_1920_1080_30fps.mp4" type="video/mp4" />-->
+<!--  </video>-->
+<!--  <div class="hero-overlay"></div>-->
+
+<!--  <svg class="hero-edge hero-edge&#45;&#45;top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-top"/></svg>-->
+<!--  <svg class="hero-edge hero-edge&#45;&#45;bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-bot"/></svg>-->
+
+<!--  <div class="hero-inner">-->
+<!--    <div class="hero-body">-->
+<!--      <span class="hero-kicker">cosa puoi fare con la JST-30</span>-->
+<!--      <h1 class="hero-h">-->
+<!--        Quindici minuti<br/><em>o quattro ore</em>.-->
+<!--      </h1>-->
+<!--      <p class="hero-lead">-->
+<!--        Dalla prova rapida fuori dal porto all'escursione guidata fino a Vallugola: la stessa moto, tre formati diversi. <strong>Scegli la durata che ti corrisponde</strong>, il resto lo gestiamo dal pontile.-->
+<!--      </p>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+
 <!-- ============ IL MEZZO (Sportender JST-30) ============ -->
-<section class="section fleet" id="mezzo">
+<section class="section fleet section--tight-bot" id="mezzo">
   <div class="wave-splash" aria-hidden="true" style="top:8%;left:5vw;width:clamp(170px,20vw,300px);height:clamp(40px,5vw,68px);opacity:.4">
     <svg viewBox="0 0 300 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M0 30 C50 6 100 54 150 30 C200 6 250 54 300 30" stroke="currentColor" stroke-width="2.4"/>
@@ -101,12 +139,12 @@
       <path d="M0 30 C44 6 88 54 132 30 C176 6 220 54 260 30" stroke="currentColor" stroke-width="2.2"/>
     </svg>
   </div>
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">il mezzo</span>
-      <h2 class="sh">Sportender <em>JST-30</em>.<br/>70 km/h, propulsione a getto, <u>nessun esame</u>.</h2>
-    </div>
-  </div>
+<!--    <div class="section-head reveal">-->
+<!--      <div>-->
+<!--        <span class="kicker">il mezzo</span>-->
+<!--        <h2 class="sh">Sportender <em>JST-30</em>.<br/>70 km/h, propulsione a getto, <u>nessun esame</u>.</h2>-->
+<!--      </div>-->
+<!--    </div>-->
 
   <div class="container mezzo-wrap reveal">
     <div class="mezzo-l">
@@ -147,20 +185,89 @@
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Tagliando settimanale certificato, cronologia pubblica</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Radio VHF e GPS a bordo, in contatto diretto con il pontile</li>
       </ul>
-
-      <div class="mezzo-cta-row">
-        <a href="index.html#feed" class="btn btn-dark" data-book="">
-          Prenota ora
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </a>
-        <a href="index.html#feed" class="btn btn-ghost" data-book="classic">Prova il Classic · 105€</a>
-      </div>
     </div>
   </div>
 </section>
 
+<!-- ============ JETSKI PROPOSALS CARDS ============ -->
+<section class="section flagship-overview section--tight-top section--tight-bot" data-active-tab="moto">
+  <div class="wave-splash" aria-hidden="true" style="top:8%;left:4vw;width:clamp(170px,20vw,300px);height:clamp(40px,5vw,68px);opacity:.4">
+    <svg viewBox="0 0 300 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 30 C50 6 100 54 150 30 C200 6 250 54 300 30" stroke="currentColor" stroke-width="2.4"/>
+    </svg>
+  </div>
+  <div class="wave-splash" aria-hidden="true" style="bottom:10%;right:6vw;width:clamp(140px,16vw,240px);height:clamp(34px,4vw,58px);opacity:.32">
+    <svg viewBox="0 0 240 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 25 C40 5 80 45 120 25 C160 5 200 45 240 25" stroke="currentColor" stroke-width="2.2"/>
+    </svg>
+  </div>
+  <div class="container exp-grid exp-grid--love reveal-s">
+
+    <article class="exp exp--love" data-detail="fast-fun">
+      <div class="exp-n">01</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Fast <em>& Fun</em></h3>
+      <p>Quindici minuti effettivi al largo: il timer parte fuori dai pali del porto. Dieci minuti extra inclusi per rientrare con calma — senza fretta, senza supplemento.</p>
+      <ul class="exp-tags"><li>15 min</li><li>entry</li><li>senza patente</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 50€</b><span>a moto</span></div>
+        <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+    <article class="exp exp--love" data-detail="classic">
+      <div class="exp-n">02</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Classic <em>45</em></h3>
+      <p>Quarantacinque minuti effettivi: abbastanza per spingere al largo, fare il giro costiero e rientrare con calma. Il formato più richiesto.</p>
+      <ul class="exp-tags"><li>45 min</li><li>best seller</li><li>costa Cattolica</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 105€</b><span>a moto</span></div>
+        <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+    <article class="exp exp--love" data-detail="vallugola-gold">
+      <div class="exp-n">03</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Vallugola <em>Gold</em></h3>
+      <p>Rotta aperta da Cattolica fino al Porticciolo di Vallugola, attracco nella caletta privata e pranzo al Ristorante Falco: quattro ore guidate col mezzo che risponde solo a te.</p>
+      <ul class="exp-tags"><li>4 ore</li><li>caletta privata</li><li>pranzo Falco</li><li>min 2 pers</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 289€</b><span>a persona</span></div>
+        <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ YACHT PROPOSALS VIDEO ============ -->
+<!--<section class="hero hero&#45;&#45;love" id="proposte-yacht">-->
+<!--  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"-->
+<!--         poster="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=90&w=2400&auto=format&fit=crop">-->
+<!--    <source src="https://videos.pexels.com/video-files/26830092/12016061_1920_1080_50fps.mp4" type="video/mp4" />-->
+<!--  </video>-->
+<!--  <div class="hero-overlay"></div>-->
+
+<!--  <svg class="hero-edge hero-edge&#45;&#45;top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-top"/></svg>-->
+<!--  <svg class="hero-edge hero-edge&#45;&#45;bot" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><use href="#hero-edge-bot"/></svg>-->
+
+<!--  <div class="hero-inner">-->
+<!--    <div class="hero-body">-->
+<!--      <span class="hero-kicker">cosa puoi fare con gli yacht</span>-->
+<!--      <h1 class="hero-h">-->
+<!--        Due ore al tramonto,<br/><em>o un weekend intero</em>.-->
+<!--      </h1>-->
+<!--      <p class="hero-lead">-->
+<!--        Sunset cruise per otto, private event per dodici, esclusiva totale del Valbruna 20m fino a venti ospiti. <strong>Stessa flotta, stesso pontile</strong> — cambia solo quanto stai in mare.-->
+<!--      </p>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+
 <!-- ============ LE IMBARCAZIONI ============ -->
-<section class="section fleet" id="imbarcazioni">
+<section class="section fleet section--tight-bot" id="imbarcazioni">
   <div class="wave-splash" aria-hidden="true" style="top:8%;right:5vw;width:clamp(170px,20vw,300px);height:clamp(40px,5vw,68px);opacity:.4">
     <svg viewBox="0 0 300 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M0 30 C50 6 100 54 150 30 C200 6 250 54 300 30" stroke="currentColor" stroke-width="2.4"/>
@@ -179,7 +286,7 @@
   </div>
 
   <!-- Yacht 1 — Day & Sunset (inverted: content left, image right) -->
-  <a class="container mezzo-wrap mezzo-wrap--link reveal" href="index.html#feed">
+  <div class="container mezzo-wrap reveal">
     <div class="mezzo-r">
       <p class="mezzo-desc">Open day-cruiser 2×350 hp: sundeck prendisole, prua spaziosa, frigo, doccia di poppa. 38 nodi disponibili quando spingi, silenzioso quando vuoi. Tagliato per Day Charter e Sunset Cruise.</p>
 
@@ -211,11 +318,6 @@
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Tender, maschere e pinne a bordo</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Impianto audio Bluetooth, frigo, doccia di poppa</li>
       </ul>
-
-      <span class="mezzo-cta">
-        Prenota
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </span>
     </div>
 
     <div class="mezzo-l">
@@ -223,10 +325,10 @@
         <span class="mezzo-badge">Day &amp; Sunset</span>
       </div>
     </div>
-  </a>
+  </div>
 
   <!-- Yacht 2 — Weekend & Event (inverted: image left, content right) -->
-  <a class="container mezzo-wrap mezzo-wrap--link reveal" href="index.html#feed" style="margin-top:64px">
+  <div class="container mezzo-wrap reveal" style="margin-top:64px">
     <div class="mezzo-l">
       <div class="mezzo-illu" style="background-image:url('https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop')">
         <span class="mezzo-badge">Weekend &amp; Event</span>
@@ -264,13 +366,61 @@
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Cucina con frigo grande, forno, biancheria pronta</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Catering, DJ e fiori on demand per eventi privati</li>
       </ul>
-
-      <span class="mezzo-cta">
-        Prenota
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </span>
     </div>
-  </a>
+  </div>
+</section>
+
+<!-- ============ YACHT PROPOSALS CARDS ============ -->
+<section class="section flagship-overview section--tight-top section--tight-bot" data-active-tab="party">
+  <div class="wave-splash" aria-hidden="true" style="top:7%;right:4vw;width:clamp(160px,19vw,280px);height:clamp(38px,4.5vw,64px);opacity:.4">
+    <svg viewBox="0 0 280 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 30 C46 6 94 54 140 30 C186 6 234 54 280 30" stroke="currentColor" stroke-width="2.4"/>
+    </svg>
+  </div>
+  <div class="wave-splash" aria-hidden="true" style="bottom:9%;left:5vw;width:clamp(140px,16vw,240px);height:clamp(34px,4vw,58px);opacity:.32">
+    <svg viewBox="0 0 240 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 25 C40 5 80 45 120 25 C160 5 200 45 240 25" stroke="currentColor" stroke-width="2.2"/>
+    </svg>
+  </div>
+  <div class="container exp-grid exp-grid--love reveal-s">
+
+    <article class="exp exp--love" data-detail="yacht-sunset">
+      <div class="exp-n">01</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Sunset <em>Cruise</em></h3>
+      <p>Due ore al tramonto, aperitivo con bollicine e taglieri, fino a 8 ospiti. Partenza 18:30, rientro al buio sotto Cattolica illuminata.</p>
+      <ul class="exp-tags"><li>2 ore</li><li>fino a 8 px</li><li>aperitivo</li><li>skipper</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 690€</b><span>a barca</span></div>
+        <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+    <article class="exp exp--love" data-detail="yacht-private-event">
+      <div class="exp-n">02</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Private <em>Event</em></h3>
+      <p>Compleanni, addii al celibato, brindisi aziendali. 4 ore con ponte allestito, catering on demand, DJ opzionale, fino a 12 ospiti.</p>
+      <ul class="exp-tags"><li>4 ore</li><li>fino a 12 px</li><li>catering</li><li>DJ opzionale</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 1.490€</b><span>a barca</span></div>
+        <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+    <article class="exp exp--love" data-detail="valbruna-ultra-platinum">
+      <div class="exp-n">03</div>
+      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop')"></div>
+      <h3>Valbruna <em>Ultra-Platinum</em></h3>
+      <p>20 metri di club privato galleggiante. DJ, jet ski, drone, open bar e buffet tutto incluso. Fino a 20 ospiti — esclusiva totale.</p>
+      <ul class="exp-tags"><li>all-in</li><li>DJ · jet ski · drone</li><li>fino a 20 px</li></ul>
+      <div class="exp-foot">
+        <div class="exp-price"><b>da 4.500€</b><span>a barca (fino a 10 px)</span></div>
+        <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    </article>
+
+  </div>
 </section>
 
 <!-- ============ CONTACT + MAP ============ -->
