@@ -592,6 +592,39 @@ window.JSA.parseDeepLink = function(hashStr){
       ]
     },
     {
+      id: 'yacht-morning-cove',
+      tab: 'party', cat: 'day',
+      title: 'Morning <em>Cove</em>',
+      loc: 'Cattolica → calette del San Bartolo',
+      img: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1600&auto=format&fit=crop',
+      imgs: ['https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1600&auto=format&fit=crop'],
+      badge: '4 ore', meta: '4 ore · 3 calette · brunch',
+      duration: '4 ore al mattino',
+      basePrice: 1090, priceUnit: 'a barca', perPerson: false,
+      minPeople: 1, maxPeople: 8,
+      slots: ['09:00', '10:00'],
+      rating: 4.95, reviews: 0,
+      includes: ['Skipper + hostess', 'Ancoraggio in 3 calette', 'Set snorkeling', 'Brunch a bordo', 'Carburante incluso', 'Fino a 8 ospiti'],
+      tags: ['4 ore', 'fino a 8 px', '3 calette', 'brunch a bordo'],
+      lead: 'Quattro ore al mattino verso le calette del San Bartolo: ancoraggio in tre punti per snorkel e nuotata, brunch a bordo preparato dall\'hostess prima della partenza, skipper incluso. Fino a otto ospiti, rientro all\'ora di pranzo.',
+      variantGroups: [
+        { id: 'brunch', label: 'Brunch', selection: 'single', required: true,
+          options: [
+            { id: 'standard', label: 'Brunch standard', priceMode: 'add', price: 0, sublabel: 'incluso', default: true },
+            { id: 'premium',  label: 'Brunch premium',  priceMode: 'add', price: 180, sublabel: 'crudo + frutta tropicale' }
+          ] },
+        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
+          options: [
+            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
+            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
+            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
+            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
+            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
+            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
+          ] }
+      ]
+    },
+    {
       id: 'yacht-day-charter',
       tab: 'escursioni', cat: 'esc-yacht',
       title: 'Day <em>Charter</em>',
