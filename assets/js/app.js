@@ -131,6 +131,140 @@ window.JSA.parseDeepLink = function(hashStr){
     if (window.Gestiscilo && Gestiscilo.wirePhoneLinks) { Gestiscilo.wirePhoneLinks(feed); }
   }
 
+  // 148-MIG-04: booking payload + WhatsApp-fallback message helpers.
+  // Source: 148-CONTEXT.md D-E-02; Phase 146 D-B-02 (booking validator); RESEARCH Pitfall 6.
+  function buildBookingPayload(s, exp) {
+    // duration_minutes MUST come from the product, NEVER from a form field (Pitfall 6).
+    // mapProduct() spreads p.metadata only; p.default_duration_minutes (top-level) is NOT
+    // currently mirrored into the render shape — operator may set metadata.default_duration_minutes
+    // to expose it. Fallback chain handles either case + a parsed metadata.duration string.
+    var minutes = (typeof exp.default_duration_minutes === 'number' && exp.default_duration_minutes > 0)
+      ? exp.default_duration_minutes
+      : parseDurationLabel(exp.duration);
+    return {
+      booking_date:     s.date,
+      booking_time:     s.time,
+      duration_minutes: minutes,
+      party_size:       Number(s.people) || 1,
+      guest_name:       s.name,
+      guest_email:      s.email,
+      guest_phone:      s.phone,
+    };
+  }
+
+  function parseDurationLabel(label) {
+    // exp.duration is operator-authored free text like '30 min', '2h', '90 min', '1h 30m'.
+    // Parse to integer minutes; fallback to 120 if unparseable (CONTEXT D-E-02 default).
+    if (typeof label !== 'string') return 120;
+    var hMatch = label.match(/(\d+)\s*h/i);
+    var mMatch = label.match(/(\d+)\s*m(in)?/i);
+    var hours   = hMatch ? Number(hMatch[1]) : 0;
+    var minutes = mMatch ? Number(mMatch[1]) : 0;
+    var total   = hours * 60 + minutes;
+    return (total > 0) ? total : 120;
+  }
+
+  function composeWhatsappFallbackMessage(s, exp) {
+    // Used by the network_error WhatsApp fallback. Compose a human-readable booking summary
+    // that the operator can read on WhatsApp and replay manually.
+    var title = (exp.title || exp.name || 'esperienza').replace(/<\/?em>/g, '');
+    return [
+      'Ciao! Vorrei prenotare:',
+      title,
+      'Data: ' + s.date + ' alle ' + s.time,
+      'Persone: ' + s.people,
+      'Nome: ' + s.name,
+      'Telefono: ' + s.phone,
+      s.email ? ('Email: ' + s.email) : null,
+      s.notes ? ('Note: ' + s.notes) : null,
+    ].filter(Boolean).join('\n');
+  }
+
+  // 148-MIG-04: inline success / error UI helpers. Warning #5 closed at plan time —
+  // the success/toast surface helpers were verified absent on master HEAD, so these
+  // helpers own the entire success/error surface (no upstream reach-throughs permitted).
+  function showBookingSuccess(booking) {
+    // Modal container in this repo is id="bookingSheet" (verified in index.html:935).
+    // Plan-baseline id="bkModal" kept as a secondary fallback for resilience.
+    var modal = document.getElementById('bookingSheet')
+             || document.getElementById('bkModal')
+             || document.querySelector('.bk-modal')
+             || document.querySelector('[data-booking-modal]');
+    var bookingIdLabel = (booking && booking.id != null) ? String(booking.id) : '—';
+    var dateLabel      = (booking && booking.booking_date) ? String(booking.booking_date) : '';
+    var timeLabel      = (booking && booking.booking_time) ? String(booking.booking_time) : '';
+    var when           = (dateLabel && timeLabel) ? (dateLabel + ' alle ' + timeLabel) : '';
+
+    var html =
+      '<div class="bk-success-state" role="status" aria-live="polite" ' +
+           'style="min-height:200px;display:grid;place-items:center;padding:32px;text-align:center;color:var(--ink-1)">' +
+        '<div>' +
+          '<p style="font-size:18px;font-weight:600;margin-bottom:8px">Prenotazione ricevuta!</p>' +
+          '<p style="color:var(--ink-3);margin-bottom:12px">Numero: <code>' + bookingIdLabel + '</code></p>' +
+          (when ? '<p style="color:var(--ink-3);margin-bottom:12px">' + when + '</p>' : '') +
+          '<p style="color:var(--ink-3)">Ti contatteremo per la conferma.</p>' +
+        '</div>' +
+      '</div>';
+
+    if (modal) {
+      modal.innerHTML = html;
+    } else {
+      var slot = document.createElement('div');
+      slot.innerHTML = html;
+      document.body.insertBefore(slot, document.body.firstChild);
+    }
+  }
+
+  function showBookingFieldError(field, message) {
+    var selectorMap = {
+      booking_date:     '#bkDate',
+      booking_time:     null,           // bkTime is a radio-group name, not an id; cannot focus()
+      duration_minutes: null,           // not user-facing
+      party_size:       '#bkPeople',
+      guest_name:       '#bkName',
+      guest_email:      '#bkEmail',
+      guest_phone:      '#bkPhone',
+      product_id:       null,           // not user-facing
+    };
+    var sel = selectorMap[field];
+    if (sel) {
+      var el = document.querySelector(sel);
+      if (el) {
+        if (typeof el.focus === 'function') el.focus();
+        el.setAttribute('aria-invalid', 'true');
+        el.setAttribute('title', message || 'Campo non valido');
+      }
+    }
+    showBookingGenericError(message || ('Campo non valido: ' + field));
+  }
+
+  function showBookingGenericError(message) {
+    // Inline generic error surface — no upstream helper reach-through (warning #5).
+    var text = message || 'Riprova tra qualche momento';
+    var slot = document.getElementById('bkError');
+    if (!slot) {
+      var host = document.getElementById('bookingSheet')
+              || document.getElementById('bkModal')
+              || document.querySelector('.bk-modal')
+              || document.querySelector('[data-booking-modal]')
+              || document.body;
+      slot = document.createElement('div');
+      slot.id = 'bkError';
+      slot.setAttribute('role', 'alert');
+      slot.setAttribute('aria-live', 'assertive');
+      slot.style.cssText =
+        'min-height:40px;margin:12px 0;padding:10px 14px;' +
+        'border:1px solid var(--ink-5, #e5e7eb);border-radius:6px;' +
+        'background:var(--surface-2, #fef2f2);color:var(--ink-1, #111);' +
+        'font-size:14px;text-align:center';
+      host.appendChild(slot);
+    }
+    slot.textContent = text;
+    slot.removeAttribute('hidden');
+    if (slot._gestisciloHideTimer) clearTimeout(slot._gestisciloHideTimer);
+    slot._gestisciloHideTimer = setTimeout(function () { slot.setAttribute('hidden', ''); }, 6000);
+  }
+
   if (typeof window !== 'undefined' && window.Gestiscilo && Gestiscilo.ready) {
     // Async chain: ready -> wirePhoneLinks(document) -> products -> render.
     // Failure paths (rejection or empty rows) fall through to the empty-state placeholder.
@@ -705,39 +839,60 @@ window.JSA.parseDeepLink = function(hashStr){
       updateBookingStep();
       return;
     }
-    // Final step → submit
-    state.booking.name = $('#bkName').value.trim();
+    // 148-MIG-04: final step → submit through SDK.
+    // Source: 148-CONTEXT.md D-E-01..04; Phase 146 D-B-02 (booking validator).
+    state.booking.name  = $('#bkName').value.trim();
     state.booking.phone = $('#bkPhone').value.trim();
     state.booking.email = $('#bkEmail').value.trim();
     state.booking.notes = $('#bkNotes').value.trim();
 
-    if(!state.booking.name || !state.booking.phone){
-      if(!state.booking.name) $('#bkName').focus();
-      else if(!state.booking.phone) $('#bkPhone').focus();
+    // Required: name + phone + email (email is server-required per Phase 146 D-B-02).
+    if(!state.booking.name){ $('#bkName').focus(); return; }
+    if(!state.booking.phone){ $('#bkPhone').focus(); return; }
+    if(!state.booking.email || state.booking.email.indexOf('@') < 0 || state.booking.email.indexOf('.') < 0){
+      $('#bkEmail').focus();
       return;
     }
 
-    const e = getCurrentExp();
-    const lines = [
-      `Ciao Jet Ski Adriatic! Vorrei prenotare:`,
-      ``,
-      `• Esperienza: ${e.title.replace(/<[^>]+>/g, '')}`,
-      `• Data: ${state.booking.date || '—'}${state.booking.time ? ' · ' + state.booking.time : ''}`,
-      `• Persone: ${state.booking.people}`,
-    ];
-    if(state.booking.extras.size){
-      lines.push(`• Extra: ${[...state.booking.extras].join(', ')}`);
-    }
-    lines.push(`• Nome: ${state.booking.name}`);
-    if(state.booking.email) lines.push(`• Email: ${state.booking.email}`);
-    if(state.booking.notes) lines.push(``, `Note: ${state.booking.notes}`);
-    const text = encodeURIComponent(lines.join('\n'));
-    // 148-MIG-02: route through SDK so the tenant's real number resolves from Gestiscilo.business.phone
-    var waUrl = (window.Gestiscilo && Gestiscilo.contact && Gestiscilo.contact.waLink)
-      ? Gestiscilo.contact.waLink(decodeURIComponent(text))
-      : 'https://wa.me/?text=' + text;
-    window.open(waUrl, '_blank', 'noopener');
-    closeSheet('bookingSheet');
+    var exp = getCurrentExp();
+    if(!exp){ showBookingGenericError('Esperienza non disponibile.'); return; }
+    var productId = Number(exp.id);
+    if(!isFinite(productId)){ showBookingGenericError('Identificativo prodotto non valido.'); return; }
+
+    var payload = buildBookingPayload(state.booking, exp);
+    var bkNextBtn = $('#bkNext');
+    bkNextBtn.disabled = true;
+    Promise.resolve()
+      .then(function () {
+        if (!window.Gestiscilo || typeof Gestiscilo.book !== 'function') {
+          return Promise.reject({ code: 'bootstrap_error', message: 'SDK non disponibile' });
+        }
+        return Gestiscilo.book(productId, payload);
+      })
+      .then(function (booking) {
+        showBookingSuccess(booking);
+      })
+      .catch(function (err) {
+        err = err || {};
+        if (err.code === 'network_error') {
+          var msg = composeWhatsappFallbackMessage(state.booking, exp);
+          var waUrl = (window.Gestiscilo && Gestiscilo.contact && Gestiscilo.contact.waLink)
+            ? Gestiscilo.contact.waLink(msg)
+            : 'https://wa.me/?text=' + encodeURIComponent(msg);
+          window.open(waUrl, '_blank', 'noopener');
+          return;
+        }
+        if (err.code === 'validation_error' && err.field) {
+          showBookingFieldError(err.field, err.message);
+          return;
+        }
+        // unavailable, business_not_found, product_not_found,
+        // idempotency_replay_conflict, internal_error, http_error, bootstrap_error
+        showBookingGenericError(err.message || 'Riprova tra qualche momento');
+      })
+      .then(function () {
+        bkNextBtn.disabled = false;
+      });
   });
 
 
