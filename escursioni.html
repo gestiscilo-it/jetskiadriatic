@@ -13,6 +13,18 @@
 <meta property="og:description" content="L'Adriatico da esplorare. Vallugola Gold, Midday Brunch, Kids Academy, Vallugola Diamond — quattro itinerari con istruttore certificato." />
 <meta property="og:type" content="website" />
 
+<script src="https://gestiscilo.it/embed/v1.js" data-business="jetskiadriatic"></script>
+<script>
+  // 148-MIG-02: defer-tolerant wirePhoneLinks boot for pages without app.js
+  // Source: 148-RESEARCH.md Common Pitfalls #2 + Code Example 1
+  (function () {
+    if (!window.Gestiscilo || !Gestiscilo.ready) return;
+    Gestiscilo.ready
+      .then(function () { Gestiscilo.wirePhoneLinks(document); })
+      .catch(function () { /* SDK bootstrap failed — placeholder hrefs stay no-op */ });
+  })();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />

@@ -102,6 +102,15 @@ window.JSA.parseDeepLink = function(hashStr){
 (function(){
   'use strict';
 
+  // 148-MIG-02: SDK boot — wire static phone/WhatsApp anchors after Gestiscilo.ready.
+  // Source: 148-CONTEXT.md D-D-02; 148-RESEARCH.md Pitfall 2.
+  // wirePhoneLinks internally awaits Gestiscilo.ready and returns 0 if it rejected.
+  if (typeof window !== 'undefined' && window.Gestiscilo && Gestiscilo.ready) {
+    Gestiscilo.ready
+      .then(function () { Gestiscilo.wirePhoneLinks(document); })
+      .catch(function () { /* SDK bootstrap failed — placeholder hrefs stay no-op */ });
+  }
+
   // ============ DATA ============
   const EXPERIENCES = [
     // ============ NOLEGGIO — canonical ride product ============
