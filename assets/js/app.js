@@ -479,7 +479,83 @@ window.JSA.parseDeepLink = function(hashStr){
       a.href = 'https://www.google.com/maps/dir/?api=1&destination=' + dest;
     });
 
-    // MIG-08 (Plan 12) and MIG-10 (Plan 11) wiring will be appended here.
+    // MIG-10: OSM iframe via Nominatim (async, non-blocking — D-J / D-F-07).
+    // Geocoding failure hides the iframe via .contact-map--no-coords; the
+    // Google Maps CTA above still works because it uses address text.
+    applyMap(addr, dest).catch(function () { /* iframe stays hidden */ });
+
+    // MIG-08 (Plan 12) wiring will be appended here.
+  }
+
+  // ---------------------------------------------------------------------------
+  // Phase 154 MIG-10 — Nominatim geocoding + OSM iframe hydration.
+  // sessionStorage cache: 1 req per page-session per address (OSMF policy
+  // compliance — D-F-03). Graceful failure: iframe gets .contact-map--no-coords
+  // class (display:none) on any Nominatim outage / empty result / parse error.
+  // No UA header override per Pitfall 2 (browsers ignore it; Referer is set
+  // automatically and satisfies the Nominatim identification policy).
+  // ---------------------------------------------------------------------------
+  async function geocodeAddress(text) {
+    var key = 'gs:nominatim:' + text;
+    try {
+      var cached = sessionStorage.getItem(key);
+      if (cached) {
+        var c = JSON.parse(cached);
+        if (c && c.lat && c.lon) return c;
+      }
+    } catch (_) { /* sessionStorage disabled — proceed to fetch */ }
+
+    var url = 'https://nominatim.openstreetmap.org/search?q=' +
+      encodeURIComponent(text) + '&format=json&limit=1';
+    var res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('nominatim http ' + res.status);
+    var arr = await res.json();
+    if (!Array.isArray(arr) || arr.length === 0) throw new Error('nominatim empty');
+
+    var hit = { lat: arr[0].lat, lon: arr[0].lon, ts: Date.now() };
+    try { sessionStorage.setItem(key, JSON.stringify(hit)); } catch (_) {}
+    return hit;
+  }
+
+  async function applyMap(addressLine, _dest) {
+    var iframes = document.querySelectorAll('[data-gs="osm-frame"]');
+    if (iframes.length === 0) return;  // entrypoint has no map region
+    if (!addressLine) {
+      iframes.forEach(function (f) { f.classList.add('contact-map--no-coords'); });
+      return;
+    }
+
+    var geo;
+    try {
+      geo = await geocodeAddress(addressLine);
+    } catch (e) {
+      console.warn('Gestiscilo: geocoding failed —', (e && e.message) || e);
+      iframes.forEach(function (f) { f.classList.add('contact-map--no-coords'); });
+      return;
+    }
+
+    var lat = parseFloat(geo.lat);
+    var lon = parseFloat(geo.lon);
+    if (isNaN(lat) || isNaN(lon)) {
+      iframes.forEach(function (f) { f.classList.add('contact-map--no-coords'); });
+      return;
+    }
+
+    // ±0.01° bbox (~1.1 km × 1.1 km at this latitude) per D-F-06.
+    var minLon = (lon - 0.01).toFixed(4);
+    var maxLon = (lon + 0.01).toFixed(4);
+    var minLat = (lat - 0.01).toFixed(4);
+    var maxLat = (lat + 0.01).toFixed(4);
+
+    var src = 'https://www.openstreetmap.org/export/embed.html' +
+      '?bbox=' + minLon + '%2C' + minLat + '%2C' + maxLon + '%2C' + maxLat +
+      '&layer=mapnik' +
+      '&marker=' + lat + '%2C' + lon;
+
+    iframes.forEach(function (f) {
+      f.classList.remove('contact-map--no-coords');
+      f.src = src;
+    });
   }
 
   if (document.readyState === 'loading') {

@@ -1909,6 +1909,8 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   border: 0;
   filter: saturate(.85);
 }
+/* Phase 154 MIG-10 — hide iframe when Nominatim geocoding fails (D-F-04). */
+.contact-map--no-coords{ display: none; }
 .contact-map-cta{
   display: grid;
   grid-template-columns: 22px 1fr auto;
