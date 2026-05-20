@@ -443,6 +443,51 @@ window.JSA.parseDeepLink = function(hashStr){
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // Phase 154 MIG-09 — applyTenantInfo()
+  // Hydrates the contact-card address line + Google Maps deep link from the
+  // SDK's Gestiscilo.business.{streetAddress, postalCode, city}. Plans 11 + 12
+  // extend this same function with MIG-10 (OSM iframe) and MIG-08 (hours).
+  //
+  // Invariants:
+  //  - Idempotent: querySelectorAll-driven; safe to call more than once.
+  //  - Defensive: missing fields produce empty strings, never throws.
+  //  - XSS-safe (T-154-04): textContent + encodeURIComponent, never innerHTML.
+  // ---------------------------------------------------------------------------
+  async function applyTenantInfo() {
+    if (!window.Gestiscilo || !Gestiscilo.ready) return;
+    try { await Gestiscilo.ready; } catch (_) { return; }
+    var b = Gestiscilo.business;
+    if (!b) return;
+
+    // MIG-09: address line — "${streetAddress} · ${postalCode} ${city}"
+    var addrParts = [
+      b.streetAddress,
+      [b.postalCode, b.city].filter(Boolean).join(' ')
+    ].filter(function (s) { return s && String(s).trim() !== ''; });
+    var addr = addrParts.join(' · ');
+    document.querySelectorAll('[data-gs="address-line"]').forEach(function (el) {
+      el.textContent = addr;
+    });
+
+    // MIG-09: Google Maps deep link — encoded address text (not coordinates).
+    // The CTA works even if Nominatim (Plan 11) is unavailable — D-F-05.
+    var dest = encodeURIComponent(
+      [b.streetAddress, b.postalCode, b.city].filter(Boolean).join(', ')
+    );
+    document.querySelectorAll('[data-gs="maps-cta"]').forEach(function (a) {
+      a.href = 'https://www.google.com/maps/dir/?api=1&destination=' + dest;
+    });
+
+    // MIG-08 (Plan 12) and MIG-10 (Plan 11) wiring will be appended here.
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { applyTenantInfo(); });
+  } else {
+    applyTenantInfo();
+  }
+
   const CATS = {
     moto: [
       { id: 'ride',    label: 'Ride',     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>' },

@@ -3797,3 +3797,12 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     height: 18px;
   }
 }
+
+/* Phase 154 MIG-09 — reserve space for the SDK-hydrated address line so the
+   Base operativa row does not collapse to zero-width before Gestiscilo.ready
+   resolves. feedback_empty_states_min_height.md. */
+[data-gs="address-line"]:empty {
+  display: inline-block;
+  min-width: 240px;
+  min-height: 1.2em;
+}
