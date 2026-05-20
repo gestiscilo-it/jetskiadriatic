@@ -1373,7 +1373,11 @@ window.JSA.parseDeepLink = function(hashStr){
     if(state.booking.email) lines.push(`• Email: ${state.booking.email}`);
     if(state.booking.notes) lines.push(``, `Note: ${state.booking.notes}`);
     const text = encodeURIComponent(lines.join('\n'));
-    window.open(`https://wa.me/390000000000?text=${text}`, '_blank', 'noopener');
+    // 148-MIG-02: route through SDK so the tenant's real number resolves from Gestiscilo.business.phone
+    var waUrl = (window.Gestiscilo && Gestiscilo.contact && Gestiscilo.contact.waLink)
+      ? Gestiscilo.contact.waLink(decodeURIComponent(text))
+      : 'https://wa.me/?text=' + text;
+    window.open(waUrl, '_blank', 'noopener');
     closeSheet('bookingSheet');
   });
 
@@ -1574,7 +1578,9 @@ window.JSA.parseDeepLink = function(hashStr){
       if(now){ now.classList.remove('is-loading'); now.removeAttribute('aria-busy'); }
       if(grid){
         grid.removeAttribute('aria-busy');
-        grid.innerHTML = '<p style="text-align:center;color:var(--ink-3);font-size:13px">Impossibile caricare il meteo. <a href="https://wa.me/390000000000" style="color:var(--cyan-2);text-decoration:underline">Scrivici su WhatsApp</a> per il punto del giorno.</p>';
+        // 148-MIG-02: empty href; wirePhoneLinks patches it post-render. MIG-06 grep passes (no digit after wa.me/).
+        grid.innerHTML = '<p style="text-align:center;color:var(--ink-3);font-size:13px">Impossibile caricare il meteo. <a href="https://wa.me/" style="color:var(--cyan-2);text-decoration:underline">Scrivici su WhatsApp</a> per il punto del giorno.</p>';
+        if (window.Gestiscilo && Gestiscilo.wirePhoneLinks) { Gestiscilo.wirePhoneLinks(grid); }
       }
     }
   }
@@ -1833,9 +1839,12 @@ window.JSA.parseDeepLink = function(hashStr){
       console.warn('Forecast unavailable:', err);
       grid.innerHTML = `
         <div class="fcast-empty">
-          Le previsioni si stanno aggiornando. Se non le vedi, <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20info%20sul%20meteo">scrivici su WhatsApp</a> e ti diciamo le condizioni in tempo reale.
+          Le previsioni si stanno aggiornando. Se non le vedi, <a href="https://wa.me/">scrivici su WhatsApp</a> e ti diciamo le condizioni in tempo reale.
         </div>
       `;
+      // 148-MIG-02: SITE 3 container not held in a local variable; pass document.body
+      // (wirePhoneLinks is idempotent — re-scanning the body to patch newly inserted anchors is cheap).
+      if (window.Gestiscilo && Gestiscilo.wirePhoneLinks) { Gestiscilo.wirePhoneLinks(document.body); }
     }
 
     function renderDay(d, isToday) {
