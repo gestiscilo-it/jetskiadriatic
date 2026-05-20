@@ -479,12 +479,33 @@ window.JSA.parseDeepLink = function(hashStr){
       a.href = 'https://www.google.com/maps/dir/?api=1&destination=' + dest;
     });
 
+    // MIG-08: hours-today / hours-week placeholders + #statusPill APERTO/CHIUSO.
+    // SDK helpers return controlled strings (T-154-04): textContent only, never
+    // innerHTML; setAttribute writes only the literal 'open'/'closed' values.
+    // Defensive: if Gestiscilo.hours is undefined (SDK without hours helper),
+    // skip the block — placeholders remain empty rather than throwing.
+    if (Gestiscilo.hours &&
+        typeof Gestiscilo.hours.todayLabel === 'function' &&
+        typeof Gestiscilo.hours.isOpenNow === 'function') {
+      var lbl = Gestiscilo.hours.todayLabel();
+      var open = Gestiscilo.hours.isOpenNow();
+      document.querySelectorAll('[data-gs="hours-today"]').forEach(function (el) {
+        el.textContent = 'dalle ' + lbl;
+      });
+      document.querySelectorAll('[data-gs="hours-week"]').forEach(function (el) {
+        el.textContent = lbl + ' · 7/7';
+      });
+      document.querySelectorAll('#statusPill').forEach(function (pill) {
+        pill.setAttribute('data-status', open ? 'open' : 'closed');
+        var t = pill.querySelector('.status-label');
+        if (t) t.textContent = open ? 'APERTO' : 'CHIUSO';
+      });
+    }
+
     // MIG-10: OSM iframe via Nominatim (async, non-blocking — D-J / D-F-07).
     // Geocoding failure hides the iframe via .contact-map--no-coords; the
     // Google Maps CTA above still works because it uses address text.
     applyMap(addr, dest).catch(function () { /* iframe stays hidden */ });
-
-    // MIG-08 (Plan 12) wiring will be appended here.
   }
 
   // ---------------------------------------------------------------------------
