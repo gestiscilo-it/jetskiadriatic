@@ -217,7 +217,7 @@ window.JSA.parseDeepLink = function(hashStr){
 
   function showBookingFieldError(field, message) {
     var selectorMap = {
-      booking_date:     '#bkDate',
+      booking_date:     null,           // 148-MIG-05: legacy #bkDate input removed; selection happens on the date-strip chips
       booking_time:     null,           // bkTime is a radio-group name, not an id; cannot focus()
       duration_minutes: null,           // not user-facing
       party_size:       '#bkPeople',
@@ -263,6 +263,155 @@ window.JSA.parseDeepLink = function(hashStr){
     slot.removeAttribute('hidden');
     if (slot._gestisciloHideTimer) clearTimeout(slot._gestisciloHideTimer);
     slot._gestisciloHideTimer = setTimeout(function () { slot.setAttribute('hidden', ''); }, 6000);
+  }
+
+  // 148-MIG-05: availability calendar for the booking modal step 1.
+  // Source: 148-CONTEXT.md D-F-01..07; 148-RESEARCH.md Code Example 4.
+  // Gates on modalExp.canonical === true (warning #6 fix — operator-owned boolean,
+  // not render-code-era tab/cat strings). Empty-state placeholder honors
+  // feedback_empty_states_min_height.md (min-height ≥ 40 px on inline state surfaces).
+
+  var availabilityCache = new Map();   // productId -> {at: epoch_ms, data: {dates: [{date, times}]}}
+
+  function formatDateISO(d) {
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+
+  function formatDateChipLabel(iso) {
+    // 'YYYY-MM-DD' -> 'Mer 21/05' style. Italian short day names.
+    var parts = iso.split('-');
+    var d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    var DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
+    return DAY_NAMES[d.getDay()] + ' ' + parts[2] + '/' + parts[1];
+  }
+
+  function getAvailability(productId) {
+    var hit = availabilityCache.get(productId);
+    if (hit && Date.now() - hit.at < 30000) {
+      return Promise.resolve(hit.data);
+    }
+    var today = new Date();
+    var week  = new Date(today); week.setDate(week.getDate() + 6);
+    return Gestiscilo.availability(productId, {
+      from: formatDateISO(today),
+      to:   formatDateISO(week),
+    }).then(function (data) {
+      availabilityCache.set(productId, { at: Date.now(), data: data });
+      return data;
+    });
+  }
+
+  function renderAvailability(productId) {
+    var container = document.getElementById('bkAvailability');
+    if (!container) return;
+    if (!window.Gestiscilo || typeof Gestiscilo.availability !== 'function') {
+      renderAvailabilityError(container, { code: 'bootstrap_error', message: 'SDK non disponibile' }, productId);
+      return;
+    }
+    container.innerHTML = '<p style="min-height:120px;display:grid;place-items:center;color:var(--ink-3)">Caricamento disponibilità…</p>';
+    getAvailability(productId)
+      .then(function (data) {
+        renderAvailabilityData(container, data, productId);
+      })
+      .catch(function (err) {
+        renderAvailabilityError(container, err, productId);
+      });
+  }
+
+  function renderAvailabilityData(container, data, productId) {
+    if (!data || !Array.isArray(data.dates) || data.dates.length === 0) {
+      renderAvailabilityEmpty(container);
+      return;
+    }
+    var anyTimes = data.dates.some(function (d) { return Array.isArray(d.times) && d.times.length > 0; });
+    if (!anyTimes) {
+      renderAvailabilityEmpty(container);
+      return;
+    }
+
+    // Build date strip: 7 chips, one per day in data.dates order. Disable chips with empty times.
+    var stripHtml = data.dates.map(function (d) {
+      var disabled = (!Array.isArray(d.times) || d.times.length === 0);
+      return '<button type="button" class="bk-date-chip"' +
+             ' data-date="' + d.date + '"' +
+             (disabled ? ' disabled aria-disabled="true"' : '') +
+             '>' + formatDateChipLabel(d.date) + '</button>';
+    }).join('');
+
+    container.innerHTML =
+      '<div class="bk-date-strip" role="tablist" aria-label="Date disponibili" style="display:flex;gap:8px;overflow-x:auto;padding:8px 0">' + stripHtml + '</div>' +
+      '<div class="bk-time-grid" id="bkTimeGrid" style="min-height:60px;padding:8px 0"></div>';
+
+    // Wire chip clicks.
+    var chips = container.querySelectorAll('.bk-date-chip');
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        if (chip.disabled) return;
+        chips.forEach(function (c) { c.classList.remove('is-active'); });
+        chip.classList.add('is-active');
+        var d = data.dates.find(function (x) { return x.date === chip.dataset.date; });
+        if (d) selectDate(d);
+      });
+    });
+
+    // Initial selection: first date with non-empty times.
+    var initial = data.dates.find(function (d) { return Array.isArray(d.times) && d.times.length > 0; });
+    if (initial) {
+      var initialChip = container.querySelector('.bk-date-chip[data-date="' + initial.date + '"]');
+      if (initialChip) initialChip.classList.add('is-active');
+      selectDate(initial);
+    }
+  }
+
+  function selectDate(d) {
+    state.booking.date = d.date;
+    state.booking.time = '';   // reset until user picks a time
+    var grid = document.getElementById('bkTimeGrid');
+    if (!grid) return;
+    if (!Array.isArray(d.times) || d.times.length === 0) {
+      grid.innerHTML = '<p style="color:var(--ink-3)">Nessun orario disponibile per questa data.</p>';
+      return;
+    }
+    grid.innerHTML = d.times.map(function (t) {
+      return '<label style="display:inline-block;padding:6px 10px;margin:4px;border:1px solid var(--ink-5);border-radius:6px">' +
+             '<input type="radio" name="bkTime" value="' + t + '" style="margin-right:6px">' + t +
+             '</label>';
+    }).join('');
+    var radios = grid.querySelectorAll('input[name="bkTime"]');
+    radios.forEach(function (r) {
+      r.addEventListener('change', function () {
+        if (r.checked) state.booking.time = r.value;
+      });
+    });
+  }
+
+  function renderAvailabilityEmpty(container) {
+    container.innerHTML =
+      '<p style="min-height:60px;display:grid;place-items:center;color:var(--ink-3);text-align:center">' +
+        'Nessuna disponibilità nei prossimi 7 giorni — ' +
+        '<a href="https://wa.me/" target="_blank" rel="noopener">scrivici su WhatsApp</a>' +
+      '</p>';
+    if (window.Gestiscilo && Gestiscilo.wirePhoneLinks) { Gestiscilo.wirePhoneLinks(container); }
+  }
+
+  function renderAvailabilityError(container, err, productId) {
+    var message = (err && err.message) ? err.message : 'Impossibile caricare la disponibilità.';
+    container.innerHTML =
+      '<div style="min-height:120px;display:grid;place-items:center;padding:16px;color:var(--ink-3);text-align:center">' +
+        '<p>' + message + '</p>' +
+        '<button type="button" class="bk-retry-availability" style="margin-top:8px;padding:6px 12px">Riprova</button>' +
+      '</div>';
+    var btn = container.querySelector('.bk-retry-availability');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        // Bust the cache entry so retry hits the network.
+        availabilityCache.delete(productId);
+        renderAvailability(productId);
+      });
+    }
   }
 
   if (typeof window !== 'undefined' && window.Gestiscilo && Gestiscilo.ready) {
@@ -744,22 +893,34 @@ window.JSA.parseDeepLink = function(hashStr){
     $('#bkExpName').textContent = e.title.replace(/<[^>]+>/g, '');
     $('#bkThumb').style.backgroundImage = `url('${e.img}')`;
 
-    // default date = today + 1
-    const t = new Date();
-    t.setDate(t.getDate() + 1);
-    const iso = t.toISOString().slice(0,10);
-    $('#bkDate').value = iso;
-    $('#bkDate').min = new Date().toISOString().slice(0,10);
+    // 148-MIG-05: step-1 date/time are now driven by renderAvailability() — no static date
+    // default or radio reset. state.booking.{date,time} are populated by the date strip + time
+    // grid; reset to empty so a stale selection from a prior modal-open doesn't leak through.
+    state.booking.date = '';
+    state.booking.time = '';
 
-    // reset radios + extras
-    $$('input[name="bkTime"]').forEach(r => { r.checked = false; });
+    // reset extras
     $$('.bk-extra input').forEach(c => { c.checked = false; });
     state.booking.extras = new Set();
-    state.booking.time = '';
 
     // people
     state.booking.people = 2;
     $('#bkPeople').textContent = '2';
+
+    // 148-MIG-05: load availability only for products the operator nominated as canonical
+    // (mirror of Plan 04's yacht-party canonical pattern; per Plan 01 catalog checklist the
+    // operator marks exactly one noleggio product with metadata.canonical = true).
+    // Warning #6 fix: bind on the boolean flag — NOT on render-code-era tab/cat strings
+    // which may diverge from operator-authored metadata.
+    try {
+      var modalExp = getCurrentExp();
+      if (modalExp && modalExp.canonical === true) {
+        var modalProductId = Number(modalExp.id);
+        if (isFinite(modalProductId)) {
+          renderAvailability(modalProductId);
+        }
+      }
+    } catch (_e) { /* non-fatal — modal still opens with the loading placeholder */ }
 
     updateBookingStep();
     updateBookingTotal();
@@ -803,8 +964,9 @@ window.JSA.parseDeepLink = function(hashStr){
   }
 
   // step interactions
-  $('#bkDate').addEventListener('change', e => { state.booking.date = e.target.value; });
-  $$('input[name="bkTime"]').forEach(r => r.addEventListener('change', () => { state.booking.time = r.value; }));
+  // 148-MIG-05: legacy '#bkDate' change-listener + 'input[name="bkTime"]' radio listeners
+  // removed — state.booking.{date,time} are now written by renderAvailability's date-strip
+  // click handler + time-grid radio change handler (see selectDate below).
   $$('.bk-stepper button').forEach(b => {
     b.addEventListener('click', () => {
       const dir = b.dataset.step === '+' ? 1 : -1;

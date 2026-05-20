@@ -951,20 +951,9 @@
       </div>
 
       <h3 class="bk-q">Quando vuoi <em>uscire</em>?</h3>
-      <div class="bk-field">
-        <label for="bkDate">Data</label>
-        <input type="date" id="bkDate" />
-      </div>
-
-      <div class="bk-field">
-        <label>Orario preferito</label>
-        <div class="bk-times" id="bkTimes">
-          <label><input type="radio" name="bkTime" value="09:00" /><span>09:00</span></label>
-          <label><input type="radio" name="bkTime" value="11:00" /><span>11:00</span></label>
-          <label><input type="radio" name="bkTime" value="14:00" /><span>14:00</span></label>
-          <label><input type="radio" name="bkTime" value="16:00" /><span>16:00</span></label>
-          <label><input type="radio" name="bkTime" value="18:30" /><span>tramonto</span></label>
-        </div>
+      <div id="bkAvailability" class="bk-availability" aria-live="polite">
+        <!-- 148-MIG-05: populated at runtime by renderAvailability(productId). -->
+        <p class="bk-availability-loading" style="min-height:120px;display:grid;place-items:center;color:var(--ink-3)">Caricamento disponibilità…</p>
       </div>
 
       <div class="bk-field">
