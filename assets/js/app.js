@@ -130,11 +130,16 @@ window.JSA.parseDeepLink = function(hashStr){
   // Source: 148-CONTEXT.md D-C-01..07 + D-D-02; 148-RESEARCH.md Code Example 2.
 
   function mapProduct(p) {
-    // Convert gestiscilo Product (numeric id, no slug, metadata blob) to
-    // existing-jetskiadriatic-render shape. Stringify id for === comparisons (Pitfall 1).
+    var meta = p.metadata || {};
+    var mediaImgs = (p.media && p.media.length)
+      ? p.media.map(function (m) { return m.url; })
+      : null;
+    var imgs = mediaImgs || meta.imgs || (meta.img ? [meta.img] : []);
+    var img = imgs[0] || '';
     return Object.assign(
       { id: String(p.id), basePrice: (p.price_cents || 0) / 100 },
-      p.metadata || {}
+      meta,
+      { img: img, imgs: imgs, linked_products: p.linked_products || [] }
     );
   }
 
