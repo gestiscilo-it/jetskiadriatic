@@ -477,23 +477,26 @@ window.JSA.parseDeepLink = function(hashStr){
   }
 
   if (typeof window !== 'undefined' && window.Gestiscilo && Gestiscilo.ready) {
-    // Async chain: ready -> wirePhoneLinks(document) -> products -> render.
-    // Failure paths (rejection or empty rows) fall through to the empty-state placeholder.
+    // 158: SDK bootstrap — wirePhoneLinks + wireEmailLinks + product catalogue loader + updateExpGrid.
     Gestiscilo.ready
-      .then(function () { Gestiscilo.wirePhoneLinks(document); return Gestiscilo.products(); })
+      .then(function () {
+        Gestiscilo.wirePhoneLinks(document);
+        if (typeof Gestiscilo.wireEmailLinks === 'function') {
+          Gestiscilo.wireEmailLinks(document);
+        }
+        return Gestiscilo.products();
+      })
       .then(function (rows) {
         if (!Array.isArray(rows) || rows.length === 0) {
           showEmptyCatalogueState();
           return;
         }
-        // Mutate EXPERIENCES in place so existing reads (lines 876, 891, 896, 1141, 1244, 1247, 1285) see populated data.
         EXPERIENCES.splice.apply(EXPERIENCES, [0, EXPERIENCES.length].concat(rows.map(mapProduct)));
-        if (typeof init === 'function') {
-          init();
-        }
+        if (typeof init === 'function') { init(); }
+        updateExpGrid(EXPERIENCES);
       })
       .catch(function (err) {
-        if (window.console && console.warn) { console.warn('148-MIG-03 bootstrap failed:', err); }
+        if (window.console && console.warn) { console.warn('158: bootstrap failed:', err); }
         showEmptyCatalogueState();
       });
   } else {
@@ -1070,6 +1073,71 @@ window.JSA.parseDeepLink = function(hashStr){
     openSheet('detailSheet');
   }
 
+  // ============ EXTRAS RENDERER ============
+  function renderExtras(exp) {
+    var pane = document.querySelector('section[data-bk-pane="2"]');
+    var container = document.querySelector('.bk-extras');
+    if (!container) return;
+
+    var products = (exp && exp.linked_products) || [];
+
+    // Empty linked_products -> hide the entire extras pane (per CONTEXT D-D-02).
+    if (!products.length) {
+      if (pane) pane.hidden = true;
+      container.innerHTML = '';
+      return;
+    }
+    if (pane) pane.hidden = false;
+
+    // Clear container then build each label via DOM API.
+    container.innerHTML = '';
+
+    products.forEach(function (p) {
+      var price = (p.price_cents || 0) / 100;
+
+      var label = document.createElement('label');
+      label.className = 'bk-extra';
+
+      var input = document.createElement('input');
+      input.type = 'checkbox';
+      input.dataset.extra = String(p.id);
+      input.dataset.price = String(price);
+
+      var row = document.createElement('span');
+      row.className = 'ext-row';
+
+      var meta = document.createElement('span');
+      meta.className = 'ext-meta';
+
+      var nameEl = document.createElement('b');
+      nameEl.textContent = p.name || '';
+      meta.appendChild(nameEl);
+
+      if (p.description) {
+        var descEl = document.createElement('small');
+        descEl.textContent = p.description;
+        meta.appendChild(descEl);
+      }
+
+      var priceEl = document.createElement('span');
+      priceEl.className = 'ext-price';
+      priceEl.textContent = '+' + price + '€';
+
+      row.appendChild(meta);
+      row.appendChild(priceEl);
+      label.appendChild(input);
+      label.appendChild(row);
+      container.appendChild(label);
+
+      // Pitfall 1: wire change listener per-instance because boot-time wiring is deleted.
+      input.addEventListener('change', function () {
+        if (input.checked) state.booking.extras.add(input.dataset.extra);
+        else state.booking.extras.delete(input.dataset.extra);
+        updateBookingTotal();
+      });
+    });
+  }
+
   // ============ BOOKING SHEET ============
   function openBooking(expId){
     let e;
@@ -1091,9 +1159,9 @@ window.JSA.parseDeepLink = function(hashStr){
     if (bkDateEl) bkDateEl.value = '';
     $$('input[name="bkTime"]').forEach(r => { r.checked = false; });
 
-    // reset extras
-    $$('.bk-extra input').forEach(c => { c.checked = false; });
+    // reset extras and re-render from SDK linked_products
     state.booking.extras = new Set();
+    renderExtras(e);
 
     // people
     state.booking.people = 2;
@@ -1156,13 +1224,6 @@ window.JSA.parseDeepLink = function(hashStr){
       next = Math.max(1, Math.min(3, next));
       state.booking.people = next;
       $('#bkPeople').textContent = String(next);
-      updateBookingTotal();
-    });
-  });
-  $$('.bk-extra input').forEach(c => {
-    c.addEventListener('change', () => {
-      if(c.checked) state.booking.extras.add(c.dataset.extra);
-      else state.booking.extras.delete(c.dataset.extra);
       updateBookingTotal();
     });
   });
