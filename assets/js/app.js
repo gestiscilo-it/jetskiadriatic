@@ -106,6 +106,26 @@ window.JSA.parseDeepLink = function(hashStr){
   // Source: 148-CONTEXT.md D-C-03; 148-RESEARCH.md Code Example 2.
   let EXPERIENCES = [];
 
+  function priceFor(e) {
+    if (typeof e.priceFromOverride === 'number') return e.priceFromOverride;
+    if (typeof e.basePrice === 'number') return e.basePrice;
+    if (typeof e.priceFrom === 'number') return e.priceFrom; // legacy alias
+    if (e.aliasOf) {
+      var canon = EXPERIENCES.find(function (p) { return p.id === e.aliasOf; });
+      if (canon) return priceFor(canon);
+    }
+    return 0;
+  }
+
+  function unitFor(e) {
+    if (e.priceUnit) return e.priceUnit;
+    if (e.aliasOf) {
+      var canon = EXPERIENCES.find(function (p) { return p.id === e.aliasOf; });
+      if (canon) return canon.priceUnit || '';
+    }
+    return '';
+  }
+
   // 148-MIG-03: SDK bootstrap — wirePhoneLinks + product catalogue loader.
   // Source: 148-CONTEXT.md D-C-01..07 + D-D-02; 148-RESEARCH.md Code Example 2.
 
@@ -665,19 +685,6 @@ window.JSA.parseDeepLink = function(hashStr){
       return;
     }
     empty.hidden = true;
-
-    const priceFor = (e) => {
-      if(typeof e.priceFromOverride === 'number') return e.priceFromOverride;
-      if(typeof e.basePrice === 'number') return e.basePrice;
-      if(typeof e.priceFrom === 'number') return e.priceFrom; // legacy
-      // Resolve aliases
-      if(e.aliasOf){
-        const canon = EXPERIENCES.find(p => p.id === e.aliasOf);
-        if(canon) return priceFor(canon);
-      }
-      return 0;
-    };
-    const unitFor = (e) => e.priceUnit || (e.aliasOf ? (EXPERIENCES.find(p => p.id === e.aliasOf) || {}).priceUnit : '') || '';
 
     grid.innerHTML = items.map(e => {
       const liked = state.likes.has(e.id);
