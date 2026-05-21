@@ -126,6 +126,42 @@ window.JSA.parseDeepLink = function(hashStr){
     return '';
   }
 
+  function updateExpGrid(experiences) {
+    var articles = document.querySelectorAll('article.exp[data-product-id]');
+    articles.forEach(function (article) {
+      var pid = article.getAttribute('data-product-id');
+      var e = experiences.find(function (x) {
+        return String(x.id) === pid
+            || String(x.slug || '') === pid
+            || String(x.detail_key || '') === pid;
+      });
+      if (!e) return; // Pitfall 2: flotta-only products with no EXPERIENCES match — skip silently, leave static fallback
+
+      // Image: prefer e.img (sourced from p.media[0].url by mapProduct)
+      var illu = article.querySelector('.exp-illu');
+      if (illu) {
+        illu.style.backgroundImage = e.img ? "url('" + e.img + "')" : '';
+      }
+
+      // Tags: repopulate from e.tags array; empty array = empty ul (CSS collapses)
+      var tags = article.querySelector('.exp-tags');
+      if (tags) {
+        tags.innerHTML = '';
+        (e.tags || []).forEach(function (t) {
+          var li = document.createElement('li');
+          li.textContent = t;
+          tags.appendChild(li);
+        });
+      }
+
+      // Price: textContent (XSS-safe) using module-scope priceFor/unitFor
+      var priceB = article.querySelector('.exp-price b');
+      var priceSpan = article.querySelector('.exp-price span');
+      if (priceB) priceB.textContent = 'da ' + priceFor(e) + '€';
+      if (priceSpan) priceSpan.textContent = unitFor(e);
+    });
+  }
+
   // 148-MIG-03: SDK bootstrap — wirePhoneLinks + product catalogue loader.
   // Source: 148-CONTEXT.md D-C-01..07 + D-D-02; 148-RESEARCH.md Code Example 2.
 
