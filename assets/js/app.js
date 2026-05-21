@@ -190,7 +190,7 @@ window.JSA.parseDeepLink = function(hashStr){
              || document.getElementById('bkModal')
              || document.querySelector('.bk-modal')
              || document.querySelector('[data-booking-modal]');
-    var bookingIdLabel = (booking && booking.id != null) ? String(booking.id) : '—';
+    var bookingIdLabel = (booking && booking.booking_id != null) ? String(booking.booking_id) : '—';
     var dateLabel      = (booking && booking.booking_date) ? String(booking.booking_date) : '';
     var timeLabel      = (booking && booking.booking_time) ? String(booking.booking_time) : '';
     var when           = (dateLabel && timeLabel) ? (dateLabel + ' alle ' + timeLabel) : '';
@@ -217,8 +217,8 @@ window.JSA.parseDeepLink = function(hashStr){
 
   function showBookingFieldError(field, message) {
     var selectorMap = {
-      booking_date:     null,           // 148-MIG-05: legacy #bkDate input removed; selection happens on the date-strip chips
-      booking_time:     null,           // bkTime is a radio-group name, not an id; cannot focus()
+      booking_date:     '#bkDate',
+      booking_time:     null,           // radio group — cannot focus()
       duration_minutes: null,           // not user-facing
       party_size:       '#bkPeople',
       guest_name:       '#bkName',
@@ -1035,11 +1035,12 @@ window.JSA.parseDeepLink = function(hashStr){
     $('#bkExpName').textContent = e.title.replace(/<[^>]+>/g, '');
     $('#bkThumb').style.backgroundImage = `url('${e.img}')`;
 
-    // 148-MIG-05: step-1 date/time are now driven by renderAvailability() — no static date
-    // default or radio reset. state.booking.{date,time} are populated by the date strip + time
-    // grid; reset to empty so a stale selection from a prior modal-open doesn't leak through.
+    // reset date, time, extras, people
     state.booking.date = '';
     state.booking.time = '';
+    var bkDateEl = document.getElementById('bkDate');
+    if (bkDateEl) bkDateEl.value = '';
+    $$('input[name="bkTime"]').forEach(r => { r.checked = false; });
 
     // reset extras
     $$('.bk-extra input').forEach(c => { c.checked = false; });
@@ -1048,21 +1049,6 @@ window.JSA.parseDeepLink = function(hashStr){
     // people
     state.booking.people = 2;
     $('#bkPeople').textContent = '2';
-
-    // 148-MIG-05: load availability only for products the operator nominated as canonical
-    // (mirror of Plan 04's yacht-party canonical pattern; per Plan 01 catalog checklist the
-    // operator marks exactly one noleggio product with metadata.canonical = true).
-    // Warning #6 fix: bind on the boolean flag — NOT on render-code-era tab/cat strings
-    // which may diverge from operator-authored metadata.
-    try {
-      var modalExp = getCurrentExp();
-      if (modalExp && modalExp.canonical === true) {
-        var modalProductId = Number(modalExp.id);
-        if (isFinite(modalProductId)) {
-          renderAvailability(modalProductId);
-        }
-      }
-    } catch (_e) { /* non-fatal — modal still opens with the loading placeholder */ }
 
     updateBookingStep();
     updateBookingTotal();
@@ -1083,7 +1069,7 @@ window.JSA.parseDeepLink = function(hashStr){
   function updateBookingTotal(){
     const e = getCurrentExp();
     const people = state.booking.people;
-    let base = e.priceFrom;
+    let base = typeof e.basePrice === 'number' ? e.basePrice : (e.priceFrom || 0);
     // a rough estimation logic — multiply by people for some types
     const perPersonIds = ['vallugola-gold','blind-date'];
     const perCoupleIds = ['the-proposal','vallugola-diamond','secret-romance','midday-brunch','sinfonia-amore'];
@@ -1106,9 +1092,14 @@ window.JSA.parseDeepLink = function(hashStr){
   }
 
   // step interactions
-  // 148-MIG-05: legacy '#bkDate' change-listener + 'input[name="bkTime"]' radio listeners
-  // removed — state.booking.{date,time} are now written by renderAvailability's date-strip
-  // click handler + time-grid radio change handler (see selectDate below).
+  var bkDateInput = document.getElementById('bkDate');
+  if (bkDateInput) {
+    bkDateInput.addEventListener('change', function() { state.booking.date = this.value; });
+  }
+  $$('input[name="bkTime"]').forEach(r => {
+    r.addEventListener('change', function() { if (this.checked) state.booking.time = this.value; });
+  });
+
   $$('.bk-stepper button').forEach(b => {
     b.addEventListener('click', () => {
       const dir = b.dataset.step === '+' ? 1 : -1;
