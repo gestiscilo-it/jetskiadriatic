@@ -15,13 +15,51 @@
 
 <script src="http://localhost:8080/embed/v1.js" data-business="jetskiadriatic"></script>
 <script>
-  // 148-MIG-02: defer-tolerant wirePhoneLinks boot for pages without app.js
-  // Source: 148-RESEARCH.md Common Pitfalls #2 + Code Example 1
   (function () {
     if (!window.Gestiscilo || !Gestiscilo.ready) return;
     Gestiscilo.ready
-      .then(function () { Gestiscilo.wirePhoneLinks(document); })
-      .catch(function () { /* SDK bootstrap failed — placeholder hrefs stay no-op */ });
+      .then(function () {
+        Gestiscilo.wirePhoneLinks(document);
+        if (typeof Gestiscilo.wireEmailLinks === 'function') {
+          Gestiscilo.wireEmailLinks(document);
+        }
+        return Gestiscilo.products();
+      })
+      .then(function (rows) {
+        if (!Array.isArray(rows) || rows.length === 0) return;
+        rows.forEach(function (p) {
+          var meta = p.metadata || {};
+          var img = (p.media && p.media.length) ? p.media[0].url : (meta.img || '');
+          var tags = meta.tags || [];
+          var basePrice = (p.price_cents || 0) / 100;
+          var priceUnit = meta.priceUnit || '';
+          var pidNum = String(p.id);
+          var pidSlug = String(meta.slug || '');
+          var pidDetail = String(meta.detail_key || '');
+          var article = document.querySelector(
+            'article.exp[data-product-id="' + pidNum + '"], ' +
+            'article.exp[data-product-id="' + pidSlug + '"], ' +
+            'article.exp[data-product-id="' + pidDetail + '"]'
+          );
+          if (!article) return;
+          var illu = article.querySelector('.exp-illu');
+          if (illu) illu.style.backgroundImage = img ? "url('" + img + "')" : '';
+          var tagsEl = article.querySelector('.exp-tags');
+          if (tagsEl) {
+            tagsEl.innerHTML = '';
+            tags.forEach(function (t) {
+              var li = document.createElement('li');
+              li.textContent = t;
+              tagsEl.appendChild(li);
+            });
+          }
+          var priceB = article.querySelector('.exp-price b');
+          var priceSpan = article.querySelector('.exp-price span');
+          if (priceB) priceB.textContent = 'da ' + basePrice + '€';
+          if (priceSpan) priceSpan.textContent = priceUnit;
+        });
+      })
+      .catch(function () { /* SDK bootstrap failed — empty wrappers stay (graceful degradation) */ });
   })();
 </script>
 
