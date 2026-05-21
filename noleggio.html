@@ -36,8 +36,10 @@
           var pidNum = String(p.id);
           var pidSlug = String(meta.slug || '');
           var pidDetail = String(meta.detail_key || '');
+          var pidJsaId = String(meta.jsa_id || '');
           var article = document.querySelector(
             'article.exp[data-product-id="' + pidNum + '"], ' +
+              'article.exp[data-product-id="' + pidJsaId + '"], ' +
             'article.exp[data-product-id="' + pidSlug + '"], ' +
             'article.exp[data-product-id="' + pidDetail + '"]'
           );

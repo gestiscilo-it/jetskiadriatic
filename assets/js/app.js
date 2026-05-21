@@ -132,6 +132,7 @@ window.JSA.parseDeepLink = function(hashStr){
       var pid = article.getAttribute('data-product-id');
       var e = experiences.find(function (x) {
         return String(x.id) === pid
+            || String(x.jsa_id || '') === pid
             || String(x.slug || '') === pid
             || String(x.detail_key || '') === pid;
       });
