@@ -242,29 +242,61 @@ window.JSA.parseDeepLink = function(hashStr){
     ].filter(Boolean).join('\n');
   }
 
+  // djb2 string hash -- deterministic, no crypto dependency.
+  // Used only for idempotency key stability (PUBAPI-10 body field), not a security primitive.
+  function djb2Hash(str) {
+    var h = 5381;
+    for (var i = 0; i < str.length; i++) {
+      h = ((h << 5) + h) + str.charCodeAt(i);
+      h = h & 0xFFFFFFFF;
+    }
+    return (h >>> 0).toString(16).padStart(8, '0');
+  }
+
+  function buildIdempotencyKey(productId, date, time, email) {
+    var raw = [productId, date, time, (email || '').toLowerCase()].join('|');
+    return 'jsk-' + djb2Hash(raw) + '-' + djb2Hash(raw + raw);
+  }
+
   // 148-MIG-04: inline success / error UI helpers. Warning #5 closed at plan time —
   // the success/toast surface helpers were verified absent on master HEAD, so these
   // helpers own the entire success/error surface (no upstream reach-throughs permitted).
   function showBookingSuccess(booking) {
-    // Modal container in this repo is id="bookingSheet" (verified in index.html:935).
-    // Plan-baseline id="bkModal" kept as a secondary fallback for resilience.
     var modal = document.getElementById('bookingSheet')
              || document.getElementById('bkModal')
              || document.querySelector('.bk-modal')
              || document.querySelector('[data-booking-modal]');
-    var bookingIdLabel = (booking && booking.booking_id != null) ? String(booking.booking_id) : '—';
+    // Defensive field read: PUBAPI-05 spec says {id, expires_at}; Phase 148 expected booking_id.
+    // Prefer booking_id (existing Phase 148 convention), fall back to id (Phase 153 PUBAPI-05).
+    var rawId = (booking && booking.booking_id != null) ? booking.booking_id
+              : (booking && booking.id != null) ? booking.id
+              : null;
+    var bookingIdLabel = (rawId != null) ? String(rawId) : '—';
     var dateLabel      = (booking && booking.booking_date) ? String(booking.booking_date) : '';
     var timeLabel      = (booking && booking.booking_time) ? String(booking.booking_time) : '';
     var when           = (dateLabel && timeLabel) ? (dateLabel + ' alle ' + timeLabel) : '';
 
+    // D-06: expires_at display -- static formatted string, no setInterval in v1.
+    var expiryLine = '';
+    if (booking && booking.expires_at) {
+      var expDate = new Date(booking.expires_at);
+      if (!isNaN(expDate.getTime())) {
+        expiryLine = '<p style="color:var(--ink-3);margin-bottom:16px">Scade alle ' +
+          expDate.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }) +
+          '</p>';
+      }
+    }
+
     var html =
       '<div class="bk-success-state" role="status" aria-live="polite" ' +
-           'style="min-height:200px;display:grid;place-items:center;padding:32px;text-align:center;color:var(--ink-1)">' +
+           'style="min-height:200px;display:grid;place-items:center;padding:32px;text-align:center;color:var(--ink)">' +
         '<div>' +
           '<p style="font-size:18px;font-weight:600;margin-bottom:8px">Prenotazione ricevuta!</p>' +
           '<p style="color:var(--ink-3);margin-bottom:12px">Numero: <code>' + bookingIdLabel + '</code></p>' +
           (when ? '<p style="color:var(--ink-3);margin-bottom:12px">' + when + '</p>' : '') +
-          '<p style="color:var(--ink-3)">Ti contatteremo per la conferma.</p>' +
+          expiryLine +
+          '<p style="color:var(--ink-2)">Ti abbiamo inviato un’email di conferma. ' +
+          'Clicca il link entro 15 minuti per completare la prenotazione.</p>' +
         '</div>' +
       '</div>';
 
@@ -1265,6 +1297,9 @@ window.JSA.parseDeepLink = function(hashStr){
     if(!isFinite(productId)){ showBookingGenericError('Identificativo prodotto non valido.'); return; }
 
     var payload = buildBookingPayload(state.booking, exp);
+    payload.idempotency_key = buildIdempotencyKey(
+      productId, payload.booking_date, payload.booking_time, payload.guest_email
+    );
     var bkNextBtn = $('#bkNext');
     bkNextBtn.disabled = true;
     Promise.resolve()
