@@ -59,6 +59,10 @@
           var priceSpan = article.querySelector('.exp-price span');
           if (priceB) priceB.textContent = 'da ' + basePrice + '€';
           if (priceSpan) priceSpan.textContent = priceUnit;
+          var h3El = article.querySelector('h3');
+          if (h3El && meta.title) h3El.innerHTML = meta.title;
+          var pEl = article.querySelector('p');
+          if (pEl && meta.lead) pEl.textContent = meta.lead;
         });
       })
       .catch(function () { /* SDK bootstrap failed — empty wrappers stay (graceful degradation) */ });

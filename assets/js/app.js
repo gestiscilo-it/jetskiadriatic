@@ -160,6 +160,10 @@ window.JSA.parseDeepLink = function(hashStr){
       var priceSpan = article.querySelector('.exp-price span');
       if (priceB) priceB.textContent = 'da ' + priceFor(e) + '€';
       if (priceSpan) priceSpan.textContent = unitFor(e);
+      var h3 = article.querySelector('h3');
+      if (h3 && e.title) h3.innerHTML = e.title;
+      var pEl = article.querySelector('p');
+      if (pEl && e.lead) pEl.textContent = e.lead;
     });
   }
 
@@ -1267,12 +1271,23 @@ window.JSA.parseDeepLink = function(hashStr){
     }, 250);
   });
 
+  function isPaneHidden(n) {
+    var p = document.querySelector('[data-bk-pane="' + n + '"]');
+    return p ? p.hidden : false;
+  }
   $('#bkBack').addEventListener('click', () => {
-    if(state.bkStep > 1){ state.bkStep--; updateBookingStep(); }
+    if(state.bkStep > 1){
+      var prev = state.bkStep - 1;
+      while(prev > 1 && isPaneHidden(prev)) prev--;
+      state.bkStep = prev;
+      updateBookingStep();
+    }
   });
   $('#bkNext').addEventListener('click', () => {
     if(state.bkStep < 3){
-      state.bkStep++;
+      var next = state.bkStep + 1;
+      while(next < 3 && isPaneHidden(next)) next++;
+      state.bkStep = next;
       updateBookingStep();
       return;
     }
