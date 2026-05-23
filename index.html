@@ -172,8 +172,33 @@
       </div>
     </div>
 
-    <!-- Card grid (populated by JS) -->
-    <div class="cards" id="cards" aria-live="polite"></div>
+    <!-- Card grid (populated by JS; skeletons replaced on SDK ready) -->
+    <div class="cards" id="cards" aria-live="polite">
+      <article class="card card--skel" aria-hidden="true">
+        <div class="card-img"></div>
+        <div class="card-body">
+          <div class="card-skel-bar" style="width:68%"></div>
+          <div class="card-skel-bar" style="width:44%"></div>
+          <div class="card-skel-bar" style="width:30%;margin-top:10px"></div>
+        </div>
+      </article>
+      <article class="card card--skel" aria-hidden="true">
+        <div class="card-img"></div>
+        <div class="card-body">
+          <div class="card-skel-bar" style="width:72%"></div>
+          <div class="card-skel-bar" style="width:50%"></div>
+          <div class="card-skel-bar" style="width:28%;margin-top:10px"></div>
+        </div>
+      </article>
+      <article class="card card--skel" aria-hidden="true">
+        <div class="card-img"></div>
+        <div class="card-body">
+          <div class="card-skel-bar" style="width:60%"></div>
+          <div class="card-skel-bar" style="width:40%"></div>
+          <div class="card-skel-bar" style="width:32%;margin-top:10px"></div>
+        </div>
+      </article>
+    </div>
 
     <!-- Empty state (hidden by default) -->
     <div class="empty" id="emptyState" hidden>

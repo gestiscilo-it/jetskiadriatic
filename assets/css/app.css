@@ -1434,6 +1434,23 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 @keyframes shimmer{ from{ background-position: 200% 0 } to{ background-position: -200% 0 } }
 
+/* Card skeleton — visible while SDK loads product catalogue */
+.card--skel{ pointer-events: none }
+.card--skel .card-img{
+  background: linear-gradient(90deg, #e8ecf0 0%, #f3f5f7 50%, #e8ecf0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+.card-skel-bar{
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #e8ecf0 0%, #f3f5f7 50%, #e8ecf0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  margin-bottom: 8px;
+}
+.card-skel-bar:last-child{ margin-bottom: 0 }
+
 /* =====================================================
    GENERIC SKELETON PRIMITIVES
    (used by .meteo-now.is-loading and the status pill)

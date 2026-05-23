@@ -410,6 +410,19 @@ window.JSA.parseDeepLink = function(hashStr){
     });
   }
 
+  function availabilitySkeleton() {
+    var chips = Array.from({length: 7}, function() {
+      return '<span class="skel-bar skel-light" style="height:34px;width:52px;border-radius:20px;flex-shrink:0"></span>';
+    }).join('');
+    var slots = Array.from({length: 6}, function() {
+      return '<span class="skel-bar skel-light" style="height:38px;width:72px;border-radius:8px"></span>';
+    }).join('');
+    return '<div style="min-height:120px;padding:4px 0" aria-hidden="true">' +
+      '<div style="display:flex;gap:8px;overflow:hidden;margin-bottom:12px">' + chips + '</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:8px">' + slots + '</div>' +
+      '</div>';
+  }
+
   function renderAvailability(productId) {
     var container = document.getElementById('bkAvailability');
     if (!container) return;
@@ -417,7 +430,7 @@ window.JSA.parseDeepLink = function(hashStr){
       renderAvailabilityError(container, { code: 'bootstrap_error', message: 'SDK non disponibile' }, productId);
       return;
     }
-    container.innerHTML = '<p style="min-height:120px;display:grid;place-items:center;color:var(--ink-3)">Caricamento disponibilità…</p>';
+    container.innerHTML = availabilitySkeleton();
     getAvailability(productId)
       .then(function (data) {
         renderAvailabilityData(container, data, productId);
