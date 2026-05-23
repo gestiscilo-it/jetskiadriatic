@@ -102,695 +102,615 @@ window.JSA.parseDeepLink = function(hashStr){
 (function(){
   'use strict';
 
-  // ============ DATA ============
-  const EXPERIENCES = [
-    // ============ NOLEGGIO — canonical ride product ============
-    {
-      id: 'noleggio-sportender',
-      tab: 'moto',
-      cat: 'ride',
-      title: 'Noleggio <em>Sportender</em>',
-      loc: 'Cattolica · pontile',
-      img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Best seller',
-      meta: '15/30/45/60 min',
-      duration: 'Tu scegli la durata · da 15 minuti a 2 ore',
-      basePrice: 50,
-      priceUnit: 'a moto',
-      perPerson: false,
-      minPeople: 1,
-      maxPeople: 3,
-      rating: 4.94,
-      reviews: 572,
-      includes: [
-        'Briefing di sicurezza · 10 minuti',
-        'Sportender JST-30 · senza patente',
-        'Giubbotto in tutte le taglie',
-        'Tempo effettivo in mare (timer parte fuori dal porto)'
-      ],
-      tags: ['senza patente', 'sportender JST-30', 'best seller'],
-      lead: 'Sali a bordo, dieci minuti di briefing con l\'istruttore, poi il motore risponde solo a te — il timer parte quando sei fuori dai pali del porto.',
-      variantGroups: [
-        {
-          id: 'durata', label: 'Durata', selection: 'single', required: true,
-          options: [
-            { id: '15',  label: '15 min',     priceMode: 'replace', price: 50 },
-            { id: '30',  label: '30 min',     priceMode: 'replace', price: 85 },
-            { id: '45',  label: '45 min',     priceMode: 'replace', price: 105, default: true, sublabel: 'best seller' },
-            { id: '60',  label: '1 ora',      priceMode: 'replace', price: 145, sublabel: 'tramonto' },
-            { id: '120', label: '2 ore',      priceMode: 'replace', price: 245, sublabel: '1h + Extra Hour' }
-          ]
-        },
-        {
-          id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
-          options: [
-            { id: 'gopro', label: 'GoPro POV',         priceMode: 'add', price: 15, sublabel: '4K · file via AirDrop' },
-            { id: 'photo', label: 'Photo Kit Staff',   priceMode: 'add', price: 50, sublabel: 'scatti dallo staff' },
-            { id: 'drone', label: 'Drone VIP Movie',   priceMode: 'add', price: 99, sublabel: 'reel 4K · IG/TikTok ready' }
-          ]
-        },
-        {
-          id: 'bundle', label: 'Bundle media', selection: 'single', required: false, clears: ['media'],
-          options: [
-            { id: 'social-star', label: 'Social Star', priceMode: 'add', price: 100, sublabel: 'Drone + GoPro · risparmi 14€' }
-          ]
-        },
-        {
-          id: 'accessori', label: 'Accessori', selection: 'multi', required: false,
-          options: [
-            { id: 'kasko',   label: 'Kasko Light',     priceMode: 'add', price: 10, sublabel: 'graffi/scocca coperti' },
-            { id: 'refresh', label: 'VIP Refresh Kit', priceMode: 'add', price: 15, sublabel: 'sacca stagna + acqua + crema' },
-            { id: 'glasses', label: 'Occhiali Floating', priceMode: 'add', price: 20, sublabel: 'polarizzati Wave Bros' }
-          ]
-        },
-        {
-          id: 'relax-bundle', label: 'Bundle accessori', selection: 'single', required: false, clears: ['accessori'],
-          options: [
-            { id: 'total-relax', label: 'Total Relax', priceMode: 'add', price: 20, sublabel: 'Kasko + Refresh' }
-          ]
+  // 148-MIG-03: EXPERIENCES is populated at runtime by the SDK loader below.
+  // Source: 148-CONTEXT.md D-C-03; 148-RESEARCH.md Code Example 2.
+  let EXPERIENCES = [];
+
+  function priceFor(e) {
+    if (typeof e.priceFromOverride === 'number') return e.priceFromOverride;
+    if (typeof e.basePrice === 'number') return e.basePrice;
+    if (typeof e.priceFrom === 'number') return e.priceFrom; // legacy alias
+    if (e.aliasOf) {
+      var canon = EXPERIENCES.find(function (p) { return p.id === e.aliasOf; });
+      if (canon) return priceFor(canon);
+    }
+    return 0;
+  }
+
+  function unitFor(e) {
+    if (e.priceUnit) return e.priceUnit;
+    if (e.aliasOf) {
+      var canon = EXPERIENCES.find(function (p) { return p.id === e.aliasOf; });
+      if (canon) return canon.priceUnit || '';
+    }
+    return '';
+  }
+
+  // Narrow allow-list sanitizer for operator-sourced title strings rendered via innerHTML.
+  // Escapes all HTML then restores only <em> and <b> tags (used for italic/bold in titles).
+  function sanitizeTitle(s) {
+    if (!s) return '';
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+             .replace(/&lt;(\/?(?:em|b))&gt;/g, '<$1>');
+  }
+
+  function updateExpGrid(experiences) {
+    var articles = document.querySelectorAll('article.exp[data-product-id]');
+    articles.forEach(function (article) {
+      var pid = article.getAttribute('data-product-id');
+      var e = experiences.find(function (x) {
+        return String(x.id) === pid
+            || String(x.jsa_id || '') === pid
+            || String(x.slug || '') === pid
+            || String(x.detail_key || '') === pid;
+      });
+      if (!e) return; // Pitfall 2: flotta-only products with no EXPERIENCES match — skip silently, leave static fallback
+
+      // Image: prefer e.img (sourced from p.media[0].url by mapProduct)
+      var illu = article.querySelector('.exp-illu');
+      if (illu) {
+        illu.style.backgroundImage = e.img ? "url('" + e.img + "')" : '';
+      }
+
+      // Tags: repopulate from e.tags array; empty array = empty ul (CSS collapses)
+      var tags = article.querySelector('.exp-tags');
+      if (tags) {
+        tags.innerHTML = '';
+        (e.tags || []).forEach(function (t) {
+          var li = document.createElement('li');
+          li.textContent = t;
+          tags.appendChild(li);
+        });
+      }
+
+      // Price: textContent (XSS-safe) using module-scope priceFor/unitFor
+      var priceB = article.querySelector('.exp-price b');
+      var priceSpan = article.querySelector('.exp-price span');
+      if (priceB) priceB.textContent = 'da ' + priceFor(e) + '€';
+      if (priceSpan) priceSpan.textContent = unitFor(e);
+      var h3 = article.querySelector('h3');
+      if (h3 && e.title) h3.innerHTML = sanitizeTitle(e.title);
+      var pEl = article.querySelector('p');
+      if (pEl && e.lead) pEl.textContent = e.lead;
+    });
+  }
+
+  // 148-MIG-03: SDK bootstrap — wirePhoneLinks + product catalogue loader.
+  // Source: 148-CONTEXT.md D-C-01..07 + D-D-02; 148-RESEARCH.md Code Example 2.
+
+  function mapProduct(p) {
+    var meta = p.metadata || {};
+    var mediaImgs = (p.media && p.media.length)
+      ? p.media.map(function (m) { return m.url; })
+      : null;
+    var imgs = mediaImgs || meta.imgs || (meta.img ? [meta.img] : []);
+    var img = imgs[0] || '';
+    return Object.assign(
+      { id: String(p.id), basePrice: (p.price_cents || 0) / 100 },
+      meta,
+      { img: img, imgs: imgs, linked_products: p.linked_products || [] }
+    );
+  }
+
+  function showEmptyCatalogueState() {
+    var feed = document.getElementById('feed');
+    if (!feed) return;
+    feed.innerHTML =
+      '<div style="min-height:160px;display:grid;place-items:center;color:var(--ink-3);padding:24px">' +
+        '<p style="text-align:center;max-width:32ch">Catalogue in arrivo. ' +
+        '<a href="tel:">Chiamaci</a> o ' +
+        '<a href="https://wa.me/" target="_blank" rel="noopener">scrivici su WhatsApp</a> per info.' +
+        '</p>' +
+      '</div>';
+    if (window.Gestiscilo && Gestiscilo.wirePhoneLinks) { Gestiscilo.wirePhoneLinks(feed); }
+  }
+
+  // 148-MIG-04: booking payload + WhatsApp-fallback message helpers.
+  // Source: 148-CONTEXT.md D-E-02; Phase 146 D-B-02 (booking validator); RESEARCH Pitfall 6.
+  function buildBookingPayload(s, exp) {
+    // duration_minutes MUST come from the product, NEVER from a form field (Pitfall 6).
+    // mapProduct() spreads p.metadata only; p.default_duration_minutes (top-level) is NOT
+    // currently mirrored into the render shape — operator may set metadata.default_duration_minutes
+    // to expose it. Fallback chain handles either case + a parsed metadata.duration string.
+    var minutes = (typeof exp.default_duration_minutes === 'number' && exp.default_duration_minutes > 0)
+      ? exp.default_duration_minutes
+      : parseDurationLabel(exp.duration);
+    return {
+      booking_date:     s.date,
+      booking_time:     s.time,
+      duration_minutes: minutes,
+      party_size:       Number(s.people) || 1,
+      guest_name:       s.name,
+      guest_email:      s.email,
+      guest_phone:      s.phone,
+    };
+  }
+
+  function parseDurationLabel(label) {
+    // exp.duration is operator-authored free text like '30 min', '2h', '90 min', '1h 30m'.
+    // Parse to integer minutes; fallback to 120 if unparseable (CONTEXT D-E-02 default).
+    if (typeof label !== 'string') return 120;
+    var hMatch = label.match(/(\d+)\s*h/i);
+    var mMatch = label.match(/(\d+)\s*m(in)?/i);
+    var hours   = hMatch ? Number(hMatch[1]) : 0;
+    var minutes = mMatch ? Number(mMatch[1]) : 0;
+    var total   = hours * 60 + minutes;
+    return (total > 0) ? total : 120;
+  }
+
+  function composeWhatsappFallbackMessage(s, exp) {
+    // Used by the network_error WhatsApp fallback. Compose a human-readable booking summary
+    // that the operator can read on WhatsApp and replay manually.
+    var title = (exp.title || exp.name || 'esperienza').replace(/<\/?em>/g, '');
+    return [
+      'Ciao! Vorrei prenotare:',
+      title,
+      'Data: ' + s.date + ' alle ' + s.time,
+      'Persone: ' + s.people,
+      'Nome: ' + s.name,
+      'Telefono: ' + s.phone,
+      s.email ? ('Email: ' + s.email) : null,
+      s.notes ? ('Note: ' + s.notes) : null,
+    ].filter(Boolean).join('\n');
+  }
+
+  // djb2 string hash -- deterministic, no crypto dependency.
+  // Used only for idempotency key stability (PUBAPI-10 body field), not a security primitive.
+  function djb2Hash(str) {
+    var h = 5381;
+    for (var i = 0; i < str.length; i++) {
+      h = ((h << 5) + h) + str.charCodeAt(i);
+      h = h & 0xFFFFFFFF;
+    }
+    return (h >>> 0).toString(16).padStart(8, '0');
+  }
+
+  function buildIdempotencyKey(productId, date, time, email) {
+    var raw = [productId, date, time, (email || '').toLowerCase()].join('|');
+    return 'jsk-' + djb2Hash(raw) + '-' + djb2Hash(raw + raw);
+  }
+
+  // 148-MIG-04: inline success / error UI helpers. Warning #5 closed at plan time —
+  // the success/toast surface helpers were verified absent on master HEAD, so these
+  // helpers own the entire success/error surface (no upstream reach-throughs permitted).
+  function showBookingSuccess(booking) {
+    var modal = document.getElementById('bookingSheet')
+             || document.getElementById('bkModal')
+             || document.querySelector('.bk-modal')
+             || document.querySelector('[data-booking-modal]');
+    // Defensive field read: PUBAPI-05 spec says {id, expires_at}; Phase 148 expected booking_id.
+    // Prefer booking_id (existing Phase 148 convention), fall back to id (Phase 153 PUBAPI-05).
+    var rawId = (booking && booking.booking_id != null) ? booking.booking_id
+              : (booking && booking.id != null) ? booking.id
+              : null;
+    var bookingIdLabel = (rawId != null) ? String(rawId) : '—';
+    var dateLabel      = (booking && booking.booking_date) ? String(booking.booking_date) : '';
+    var timeLabel      = (booking && booking.booking_time) ? String(booking.booking_time) : '';
+    var when           = (dateLabel && timeLabel) ? (dateLabel + ' alle ' + timeLabel) : '';
+
+    // D-06: expires_at display -- static formatted string, no setInterval in v1.
+    var expiryLine = '';
+    if (booking && booking.expires_at) {
+      var expDate = new Date(booking.expires_at);
+      if (!isNaN(expDate.getTime())) {
+        expiryLine = '<p style="color:var(--ink-3);margin-bottom:16px">Scade alle ' +
+          expDate.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }) +
+          '</p>';
+      }
+    }
+
+    var html =
+      '<div class="bk-success-state" role="status" aria-live="polite" ' +
+           'style="min-height:200px;display:grid;place-items:center;padding:32px;text-align:center;color:var(--ink)">' +
+        '<div>' +
+          '<p style="font-size:18px;font-weight:600;margin-bottom:8px">Prenotazione ricevuta!</p>' +
+          '<p style="color:var(--ink-3);margin-bottom:12px">Numero: <code>' + bookingIdLabel + '</code></p>' +
+          (when ? '<p style="color:var(--ink-3);margin-bottom:12px">' + when + '</p>' : '') +
+          expiryLine +
+          '<p style="color:var(--ink-2)">Ti abbiamo inviato un’email di conferma. ' +
+          'Clicca il link entro 15 minuti per completare la prenotazione.</p>' +
+        '</div>' +
+      '</div>';
+
+    if (modal) {
+      modal.innerHTML = html;
+    } else {
+      var slot = document.createElement('div');
+      slot.innerHTML = html;
+      document.body.insertBefore(slot, document.body.firstChild);
+    }
+  }
+
+  function showBookingFieldError(field, message) {
+    var selectorMap = {
+      booking_date:     '#bkDate',
+      booking_time:     null,           // radio group — cannot focus()
+      duration_minutes: null,           // not user-facing
+      party_size:       '#bkPeople',
+      guest_name:       '#bkName',
+      guest_email:      '#bkEmail',
+      guest_phone:      '#bkPhone',
+      product_id:       null,           // not user-facing
+    };
+    var sel = selectorMap[field];
+    if (sel) {
+      var el = document.querySelector(sel);
+      if (el) {
+        if (typeof el.focus === 'function') el.focus();
+        el.setAttribute('aria-invalid', 'true');
+        el.setAttribute('title', message || 'Campo non valido');
+      }
+    }
+    showBookingGenericError(message || ('Campo non valido: ' + field));
+  }
+
+  function showBookingGenericError(message) {
+    // Inline generic error surface — no upstream helper reach-through (warning #5).
+    var text = message || 'Riprova tra qualche momento';
+    var slot = document.getElementById('bkError');
+    if (!slot) {
+      var host = document.getElementById('bookingSheet')
+              || document.getElementById('bkModal')
+              || document.querySelector('.bk-modal')
+              || document.querySelector('[data-booking-modal]')
+              || document.body;
+      slot = document.createElement('div');
+      slot.id = 'bkError';
+      slot.setAttribute('role', 'alert');
+      slot.setAttribute('aria-live', 'assertive');
+      slot.style.cssText =
+        'min-height:40px;margin:12px 0;padding:10px 14px;' +
+        'border:1px solid var(--ink-5, #e5e7eb);border-radius:6px;' +
+        'background:var(--surface-2, #fef2f2);color:var(--ink-1, #111);' +
+        'font-size:14px;text-align:center';
+      host.appendChild(slot);
+    }
+    slot.textContent = text;
+    slot.removeAttribute('hidden');
+    if (slot._gestisciloHideTimer) clearTimeout(slot._gestisciloHideTimer);
+    slot._gestisciloHideTimer = setTimeout(function () { slot.setAttribute('hidden', ''); }, 6000);
+  }
+
+  // 148-MIG-05: availability calendar for the booking modal step 1.
+  // Source: 148-CONTEXT.md D-F-01..07; 148-RESEARCH.md Code Example 4.
+  // Gates on modalExp.canonical === true (warning #6 fix — operator-owned boolean,
+  // not render-code-era tab/cat strings). Empty-state placeholder honors
+  // feedback_empty_states_min_height.md (min-height ≥ 40 px on inline state surfaces).
+
+  var availabilityCache = new Map();   // productId -> {at: epoch_ms, data: {dates: [{date, times}]}}
+
+  function formatDateISO(d) {
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+
+  function formatDateChipLabel(iso) {
+    // 'YYYY-MM-DD' -> 'Mer 21/05' style. Italian short day names.
+    var parts = iso.split('-');
+    var d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    var DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
+    return DAY_NAMES[d.getDay()] + ' ' + parts[2] + '/' + parts[1];
+  }
+
+  function getAvailability(productId) {
+    var hit = availabilityCache.get(productId);
+    if (hit && Date.now() - hit.at < 30000) {
+      return Promise.resolve(hit.data);
+    }
+    var today = new Date();
+    var week  = new Date(today); week.setDate(week.getDate() + 6);
+    return Gestiscilo.availability(productId, {
+      from: formatDateISO(today),
+      to:   formatDateISO(week),
+    }).then(function (data) {
+      availabilityCache.set(productId, { at: Date.now(), data: data });
+      return data;
+    });
+  }
+
+  function availabilitySkeleton() {
+    var chips = Array.from({length: 7}, function() {
+      return '<span class="skel-bar skel-light" style="height:34px;width:52px;border-radius:20px;flex-shrink:0"></span>';
+    }).join('');
+    var slots = Array.from({length: 6}, function() {
+      return '<span class="skel-bar skel-light" style="height:38px;width:72px;border-radius:8px"></span>';
+    }).join('');
+    return '<div style="min-height:120px;padding:4px 0" aria-hidden="true">' +
+      '<div style="display:flex;gap:8px;overflow:hidden;margin-bottom:12px">' + chips + '</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:8px">' + slots + '</div>' +
+      '</div>';
+  }
+
+  function renderAvailability(productId) {
+    var container = document.getElementById('bkAvailability');
+    if (!container) return;
+    if (!window.Gestiscilo || typeof Gestiscilo.availability !== 'function') {
+      renderAvailabilityError(container, { code: 'bootstrap_error', message: 'SDK non disponibile' }, productId);
+      return;
+    }
+    container.innerHTML = availabilitySkeleton();
+    getAvailability(productId)
+      .then(function (data) {
+        renderAvailabilityData(container, data, productId);
+      })
+      .catch(function (err) {
+        renderAvailabilityError(container, err, productId);
+      });
+  }
+
+  function renderAvailabilityData(container, data, productId) {
+    if (!data || !Array.isArray(data.dates) || data.dates.length === 0) {
+      renderAvailabilityEmpty(container);
+      return;
+    }
+    var anyTimes = data.dates.some(function (d) { return Array.isArray(d.times) && d.times.length > 0; });
+    if (!anyTimes) {
+      renderAvailabilityEmpty(container);
+      return;
+    }
+
+    // Build date strip: 7 chips, one per day in data.dates order. Disable chips with empty times.
+    var stripHtml = data.dates.map(function (d) {
+      var disabled = (!Array.isArray(d.times) || d.times.length === 0);
+      return '<button type="button" class="bk-date-chip"' +
+             ' data-date="' + d.date + '"' +
+             (disabled ? ' disabled aria-disabled="true"' : '') +
+             '>' + formatDateChipLabel(d.date) + '</button>';
+    }).join('');
+
+    container.innerHTML =
+      '<div class="bk-date-strip" role="tablist" aria-label="Date disponibili" style="display:flex;gap:8px;overflow-x:auto;padding:8px 0">' + stripHtml + '</div>' +
+      '<div class="bk-time-grid" id="bkTimeGrid" style="min-height:60px;padding:8px 0"></div>';
+
+    // Wire chip clicks.
+    var chips = container.querySelectorAll('.bk-date-chip');
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        if (chip.disabled) return;
+        chips.forEach(function (c) { c.classList.remove('is-active'); });
+        chip.classList.add('is-active');
+        var d = data.dates.find(function (x) { return x.date === chip.dataset.date; });
+        if (d) selectDate(d);
+      });
+    });
+
+    // Initial selection: first date with non-empty times.
+    var initial = data.dates.find(function (d) { return Array.isArray(d.times) && d.times.length > 0; });
+    if (initial) {
+      var initialChip = container.querySelector('.bk-date-chip[data-date="' + initial.date + '"]');
+      if (initialChip) initialChip.classList.add('is-active');
+      selectDate(initial);
+    }
+  }
+
+  function selectDate(d) {
+    state.booking.date = d.date;
+    state.booking.time = '';   // reset until user picks a time
+    var grid = document.getElementById('bkTimeGrid');
+    if (!grid) return;
+    if (!Array.isArray(d.times) || d.times.length === 0) {
+      grid.innerHTML = '<p style="color:var(--ink-3)">Nessun orario disponibile per questa data.</p>';
+      return;
+    }
+    grid.innerHTML = d.times.map(function (t) {
+      return '<label style="display:inline-block;padding:6px 10px;margin:4px;border:1px solid var(--ink-5);border-radius:6px">' +
+             '<input type="radio" name="bkTime" value="' + t + '" style="margin-right:6px">' + t +
+             '</label>';
+    }).join('');
+    var radios = grid.querySelectorAll('input[name="bkTime"]');
+    radios.forEach(function (r) {
+      r.addEventListener('change', function () {
+        if (r.checked) state.booking.time = r.value;
+      });
+    });
+  }
+
+  function renderAvailabilityEmpty(container) {
+    container.innerHTML =
+      '<p style="min-height:60px;display:grid;place-items:center;color:var(--ink-3);text-align:center">' +
+        'Nessuna disponibilità nei prossimi 7 giorni — ' +
+        '<a href="https://wa.me/" target="_blank" rel="noopener">scrivici su WhatsApp</a>' +
+      '</p>';
+    if (window.Gestiscilo && Gestiscilo.wirePhoneLinks) { Gestiscilo.wirePhoneLinks(container); }
+  }
+
+  function renderAvailabilityError(container, err, productId) {
+    var message = (err && err.message) ? err.message : 'Impossibile caricare la disponibilità.';
+    container.innerHTML =
+      '<div style="min-height:120px;display:grid;place-items:center;padding:16px;color:var(--ink-3);text-align:center">' +
+        '<p>' + message + '</p>' +
+        '<button type="button" class="bk-retry-availability" style="margin-top:8px;padding:6px 12px">Riprova</button>' +
+      '</div>';
+    var btn = container.querySelector('.bk-retry-availability');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        // Bust the cache entry so retry hits the network.
+        availabilityCache.delete(productId);
+        renderAvailability(productId);
+      });
+    }
+  }
+
+  if (typeof window !== 'undefined' && window.Gestiscilo && Gestiscilo.ready) {
+    // 158: SDK bootstrap — wirePhoneLinks + wireEmailLinks + product catalogue loader + updateExpGrid.
+    Gestiscilo.ready
+      .then(function () {
+        Gestiscilo.wirePhoneLinks(document);
+        if (typeof Gestiscilo.wireEmailLinks === 'function') {
+          Gestiscilo.wireEmailLinks(document);
         }
-      ]
-    },
-
-    // ============ NOLEGGIO — marketing aliases (point to canonical, not shown in feed) ============
-    { id: 'fast-fun',   aliasOf: 'noleggio-sportender', preselect: { durata: '15' },
-      title: 'Fast <em>& Fun</em>', loc: 'Cattolica · pontile',
-      img: 'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
-      badge: '15 min', meta: '15 min', priceFromOverride: 50,
-      tags: ['15 min', 'entry', 'senza patente'],
-      lead: 'Quindici minuti effettivi al largo: il timer parte fuori dal porto, non dal momento in cui sali sul mezzo, con dieci minuti extra inclusi per rientrare con calma.' },
-
-    { id: 'sprint',     aliasOf: 'noleggio-sportender', preselect: { durata: '30' },
-      title: 'Sprint <em>30</em>', loc: 'Cattolica · pontile',
-      img: 'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
-      badge: '30 min', meta: '30 min', priceFromOverride: 85,
-      tags: ['30 min', 'divertimento'],
-      lead: 'Trenta minuti effettivi per capire cosa fa questo mezzo quando spingi davvero — abbastanza per uscire al largo, fare il giro e tornare con qualcosa da raccontare.' },
-
-    { id: 'classic',    aliasOf: 'noleggio-sportender', preselect: { durata: '45' },
-      title: 'Classic <em>45</em>', loc: 'Cattolica · pontile',
-      img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
-      badge: '45 min · best seller', meta: '45 min', priceFromOverride: 105,
-      tags: ['45 min', 'best seller'],
-      lead: 'Quarantacinque minuti effettivi: abbastanza per spingere al largo, fare il giro costiero e rientrare con calma. Il formato più richiesto, con il timer che parte fuori dai pali del porto.' },
-
-    { id: 'sunset-hour', aliasOf: 'noleggio-sportender', preselect: { durata: '60' },
-      title: 'Sunset <em>Hour</em>', loc: 'Cattolica → Gabicce',
-      img: 'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
-      badge: '1 ora', meta: '1 ora', priceFromOverride: 145,
-      tags: ['1 ora', 'tramonto', 'premium'],
-      lead: 'Un\'ora effettiva verso Gabicce o lungo costa al tramonto — il momento in cui la luce cambia e l\'Adriatico smette di sembrare piatto. Il timer parte fuori dal porto.' },
-
-    {
-      id: 'vallugola-gold',
-      tab: 'moto',
-      cat: 'tour',
-      title: 'Vallugola <em>Gold</em>',
-      loc: 'Cattolica → Vallugola',
-      img: 'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: '4 ore',
-      meta: '4 ore',
-      duration: '4 ore · attracco e pranzo',
-      basePrice: 289,
-      priceUnit: 'a persona',
-      perPerson: true, minPeople: 2, maxPeople: 3,
-      rating: 4.95,
-      reviews: 67,
-      includes: [
-        'Guida + barca appoggio fino a Vallugola',
-        'Attracco nella caletta privata',
-        'Sconto al Ristorante Falco',
-        'Min. 2 persone'
-      ],
-      tags: ['4 ore', 'pranzo', 'caletta privata', 'min 2 pers'],
-      lead: 'Rotta aperta da Cattolica fino al Porticciolo di Vallugola, con guida inclusa, attracco nella caletta privata e pranzo al Ristorante Falco: quattro ore di navigazione in cui il mezzo risponde solo a te.',
-      variantGroups: [
-        { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
-          options: [
-            { id: 'gopro', label: 'GoPro POV',         priceMode: 'add', price: 15, sublabel: '4K · file via AirDrop' },
-            { id: 'photo', label: 'Photo Kit Staff',   priceMode: 'add', price: 50, sublabel: 'scatti dallo staff' },
-            { id: 'drone', label: 'Drone VIP Movie',   priceMode: 'add', price: 99, sublabel: 'reel 4K · IG/TikTok ready' }
-          ] },
-        { id: 'accessori', label: 'Accessori', selection: 'multi', required: false,
-          options: [
-            { id: 'kasko',   label: 'Kasko Light',     priceMode: 'add', price: 10 },
-            { id: 'refresh', label: 'VIP Refresh Kit', priceMode: 'add', price: 15 },
-            { id: 'glasses', label: 'Occhiali Floating', priceMode: 'add', price: 20 }
-          ] }
-      ]
-    },
-
-    // ============ EXPERIENCE ============
-    {
-      id: 'secret-romance',
-      tab: 'love',
-      cat: 'love-moto',
-      title: 'Secret <em>Romance</em>',
-      loc: 'Cattolica · al largo',
-      img: 'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1600&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Coppia',
-      meta: '1 ora · rose · champagne',
-      duration: '60 minuti privati',
-      basePrice: 320,
-      perPerson: false, minPeople: 1, maxPeople: 2,
-      priceUnit: 'a coppia',
-      rating: 4.96,
-      reviews: 28,
-      includes: [
-        'Noleggio Sportender · 1 ora',
-        'Mazzo di rose preparato in segreto nel gavone',
-        'Bottiglia di Champagne (formato piccolo)',
-        'Coordinamento staff per la sorpresa'
-      ],
-      tags: ['1 ora', 'rose', 'champagne', 'segreto'],
-      lead: 'Un\'ora privata in mare aperto, con le rose preparate nel gavone prima della partenza e lo Champagne già freddo — per sorprendere, non per annunciare.',
-      variantGroups: [
-        { id: 'champagne-upgrade', label: 'Champagne', selection: 'single', required: false,
-          options: [
-            { id: 'piccolo', label: 'Champagne piccolo', priceMode: 'add', price: 0, sublabel: 'incluso', default: true },
-            { id: '750ml',   label: 'Champagne 750ml',   priceMode: 'add', price: 30, sublabel: '+30€' }
-          ] },
-        { id: 'media-extra', label: 'Media extra', selection: 'multi', required: false,
-          options: [
-            { id: 'drone',     label: 'Drone VIP Movie', priceMode: 'add', price: 99 },
-            { id: 'paparazzo', label: 'Paparazzo',       priceMode: 'add', price: 50 }
-          ] },
-        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
-          options: [
-            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
-            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
-            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
-            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
-            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
-            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
-          ] }
-      ]
-    },
-    {
-      id: 'the-proposal',
-      tab: 'love',
-      cat: 'love-moto',
-      title: 'The <em>Proposal</em>',
-      loc: 'Cattolica · al largo',
-      img: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1600&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Signature',
-      meta: '1h30 · drone · paparazzo',
-      duration: '90 minuti orchestrati',
-      basePrice: 490,
-      perPerson: false, minPeople: 1, maxPeople: 2,
-      priceUnit: 'a coppia',
-      rating: 5.0,
-      reviews: 7,
-      includes: [
-        'Noleggio · 1.5 ore',
-        'Rose rosse a gambo lungo',
-        'Champagne 750ml',
-        'Drone VIP Movie',
-        'Foto Paparazzo dallo staff',
-        'Certificato d\'Amore su pergamena · coordinate GPS del sì'
-      ],
-      tags: ['1h30', 'drone', 'paparazzo', 'pergamena GPS'],
-      lead: 'Novanta minuti orchestrati in mare aperto: rose nel gavone, Champagne 750ml, drone 4K per riprendere il momento, un paparazzo discreto dallo staff e un certificato su pergamena con le coordinate GPS del sì.',
-      variantGroups: [
-        { id: 'champagne-upgrade', label: 'Champagne (default 750ml incluso)', selection: 'single', required: false,
-          options: [
-            { id: 'incluso',      label: 'Champagne 750ml incluso', priceMode: 'add', price: 0,   default: true },
-            { id: 'moet',         label: 'Upgrade Moët',             priceMode: 'add', price: 100 },
-            { id: 'veuve',        label: 'Upgrade Veuve Clicquot',   priceMode: 'add', price: 110 },
-            { id: 'ruinart',      label: 'Upgrade Ruinart',          priceMode: 'add', price: 160 },
-            { id: 'dom-perignon', label: 'Upgrade Dom Pérignon',     priceMode: 'add', price: 420 }
-          ] },
-        { id: 'extras', label: 'Extra', selection: 'multi', required: false,
-          options: [
-            { id: 'musicista', label: 'Musicista dal vivo', priceMode: 'add', price: 250, sublabel: 'chitarrista o violinista — upsell verso Sinfonia' }
-          ] }
-      ]
-    },
-    {
-      id: 'sinfonia-amore',
-      tab: 'love',
-      cat: 'love-moto',
-      title: 'Sinfonia <em>d\'Amore</em>',
-      loc: 'Cattolica · al largo · su prenotazione',
-      img: 'https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1600&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1617059063772-34532796cdb5?q=85&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1558961078-beebe6540096?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Elite · novità',
-      meta: '1h30–2h · regia cinematografica',
-      duration: '90–120 minuti su prenotazione',
-      basePrice: 890,
-      perPerson: false, minPeople: 1, maxPeople: 2,
-      priceUnit: 'a coppia',
-      rating: 5.0,
-      reviews: 0,
-      includes: [
-        'Noleggio · 1.5–2 ore',
-        'Seconda moto d\'acqua per consegna scenografica delle rose',
-        'Musicista dal vivo · chitarrista o violinista',
-        'Champagne 750ml',
-        'Certificato d\'Amore su pergamena',
-        'Foto Paparazzo dallo staff',
-        'Drone VIP Movie disponibile come extra'
-      ],
-      tags: ['elite', '1h30–2h', 'musicista', 'regia', 'novità'],
-      lead: 'La seconda moto arriva tra le onde con le rose mentre il musicista suona sul ponte — chitarra o violino, a scelta, in mezzo all\'Adriatico. Regia cinematografica inclusa.',
-      variantGroups: [
-        { id: 'drone-add', label: 'Drone VIP', selection: 'single', required: false,
-          options: [
-            { id: 'no',  label: 'No drone', priceMode: 'add', price: 0, default: true },
-            { id: 'yes', label: 'Drone VIP Movie', priceMode: 'add', price: 99 }
-          ] },
-        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
-          options: [
-            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
-            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
-            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
-            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
-            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
-            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
-          ] }
-      ]
-    },
-    {
-      id: 'vallugola-diamond',
-      tab: 'love',
-      cat: 'love-moto',
-      title: 'Vallugola <em>Diamond</em>',
-      loc: 'Cattolica → Vallugola',
-      img: 'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1600&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'All inclusive',
-      meta: '4 ore · drone · champagne',
-      duration: '4 ore verso Vallugola',
-      basePrice: 850,
-      perPerson: false, minPeople: 1, maxPeople: 2,
-      priceUnit: 'a coppia',
-      rating: 4.98,
-      reviews: 14,
-      includes: [
-        '4 ore di navigazione verso Vallugola',
-        'Fiori a bordo',
-        'Drone Movie',
-        'Aperitivo a bordo · 2 bottiglie di Champagne'
-      ],
-      tags: ['4 ore', 'fiori', 'champagne', 'drone'],
-      lead: 'Quattro ore verso Vallugola con fiori a bordo, Drone Movie incluso e aperitivo con due bottiglie di Champagne nel momento in cui la costa del San Bartolo prende la luce del pomeriggio.',
-      variantGroups: [
-        { id: 'media-extra', label: 'Media extra (drone già incluso)', selection: 'multi', required: false,
-          options: [
-            { id: 'paparazzo', label: 'Paparazzo', priceMode: 'add', price: 50 }
-          ] },
-        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
-          options: [
-            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
-            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
-            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
-            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
-            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
-            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
-          ] }
-      ]
-    },
-    {
-      id: 'midday-brunch',
-      tab: 'love',
-      cat: 'love-moto',
-      title: 'Midday <em>Brunch</em>',
-      loc: 'Cattolica · al largo',
-      img: 'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1600&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Brunch a bordo',
-      meta: '1 ora · brunch box',
-      duration: '60 minuti al largo',
-      basePrice: 220,
-      perPerson: false, minPeople: 1, maxPeople: 2,
-      priceUnit: 'a coppia',
-      rating: 4.91,
-      reviews: 19,
-      includes: [
-        'Noleggio · 1 ora',
-        'Luxury Brunch Box',
-        'Drink',
-        'Set-up del tavolo a bordo'
-      ],
-      tags: ['1 ora', 'brunch', 'drink', 'coppia'],
-      lead: 'Un\'ora al largo a metà giornata, con il brunch box già apparecchiato a bordo prima della partenza — due miglia dalla riva, nessun altro intorno, tavolo con vista sull\'Adriatico.',
-      variantGroups: [
-        { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
-          options: [
-            { id: 'drone',     label: 'Drone VIP Movie', priceMode: 'add', price: 99 },
-            { id: 'paparazzo', label: 'Paparazzo',       priceMode: 'add', price: 50 }
-          ] },
-        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
-          options: [
-            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
-            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
-            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
-            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
-            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
-            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
-          ] }
-      ]
-    },
-    {
-      id: 'kids-academy',
-      tab: 'moto',
-      cat: 'under12',
-      title: 'Kids <em>Academy</em>',
-      loc: 'Cattolica · area protetta',
-      img: 'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Battesimo del mare',
-      meta: '15–20 min · genitore + bambino',
-      duration: '15–20 minuti in area controllata',
-      basePrice: 75,
-      priceUnit: 'esperienza family',
-      perPerson: false, minPeople: 1, maxPeople: 2,
-      rating: 4.97,
-      reviews: 41,
-      includes: [
-        'Noleggio breve · 15–20 minuti',
-        'Genitore guida · bambino partecipa attivamente',
-        'Foto ricordo',
-        'Diploma cartaceo "Piccolo Pilota"'
-      ],
-      tags: ['15–20 min', 'bambini', 'diploma', 'family'],
-      lead: 'Quindici o venti minuti in area protetta con il genitore al manubrio e il bambino che mette le mani sul mezzo: a fine uscita, diploma di Piccolo Pilota consegnato di persona.',
-      variantGroups: [
-        { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
-          options: [
-            { id: 'photo', label: 'Photo Kit Staff', priceMode: 'add', price: 50 },
-            { id: 'drone', label: 'Drone VIP Movie', priceMode: 'add', price: 99 }
-          ] }
-      ]
-    },
-    {
-      id: 'blind-date',
-      tab: 'love',
-      cat: 'love-moto',
-      title: 'Blind <em>Date</em>',
-      loc: 'Cattolica · su iscrizione social',
-      img: 'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
-      imgs: [
-        'https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1400&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1564633351631-e85bd59a91af?q=85&w=1400&auto=format&fit=crop'
-      ],
-      badge: 'Single · social',
-      meta: '30 min · 2 persone',
-      duration: '30 minuti · uno guida, l\'altro dietro',
-      basePrice: 45,
-      perPerson: true, minPeople: 1, maxPeople: 8,
-      priceUnit: 'a persona',
-      rating: 4.88,
-      reviews: 9,
-      includes: [
-        'Target single · iscrizione social',
-        '30 minuti di navigazione',
-        'Uno guida, l\'altro sta dietro',
-        'La complicità messa alla prova'
-      ],
-      tags: ['30 min', 'single', 'social'],
-      lead: 'Trenta minuti in coppia: uno guida, l\'altro sta dietro e capisce subito se siete compatibili — il mezzo non perdona le esitazioni, ed è meglio saperlo prima.',
-      variantGroups: [
-        { id: 'media', label: 'Media a bordo', selection: 'multi', required: false,
-          options: [
-            { id: 'gopro', label: 'GoPro POV',       priceMode: 'add', price: 15 },
-            { id: 'drone', label: 'Drone VIP Movie', priceMode: 'add', price: 99 }
-          ] },
-        { id: 'accessori', label: 'Accessori', selection: 'multi', required: false,
-          options: [
-            { id: 'kasko',   label: 'Kasko Light',     priceMode: 'add', price: 10 },
-            { id: 'refresh', label: 'VIP Refresh Kit', priceMode: 'add', price: 15 }
-          ] }
-      ]
-    },
-
-    // ============ YACHT ============
-    {
-      id: 'yacht-sunset',
-      tab: 'party', cat: 'day',
-      title: 'Sunset <em>Cruise</em>',
-      loc: 'Cattolica · al largo',
-      img: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop',
-      imgs: ['https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop'],
-      badge: '2 ore', meta: '2 ore · skipper · aperitivo',
-      duration: '2 ore al tramonto',
-      basePrice: 690, priceUnit: 'a barca', perPerson: false,
-      minPeople: 1, maxPeople: 8,
-      slots: ['18:30'],
-      rating: 4.95, reviews: 0,
-      includes: ['Skipper a bordo', 'Aperitivo standard (taglieri + bollicine)', 'Carburante incluso', 'Fino a 8 ospiti'],
-      tags: ['2 ore', 'fino a 8 px', 'aperitivo', 'skipper'],
-      lead: 'Due ore al tramonto con aperitivo a bordo — bollicine, taglieri e fino a otto ospiti — partenza alle 18:30 e rientro al buio con le luci di Cattolica che si accendono sulla costa.',
-      variantGroups: [
-        { id: 'catering-aperitivo', label: 'Aperitivo', selection: 'single', required: false,
-          options: [
-            { id: 'standard', label: 'Aperitivo standard', priceMode: 'add', price: 0, sublabel: 'incluso', default: true },
-            { id: 'premium',  label: 'Aperitivo premium',  priceMode: 'add', price: 120, sublabel: 'crudo + ostriche + champagne' }
-          ] },
-        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
-          options: [
-            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
-            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
-            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
-            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
-            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
-            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
-          ] }
-      ]
-    },
-    {
-      id: 'yacht-morning-cove',
-      tab: 'party', cat: 'day',
-      title: 'Morning <em>Cove</em>',
-      loc: 'Cattolica → calette del San Bartolo',
-      img: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1600&auto=format&fit=crop',
-      imgs: ['https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1600&auto=format&fit=crop'],
-      badge: '4 ore', meta: '4 ore · 3 calette · brunch',
-      duration: '4 ore al mattino',
-      basePrice: 1090, priceUnit: 'a barca', perPerson: false,
-      minPeople: 1, maxPeople: 8,
-      slots: ['09:00', '10:00'],
-      rating: 4.95, reviews: 0,
-      includes: ['Skipper + hostess', 'Ancoraggio in 3 calette', 'Set snorkeling', 'Brunch a bordo', 'Carburante incluso', 'Fino a 8 ospiti'],
-      tags: ['4 ore', 'fino a 8 px', '3 calette', 'brunch a bordo'],
-      lead: 'Quattro ore al mattino verso le calette del San Bartolo: ancoraggio in tre punti per snorkel e nuotata, brunch a bordo preparato dall\'hostess prima della partenza, skipper incluso. Fino a otto ospiti, rientro all\'ora di pranzo.',
-      variantGroups: [
-        { id: 'brunch', label: 'Brunch', selection: 'single', required: true,
-          options: [
-            { id: 'standard', label: 'Brunch standard', priceMode: 'add', price: 0, sublabel: 'incluso', default: true },
-            { id: 'premium',  label: 'Brunch premium',  priceMode: 'add', price: 180, sublabel: 'crudo + frutta tropicale' }
-          ] },
-        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
-          options: [
-            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
-            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
-            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
-            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
-            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
-            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
-          ] }
-      ]
-    },
-    {
-      id: 'yacht-day-charter',
-      tab: 'escursioni', cat: 'esc-yacht',
-      title: 'Day <em>Charter</em>',
-      loc: 'Cattolica → Vallugola → Gabicce',
-      img: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=85&w=1600&auto=format&fit=crop',
-      imgs: ['https://images.unsplash.com/photo-1540541338287-41700207dee6?q=85&w=1600&auto=format&fit=crop'],
-      badge: 'full day', meta: '8 ore · 10 px · pranzo',
-      duration: '8 ore di mare aperto',
-      basePrice: 1890, priceUnit: 'a barca', perPerson: false,
-      minPeople: 1, maxPeople: 10,
-      slots: ['09:00', '10:00'],
-      rating: 4.95, reviews: 0,
-      includes: ['Skipper + hostess', 'Tender a bordo per le calette', 'Set snorkeling', 'Carburante incluso', 'Fino a 10 ospiti'],
-      tags: ['full day', 'fino a 10 px', 'pranzo', 'tender + snorkel'],
-      lead: 'Otto ore di navigazione tra Cattolica, Vallugola e Gabicce: pranzo a bordo o al Ristorante Falco, snorkeling nelle calette con il tender, skipper e hostess inclusi. La giornata che ti porti a casa.',
-      variantGroups: [
-        { id: 'pranzo', label: 'Pranzo', selection: 'single', required: true,
-          options: [
-            { id: 'a-bordo', label: 'Pranzo a bordo', priceMode: 'add', price: 0, sublabel: 'incluso', default: true },
-            { id: 'falco',   label: 'Pranzo al Ristorante Falco (Vallugola)', priceMode: 'add', price: 0, sublabel: 'a consumo · da confermare' }
-          ] },
-        { id: 'snorkel-set', label: 'Extra acquatici', selection: 'multi', required: false,
-          options: [
-            { id: 'tender-extra', label: 'Tender extra time', priceMode: 'add', price: 80 }
-          ] },
-        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
-          options: [
-            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
-            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
-            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
-            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
-            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
-            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
-          ] }
-      ]
-    },
-    {
-      id: 'yacht-private-event',
-      tab: 'party', cat: 'night',
-      title: 'Private <em>Event</em>',
-      loc: 'Cattolica · al largo',
-      img: 'https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=85&w=1600&auto=format&fit=crop',
-      imgs: ['https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=85&w=1600&auto=format&fit=crop'],
-      badge: '4 ore', meta: '4 ore · 12 px · catering',
-      duration: '4 ore con ponte allestito',
-      basePrice: 1490, priceUnit: 'a barca', perPerson: false,
-      minPeople: 1, maxPeople: 12,
-      rating: 5.0, reviews: 0,
-      includes: ['Skipper + hostess', 'Catering standard', 'Ponte allestito', 'Fino a 12 ospiti'],
-      tags: ['4 ore', 'fino a 12 px', 'catering', 'DJ opzionale'],
-      lead: 'Quattro ore con il ponte allestito, catering a scelta e DJ opzionale — il pretesto lo porti tu, il resto lo gestiamo noi. Fino a dodici ospiti, nessun estraneo a bordo.',
-      variantGroups: [
-        { id: 'catering', label: 'Catering', selection: 'single', required: true,
-          options: [
-            { id: 'standard', label: 'Catering standard', priceMode: 'add', price: 0, sublabel: 'incluso', default: true },
-            { id: 'premium',  label: 'Catering premium',  priceMode: 'add', price: 400 },
-            { id: 'chef',     label: 'Chef a bordo',      priceMode: 'add', price: 800 }
-          ] },
-        { id: 'dj', label: 'DJ', selection: 'single', required: false,
-          options: [
-            { id: 'no',  label: 'Senza DJ',    priceMode: 'add', price: 0, default: true },
-            { id: 'yes', label: 'DJ a bordo',  priceMode: 'add', price: 250 }
-          ] },
-        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
-          options: [
-            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
-            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
-            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
-            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
-            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
-            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
-          ] }
-      ]
-    },
-    {
-      id: 'yacht-weekend',
-      tab: 'love', cat: 'love-yacht',
-      title: 'Riviera <em>Weekend</em>',
-      loc: 'Marche · Emilia',
-      img: 'https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop',
-      imgs: ['https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop'],
-      badge: '2 gg · 1 notte', meta: 'cabina · colazione',
-      duration: '2 giorni, 1 notte a bordo',
-      basePrice: 2490, priceUnit: 'a coppia', perPerson: false,
-      minPeople: 2, maxPeople: 2,
-      rating: 5.0, reviews: 0,
-      includes: ['Cabina privata', 'Colazione continental a bordo', 'Skipper', 'Rotta libera tra Marche ed Emilia'],
-      tags: ['2 gg · 1 notte', 'coppia', 'cabina', 'colazione'],
-      lead: 'Due giorni, una notte in cabina privata con colazione continental a bordo e rotta libera tra le coste delle Marche e dell\'Emilia — il mare come hotel galleggiante, con lo skipper incluso.',
-      variantGroups: [
-        { id: 'colazione', label: 'Colazione', selection: 'single', required: false,
-          options: [
-            { id: 'continental', label: 'Continental', priceMode: 'add', price: 0, sublabel: 'inclusa', default: true },
-            { id: 'specialty',   label: 'Specialty',   priceMode: 'add', price: 60 }
-          ] },
-        { id: 'drink-delivery', label: 'Drink delivery', selection: 'multi', required: false,
-          options: [
-            { id: 'moet',         label: 'Moët & Chandon Brut',     priceMode: 'add', price: 230 },
-            { id: 'veuve',        label: 'Veuve Clicquot',          priceMode: 'add', price: 240 },
-            { id: 'ruinart',      label: 'Ruinart Blanc de Blancs', priceMode: 'add', price: 290 },
-            { id: 'dom-perignon', label: 'Dom Pérignon Vintage',    priceMode: 'add', price: 550 },
-            { id: 'corona',       label: 'Bucket 6 Corona',         priceMode: 'add', price: 160 },
-            { id: 'soft',         label: 'Soft Drinks Kit',         priceMode: 'add', price: 140 }
-          ] }
-      ]
-    },
-
-    // ============ YACHT — Ultra-Platinum (Valbruna) ============
-    {
-      id: 'valbruna-ultra-platinum',
-      tab: 'party', cat: 'night',
-      title: 'Valbruna <em>Ultra-Platinum</em>',
-      loc: 'Cattolica → Vallugola · baia privata',
-      img: 'https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop',
-      imgs: ['https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop'],
-      badge: 'All-in · fino a 20 px', meta: 'DJ · jet ski · drone · open bar',
-      duration: '3 formati · da 4 a 8 ore',
-      basePrice: 4500, priceUnit: 'a barca (fino a 10 px)', perPerson: false,
-      minPeople: 4, maxPeople: 20,
-      rating: 5.0, reviews: 0,
-      includes: [
-        'Esclusiva totale · nessun estraneo a bordo',
-        'Rotta Vallugola · 2 ore navigazione panoramica · carburante incluso',
-        'DJ set privato con professionista a bordo',
-        '1 ora moto d\'acqua portata allo yacht in sosta',
-        'Servizio fotografico e video con drone incluso',
-        'Snorkeling kit · maschere e pinne',
-        'Open Bar (bollicine, soft drink, mixology) + buffet finger food',
-        'Equipaggio: capitano, marinaio e hostess dedicata'
-      ],
-      tags: ['all-in', 'DJ', 'jet ski incluso', 'drone', 'fino a 20 px'],
-      lead: 'Venti metri di club galleggiante privato: rotta verso Vallugola, DJ set professionale, un\'ora di moto d\'acqua portata allo yacht in sosta, drone e servizio fotografico inclusi, open bar e buffet per tutta la navigazione. Fino a venti ospiti, esclusiva totale, nessun estraneo a bordo.',
-      variantGroups: [
-        { id: 'format', label: 'Formato evento', selection: 'single', required: true,
-          options: [
-            { id: 'sunrise', label: 'Sunrise Gold · Alba',     priceMode: 'add', price: 0, sublabel: 'colazione gourmet per tutti', default: true },
-            { id: 'sunset',  label: 'Sunset Elite · Tramonto', priceMode: 'add', price: 0, sublabel: 'aperitivo lungo + DJ set al tramonto' },
-            { id: 'after',   label: 'After Party Supreme',      priceMode: 'add', price: 0, sublabel: 'festa notturna + colazione rigenerante' }
-          ]
+        return Gestiscilo.products();
+      })
+      .then(function (rows) {
+        if (!Array.isArray(rows) || rows.length === 0) {
+          showEmptyCatalogueState();
+          return;
         }
-      ]
-    },
+        EXPERIENCES.splice.apply(EXPERIENCES, [0, EXPERIENCES.length].concat(rows.map(mapProduct)));
+        if (typeof init === 'function') { init(); }
+        updateExpGrid(EXPERIENCES);
+        // 166 D-02: deep-link entry — index.html#p=<id> opens detail sheet
+        var dl = window.JSA && JSA.parseDeepLink ? JSA.parseDeepLink(location.hash) : null;
+        if (dl && dl.id) {
+          setTimeout(function () { openDetail(dl.id); }, 50);
+        }
+      })
+      .catch(function (err) {
+        if (window.console && console.warn) { console.warn('158: bootstrap failed:', err); }
+        showEmptyCatalogueState();
+      });
+  } else {
+    // SDK absent — empty-catalogue state, no crash.
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', showEmptyCatalogueState);
+    } else {
+      showEmptyCatalogueState();
+    }
+  }
 
-    // Duplicates for multi-tab appearance
-    { id: 'yacht-sunset-love',         aliasOf: 'yacht-sunset',       tab: 'love',      cat: 'love-yacht',
-      title: 'Sunset <em>Cruise</em>',       loc: 'Cattolica · al largo',
-      img: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop',
-      badge: '2 ore', meta: '2 ore · skipper · aperitivo', basePrice: 690, priceUnit: 'a barca',
-      perPerson: false, minPeople: 1, maxPeople: 8, rating: 4.95, reviews: 0,
-      tags: ['2 ore', 'fino a 8 px', 'aperitivo', 'skipper'],
-      lead: 'Due ore al tramonto con aperitivo a bordo — bollicine, taglieri e fino a otto ospiti — partenza alle 18:30 e rientro al buio con le luci di Cattolica che si accendono sulla costa.' },
-    { id: 'yacht-day-charter-party',   aliasOf: 'yacht-day-charter',  tab: 'party',     cat: 'day',
-      title: 'Day <em>Charter</em>',         loc: 'Cattolica → Vallugola → Gabicce',
-      img: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=85&w=1600&auto=format&fit=crop',
-      badge: 'full day', meta: '8 ore · 10 px · pranzo', basePrice: 1890, priceUnit: 'a barca',
-      perPerson: false, minPeople: 1, maxPeople: 10, rating: 4.95, reviews: 0,
-      tags: ['full day', 'fino a 10 px', 'pranzo', 'tender + snorkel'],
-      lead: 'Otto ore di navigazione tra Cattolica, Vallugola e Gabicce: pranzo a bordo o al Ristorante Falco, snorkeling nelle calette con il tender, skipper e hostess inclusi.' },
-    { id: 'vallugola-gold-esc',        aliasOf: 'vallugola-gold',     tab: 'escursioni', cat: 'esc-moto',
-      title: 'Vallugola <em>Gold</em>',      loc: 'Cattolica → Vallugola',
-      img: 'https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1400&auto=format&fit=crop',
-      badge: '4 ore', meta: '4 ore', basePrice: 289, priceUnit: 'a persona',
-      perPerson: true, minPeople: 2, maxPeople: 3, rating: 4.95, reviews: 67,
-      tags: ['4 ore', 'pranzo', 'caletta privata', 'min 2 pers'],
-      lead: 'Rotta aperta da Cattolica fino al Porticciolo di Vallugola, con guida inclusa, attracco nella caletta privata e pranzo al Ristorante Falco: quattro ore di navigazione in cui il mezzo risponde solo a te.' },
-  ];
+  // ---------------------------------------------------------------------------
+  // Phase 154 MIG-09 — applyTenantInfo()
+  // Hydrates the contact-card address line + Google Maps deep link from the
+  // SDK's Gestiscilo.business.{streetAddress, postalCode, city}. Plans 11 + 12
+  // extend this same function with MIG-10 (OSM iframe) and MIG-08 (hours).
+  //
+  // Invariants:
+  //  - Idempotent: querySelectorAll-driven; safe to call more than once.
+  //  - Defensive: missing fields produce empty strings, never throws.
+  //  - XSS-safe (T-154-04): textContent + encodeURIComponent, never innerHTML.
+  // ---------------------------------------------------------------------------
+  async function applyTenantInfo() {
+    if (!window.Gestiscilo || !Gestiscilo.ready) return;
+    try { await Gestiscilo.ready; } catch (_) { return; }
+    var b = Gestiscilo.business;
+    if (!b) return;
+
+    // MIG-09: address line — "${streetAddress} · ${postalCode} ${city}"
+    var addrParts = [
+      b.streetAddress,
+      [b.postalCode, b.city].filter(Boolean).join(' ')
+    ].filter(function (s) { return s && String(s).trim() !== ''; });
+    var addr = addrParts.join(' · ');
+    document.querySelectorAll('[data-gs="address-line"]').forEach(function (el) {
+      el.textContent = addr;
+    });
+
+    // MIG-09: Google Maps deep link — encoded address text (not coordinates).
+    // The CTA works even if Nominatim (Plan 11) is unavailable — D-F-05.
+    var dest = encodeURIComponent(
+      [b.streetAddress, b.postalCode, b.city].filter(Boolean).join(', ')
+    );
+    document.querySelectorAll('[data-gs="maps-cta"]').forEach(function (a) {
+      a.href = 'https://www.google.com/maps/dir/?api=1&destination=' + dest;
+    });
+
+    // MIG-08: hours-today / hours-week placeholders + #statusPill APERTO/CHIUSO.
+    // SDK helpers return controlled strings (T-154-04): textContent only, never
+    // innerHTML; setAttribute writes only the literal 'open'/'closed' values.
+    // Defensive: if Gestiscilo.hours is undefined (SDK without hours helper),
+    // skip the block — placeholders remain empty rather than throwing.
+    if (Gestiscilo.hours &&
+        typeof Gestiscilo.hours.todayLabel === 'function' &&
+        typeof Gestiscilo.hours.isOpenNow === 'function') {
+      var lbl = Gestiscilo.hours.todayLabel();
+      var open = Gestiscilo.hours.isOpenNow();
+      document.querySelectorAll('[data-gs="hours-today"]').forEach(function (el) {
+        el.textContent = 'dalle ' + lbl;
+      });
+      document.querySelectorAll('[data-gs="hours-week"]').forEach(function (el) {
+        el.textContent = lbl + ' · 7/7';
+      });
+      document.querySelectorAll('#statusPill').forEach(function (pill) {
+        pill.setAttribute('data-status', open ? 'open' : 'closed');
+        var t = pill.querySelector('.status-label');
+        if (t) t.textContent = open ? 'APERTO' : 'CHIUSO';
+      });
+    }
+
+    // MIG-10: OSM iframe via Nominatim (async, non-blocking — D-J / D-F-07).
+    // Geocoding failure hides the iframe via .contact-map--no-coords; the
+    // Google Maps CTA above still works because it uses address text.
+    applyMap(addr, dest).catch(function () { /* iframe stays hidden */ });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Phase 154 MIG-10 — Nominatim geocoding + OSM iframe hydration.
+  // sessionStorage cache: 1 req per page-session per address (OSMF policy
+  // compliance — D-F-03). Graceful failure: iframe gets .contact-map--no-coords
+  // class (display:none) on any Nominatim outage / empty result / parse error.
+  // No UA header override per Pitfall 2 (browsers ignore it; Referer is set
+  // automatically and satisfies the Nominatim identification policy).
+  // ---------------------------------------------------------------------------
+  async function geocodeAddress(text) {
+    var key = 'gs:nominatim:' + text;
+    try {
+      var cached = sessionStorage.getItem(key);
+      if (cached) {
+        var c = JSON.parse(cached);
+        if (c && c.lat && c.lon) return c;
+      }
+    } catch (_) { /* sessionStorage disabled — proceed to fetch */ }
+
+    var url = 'https://nominatim.openstreetmap.org/search?q=' +
+      encodeURIComponent(text) + '&format=json&limit=1';
+    var res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('nominatim http ' + res.status);
+    var arr = await res.json();
+    if (!Array.isArray(arr) || arr.length === 0) throw new Error('nominatim empty');
+
+    var hit = { lat: arr[0].lat, lon: arr[0].lon, ts: Date.now() };
+    try { sessionStorage.setItem(key, JSON.stringify(hit)); } catch (_) {}
+    return hit;
+  }
+
+  async function applyMap(addressLine, _dest) {
+    var iframes = document.querySelectorAll('[data-gs="osm-frame"]');
+    if (iframes.length === 0) return;  // entrypoint has no map region
+    if (!addressLine) {
+      iframes.forEach(function (f) { f.classList.add('contact-map--no-coords'); });
+      return;
+    }
+
+    var geo;
+    try {
+      geo = await geocodeAddress(addressLine);
+    } catch (e) {
+      console.warn('Gestiscilo: geocoding failed —', (e && e.message) || e);
+      iframes.forEach(function (f) { f.classList.add('contact-map--no-coords'); });
+      return;
+    }
+
+    var lat = parseFloat(geo.lat);
+    var lon = parseFloat(geo.lon);
+    if (isNaN(lat) || isNaN(lon)) {
+      iframes.forEach(function (f) { f.classList.add('contact-map--no-coords'); });
+      return;
+    }
+
+    // ±0.01° bbox (~1.1 km × 1.1 km at this latitude) per D-F-06.
+    var minLon = (lon - 0.01).toFixed(4);
+    var maxLon = (lon + 0.01).toFixed(4);
+    var minLat = (lat - 0.01).toFixed(4);
+    var maxLat = (lat + 0.01).toFixed(4);
+
+    var src = 'https://www.openstreetmap.org/export/embed.html' +
+      '?bbox=' + minLon + '%2C' + minLat + '%2C' + maxLon + '%2C' + maxLat +
+      '&layer=mapnik' +
+      '&marker=' + lat + '%2C' + lon;
+
+    iframes.forEach(function (f) {
+      f.classList.remove('contact-map--no-coords');
+      f.src = src;
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { applyTenantInfo(); });
+  } else {
+    applyTenantInfo();
+  }
 
   const CATS = {
     moto: [
@@ -873,19 +793,6 @@ window.JSA.parseDeepLink = function(hashStr){
     }
     empty.hidden = true;
 
-    const priceFor = (e) => {
-      if(typeof e.priceFromOverride === 'number') return e.priceFromOverride;
-      if(typeof e.basePrice === 'number') return e.basePrice;
-      if(typeof e.priceFrom === 'number') return e.priceFrom; // legacy
-      // Resolve aliases
-      if(e.aliasOf){
-        const canon = EXPERIENCES.find(p => p.id === e.aliasOf);
-        if(canon) return priceFor(canon);
-      }
-      return 0;
-    };
-    const unitFor = (e) => e.priceUnit || (e.aliasOf ? (EXPERIENCES.find(p => p.id === e.aliasOf) || {}).priceUnit : '') || '';
-
     grid.innerHTML = items.map(e => {
       const liked = state.likes.has(e.id);
       const isLove = e.tab === 'love';
@@ -922,7 +829,7 @@ window.JSA.parseDeepLink = function(hashStr){
           </div>
           <div class="card-body">
             <div class="card-row">
-              <h3 class="card-title">${e.title}</h3>
+              <h3 class="card-title">${sanitizeTitle(e.title)}</h3>
               <span class="card-rating" aria-label="Voto ${stars}"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.2 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>${stars}</span>
             </div>
             <p class="card-loc">${e.loc}</p>
@@ -1129,7 +1036,12 @@ window.JSA.parseDeepLink = function(hashStr){
 
   // ============ DETAIL SHEET ============
   function openDetail(id){
-    const e = EXPERIENCES.find(x => x.id === id);
+    const e = EXPERIENCES.find(x =>
+      x.id === id ||
+      String(x.jsa_id || '') === id ||
+      String(x.slug || '') === id ||
+      String(x.detail_key || '') === id
+    );
     if(!e) return;
     const liked = state.likes.has(id);
     const isLove = e.tab === 'love';
@@ -1156,7 +1068,7 @@ window.JSA.parseDeepLink = function(hashStr){
         </div>
       </div>
       <div class="dt-body">
-        <h1>${e.title}</h1>
+        <h1>${sanitizeTitle(e.title)}</h1>
         <p class="dt-meta">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="vertical-align:-2px"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.2 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>
           <b>${stars}</b> · ${e.reviews} recensioni · ${e.loc}
@@ -1228,6 +1140,71 @@ window.JSA.parseDeepLink = function(hashStr){
     openSheet('detailSheet');
   }
 
+  // ============ EXTRAS RENDERER ============
+  function renderExtras(exp) {
+    var pane = document.querySelector('section[data-bk-pane="2"]');
+    var container = document.querySelector('.bk-extras');
+    if (!container) return;
+
+    var products = (exp && exp.linked_products) || [];
+
+    // Empty linked_products -> hide the entire extras pane (per CONTEXT D-D-02).
+    if (!products.length) {
+      if (pane) pane.hidden = true;
+      container.innerHTML = '';
+      return;
+    }
+    if (pane) pane.hidden = false;
+
+    // Clear container then build each label via DOM API.
+    container.innerHTML = '';
+
+    products.forEach(function (p) {
+      var price = (p.price_cents || 0) / 100;
+
+      var label = document.createElement('label');
+      label.className = 'bk-extra';
+
+      var input = document.createElement('input');
+      input.type = 'checkbox';
+      input.dataset.extra = String(p.id);
+      input.dataset.price = String(price);
+
+      var row = document.createElement('span');
+      row.className = 'ext-row';
+
+      var meta = document.createElement('span');
+      meta.className = 'ext-meta';
+
+      var nameEl = document.createElement('b');
+      nameEl.textContent = p.name || '';
+      meta.appendChild(nameEl);
+
+      if (p.description) {
+        var descEl = document.createElement('small');
+        descEl.textContent = p.description;
+        meta.appendChild(descEl);
+      }
+
+      var priceEl = document.createElement('span');
+      priceEl.className = 'ext-price';
+      priceEl.textContent = '+' + price + '€';
+
+      row.appendChild(meta);
+      row.appendChild(priceEl);
+      label.appendChild(input);
+      label.appendChild(row);
+      container.appendChild(label);
+
+      // Pitfall 1: wire change listener per-instance because boot-time wiring is deleted.
+      input.addEventListener('change', function () {
+        if (input.checked) state.booking.extras.add(input.dataset.extra);
+        else state.booking.extras.delete(input.dataset.extra);
+        updateBookingTotal();
+      });
+    });
+  }
+
   // ============ BOOKING SHEET ============
   function openBooking(expId){
     let e;
@@ -1242,18 +1219,16 @@ window.JSA.parseDeepLink = function(hashStr){
     $('#bkExpName').textContent = e.title.replace(/<[^>]+>/g, '');
     $('#bkThumb').style.backgroundImage = `url('${e.img}')`;
 
-    // default date = today + 1
-    const t = new Date();
-    t.setDate(t.getDate() + 1);
-    const iso = t.toISOString().slice(0,10);
-    $('#bkDate').value = iso;
-    $('#bkDate').min = new Date().toISOString().slice(0,10);
-
-    // reset radios + extras
-    $$('input[name="bkTime"]').forEach(r => { r.checked = false; });
-    $$('.bk-extra input').forEach(c => { c.checked = false; });
-    state.booking.extras = new Set();
+    // reset date, time, extras, people
+    state.booking.date = '';
     state.booking.time = '';
+    var bkDateEl = document.getElementById('bkDate');
+    if (bkDateEl) bkDateEl.value = '';
+    $$('input[name="bkTime"]').forEach(r => { r.checked = false; });
+
+    // reset extras and re-render from SDK linked_products
+    state.booking.extras = new Set();
+    renderExtras(e);
 
     // people
     state.booking.people = 2;
@@ -1278,7 +1253,7 @@ window.JSA.parseDeepLink = function(hashStr){
   function updateBookingTotal(){
     const e = getCurrentExp();
     const people = state.booking.people;
-    let base = e.priceFrom;
+    let base = typeof e.basePrice === 'number' ? e.basePrice : (e.priceFrom || 0);
     // a rough estimation logic — multiply by people for some types
     const perPersonIds = ['vallugola-gold','blind-date'];
     const perCoupleIds = ['the-proposal','vallugola-diamond','secret-romance','midday-brunch','sinfonia-amore'];
@@ -1301,8 +1276,14 @@ window.JSA.parseDeepLink = function(hashStr){
   }
 
   // step interactions
-  $('#bkDate').addEventListener('change', e => { state.booking.date = e.target.value; });
-  $$('input[name="bkTime"]').forEach(r => r.addEventListener('change', () => { state.booking.time = r.value; }));
+  var bkDateInput = document.getElementById('bkDate');
+  if (bkDateInput) {
+    bkDateInput.addEventListener('change', function() { state.booking.date = this.value; });
+  }
+  $$('input[name="bkTime"]').forEach(r => {
+    r.addEventListener('change', function() { if (this.checked) state.booking.time = this.value; });
+  });
+
   $$('.bk-stepper button').forEach(b => {
     b.addEventListener('click', () => {
       const dir = b.dataset.step === '+' ? 1 : -1;
@@ -1310,13 +1291,6 @@ window.JSA.parseDeepLink = function(hashStr){
       next = Math.max(1, Math.min(3, next));
       state.booking.people = next;
       $('#bkPeople').textContent = String(next);
-      updateBookingTotal();
-    });
-  });
-  $$('.bk-extra input').forEach(c => {
-    c.addEventListener('change', () => {
-      if(c.checked) state.booking.extras.add(c.dataset.extra);
-      else state.booking.extras.delete(c.dataset.extra);
       updateBookingTotal();
     });
   });
@@ -1328,44 +1302,82 @@ window.JSA.parseDeepLink = function(hashStr){
     }, 250);
   });
 
+  function isPaneHidden(n) {
+    var p = document.querySelector('[data-bk-pane="' + n + '"]');
+    return p ? p.hidden : false;
+  }
   $('#bkBack').addEventListener('click', () => {
-    if(state.bkStep > 1){ state.bkStep--; updateBookingStep(); }
+    if(state.bkStep > 1){
+      var prev = state.bkStep - 1;
+      while(prev > 1 && isPaneHidden(prev)) prev--;
+      state.bkStep = prev;
+      updateBookingStep();
+    }
   });
   $('#bkNext').addEventListener('click', () => {
     if(state.bkStep < 3){
-      state.bkStep++;
+      var next = state.bkStep + 1;
+      while(next < 3 && isPaneHidden(next)) next++;
+      state.bkStep = next;
       updateBookingStep();
       return;
     }
-    // Final step → submit
-    state.booking.name = $('#bkName').value.trim();
+    // 148-MIG-04: final step → submit through SDK.
+    // Source: 148-CONTEXT.md D-E-01..04; Phase 146 D-B-02 (booking validator).
+    state.booking.name  = $('#bkName').value.trim();
     state.booking.phone = $('#bkPhone').value.trim();
-    state.booking.email = $('#bkEmail').value.trim();
     state.booking.notes = $('#bkNotes').value.trim();
 
-    if(!state.booking.name || !state.booking.phone){
-      if(!state.booking.name) $('#bkName').focus();
-      else if(!state.booking.phone) $('#bkPhone').focus();
-      return;
-    }
+    // Required: name + phone + email (email is server-required per Phase 146 D-B-02).
+    if(!state.booking.name){ $('#bkName').focus(); return; }
+    if(!state.booking.phone){ $('#bkPhone').focus(); return; }
+    var emailInput = $('#bkEmail');
+    if(!emailInput.validity.valid){ emailInput.focus(); return; }
+    state.booking.email = emailInput.value.trim();
 
-    const e = getCurrentExp();
-    const lines = [
-      `Ciao Jet Ski Adriatic! Vorrei prenotare:`,
-      ``,
-      `• Esperienza: ${e.title.replace(/<[^>]+>/g, '')}`,
-      `• Data: ${state.booking.date || '—'}${state.booking.time ? ' · ' + state.booking.time : ''}`,
-      `• Persone: ${state.booking.people}`,
-    ];
-    if(state.booking.extras.size){
-      lines.push(`• Extra: ${[...state.booking.extras].join(', ')}`);
-    }
-    lines.push(`• Nome: ${state.booking.name}`);
-    if(state.booking.email) lines.push(`• Email: ${state.booking.email}`);
-    if(state.booking.notes) lines.push(``, `Note: ${state.booking.notes}`);
-    const text = encodeURIComponent(lines.join('\n'));
-    window.open(`https://wa.me/390000000000?text=${text}`, '_blank', 'noopener');
-    closeSheet('bookingSheet');
+    var exp = getCurrentExp();
+    if(!exp){ showBookingGenericError('Esperienza non disponibile.'); return; }
+    var productId = Number(exp.id);
+    if(!isFinite(productId)){ showBookingGenericError('Identificativo prodotto non valido.'); return; }
+
+    var payload = buildBookingPayload(state.booking, exp);
+    payload.idempotency_key = buildIdempotencyKey(
+      productId, payload.booking_date, payload.booking_time, payload.guest_email
+    );
+    var bkNextBtn = $('#bkNext');
+    bkNextBtn.disabled = true;
+    Promise.resolve()
+      .then(function () {
+        if (!window.Gestiscilo || typeof Gestiscilo.book !== 'function') {
+          return Promise.reject({ code: 'bootstrap_error', message: 'SDK non disponibile' });
+        }
+        return Gestiscilo.book(productId, payload);
+      })
+      .then(function (booking) {
+        showBookingSuccess(booking);
+      })
+      .catch(function (err) {
+        err = err || {};
+        if (err.code === 'network_error') {
+          bkNextBtn.disabled = false;
+          var msg = composeWhatsappFallbackMessage(state.booking, exp);
+          var waUrl = (window.Gestiscilo && Gestiscilo.contact && Gestiscilo.contact.waLink)
+            ? Gestiscilo.contact.waLink(msg)
+            : 'https://wa.me/?text=' + encodeURIComponent(msg);
+          window.open(waUrl, '_blank', 'noopener');
+          return;
+        }
+        if (err.code === 'validation_error' && err.field) {
+          showBookingFieldError(err.field, err.message);
+          return;
+        }
+        // unavailable, business_not_found, product_not_found,
+        // idempotency_replay_conflict, internal_error, http_error, bootstrap_error
+        showBookingGenericError(err.message || 'Riprova tra qualche momento');
+      })
+      .then(function () {
+        bkNextBtn.disabled = false;
+      });
   });
 
 
@@ -1565,7 +1577,9 @@ window.JSA.parseDeepLink = function(hashStr){
       if(now){ now.classList.remove('is-loading'); now.removeAttribute('aria-busy'); }
       if(grid){
         grid.removeAttribute('aria-busy');
-        grid.innerHTML = '<p style="text-align:center;color:var(--ink-3);font-size:13px">Impossibile caricare il meteo. <a href="https://wa.me/390000000000" style="color:var(--cyan-2);text-decoration:underline">Scrivici su WhatsApp</a> per il punto del giorno.</p>';
+        // 148-MIG-02: empty href; wirePhoneLinks patches it post-render. MIG-06 grep passes (no digit after wa.me/).
+        grid.innerHTML = '<p style="text-align:center;color:var(--ink-3);font-size:13px">Impossibile caricare il meteo. <a href="https://wa.me/" style="color:var(--cyan-2);text-decoration:underline">Scrivici su WhatsApp</a> per il punto del giorno.</p>';
+        if (window.Gestiscilo && Gestiscilo.wirePhoneLinks) { Gestiscilo.wirePhoneLinks(grid); }
       }
     }
   }
@@ -1749,11 +1763,9 @@ window.JSA.parseDeepLink = function(hashStr){
     });
   }
 
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', init);
-  }else{
-    init();
-  }
+  // 148-MIG-03: init() is now invoked by the SDK bootstrap loader above after
+  // Gestiscilo.products() resolves and EXPERIENCES is populated. The previous
+  // synchronous init() entry was removed so cards render only with data present.
 })();
 
 
@@ -1824,9 +1836,12 @@ window.JSA.parseDeepLink = function(hashStr){
       console.warn('Forecast unavailable:', err);
       grid.innerHTML = `
         <div class="fcast-empty">
-          Le previsioni si stanno aggiornando. Se non le vedi, <a href="https://wa.me/390000000000?text=Ciao!%20Vorrei%20info%20sul%20meteo">scrivici su WhatsApp</a> e ti diciamo le condizioni in tempo reale.
+          Le previsioni si stanno aggiornando. Se non le vedi, <a href="https://wa.me/">scrivici su WhatsApp</a> e ti diciamo le condizioni in tempo reale.
         </div>
       `;
+      // 148-MIG-02: SITE 3 container not held in a local variable; pass document.body
+      // (wirePhoneLinks is idempotent — re-scanning the body to patch newly inserted anchors is cheap).
+      if (window.Gestiscilo && Gestiscilo.wirePhoneLinks) { Gestiscilo.wirePhoneLinks(document.body); }
     }
 
     function renderDay(d, isToday) {

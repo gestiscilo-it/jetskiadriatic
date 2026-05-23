@@ -1434,6 +1434,23 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 @keyframes shimmer{ from{ background-position: 200% 0 } to{ background-position: -200% 0 } }
 
+/* Card skeleton — visible while SDK loads product catalogue */
+.card--skel{ pointer-events: none }
+.card--skel .card-img{
+  background: linear-gradient(90deg, #e8ecf0 0%, #f3f5f7 50%, #e8ecf0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+.card-skel-bar{
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #e8ecf0 0%, #f3f5f7 50%, #e8ecf0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  margin-bottom: 8px;
+}
+.card-skel-bar:last-child{ margin-bottom: 0 }
+
 /* =====================================================
    GENERIC SKELETON PRIMITIVES
    (used by .meteo-now.is-loading and the status pill)
@@ -1909,6 +1926,8 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   border: 0;
   filter: saturate(.85);
 }
+/* Phase 154 MIG-10 — hide iframe when Nominatim geocoding fails (D-F-04). */
+.contact-map--no-coords{ display: none; }
 .contact-map-cta{
   display: grid;
   grid-template-columns: 22px 1fr auto;
@@ -3796,4 +3815,13 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     width: 18px;
     height: 18px;
   }
+}
+
+/* Phase 154 MIG-09 — reserve space for the SDK-hydrated address line so the
+   Base operativa row does not collapse to zero-width before Gestiscilo.ready
+   resolves. feedback_empty_states_min_height.md. */
+[data-gs="address-line"]:empty {
+  display: inline-block;
+  min-width: 240px;
+  min-height: 1.2em;
 }

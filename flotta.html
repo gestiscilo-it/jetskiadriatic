@@ -13,6 +13,69 @@
 <meta property="og:description" content="Sportender JST-30 da 70 km/h e due yacht in flotta. Tutto dallo stesso pontile di Cattolica." />
 <meta property="og:type" content="website" />
 
+<script src="http://localhost:8080/embed/v1.js" data-business="jetskiadriatic"></script>
+<script>
+  (function () {
+    if (window.Gestiscilo && Gestiscilo.ready) {
+      Gestiscilo.ready
+        .then(function () {
+          Gestiscilo.wirePhoneLinks(document);
+          if (typeof Gestiscilo.wireEmailLinks === 'function') {
+            Gestiscilo.wireEmailLinks(document);
+          }
+          return Gestiscilo.products();
+        })
+        .then(function (rows) {
+          if (!Array.isArray(rows) || rows.length === 0) return;
+          rows.forEach(function (p) {
+            var meta = p.metadata || {};
+            var img = (p.media && p.media.length) ? p.media[0].url : (meta.img || '');
+            var tags = meta.tags || [];
+            var basePrice = (p.price_cents || 0) / 100;
+            var priceUnit = meta.priceUnit || '';
+            var pidNum = String(p.id);
+            var pidSlug = String(meta.slug || '');
+            var pidDetail = String(meta.detail_key || '');
+            var pidJsaId = String(meta.jsa_id || '');
+            var article = document.querySelector(
+              'article.exp[data-product-id="' + pidNum + '"], ' +
+                'article.exp[data-product-id="' + pidJsaId + '"], ' +
+              'article.exp[data-product-id="' + pidSlug + '"], ' +
+              'article.exp[data-product-id="' + pidDetail + '"]'
+            );
+            if (!article) return;
+            var illu = article.querySelector('.exp-illu');
+            if (illu) illu.style.backgroundImage = img ? "url('" + img + "')" : '';
+            var tagsEl = article.querySelector('.exp-tags');
+            if (tagsEl) {
+              tagsEl.innerHTML = '';
+              tags.forEach(function (t) {
+                var li = document.createElement('li');
+                li.textContent = t;
+                tagsEl.appendChild(li);
+              });
+            }
+            var priceB = article.querySelector('.exp-price b');
+            var priceSpan = article.querySelector('.exp-price span');
+            if (priceB) priceB.textContent = 'da ' + basePrice + '€';
+            if (priceSpan) priceSpan.textContent = priceUnit;
+          });
+        })
+        .catch(function () { /* SDK bootstrap failed — empty wrappers stay (graceful degradation) */ });
+    }
+
+    // 166 D-01: navigate to index.html booking flow when an exp card is clicked
+    document.addEventListener('click', function (ev) {
+      var trigger = ev.target.closest('[data-detail]');
+      if (!trigger) return;
+      var id = trigger.getAttribute('data-detail');
+      if (!id) return;
+      ev.preventDefault();
+      location.href = 'index.html#p=' + encodeURIComponent(id);
+    });
+  })();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
@@ -49,17 +112,17 @@
         <span class="status-label">Aperto</span>
       </span>
       <span class="sep">·</span>
-      <span>dalle 9:00 alle 20:00</span>
+      <span data-gs="hours-today"></span>
       <span class="sep hide-s">·</span>
       <a href="#contatti" class="hide-s">Cattolica (RN)</a>
     </span>
     <span class="info-r hide-s">
-      <a href="tel:+390000000000">
+      <a href="tel:">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
         +39 000 000 0000
       </a>
       <span class="sep">·</span>
-      <a href="mailto:info@jetskiadriatic.it">info@jetskiadriatic.it</a>
+      <a href="mailto:" data-gs="email">info@jetskiadriatic.it</a>
     </span>
   </div>
 </div>
@@ -90,11 +153,11 @@
           Prenota un'uscita
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
-        <a href="tel:+390000000000" class="btn btn-ghost">
+        <a href="tel:" class="btn btn-ghost">
           Chiama
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
         </a>
-        <a href="https://wa.me/390000000000" class="btn btn-ghost" target="_blank" rel="noopener">
+        <a href="https://wa.me/" class="btn btn-ghost" target="_blank" rel="noopener">
           Scrivici
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1zm0 0a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
         </a>
@@ -203,74 +266,74 @@
   </div>
   <div class="container exp-grid exp-grid--love reveal-s">
 
-    <article class="exp exp--love" data-detail="fast-fun">
+    <article class="exp exp--love" data-detail="fast-fun" data-product-id="fast-fun">
       <div class="exp-n">01</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1641075298538-afccb186b6e1?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Fast <em>& Fun</em></h3>
       <p>Quindici minuti effettivi al largo: il timer parte fuori dai pali del porto. Dieci minuti extra inclusi per rientrare con calma — senza fretta, senza supplemento.</p>
-      <ul class="exp-tags"><li>15 min</li><li>entry</li><li>senza patente</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 50€</b><span>a moto</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
 
-    <article class="exp exp--love" data-detail="classic">
+    <article class="exp exp--love" data-detail="classic" data-product-id="classic">
       <div class="exp-n">02</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Classic <em>45</em></h3>
       <p>Quarantacinque minuti effettivi: abbastanza per spingere al largo, fare il giro costiero e rientrare con calma. Il formato più richiesto.</p>
-      <ul class="exp-tags"><li>45 min</li><li>best seller</li><li>costa Cattolica</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 105€</b><span>a moto</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
 
-    <article class="exp exp--love" data-detail="sunset-hour">
+    <article class="exp exp--love" data-detail="sunset-hour" data-product-id="sunset-hour">
       <div class="exp-n">03</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1714526393543-6fb24e5a68b7?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Sunset <em>Hour</em></h3>
       <p>Un'ora effettiva verso Gabicce o lungo costa al tramonto — il momento in cui la luce cambia e l'Adriatico smette di sembrare piatto. Il timer parte fuori dal porto.</p>
-      <ul class="exp-tags"><li>1 ora</li><li>tramonto</li><li>premium</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 145€</b><span>a moto</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
 
-    <article class="exp exp--love" data-detail="midday-brunch">
+    <article class="exp exp--love" data-detail="midday-brunch" data-product-id="midday-brunch">
       <div class="exp-n">04</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1583008585590-c4ed0010bed6?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Midday <em>Brunch</em></h3>
       <p>Un'ora al largo a metà giornata con il brunch box già apparecchiato a bordo prima della partenza — due miglia dalla riva, tavolo con vista sull'Adriatico.</p>
-      <ul class="exp-tags"><li>1 ora</li><li>brunch box</li><li>al largo</li><li>set-up tavolo</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 220€</b><span>a coppia</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
 
-    <article class="exp exp--love" data-detail="vallugola-gold">
+    <article class="exp exp--love" data-detail="vallugola-gold" data-product-id="vallugola-gold">
       <div class="exp-n">05</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1596302653226-ba0fd4a518a7?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Vallugola <em>Gold</em></h3>
       <p>Rotta aperta da Cattolica fino al Porticciolo di Vallugola, attracco nella caletta privata e pranzo al Ristorante Falco: quattro ore guidate col mezzo che risponde solo a te.</p>
-      <ul class="exp-tags"><li>4 ore</li><li>caletta privata</li><li>pranzo Falco</li><li>min 2 pers</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 289€</b><span>a persona</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
 
-    <article class="exp exp--love" data-detail="vallugola-diamond">
+    <article class="exp exp--love" data-detail="vallugola-diamond" data-product-id="vallugola-diamond">
       <div class="exp-n">06</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Vallugola <em>Diamond</em></h3>
       <p>Quattro ore verso Vallugola con fiori a bordo, Drone Movie incluso e aperitivo con due bottiglie di Champagne nel momento in cui il San Bartolo prende la luce del pomeriggio.</p>
-      <ul class="exp-tags"><li>4 ore</li><li>drone</li><li>champagne</li><li>all-inclusive</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 850€</b><span>a coppia</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
@@ -420,74 +483,74 @@
   </div>
   <div class="container exp-grid exp-grid--love reveal-s">
 
-    <article class="exp exp--love" data-detail="yacht-sunset">
+    <article class="exp exp--love" data-detail="yacht-sunset" data-product-id="yacht-sunset">
       <div class="exp-n">01</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Sunset <em>Cruise</em></h3>
       <p>Due ore al tramonto, aperitivo con bollicine e taglieri, fino a 8 ospiti. Partenza 18:30, rientro al buio sotto Cattolica illuminata.</p>
-      <ul class="exp-tags"><li>2 ore</li><li>fino a 8 px</li><li>aperitivo</li><li>skipper</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 690€</b><span>a barca</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
 
-    <article class="exp exp--love" data-detail="yacht-morning-cove">
+    <article class="exp exp--love" data-detail="yacht-morning-cove" data-product-id="yacht-morning-cove">
       <div class="exp-n">02</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Morning <em>Cove</em></h3>
       <p>Quattro ore al mattino verso le calette del San Bartolo: ancoraggio in tre punti per snorkel e nuotata, brunch a bordo preparato dall'hostess. Fino a 8 ospiti.</p>
-      <ul class="exp-tags"><li>4 ore</li><li>fino a 8 px</li><li>3 calette</li><li>brunch a bordo</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 1.090€</b><span>a barca</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
 
-    <article class="exp exp--love" data-detail="yacht-private-event">
+    <article class="exp exp--love" data-detail="yacht-private-event" data-product-id="yacht-private-event">
       <div class="exp-n">03</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Private <em>Event</em></h3>
       <p>Compleanni, addii al celibato, brindisi aziendali. 4 ore con ponte allestito, catering on demand, DJ opzionale, fino a 12 ospiti.</p>
-      <ul class="exp-tags"><li>4 ore</li><li>fino a 12 px</li><li>catering</li><li>DJ opzionale</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 1.490€</b><span>a barca</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
 
-    <article class="exp exp--love" data-detail="yacht-day-charter">
+    <article class="exp exp--love" data-detail="yacht-day-charter" data-product-id="yacht-day-charter">
       <div class="exp-n">04</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1571421133533-58b4d4e23a64?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Day Charter <em>Gruppo</em></h3>
       <p>Otto ore tra Cattolica, Vallugola e Gabicce. Pranzo a bordo preparato dall'hostess, snorkeling, tender per le calette, fino a 10 ospiti.</p>
-      <ul class="exp-tags"><li>full day</li><li>fino a 10 px</li><li>pranzo</li><li>tender + snorkel</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 1.890€</b><span>a barca</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
 
-    <article class="exp exp--love" data-detail="yacht-weekend">
+    <article class="exp exp--love" data-detail="yacht-weekend" data-product-id="yacht-weekend">
       <div class="exp-n">05</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1540541338287-41700207dee6?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Riviera <em>Weekend</em></h3>
       <p>Due giorni, una notte in cabina privata con colazione continental a bordo e rotta libera tra le coste delle Marche e dell'Emilia — il mare come hotel galleggiante, skipper incluso.</p>
-      <ul class="exp-tags"><li>2 gg · 1 notte</li><li>coppia</li><li>cabina</li><li>colazione</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 2.490€</b><span>a coppia</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
 
-    <article class="exp exp--love" data-detail="valbruna-ultra-platinum">
+    <article class="exp exp--love" data-detail="valbruna-ultra-platinum" data-product-id="valbruna-ultra-platinum">
       <div class="exp-n">06</div>
-      <div class="exp-illu" style="background-image:url('https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop')"></div>
+      <div class="exp-illu"></div>
       <h3>Valbruna <em>Ultra-Platinum</em></h3>
       <p>20 metri di club privato galleggiante. DJ, jet ski, drone, open bar e buffet tutto incluso. Fino a 20 ospiti — esclusiva totale.</p>
-      <ul class="exp-tags"><li>all-in</li><li>DJ · jet ski · drone</li><li>fino a 20 px</li></ul>
+      <ul class="exp-tags"></ul>
       <div class="exp-foot">
-        <div class="exp-price"><b>da 4.500€</b><span>a barca (fino a 10 px)</span></div>
+        <div class="exp-price"><b></b><span></span></div>
         <span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
       </div>
     </article>
@@ -526,11 +589,12 @@
 
     <div class="contact-map">
       <iframe
-        src="https://www.openstreetmap.org/export/embed.html?bbox=12.726%2C43.949%2C12.760%2C43.969&amp;layer=mapnik&amp;marker=43.9592%2C12.7431"
+        data-gs="osm-frame"
+        src="about:blank"
         loading="lazy"
         title="Mappa Jet Ski Adriatic — Porto di Cattolica"
         allowfullscreen></iframe>
-      <a href="https://www.google.com/maps/dir/?api=1&destination=43.9592,12.7431" target="_blank" rel="noopener" class="contact-map-cta">
+      <a data-gs="maps-cta" target="_blank" rel="noopener" class="contact-map-cta">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
         <span class="contact-map-cta-l">
           <b>Indicazioni stradali</b>
@@ -543,19 +607,19 @@
     <div class="contact-card">
       <div class="ci-row">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Pontile</span><span class="ci-value"><a href="https://www.google.com/maps/dir/?api=1&amp;destination=43.9592,12.7431" target="_blank" rel="noopener">Via del Porto, Cattolica · 47841 Rimini (RN)</a></span></span>
+        <span class="ci-c"><span class="ci-label">Pontile</span><span class="ci-value"><a data-gs="maps-cta" target="_blank" rel="noopener"><span data-gs="address-line"></span></a></span></span>
       </div>
       <div class="ci-row">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Telefono &amp; WhatsApp</span><span class="ci-value"><a href="tel:+390000000000">+39 000 000 0000</a></span></span>
+        <span class="ci-c"><span class="ci-label">Telefono &amp; WhatsApp</span><span class="ci-value"><a href="tel:">+39 000 000 0000</a></span></span>
       </div>
       <div class="ci-row">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Email</span><span class="ci-value"><a href="mailto:info@jetskiadriatic.it">info@jetskiadriatic.it</a></span></span>
+        <span class="ci-c"><span class="ci-label">Email</span><span class="ci-value"><a href="mailto:" data-gs="email">info@jetskiadriatic.it</a></span></span>
       </div>
       <div class="ci-row">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Orari stagione</span><span class="ci-value">9:00—20:00 · 7/7</span></span>
+        <span class="ci-c"><span class="ci-label">Orari stagione</span><span class="ci-value" data-gs="hours-week"></span></span>
       </div>
     </div>
 
@@ -603,9 +667,9 @@
     <div class="foot-col">
       <h6>contatti</h6>
       <ul>
-        <li><a href="https://wa.me/390000000000" target="_blank" rel="noopener">WhatsApp</a></li>
-        <li><a href="tel:+390000000000">+39 000 000 0000</a></li>
-        <li><a href="mailto:info@jetskiadriatic.it">info@jetskiadriatic.it</a></li>
+        <li><a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href="tel:">+39 000 000 0000</a></li>
+        <li><a href="mailto:" data-gs="email">info@jetskiadriatic.it</a></li>
         <li><a href="#contatti">Dove ci trovi</a></li>
       </ul>
     </div>
