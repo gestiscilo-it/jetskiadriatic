@@ -126,6 +126,14 @@ window.JSA.parseDeepLink = function(hashStr){
     return '';
   }
 
+  // Narrow allow-list sanitizer for operator-sourced title strings rendered via innerHTML.
+  // Escapes all HTML then restores only <em> and <b> tags (used for italic/bold in titles).
+  function sanitizeTitle(s) {
+    if (!s) return '';
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+             .replace(/&lt;(\/?(?:em|b))&gt;/g, '<$1>');
+  }
+
   function updateExpGrid(experiences) {
     var articles = document.querySelectorAll('article.exp[data-product-id]');
     articles.forEach(function (article) {
@@ -161,7 +169,7 @@ window.JSA.parseDeepLink = function(hashStr){
       if (priceB) priceB.textContent = 'da ' + priceFor(e) + '€';
       if (priceSpan) priceSpan.textContent = unitFor(e);
       var h3 = article.querySelector('h3');
-      if (h3 && e.title) h3.innerHTML = e.title;
+      if (h3 && e.title) h3.innerHTML = sanitizeTitle(e.title);
       var pEl = article.querySelector('p');
       if (pEl && e.lead) pEl.textContent = e.lead;
     });
@@ -808,7 +816,7 @@ window.JSA.parseDeepLink = function(hashStr){
           </div>
           <div class="card-body">
             <div class="card-row">
-              <h3 class="card-title">${e.title}</h3>
+              <h3 class="card-title">${sanitizeTitle(e.title)}</h3>
               <span class="card-rating" aria-label="Voto ${stars}"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.2 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>${stars}</span>
             </div>
             <p class="card-loc">${e.loc}</p>
@@ -1047,7 +1055,7 @@ window.JSA.parseDeepLink = function(hashStr){
         </div>
       </div>
       <div class="dt-body">
-        <h1>${e.title}</h1>
+        <h1>${sanitizeTitle(e.title)}</h1>
         <p class="dt-meta">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="vertical-align:-2px"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.2 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>
           <b>${stars}</b> · ${e.reviews} recensioni · ${e.loc}
