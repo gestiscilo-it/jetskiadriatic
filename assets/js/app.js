@@ -1340,6 +1340,7 @@ window.JSA.parseDeepLink = function(hashStr){
       .catch(function (err) {
         err = err || {};
         if (err.code === 'network_error') {
+          bkNextBtn.disabled = false;
           var msg = composeWhatsappFallbackMessage(state.booking, exp);
           var waUrl = (window.Gestiscilo && Gestiscilo.contact && Gestiscilo.contact.waLink)
             ? Gestiscilo.contact.waLink(msg)
