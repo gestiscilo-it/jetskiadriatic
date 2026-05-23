@@ -1305,16 +1305,14 @@ window.JSA.parseDeepLink = function(hashStr){
     // Source: 148-CONTEXT.md D-E-01..04; Phase 146 D-B-02 (booking validator).
     state.booking.name  = $('#bkName').value.trim();
     state.booking.phone = $('#bkPhone').value.trim();
-    state.booking.email = $('#bkEmail').value.trim();
     state.booking.notes = $('#bkNotes').value.trim();
 
     // Required: name + phone + email (email is server-required per Phase 146 D-B-02).
     if(!state.booking.name){ $('#bkName').focus(); return; }
     if(!state.booking.phone){ $('#bkPhone').focus(); return; }
-    if(!state.booking.email || state.booking.email.indexOf('@') < 0 || state.booking.email.indexOf('.') < 0){
-      $('#bkEmail').focus();
-      return;
-    }
+    var emailInput = $('#bkEmail');
+    if(!emailInput.validity.valid){ emailInput.focus(); return; }
+    state.booking.email = emailInput.value.trim();
 
     var exp = getCurrentExp();
     if(!exp){ showBookingGenericError('Esperienza non disponibile.'); return; }
