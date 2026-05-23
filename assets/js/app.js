@@ -1010,7 +1010,12 @@ window.JSA.parseDeepLink = function(hashStr){
 
   // ============ DETAIL SHEET ============
   function openDetail(id){
-    const e = EXPERIENCES.find(x => x.id === id);
+    const e = EXPERIENCES.find(x =>
+      x.id === id ||
+      String(x.jsa_id || '') === id ||
+      String(x.slug || '') === id ||
+      String(x.detail_key || '') === id
+    );
     if(!e) return;
     const liked = state.likes.has(id);
     const isLove = e.tab === 'love';
