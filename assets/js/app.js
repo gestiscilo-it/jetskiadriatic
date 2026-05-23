@@ -530,6 +530,11 @@ window.JSA.parseDeepLink = function(hashStr){
         EXPERIENCES.splice.apply(EXPERIENCES, [0, EXPERIENCES.length].concat(rows.map(mapProduct)));
         if (typeof init === 'function') { init(); }
         updateExpGrid(EXPERIENCES);
+        // 166 D-02: deep-link entry — index.html#p=<id> opens detail sheet
+        var dl = window.JSA && JSA.parseDeepLink ? JSA.parseDeepLink(location.hash) : null;
+        if (dl && dl.id) {
+          setTimeout(function () { openDetail(dl.id); }, 50);
+        }
       })
       .catch(function (err) {
         if (window.console && console.warn) { console.warn('158: bootstrap failed:', err); }
