@@ -616,11 +616,29 @@ window.JSA.parseDeepLink = function(hashStr){
         typeof Gestiscilo.hours.isOpenNow === 'function') {
       var lbl = Gestiscilo.hours.todayLabel();
       var open = Gestiscilo.hours.isOpenNow();
+      // When the SDK has no hours configured todayLabel() returns the literal
+      // "CHIUSO" (or empty). Don't render "dalle CHIUSO" or "CHIUSO · 7/7" —
+      // the status pill already shows CHIUSO, so we just hide the redundant
+      // info-strip slot and its preceding separator.
+      var closedDay = !lbl || /^\s*chiuso\s*$/i.test(lbl);
       document.querySelectorAll('[data-gs="hours-today"]').forEach(function (el) {
-        el.textContent = 'dalle ' + lbl;
+        var prevSep = el.previousElementSibling;
+        if (closedDay) {
+          el.textContent = '';
+          el.style.display = 'none';
+          if (prevSep && prevSep.classList.contains('sep')) {
+            prevSep.style.display = 'none';
+          }
+        } else {
+          el.textContent = 'dalle ' + lbl;
+          el.style.display = '';
+          if (prevSep && prevSep.classList.contains('sep')) {
+            prevSep.style.display = '';
+          }
+        }
       });
       document.querySelectorAll('[data-gs="hours-week"]').forEach(function (el) {
-        el.textContent = lbl + ' · 7/7';
+        el.textContent = closedDay ? 'orari su richiesta' : (lbl + ' · 7/7');
       });
       document.querySelectorAll('#statusPill').forEach(function (pill) {
         pill.setAttribute('data-status', open ? 'open' : 'closed');
