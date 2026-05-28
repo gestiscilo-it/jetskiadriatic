@@ -830,12 +830,18 @@ window.JSA.parseDeepLink = function(hashStr){
         return `<div class="card-media card-img-slide${active}" data-media-idx="${i}" style="background-image:url('${m.src}')"></div>`;
       }).join('');
 
-      const stars = (e.rating || 0).toFixed(2);
+      // Conditional rendering: badge / rating / loc are optional in product
+      // metadata. Render the elements only when truthy so empty-state values
+      // ("undefined", "0.00") don't leak into the UI.
+      const hasBadge  = typeof e.badge === 'string' && e.badge.trim().length > 0;
+      const hasRating = typeof e.rating === 'number' && e.rating > 0;
+      const hasLoc    = typeof e.loc === 'string' && e.loc.trim().length > 0;
+      const stars     = hasRating ? e.rating.toFixed(2) : '';
       return `
         <article class="card ${isLove ? 'card--love' : ''}" data-card="${e.id}">
           <div class="card-img" data-card-img="${e.id}">
             ${mediaHtml}
-            <span class="card-badge ${isLove ? 'card-badge--love' : ''}">${e.badge}</span>
+            ${hasBadge ? `<span class="card-badge ${isLove ? 'card-badge--love' : ''}">${e.badge}</span>` : ''}
             <button type="button" class="card-heart ${liked ? 'is-liked' : ''}" data-heart="${e.id}" aria-label="Salva ${e.title.replace(/<[^>]+>/g, '')}">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
@@ -848,9 +854,9 @@ window.JSA.parseDeepLink = function(hashStr){
           <div class="card-body">
             <div class="card-row">
               <h3 class="card-title">${sanitizeTitle(e.title)}</h3>
-              <span class="card-rating" aria-label="Voto ${stars}"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.2 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>${stars}</span>
+              ${hasRating ? `<span class="card-rating" aria-label="Voto ${stars}"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.2 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>${stars}</span>` : ''}
             </div>
-            <p class="card-loc">${e.loc}</p>
+            ${hasLoc ? `<p class="card-loc">${e.loc}</p>` : ''}
             <p class="card-meta">${e.meta}</p>
             <div class="card-foot">
               <p class="card-price"><b>da ${priceFor(e)}€</b><small>${unitFor(e)}</small></p>
@@ -1071,7 +1077,14 @@ window.JSA.parseDeepLink = function(hashStr){
       setTimeout(() => openBooking(id), 280);
     };
 
-    const stars = (e.rating || 0).toFixed(2);
+    // Same conditional pattern as card render — show rating/reviews/loc only
+    // when the product carries them. Stagione 0: no real reviews → meta line
+    // collapses to the product's duration/format meta instead.
+    const dtHasRating = typeof e.rating === 'number' && e.rating > 0;
+    const dtStars = dtHasRating ? e.rating.toFixed(2) : '';
+    const dtReviewsLine = (dtHasRating && e.reviews)
+      ? `<b>${dtStars}</b> · ${e.reviews} recensioni${e.loc ? ' · ' + e.loc : ''}`
+      : (e.meta || '');
 
     $('#detailBody').innerHTML = `
       <div class="dt-hero" style="background-image:url('${e.imgs ? e.imgs[0] : e.img}')">
@@ -1088,8 +1101,8 @@ window.JSA.parseDeepLink = function(hashStr){
       <div class="dt-body">
         <h1>${sanitizeTitle(e.title)}</h1>
         <p class="dt-meta">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="vertical-align:-2px"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.2 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>
-          <b>${stars}</b> · ${e.reviews} recensioni · ${e.loc}
+          ${dtHasRating ? `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="vertical-align:-2px"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.2 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>` : ''}
+          ${dtReviewsLine}
         </p>
         <p class="lead">${e.lead}</p>
 
