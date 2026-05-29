@@ -185,10 +185,13 @@ window.JSA.parseDeepLink = function(hashStr){
       : null;
     var imgs = mediaImgs || meta.imgs || (meta.img ? [meta.img] : []);
     var img = imgs[0] || '';
+    // Prefer the top-level p.slug (first-class column post-migration 108).
+    // Fall back to metadata.jsa_id for clients still seeded under the old path.
+    var slug = p.slug || meta.jsa_id || meta.slug || '';
     return Object.assign(
-      { id: String(p.id), basePrice: (p.price_cents || 0) / 100 },
+      { id: String(p.id), slug: slug, basePrice: (p.price_cents || 0) / 100 },
       meta,
-      { img: img, imgs: imgs, linked_products: p.linked_products || [] }
+      { slug: slug, img: img, imgs: imgs, linked_products: p.linked_products || [] }
     );
   }
 
