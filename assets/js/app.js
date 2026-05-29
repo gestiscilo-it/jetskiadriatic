@@ -536,7 +536,19 @@ window.JSA.parseDeepLink = function(hashStr){
     }
   }
 
-  if (typeof window !== 'undefined' && window.Gestiscilo && Gestiscilo.ready) {
+  // Defer the SDK bootstrap until the document has finished parsing so
+  // embed/v1.js (loaded by a later <script> tag in the template) has had
+  // a chance to attach window.Gestiscilo. Previously this ran inline at
+  // module load — when app.js comes BEFORE embed/v1.js in the script
+  // order (the post-Phase-173 template layout), the SDK isn't defined
+  // yet and the entire chain is silently skipped, so static editorial
+  // cards never progressive-enhance.
+  function runSdkBootstrap() {
+    if (typeof window === 'undefined' || !window.Gestiscilo || !Gestiscilo.ready) {
+      // SDK absent — empty-catalogue state, no crash.
+      showEmptyCatalogueState();
+      return;
+    }
     // 158: SDK bootstrap — wirePhoneLinks + wireEmailLinks + product catalogue loader + updateExpGrid.
     Gestiscilo.ready
       .then(function () {
@@ -552,7 +564,15 @@ window.JSA.parseDeepLink = function(hashStr){
           return;
         }
         EXPERIENCES.splice.apply(EXPERIENCES, [0, EXPERIENCES.length].concat(rows.map(mapProduct)));
-        if (typeof init === 'function') { init(); }
+        // init() touches DOM elements (#cards, #feed) that may not be present
+        // on every page (sub-pages don't include the feed). Don't let a missing
+        // DOM node abort the chain — updateExpGrid runs on .exp cards which
+        // every page has, and the bug pattern was: init() throws → static
+        // editorial cards silently never enhance.
+        if (typeof init === 'function') {
+          try { init(); }
+          catch (err) { if (window.console && console.warn) console.warn('init skipped:', err && err.message); }
+        }
         updateExpGrid(EXPERIENCES);
         // 166 D-02: deep-link entry — index.html#p=<id> opens detail sheet
         var dl = window.JSA && JSA.parseDeepLink ? JSA.parseDeepLink(location.hash) : null;
@@ -564,13 +584,15 @@ window.JSA.parseDeepLink = function(hashStr){
         if (window.console && console.warn) { console.warn('158: bootstrap failed:', err); }
         showEmptyCatalogueState();
       });
+  }
+
+  // Run the bootstrap after the document has parsed so the SDK (loaded by
+  // a later <script> tag) is available. Idempotent: runSdkBootstrap checks
+  // window.Gestiscilo before doing work.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runSdkBootstrap);
   } else {
-    // SDK absent — empty-catalogue state, no crash.
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', showEmptyCatalogueState);
-    } else {
-      showEmptyCatalogueState();
-    }
+    runSdkBootstrap();
   }
 
   // ---------------------------------------------------------------------------
