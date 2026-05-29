@@ -1070,8 +1070,11 @@ window.JSA.parseDeepLink = function(hashStr){
     const liked = state.likes.has(id);
     const isLove = e.tab === 'love';
 
-    $('#detailPrice').textContent = `da ${e.priceFrom}€`;
-    $('#detailPriceUnit').textContent = e.priceUnit;
+    // priceFrom is a boolean "starts from" flag in the seed; priceFor() returns
+    // the numeric value via the priceFromOverride → basePrice → legacy cascade.
+    const dtPrefix = e.priceFrom === true ? 'da ' : '';
+    $('#detailPrice').textContent = `${dtPrefix}${priceFor(e)}€`;
+    $('#detailPriceUnit').textContent = unitFor(e);
     $('#detailBook').onclick = () => {
       closeSheet('detailSheet');
       setTimeout(() => openBooking(id), 280);
@@ -1086,17 +1089,12 @@ window.JSA.parseDeepLink = function(hashStr){
       ? `<b>${dtStars}</b> · ${e.reviews} recensioni${e.loc ? ' · ' + e.loc : ''}`
       : (e.meta || '');
 
+    // Sync the (static, sticky) heart-button state with the current product.
+    $('#detailHeart').classList.toggle('is-liked', liked);
+
     $('#detailBody').innerHTML = `
       <div class="dt-hero" style="background-image:url('${e.imgs ? e.imgs[0] : e.img}')">
         ${e.video ? `<video class="dt-hero-video" src="${e.video}" muted loop playsinline preload="metadata" autoplay></video>` : ''}
-        <div class="dt-hero-actions">
-          <button type="button" class="dt-floating-btn" aria-label="Condividi" id="detailShare">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>
-          </button>
-          <button type="button" class="dt-floating-btn${liked ? ' is-liked' : ''}" aria-label="Salva" id="detailHeart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </button>
-        </div>
       </div>
       <div class="dt-body">
         <h1>${sanitizeTitle(e.title)}</h1>

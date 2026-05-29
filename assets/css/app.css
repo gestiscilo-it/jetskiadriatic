@@ -840,10 +840,17 @@ body.is-past-products .cat-bar{
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 6px 16px 24px;
-  scrollbar-width: thin;
+  scrollbar-width: none;          /* Firefox */
 }
+/* Chrome/Safari/Edge — hide the scrollbar gutter entirely inside sheets */
+.sheet-body::-webkit-scrollbar{ width: 0; height: 0; }
 /* detail sheet body has its own padding via .dt-* rules — kill the parent padding */
-#detailSheet .sheet-body{ padding: 0 }
+#detailSheet .sheet-body{
+  padding: 0;
+  /* Suppress the native rubber-band bounce on the inner scroller — the
+     modal body should feel locked, not elastic. */
+  overscroll-behavior-y: none;
+}
 
 .sheet-footbar{
   flex: 0 0 auto;
@@ -1126,7 +1133,6 @@ body[data-active-tab="experience"] .btn-primary{
   display: block;
   z-index: 0;
 }
-.dt-hero > .dt-hero-actions{ z-index: 2 }
 /* Detail sheet: hero reaches the top of the sheet — float the
    drag handle over the image instead of sitting above it */
 #detailSheet .sheet-grab{
@@ -1145,12 +1151,15 @@ body[data-active-tab="experience"] .btn-primary{
 #detailSheet .sheet-grab.is-dragging .sheet-handle{
   background: #fff;
 }
-.dt-hero-actions{
+/* Floating share/save: positioned absolute relative to the sheet container
+   (#detailSheet is position:fixed) so they stay pinned at the modal's
+   top-right corner regardless of the body scroll position. */
+#detailSheet > .dt-hero-actions{
   position: absolute;
   top: 12px; right: 12px;
   display: inline-flex;
   gap: 8px;
-  z-index: 1;
+  z-index: 3;
 }
 .dt-floating-btn{
   width: 38px; height: 38px;
@@ -2539,7 +2548,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .exp-foot{
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px;
-  margin: 14px 18px 18px;
+  margin: auto 18px 18px;
   padding-top: 14px;
   border-top: 1px solid rgba(255,255,255,.12);
 }
