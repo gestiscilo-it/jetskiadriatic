@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1" />
+<meta name="theme-color" content="#06182A" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="{% block apple_title %}{{ self.page_title() }}{% endblock %}" />
+<title>{% block page_title %}Jet Ski Adriatic{% endblock %}</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+<link rel="apple-touch-icon" href="assets/logo.svg" />
+<meta name="description" content="{% block meta_description %}{% endblock %}" />
+<meta property="og:title" content="{% block og_title %}{{ self.page_title() }}{% endblock %}" />
+<meta property="og:description" content="{% block og_description %}{{ self.meta_description() }}{% endblock %}" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="{% block og_image %}{% endblock %}" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
+<link rel="stylesheet" href="assets/css/app.css" />
+
+<style>
+  .reveal,
+  .reveal-s > * { opacity: 1 !important; transform: none !important; }
+</style>
+
+{% block scripts_head %}{% endblock %}
+</head>
+<body data-active-tab="{% block active_tab %}{% endblock %}">
+{% include "_partials/splash.html" %}
+{% block hero %}{% endblock %}
+{% block content %}{% endblock %}
+{% include "_partials/info_strip.html" %}
+{% include "_partials/footer.html" %}
+{% include "_partials/sdk_bootstrap.html" %}
+</body>
+</html>

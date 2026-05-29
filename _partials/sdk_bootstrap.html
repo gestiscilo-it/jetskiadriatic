@@ -1,0 +1,13 @@
+<script src="http://localhost:8080/embed/v1.js" data-business="jetskiadriatic"></script>
+<script>
+  (function () {
+    if (window.Gestiscilo && Gestiscilo.ready) {
+      Gestiscilo.ready.then(function () {
+        Gestiscilo.wirePhoneLinks(document);
+        if (typeof Gestiscilo.wireEmailLinks === 'function') {
+          Gestiscilo.wireEmailLinks(document);
+        }
+      }).catch(function () { /* graceful degradation */ });
+    }
+  })();
+</script>
