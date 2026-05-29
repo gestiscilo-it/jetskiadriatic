@@ -1,0 +1,89 @@
+<script>
+  // Shared product-enhancement bootstrap for sub-pages (noleggio / flotta /
+  // escursioni / love). Hydrates the static .exp cards' images, tags, and
+  // prices from the backend product catalogue.
+  //
+  // Two robustness traits worth preserving:
+  //  1. Deferred to DOMContentLoaded so the embed/v1.js script tag (loaded
+  //     later in the document) has a chance to attach window.Gestiscilo.
+  //     The earlier inline version ran synchronously at parse time and
+  //     silently skipped its entire chain when the SDK wasn't loaded yet.
+  //  2. Slug lookup tries top-level p.slug first (the first-class column
+  //     post-migration 108), then falls back to metadata.jsa_id / .slug /
+  //     .detail_key for legacy compatibility.
+  (function () {
+    function bootstrap() {
+      if (!window.Gestiscilo || !Gestiscilo.ready) return;
+      Gestiscilo.ready
+        .then(function () {
+          Gestiscilo.wirePhoneLinks(document);
+          if (typeof Gestiscilo.wireEmailLinks === 'function') {
+            Gestiscilo.wireEmailLinks(document);
+          }
+          return Gestiscilo.products();
+        })
+        .then(function (rows) {
+          if (!Array.isArray(rows) || rows.length === 0) return;
+          rows.forEach(function (p) {
+            var meta = p.metadata || {};
+            var img = (p.media && p.media.length) ? p.media[0].url : (meta.img || '');
+            var tags = meta.tags || [];
+            var basePrice = (p.price_cents || 0) / 100;
+            var priceUnit = meta.priceUnit || '';
+            var pidNum = String(p.id);
+            // p.slug first (column), then legacy metadata fallbacks.
+            var pidSlug = String(p.slug || meta.slug || '');
+            var pidDetail = String(meta.detail_key || '');
+            var pidJsaId = String(meta.jsa_id || '');
+            var article = document.querySelector(
+              'article.exp[data-product-id="' + pidNum + '"], ' +
+              'article.exp[data-product-id="' + pidSlug + '"], ' +
+              'article.exp[data-product-id="' + pidJsaId + '"], ' +
+              'article.exp[data-product-id="' + pidDetail + '"]'
+            );
+            if (!article) return;
+            var illu = article.querySelector('.exp-illu');
+            if (illu) illu.style.backgroundImage = img ? "url('" + img + "')" : '';
+            var tagsEl = article.querySelector('.exp-tags');
+            if (tagsEl) {
+              tagsEl.innerHTML = '';
+              tags.forEach(function (t) {
+                var li = document.createElement('li');
+                li.textContent = t;
+                tagsEl.appendChild(li);
+              });
+            }
+            var priceB = article.querySelector('.exp-price b');
+            var priceSpan = article.querySelector('.exp-price span');
+            if (priceB) priceB.textContent = 'da ' + basePrice + '€';
+            if (priceSpan) priceSpan.textContent = priceUnit;
+            // Title + lead overrides from metadata (operator-authored, allows
+            // <em>/<b> markup in title for italic accents). The static HTML
+            // values stay as fallback when metadata is absent.
+            var h3El = article.querySelector('h3');
+            if (h3El && meta.title) h3El.innerHTML = meta.title;
+            var pEl = article.querySelector('p');
+            if (pEl && meta.lead) pEl.textContent = meta.lead;
+          });
+        })
+        .catch(function () { /* SDK bootstrap failed — empty wrappers stay (graceful degradation) */ });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bootstrap);
+    } else {
+      bootstrap();
+    }
+
+    // 166 D-01: navigate to index.html booking flow when an exp card is clicked.
+    // Listener attaches once even before bootstrap — closest() works regardless.
+    document.addEventListener('click', function (ev) {
+      var trigger = ev.target.closest('[data-detail]');
+      if (!trigger) return;
+      var id = trigger.getAttribute('data-detail');
+      if (!id) return;
+      ev.preventDefault();
+      location.href = 'index.html#p=' + encodeURIComponent(id);
+    });
+  })();
+</script>

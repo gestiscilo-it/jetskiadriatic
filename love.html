@@ -14,71 +14,7 @@
   /* app.css sets exp--love .exp-n to ochre — override to rose */
   .exp--love .exp-n { color: #E84F6B; }
 </style>
-<script>
-  (function () {
-    if (window.Gestiscilo && Gestiscilo.ready) {
-      Gestiscilo.ready
-        .then(function () {
-          Gestiscilo.wirePhoneLinks(document);
-          if (typeof Gestiscilo.wireEmailLinks === 'function') {
-            Gestiscilo.wireEmailLinks(document);
-          }
-          return Gestiscilo.products();
-        })
-        .then(function (rows) {
-          if (!Array.isArray(rows) || rows.length === 0) return;
-          rows.forEach(function (p) {
-            var meta = p.metadata || {};
-            var img = (p.media && p.media.length) ? p.media[0].url : (meta.img || '');
-            var tags = meta.tags || [];
-            var basePrice = (p.price_cents || 0) / 100;
-            var priceUnit = meta.priceUnit || '';
-            var pidNum = String(p.id);
-            var pidSlug = String(meta.slug || '');
-            var pidDetail = String(meta.detail_key || '');
-            var pidJsaId = String(meta.jsa_id || '');
-            var article = document.querySelector(
-              'article.exp[data-product-id="' + pidNum + '"], ' +
-                'article.exp[data-product-id="' + pidJsaId + '"], ' +
-              'article.exp[data-product-id="' + pidSlug + '"], ' +
-              'article.exp[data-product-id="' + pidDetail + '"]'
-            );
-            if (!article) return;
-            var illu = article.querySelector('.exp-illu');
-            if (illu) illu.style.backgroundImage = img ? "url('" + img + "')" : '';
-            var tagsEl = article.querySelector('.exp-tags');
-            if (tagsEl) {
-              tagsEl.innerHTML = '';
-              tags.forEach(function (t) {
-                var li = document.createElement('li');
-                li.textContent = t;
-                tagsEl.appendChild(li);
-              });
-            }
-            var priceB = article.querySelector('.exp-price b');
-            var priceSpan = article.querySelector('.exp-price span');
-            if (priceB) priceB.textContent = 'da ' + basePrice + '€';
-            if (priceSpan) priceSpan.textContent = priceUnit;
-            var h3El = article.querySelector('h3');
-            if (h3El && meta.title) h3El.innerHTML = meta.title;
-            var pEl = article.querySelector('p');
-            if (pEl && meta.lead) pEl.textContent = meta.lead;
-          });
-        })
-        .catch(function () { /* SDK bootstrap failed — empty wrappers stay (graceful degradation) */ });
-    }
-
-    // 166 D-01: navigate to index.html booking flow when an exp card is clicked
-    document.addEventListener('click', function (ev) {
-      var trigger = ev.target.closest('[data-detail]');
-      if (!trigger) return;
-      var id = trigger.getAttribute('data-detail');
-      if (!id) return;
-      ev.preventDefault();
-      location.href = 'index.html#p=' + encodeURIComponent(id);
-    });
-  })();
-</script>
+{% include "_partials/exp_grid_bootstrap.html" %}
 {% endblock %}
 
 {% block hero %}
