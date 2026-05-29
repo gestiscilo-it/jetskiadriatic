@@ -302,13 +302,16 @@ window.JSA.parseDeepLink = function(hashStr){
       }
     }
 
+    // Mirror the page's .empty-ico placeholder: 56px surface circle, line
+    // border, fine 1.8 stroke — keeps the success state visually consistent
+    // with other low-emphasis status surfaces on the site.
     var iconHtml =
       '<div aria-hidden="true" ' +
-           'style="display:grid;place-items:center;width:64px;height:64px;border-radius:50%;' +
-                  'background:var(--acqua,#3FCDED);margin:0 auto 18px;color:#06182A;' +
-                  'box-shadow:0 8px 22px rgba(63,205,237,.32)">' +
-        '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" ' +
-             'stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">' +
+           'style="width:56px;height:56px;border-radius:50%;' +
+                  'background:var(--surface);border:1px solid var(--line);' +
+                  'display:grid;place-items:center;margin:0 auto 12px;color:var(--ink)">' +
+        '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" ' +
+             'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
           '<path d="M20 6L9 17l-5-5"/>' +
         '</svg>' +
       '</div>';
