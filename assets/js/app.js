@@ -302,10 +302,22 @@ window.JSA.parseDeepLink = function(hashStr){
       }
     }
 
+    var iconHtml =
+      '<div aria-hidden="true" ' +
+           'style="display:grid;place-items:center;width:64px;height:64px;border-radius:50%;' +
+                  'background:var(--acqua,#3FCDED);margin:0 auto 18px;color:#06182A;' +
+                  'box-shadow:0 8px 22px rgba(63,205,237,.32)">' +
+        '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" ' +
+             'stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">' +
+          '<path d="M20 6L9 17l-5-5"/>' +
+        '</svg>' +
+      '</div>';
+
     var html =
       '<div class="bk-success-state" role="status" aria-live="polite" ' +
            'style="min-height:200px;display:grid;place-items:center;padding:32px;text-align:center;color:var(--ink)">' +
         '<div>' +
+          iconHtml +
           '<p style="font-size:18px;font-weight:600;margin-bottom:8px">Prenotazione ricevuta!</p>' +
           '<p style="color:var(--ink-3);margin-bottom:12px">Numero: <code>' + bookingIdLabel + '</code></p>' +
           (when ? '<p style="color:var(--ink-3);margin-bottom:12px">' + when + '</p>' : '') +
