@@ -387,7 +387,13 @@ body.is-past-products .cat-bar{
    FEED
    ===================================================== */
 .feed{
-  padding: 16px 16px 12px;
+  /* Hero rail: 92vw centering + breakpoint-progressive horizontal padding
+     (0/40/56) so the "Prenota online…" head and cards strip align with
+     hero text on every viewport. Vertical padding scales separately. */
+  width: 92vw;
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 16px 0 12px;
   position: relative;
   /* Anchored "Prenota" CTAs land here. Pull the scroll target up
      so the sticky topbar doesn't cover the feed-head and the user
@@ -1605,7 +1611,9 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   body{ font-size: 15.5px }
 
   .topbar-row--main{ padding: 14px 12px }
-  .feed{ padding: 24px 24px 40px }
+  /* Hero rail (640–959): horizontal padding stays at 0 — 92vw centering
+     provides the visual gutter. Vertical padding ramps up for breathing room. */
+  .feed{ padding: 24px 0 40px }
   .feed-head h1{ font-size: 26px }
 
   .cards{
@@ -1647,11 +1655,16 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 
 
   .topbar-row{ max-width: var(--content-w); margin: 0 auto }
-  /* Macro tabs row gets a slightly tighter inset than the subcategories
-     (.cats use 40px / 88px) so the primary nav reads as one rung above
-     the secondary rail. */
+  /* Macro tabs and subcategory rail share the hero/section gutter so the
+     primary nav, secondary rail, and video heroes all sit on the same
+     vertical line. The 4px reduction (40-4 vs hero's 40) compensates for
+     the pill chip's rounded left corner so the painted ink optically
+     aligns with the hard text edges below. */
   .topbar-row--main{
-    padding: 18px 40px;
+    width: 92vw;
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 18px 36px;
     gap: 24px;
   }
   /* tabs (pill) — slightly larger on desktop */
@@ -1680,9 +1693,12 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     transform: none;
   }
   .cats{
+    width: 92vw;
     max-width: var(--content-w);
     margin: 0 auto;
-    padding: 14px 40px 0;
+    /* 4px less than the hero/section rail (40px) so the pill chip rounded
+       corner optically aligns with the hard text edge of the hero copy. */
+    padding: 14px 36px 0;
     justify-content: flex-start;
     gap: 0;
     overflow-x: auto;
@@ -1704,11 +1720,10 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     border-bottom-color: var(--tab-on-accent);
   }
 
-  /* Feed: 3 columns */
+  /* Feed: 3 columns. Hero rail at 40px padding-x; 92vw + max-width set in
+     base `.feed` rule, no need to re-declare here. */
   .feed{
-    padding: 36px 64px 60px;
-    max-width: var(--content-w);
-    margin: 0 auto;
+    padding: 36px 40px 60px;
   }
   .feed-head{ margin-bottom: 24px }
   .feed-head h1{ font-size: 30px }
@@ -1717,7 +1732,9 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     padding-block: 4px 16px;
     gap: 24px;
     scroll-snap-type: x proximity;
-    scroll-padding-left: max(64px, calc((100vw - var(--content-w)) / 2 + 64px));
+    /* Snap target sits at the hero rail (40px padding inside 92vw centering)
+       so the first card aligns with the .feed-head above it. */
+    scroll-padding-left: max(40px, calc((100vw - var(--content-w)) / 2 + 40px));
   }
   .card{ flex: 0 0 47% }
   .card-img{ aspect-ratio: 16 / 9 }
@@ -1822,13 +1839,16 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   .cards{
     padding-block: 4px 16px;
     gap: 28px;
-    scroll-padding-left: max(88px, calc((100vw - var(--content-w)) / 2 + 88px));
+    /* Hero rail (56px) so the first card snaps in line with the feed-head. */
+    scroll-padding-left: max(56px, calc((100vw - var(--content-w)) / 2 + 56px));
   }
   .card{ flex: 0 0 32% }
-  .cats,
-  .feed{ padding-left: 88px; padding-right: 88px }
-  /* Macro tabs row stays a touch tighter than the subcategories rail */
-  .topbar-row--main{ padding-left: 80px; padding-right: 80px }
+  .feed{ padding-left: 56px; padding-right: 56px }
+  /* Macro tabs row and sub-category rail share the hero/section gutter
+     (56px) with a 4px pull-in for the pill chips' rounded corners so the
+     painted ink optically aligns with the hard text edges below. */
+  .topbar-row--main{ padding-left: 52px; padding-right: 52px }
+  .cats{ padding-left: 52px; padding-right: 52px }
   .fab-wa,
   .fab-call,
   .fab-book{
@@ -1855,10 +1875,13 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 .contact-head,
 .contact-grid{
+  /* Hero rail: 92vw centering + breakpoint-progressive padding (0/40/56)
+     so the contact column lines up with hero text on every viewport. */
+  width: 92vw;
   max-width: var(--content-w);
   margin: 0 auto;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 0;
+  padding-right: 0;
 }
 @media (min-width: 960px){
   .contact-head,
@@ -2054,10 +2077,12 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .foot-bottom{
   position: relative;
   z-index: 1;
+  /* Hero rail: 92vw centering + breakpoint-progressive padding (0/40/56). */
+  width: 92vw;
   max-width: var(--content-w);
   margin: 0 auto;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 0;
+  padding-right: 0;
 }
 .foot-top{
   display: grid;
@@ -2189,12 +2214,13 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   content: "";
   position: absolute;
   top: 0;
-  left: 16px;
-  right: 16px;
+  /* Divider tracks the .foot-bottom inner padding (0/0/40/56) so it
+     spans the full content edge-to-edge inside the 92vw rail. */
+  left: 0;
+  right: 0;
   height: 1px;
   background: rgba(255,255,255,.08);
 }
-@media (min-width: 640px){ .foot-bottom::before{ left: 24px; right: 24px } }
 @media (min-width: 960px){ .foot-bottom::before{ left: 40px; right: 40px } }
 @media (min-width: 1280px){ .foot-bottom::before{ left: 56px; right: 56px } }
 .fb-line{ display: block }
@@ -2204,11 +2230,8 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 /* ---- responsive ---- */
 @media (min-width: 640px){
   .contact{ padding: 64px 0 72px }
-  .foot-top,
-  .foot-trust,
-  .foot-bottom,
-  .contact-head,
-  .contact-grid{ padding-left: 24px; padding-right: 24px }
+  /* Hero rail (640–959): all containers stay at 92vw centering with no
+     side padding — matches hero kicker position at 4vw. */
   .contact-grid{
     grid-template-columns: 1.4fr 1fr;
     gap: 20px;
@@ -3328,12 +3351,9 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
     padding-left: 56px;
     padding-right: 56px;
   }
-  /* Card grids match the .feed (Prenota online…) horizontal inset. */
-  .section > .container.exp-grid,
-  .section > .container.exp-grid--love{
-    padding-left: 88px;
-    padding-right: 88px;
-  }
+  /* Card grids inherit the hero rail (56px) from the general .container
+     rule above — the prior 88px dominant inset has been retired so the
+     experience grid lines up with hero kicker / feed-head. */
 }
 
 @media (max-width:720px){
@@ -3537,16 +3557,26 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 
 /* ----- Mobile: let the whole tab pill slide horizontally when the
-   chips exceed the viewport width ----- */
+   chips exceed the viewport width.
+
+   Chip rail aligns with the hero/section 92vw rail (hero kicker sits at
+   `(100vw - 92vw)/2 = 4vw` from the page edge). Chip bounding boxes are
+   pulled 4px LEFT of that so the pill's rounded corner optically aligns
+   with the hard text edge of the hero copy. Scroll clipping stays at the
+   viewport edge — only the first chip's position is inset. ----- */
 @media (max-width: 959px){
   .topbar-row--main{
     overflow-x: auto;
     scrollbar-width: none;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: max(0px, calc(4vw - 4px));
+    padding-right: max(0px, calc(4vw - 4px));
   }
   .topbar-row--main::-webkit-scrollbar{ display: none }
   .tabs{ flex: 0 0 auto }
+  .cats{
+    padding-left: max(0px, calc(4vw - 4px));
+    padding-right: max(0px, calc(4vw - 4px));
+  }
 }
 
 /* ----- Tab pills — coloured per active tab (overrides line 235) ----- */
