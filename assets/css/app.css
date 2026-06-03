@@ -3741,6 +3741,27 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   border: 1px solid var(--tab-tint-2);
 }
 
+/* Lead description — body copy on dark surface, clamp to 3 lines so cards
+   stay vertically aligned in the grid. Falls back gracefully when absent
+   (template omits the element via hasLead guard). */
+.card-desc{
+  margin: 10px 0 0;
+  color: rgba(255,255,255,.74);
+  font-size: 13px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-desc em{
+  color: var(--tab-accent);
+  font-family: var(--f-serif);
+  font-style: italic;
+}
+
 /* Price + CTA row — flex split, divider hairline above */
 .card-foot{
   display: flex;

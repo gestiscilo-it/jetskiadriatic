@@ -876,6 +876,7 @@ window.JSA.parseDeepLink = function(hashStr){
       const hasBadge  = typeof e.badge === 'string' && e.badge.trim().length > 0;
       const hasRating = typeof e.rating === 'number' && e.rating > 0;
       const hasLoc    = typeof e.loc === 'string' && e.loc.trim().length > 0;
+      const hasLead   = typeof e.lead === 'string' && e.lead.trim().length > 0;
       const stars     = hasRating ? e.rating.toFixed(2) : '';
       return `
         <article class="card ${isLove ? 'card--love' : ''}" data-card="${e.id}">
@@ -898,6 +899,7 @@ window.JSA.parseDeepLink = function(hashStr){
             </div>
             ${hasLoc ? `<p class="card-loc">${e.loc}</p>` : ''}
             <p class="card-meta">${e.meta}</p>
+            ${hasLead ? `<p class="card-desc">${sanitizeTitle(e.lead)}</p>` : ''}
             <div class="card-foot">
               <p class="card-price"><b>da ${priceFor(e)}€</b><small>${unitFor(e)}</small></p>
               <span class="card-cta" aria-hidden="true">Scopri<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
