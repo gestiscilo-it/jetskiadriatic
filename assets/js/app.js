@@ -1330,13 +1330,16 @@ window.JSA.parseDeepLink = function(hashStr){
     const people = state.booking.people;
     let base = typeof e.basePrice === 'number' ? e.basePrice : (e.priceFrom || 0);
     // a rough estimation logic — multiply by people for some types
-    const perPersonIds = ['vallugola-gold','blind-date'];
-    const perCoupleIds = ['the-proposal','vallugola-diamond','secret-romance','midday-brunch','sinfonia-amore'];
+    // Match against e.slug — mapProduct sets e.id to String(p.id), so the
+    // earlier id-keyed check never fired and every product fell through to
+    // the flat-base branch.
+    const perPersonSlugs = ['vallugola-gold','blind-date'];
+    const perCoupleSlugs = ['the-proposal','vallugola-diamond','secret-romance','midday-brunch','sinfonia-amore'];
     let total;
-    if(perPersonIds.includes(e.id)){
+    if(perPersonSlugs.includes(e.slug)){
       total = base * people;
-    }else if(perCoupleIds.includes(e.id)){
-      total = base; // already coppia
+    }else if(perCoupleSlugs.includes(e.slug)){
+      total = base;
     }else{
       total = base;
     }
