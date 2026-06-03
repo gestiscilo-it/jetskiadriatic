@@ -1343,8 +1343,12 @@ window.JSA.parseDeepLink = function(hashStr){
       renderDayStripPlaceholder('Disponibilità non disponibile in questo momento.');
       return;
     }
-    var qty = Math.max(1, Number(people) || 1);
-    Gestiscilo.availability(productId, { quantity: qty })
+    // SDK `quantity` = vessels needed, NOT riders. Each booking reserves ONE
+    // vessel regardless of people on board (Sportender JST-30 seats 2). The
+    // `people` count is captured in the booking payload, not the availability
+    // query, otherwise quantity>=2 returns zero slots.
+    void people;
+    Gestiscilo.availability(productId, {})
       .then(function (data) {
         var dates = (data && Array.isArray(data.dates)) ? data.dates : [];
         state.booking.availability = dates;
