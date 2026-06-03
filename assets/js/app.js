@@ -218,15 +218,21 @@ window.JSA.parseDeepLink = function(hashStr){
     var minutes = (typeof exp.default_duration_minutes === 'number' && exp.default_duration_minutes > 0)
       ? exp.default_duration_minutes
       : parseDurationLabel(exp.duration);
-    return {
+    // Field names must match src/api/public_booking.rs::PublicBookingPayload.
+    // `people` not `party_size` (Phase 175), `owner_notes` not `notes`.
+    var payload = {
       booking_date:     s.date,
       booking_time:     s.time,
       duration_minutes: minutes,
-      party_size:       Number(s.people) || 1,
+      people:           Number(s.people) || 1,
       guest_name:       s.name,
       guest_email:      s.email,
       guest_phone:      s.phone,
     };
+    if (s.notes && String(s.notes).trim()) {
+      payload.owner_notes = String(s.notes).trim();
+    }
+    return payload;
   }
 
   function parseDurationLabel(label) {
@@ -344,7 +350,7 @@ window.JSA.parseDeepLink = function(hashStr){
       booking_date:     '#bkDate',
       booking_time:     null,           // radio group — cannot focus()
       duration_minutes: null,           // not user-facing
-      party_size:       '#bkPeople',
+      people:           '#bkPeople',
       guest_name:       '#bkName',
       guest_email:      '#bkEmail',
       guest_phone:      '#bkPhone',
