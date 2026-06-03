@@ -909,19 +909,14 @@
 
       <h3 class="bk-q">Quando vuoi <em>uscire</em>?</h3>
       <div class="bk-field">
-        <label for="bkDate">Data</label>
-        <input type="date" id="bkDate" />
+        <label>Data</label>
+        <div class="bk-days" id="bkDays" role="radiogroup" aria-label="Scegli il giorno"></div>
+        <input type="hidden" id="bkDate" />
       </div>
 
       <div class="bk-field">
-        <label>Orario preferito</label>
-        <div class="bk-times" id="bkTimes">
-          <label><input type="radio" name="bkTime" value="09:00" /><span>09:00</span></label>
-          <label><input type="radio" name="bkTime" value="11:00" /><span>11:00</span></label>
-          <label><input type="radio" name="bkTime" value="14:00" /><span>14:00</span></label>
-          <label><input type="radio" name="bkTime" value="16:00" /><span>16:00</span></label>
-          <label><input type="radio" name="bkTime" value="18:30" /><span>tramonto</span></label>
-        </div>
+        <label>Orario</label>
+        <div class="bk-times" id="bkTimes"></div>
       </div>
 
       <div class="bk-field">

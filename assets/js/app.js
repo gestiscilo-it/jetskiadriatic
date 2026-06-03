@@ -1286,6 +1286,101 @@ window.JSA.parseDeepLink = function(hashStr){
     });
   }
 
+  // ============ AVAILABILITY (day strip + time slots) ============
+  // Italian short labels for day chips. Date.getDay() → 0=Sun, 6=Sat.
+  var WEEKDAY_SHORT = ['DOM','LUN','MAR','MER','GIO','VEN','SAB'];
+  var MONTH_SHORT   = ['GEN','FEB','MAR','APR','MAG','GIU','LUG','AGO','SET','OTT','NOV','DIC'];
+
+  function renderDayStripPlaceholder(message) {
+    var daysEl = document.getElementById('bkDays');
+    var timesEl = document.getElementById('bkTimes');
+    if (daysEl)  daysEl.innerHTML  = '<small class="bk-hint">' + message + '</small>';
+    if (timesEl) timesEl.innerHTML = '';
+  }
+
+  function renderTimeSlots(slots, preferredTime) {
+    var timesEl = document.getElementById('bkTimes');
+    if (!timesEl) return;
+    if (!Array.isArray(slots) || slots.length === 0) {
+      timesEl.innerHTML = '<small class="bk-hint">Nessun orario disponibile in questo giorno.</small>';
+      state.booking.time = '';
+      return;
+    }
+    timesEl.innerHTML = slots.map(function (t) {
+      return '<label><input type="radio" name="bkTime" value="' + t + '" /><span>' + t + '</span></label>';
+    }).join('');
+    // Restore preferred time if still offered, otherwise pick the first slot.
+    var pick = (preferredTime && slots.indexOf(preferredTime) !== -1) ? preferredTime : slots[0];
+    var input = timesEl.querySelector('input[name="bkTime"][value="' + pick + '"]');
+    if (input) {
+      input.checked = true;
+      state.booking.time = pick;
+    }
+    updateBookingTotal();
+  }
+
+  function selectDay(date) {
+    var daysEl = document.getElementById('bkDays');
+    if (!daysEl) return;
+    state.booking.date = date;
+    var hidden = document.getElementById('bkDate');
+    if (hidden) hidden.value = date;
+    daysEl.querySelectorAll('.bk-day').forEach(function (b) {
+      var active = b.dataset.date === date;
+      b.classList.toggle('is-active', active);
+      b.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    var day = (state.booking.availability || []).find(function (d) { return d.date === date; });
+    var slots = (day && Array.isArray(day.times)) ? day.times : [];
+    renderTimeSlots(slots, state.booking.time);
+  }
+
+  function renderAvailability(productId, people) {
+    var daysEl = document.getElementById('bkDays');
+    if (!daysEl) return;
+    renderDayStripPlaceholder('Carico disponibilità…');
+    if (!window.Gestiscilo || typeof Gestiscilo.availability !== 'function') {
+      renderDayStripPlaceholder('Disponibilità non disponibile in questo momento.');
+      return;
+    }
+    var qty = Math.max(1, Number(people) || 1);
+    Gestiscilo.availability(productId, { quantity: qty })
+      .then(function (data) {
+        var dates = (data && Array.isArray(data.dates)) ? data.dates : [];
+        state.booking.availability = dates;
+        var anyOpen = dates.some(function (d) { return Array.isArray(d.times) && d.times.length > 0; });
+        if (!anyOpen) {
+          renderDayStripPlaceholder('Nessun giorno disponibile nei prossimi 14 giorni. Scrivici su WhatsApp per altre date.');
+          return;
+        }
+        daysEl.innerHTML = dates.map(function (d) {
+          var dt = new Date(d.date + 'T00:00:00');
+          var wd = WEEKDAY_SHORT[dt.getDay()];
+          var dayNum = dt.getDate();
+          var mo = MONTH_SHORT[dt.getMonth()];
+          var open = Array.isArray(d.times) && d.times.length > 0;
+          return '<button type="button" class="bk-day' + (open ? '' : ' is-disabled') + '"'
+            + ' data-date="' + d.date + '"'
+            + ' aria-pressed="false"'
+            + (open ? '' : ' disabled')
+            + '>'
+            + '<span class="bk-day-wd">' + wd + '</span>'
+            + '<span class="bk-day-num">' + dayNum + '</span>'
+            + '<span class="bk-day-mo">' + mo + '</span>'
+            + '</button>';
+        }).join('');
+        // Auto-pick the previously-selected date if still open, else the first open day.
+        var keep = state.booking.date && dates.find(function (d) {
+          return d.date === state.booking.date && Array.isArray(d.times) && d.times.length > 0;
+        });
+        var firstOpen = dates.find(function (d) { return Array.isArray(d.times) && d.times.length > 0; });
+        selectDay((keep || firstOpen).date);
+      })
+      .catch(function () {
+        renderDayStripPlaceholder('Non riusciamo a caricare la disponibilità. Riprova fra un momento.');
+      });
+  }
+
   // ============ BOOKING SHEET ============
   function openBooking(expId){
     let e;
@@ -1303,9 +1398,7 @@ window.JSA.parseDeepLink = function(hashStr){
     // reset date, time, extras, people
     state.booking.date = '';
     state.booking.time = '';
-    var bkDateEl = document.getElementById('bkDate');
-    if (bkDateEl) bkDateEl.value = '';
-    $$('input[name="bkTime"]').forEach(r => { r.checked = false; });
+    state.booking.availability = [];
 
     // reset extras and re-render from SDK linked_products
     state.booking.extras = new Set();
@@ -1318,6 +1411,11 @@ window.JSA.parseDeepLink = function(hashStr){
     updateBookingStep();
     updateBookingTotal();
     openSheet('bookingSheet');
+
+    // Fire availability fetch after the sheet is open (non-blocking).
+    var productId = Number(e.id);
+    if (isFinite(productId)) renderAvailability(productId, state.booking.people);
+    else renderDayStripPlaceholder('Esperienza non disponibile.');
   }
 
   function updateBookingStep(){
@@ -1359,14 +1457,26 @@ window.JSA.parseDeepLink = function(hashStr){
     $('#bkTotalUnit').textContent = `stima · al check-in${extras ? ` · +${fmt(extras)} extra` : ''}`;
   }
 
-  // step interactions
-  var bkDateInput = document.getElementById('bkDate');
-  if (bkDateInput) {
-    bkDateInput.addEventListener('change', function() { state.booking.date = this.value; });
+  // step interactions — delegated so dynamically-rendered chips bind without
+  // re-wiring per render. Day strip is button-based (selectDay handles state),
+  // time slots are radios (change event after render).
+  var bkDaysEl = document.getElementById('bkDays');
+  if (bkDaysEl) {
+    bkDaysEl.addEventListener('click', function (ev) {
+      var btn = ev.target.closest('.bk-day');
+      if (!btn || btn.disabled) return;
+      selectDay(btn.dataset.date);
+    });
   }
-  $$('input[name="bkTime"]').forEach(r => {
-    r.addEventListener('change', function() { if (this.checked) state.booking.time = this.value; });
-  });
+  var bkTimesEl = document.getElementById('bkTimes');
+  if (bkTimesEl) {
+    bkTimesEl.addEventListener('change', function (ev) {
+      var r = ev.target;
+      if (r && r.name === 'bkTime' && r.checked) {
+        state.booking.time = r.value;
+      }
+    });
+  }
 
   $$('.bk-stepper button').forEach(b => {
     b.addEventListener('click', () => {
