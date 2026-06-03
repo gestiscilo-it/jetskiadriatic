@@ -124,6 +124,40 @@ em{font-style:italic; font-family:var(--serif); font-weight:400}
   .info-strip-inner{ padding-left: 56px; padding-right: 56px }
 }
 .info-strip-inner::-webkit-scrollbar{ display: none }
+/* Desktop default: marquee wrapper is a no-op pass-through; the duplicate
+   inner is hidden so the row reads once with the original 92vw layout. */
+.info-strip-marquee{ display: block }
+.info-strip-marquee > .info-strip-inner:nth-child(2){ display: none }
+/* Mobile (<640): turn the wrapper into a seamless infinite marquee. Two
+   identical .info-strip-inner copies sit side-by-side; the keyframe slides
+   the track -50% so the loop seam lands when the duplicate is centered.
+   Each inner sizes to `max-content` so its items stay on one row past the
+   viewport edge; `.hide-s` overrides surface phone/email/Cattolica that
+   the static desktop row tucks away. Padding stays at the original 9px 0
+   vertical so the strip height matches the desktop layout exactly. */
+@media (max-width: 639px){
+  .info-strip{ overflow: hidden }
+  .info-strip-marquee{
+    display: flex;
+    width: max-content;
+    animation: info-marquee 30s linear infinite;
+  }
+  .info-strip-marquee > .info-strip-inner:nth-child(2){ display: flex }
+  .info-strip-marquee > .info-strip-inner{
+    width: max-content;
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    padding-right: 28px;
+  }
+  .info-strip .hide-s{ display: inline-flex }
+}
+@keyframes info-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce){
+  .info-strip-marquee{ animation: none }
+}
 .info-strip a{
   color: rgba(255,255,255,.85);
   display: inline-flex;

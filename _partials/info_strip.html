@@ -1,23 +1,55 @@
 <!-- ============ INFO STRIP ============ -->
+<!--
+  Mobile (<640): the .info-strip-marquee runs the two .info-strip-inner
+  copies as a seamless horizontal infinite scroll (translateX -50%). The
+  .hide-s class on the second-row items is overridden in mobile CSS so
+  phone + email + Cattolica scroll past too. The aria-hidden copy keeps
+  the loop accessible — screen readers see the items once.
+  Desktop (>=640): the .info-strip-marquee collapses to a plain block,
+  the duplicate inner is display:none, and the visible inner falls back
+  to the original 92vw/space-between layout — same height as before.
+-->
 <div class="info-strip">
-  <div class="info-strip-inner">
-    <span class="info-l">
-      <span class="status" id="statusPill" data-status="open" aria-live="polite">
-        <span class="dot"></span>
-        <span class="status-label">Aperto</span>
+  <div class="info-strip-marquee">
+    <div class="info-strip-inner">
+      <span class="info-l">
+        <span class="status" id="statusPill" data-status="open" aria-live="polite">
+          <span class="dot"></span>
+          <span class="status-label">Aperto</span>
+        </span>
+        <span class="sep">·</span>
+        <span data-gs="hours-today"></span>
+        <span class="sep hide-s">·</span>
+        <a href="#contatti" class="hide-s">Cattolica (RN)</a>
       </span>
-      <span class="sep">·</span>
-      <span data-gs="hours-today"></span>
-      <span class="sep hide-s">·</span>
-      <a href="#contatti" class="hide-s">Cattolica (RN)</a>
-    </span>
-    <span class="info-r hide-s">
-      <a href="tel:">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
-        +39 351 621 4480
-      </a>
-      <span class="sep">·</span>
-      <a href="mailto:" data-gs="email">info@jetskiadriatic.it</a>
-    </span>
+      <span class="info-r hide-s">
+        <a href="tel:">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
+          +39 351 621 4480
+        </a>
+        <span class="sep">·</span>
+        <a href="mailto:" data-gs="email">info@jetskiadriatic.it</a>
+      </span>
+    </div>
+    <div class="info-strip-inner" aria-hidden="true">
+      <span class="info-l">
+        <span class="status" data-status="open">
+          <span class="dot"></span>
+          <span class="status-label">Aperto</span>
+        </span>
+        <span class="sep">·</span>
+        <span data-gs="hours-today"></span>
+        <span class="sep hide-s">·</span>
+        <span class="hide-s">Cattolica (RN)</span>
+      </span>
+      <span class="info-r hide-s">
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg>
+          +39 351 621 4480
+        </span>
+        <span class="sep">·</span>
+        <span data-gs="email">info@jetskiadriatic.it</span>
+      </span>
+    </div>
   </div>
 </div>
