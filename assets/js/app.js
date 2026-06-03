@@ -1388,7 +1388,7 @@ window.JSA.parseDeepLink = function(hashStr){
   function capacityFor(exp) {
     var tier = (exp && typeof exp.tier === 'string') ? exp.tier : 'jet-ski';
     var defaults = {
-      'jet-ski':   { min: 1, max: 3,  pick: 2, hint: 'Capienza max per moto: 3 persone (pilota + 2)' },
+      'jet-ski':   { min: 1, max: 2,  pick: 1, hint: 'Capienza max per moto: 2 persone (pilota + 1)' },
       'yacht':     { min: 1, max: 12, pick: 4, hint: 'Capienza fino a 12 ospiti — confermiamo il numero esatto al check-in.' },
       'love':      { min: 2, max: 2,  pick: 2, hint: 'Esperienza per coppia (2 persone).' },
       'escursione':{ min: 1, max: 8,  pick: 2, hint: 'Capienza fino a 8 persone.' },
