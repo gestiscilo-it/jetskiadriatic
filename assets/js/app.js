@@ -1144,23 +1144,27 @@ window.JSA.parseDeepLink = function(hashStr){
           ${dtHasRating ? `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="vertical-align:-2px"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.2 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>` : ''}
           ${dtReviewsLine}
         </p>
-        <p class="lead">${e.lead}</p>
+        ${e.lead ? `<p class="lead">${e.lead}</p>` : ''}
 
         <div class="dt-tags">
           ${(e.tags || []).map(t => `<span class="dt-tag">${t}</span>`).join('')}
         </div>
 
+        ${(Array.isArray(e.includes) && e.includes.length) ? `
         <div class="dt-includes">
           <h4>Cosa è incluso</h4>
           <ul>
-            ${(e.includes || []).map(i => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>${i}</span></li>`).join('')}
+            ${e.includes.map(i => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>${i}</span></li>`).join('')}
           </ul>
         </div>
+        ` : ''}
 
+        ${e.duration ? `
         <div class="dt-includes">
           <h4>Durata</h4>
           <p style="margin:0;font-size:14px">${e.duration}</p>
         </div>
+        ` : ''}
 
         <div class="dt-includes">
           <h4>Politiche</h4>
