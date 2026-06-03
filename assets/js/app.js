@@ -1381,6 +1381,31 @@ window.JSA.parseDeepLink = function(hashStr){
       });
   }
 
+  // Per-vessel capacity. Pulls explicit metadata.capacity_max / capacity_min /
+  // capacity_default / capacity_hint when set; otherwise falls back to a
+  // tier-driven default so yacht/escursione/love bookings don't display the
+  // jet-ski hint copy. Operators can override per-product via product metadata.
+  function capacityFor(exp) {
+    var tier = (exp && typeof exp.tier === 'string') ? exp.tier : 'jet-ski';
+    var defaults = {
+      'jet-ski':   { min: 1, max: 3,  pick: 2, hint: 'Capienza max per moto: 3 persone (pilota + 2)' },
+      'yacht':     { min: 1, max: 12, pick: 4, hint: 'Capienza fino a 12 ospiti — confermiamo il numero esatto al check-in.' },
+      'love':      { min: 2, max: 2,  pick: 2, hint: 'Esperienza per coppia (2 persone).' },
+      'escursione':{ min: 1, max: 8,  pick: 2, hint: 'Capienza fino a 8 persone.' },
+    };
+    var base = defaults[tier] || defaults['jet-ski'];
+    var max  = Number(exp && exp.capacity_max) > 0 ? Number(exp.capacity_max) : base.max;
+    var min  = Number(exp && exp.capacity_min) > 0 ? Number(exp.capacity_min) : base.min;
+    var pick = Number(exp && exp.capacity_default) > 0 ? Number(exp.capacity_default) : base.pick;
+    var hint = (exp && typeof exp.capacity_hint === 'string' && exp.capacity_hint.trim())
+      ? exp.capacity_hint.trim()
+      : base.hint;
+    if (max < min) max = min;
+    if (pick < min) pick = min;
+    if (pick > max) pick = max;
+    return { min: min, max: max, pick: pick, hint: hint };
+  }
+
   // ============ BOOKING SHEET ============
   function openBooking(expId){
     let e;
@@ -1404,9 +1429,14 @@ window.JSA.parseDeepLink = function(hashStr){
     state.booking.extras = new Set();
     renderExtras(e);
 
-    // people
-    state.booking.people = 2;
-    $('#bkPeople').textContent = '2';
+    // people — capacity driven by product tier with per-product overrides.
+    var cap = capacityFor(e);
+    state.booking.capacityMin = cap.min;
+    state.booking.capacityMax = cap.max;
+    state.booking.people = cap.pick;
+    $('#bkPeople').textContent = String(cap.pick);
+    var capHint = document.getElementById('bkCapacityHint');
+    if (capHint) capHint.textContent = cap.hint;
 
     updateBookingStep();
     updateBookingTotal();
@@ -1481,8 +1511,10 @@ window.JSA.parseDeepLink = function(hashStr){
   $$('.bk-stepper button').forEach(b => {
     b.addEventListener('click', () => {
       const dir = b.dataset.step === '+' ? 1 : -1;
+      const min = Number(state.booking.capacityMin) > 0 ? Number(state.booking.capacityMin) : 1;
+      const max = Number(state.booking.capacityMax) > 0 ? Number(state.booking.capacityMax) : 3;
       let next = state.booking.people + dir;
-      next = Math.max(1, Math.min(3, next));
+      next = Math.max(min, Math.min(max, next));
       state.booking.people = next;
       $('#bkPeople').textContent = String(next);
       updateBookingTotal();
