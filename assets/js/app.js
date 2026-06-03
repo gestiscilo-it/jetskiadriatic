@@ -1222,57 +1222,107 @@ window.JSA.parseDeepLink = function(hashStr){
   }
 
   // ============ EXTRAS RENDERER ============
+  // Inline SVG glyphs per addonType — small, neutral line icons that work on the
+  // tinted backgrounds set in CSS via data-type. Keep these path-only so CSS
+  // `currentColor` can tone them per category.
+  var EXT_GLYPH = {
+    digital: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></svg>',
+    accessori: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/></svg>',
+    servizi: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.5 6.6L21 9.4l-5 4.5L17.5 21 12 17.5 6.5 21l1.5-7.1-5-4.5 6.5-.8z"/></svg>',
+    catering: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 002 2v8M6 3v6m0-6h2v6M18 3c-1.7 1-3 3.3-3 6 0 1.7 1 3 3 3v9"/></svg>',
+  };
+
   function renderExtras(exp) {
     var pane = document.querySelector('section[data-bk-pane="2"]');
     var container = document.querySelector('.bk-extras');
     if (!container) return;
 
-    var products = (exp && exp.linked_products) || [];
+    var linked = (exp && exp.linked_products) || [];
 
     // Empty linked_products -> hide the entire extras pane (per CONTEXT D-D-02).
-    if (!products.length) {
+    if (!linked.length) {
       if (pane) pane.hidden = true;
       container.innerHTML = '';
       return;
     }
     if (pane) pane.hidden = false;
 
-    // Clear container then build each label via DOM API.
+    // Enrich linked entries with full child metadata from the inline products
+    // catalogue. linked_products only carries (id, child_product_id, name,
+    // price_cents) — the lead, badge, and addonType live in the child's
+    // metadata, available via the global __GESTISCILO_PRODUCTS__ payload.
+    var byId = {};
+    var inlineProducts = window.__GESTISCILO_PRODUCTS__ || [];
+    for (var i = 0; i < inlineProducts.length; i++) {
+      byId[String(inlineProducts[i].id)] = inlineProducts[i];
+    }
+
     container.innerHTML = '';
 
-    products.forEach(function (p) {
-      var price = (p.price_cents || 0) / 100;
+    linked.forEach(function (link) {
+      var child = byId[String(link.child_product_id)] || {};
+      var meta = child.metadata || {};
+      var addonType = (meta.addonType || 'servizi').toLowerCase();
+      var overrideCents = link.price_override_cents;
+      var basePriceCents = typeof overrideCents === 'number' ? overrideCents : (link.price_cents || 0);
+      var price = basePriceCents / 100;
+      var priceLabel = (price > 0) ? ('+' + price + '€') : 'su richiesta';
+      var titleHtml = sanitizeTitle(meta.title || link.name || '');
+      var lead = meta.lead || '';
+      var badge = meta.badge || '';
 
       var label = document.createElement('label');
       label.className = 'bk-extra';
+      label.dataset.type = addonType;
 
       var input = document.createElement('input');
       input.type = 'checkbox';
-      input.dataset.extra = String(p.id);
+      input.dataset.extra = String(link.id);
       input.dataset.price = String(price);
 
       var row = document.createElement('span');
       row.className = 'ext-row';
 
-      var meta = document.createElement('span');
-      meta.className = 'ext-meta';
+      var ico = document.createElement('span');
+      ico.className = 'ext-ico';
+      ico.innerHTML = EXT_GLYPH[addonType] || EXT_GLYPH.servizi;
 
+      var metaEl = document.createElement('span');
+      metaEl.className = 'ext-meta';
+
+      var titleRow = document.createElement('span');
+      titleRow.className = 'ext-title';
       var nameEl = document.createElement('b');
-      nameEl.textContent = p.name || '';
-      meta.appendChild(nameEl);
+      nameEl.innerHTML = titleHtml;
+      titleRow.appendChild(nameEl);
+      if (badge) {
+        var badgeEl = document.createElement('span');
+        badgeEl.className = 'ext-badge';
+        badgeEl.textContent = badge;
+        titleRow.appendChild(badgeEl);
+      }
+      metaEl.appendChild(titleRow);
 
-      if (p.description) {
-        var descEl = document.createElement('small');
-        descEl.textContent = p.description;
-        meta.appendChild(descEl);
+      if (lead) {
+        var leadEl = document.createElement('small');
+        leadEl.textContent = lead;
+        metaEl.appendChild(leadEl);
       }
 
       var priceEl = document.createElement('span');
       priceEl.className = 'ext-price';
-      priceEl.textContent = '+' + price + '€';
+      priceEl.textContent = priceLabel;
+      if (price === 0) priceEl.classList.add('is-onrequest');
 
-      row.appendChild(meta);
+      var check = document.createElement('span');
+      check.className = 'ext-check';
+      check.setAttribute('aria-hidden', 'true');
+      check.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      row.appendChild(ico);
+      row.appendChild(metaEl);
       row.appendChild(priceEl);
+      row.appendChild(check);
       label.appendChild(input);
       label.appendChild(row);
       container.appendChild(label);
