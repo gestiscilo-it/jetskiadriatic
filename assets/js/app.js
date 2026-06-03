@@ -1153,7 +1153,7 @@ window.JSA.parseDeepLink = function(hashStr){
         <div class="dt-includes">
           <h4>Cosa è incluso</h4>
           <ul>
-            ${e.includes.map(i => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>${i}</span></li>`).join('')}
+            ${(e.includes || []).map(i => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>${i}</span></li>`).join('')}
           </ul>
         </div>
 
