@@ -448,7 +448,8 @@ body.is-past-products .cat-bar{
 .cards::-webkit-scrollbar{ display: none }
 
 .card{
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: transparent;
   text-align: left;
   border: 0;
@@ -572,6 +573,9 @@ body.is-past-products .cat-bar{
 /* card body — Airbnb-style typography */
 .card-body{
   padding: 12px 2px 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
 .card-row{
   display: flex; align-items: baseline; justify-content: space-between;
@@ -3713,6 +3717,9 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   background: transparent;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
 .card-row{ align-items: flex-start }
 .card-title{
@@ -3798,7 +3805,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid rgba(255,255,255,.12);
 }
