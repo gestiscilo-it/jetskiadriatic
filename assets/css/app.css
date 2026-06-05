@@ -3915,6 +3915,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 /* Meta becomes a pill, like .exp-tags */
 .card-meta{
   display: inline-block;
+  align-self: flex-start;
   margin: 10px 0 0;
   padding: 5px 11px;
   background: var(--tab-tint);
@@ -3930,7 +3931,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
    stay vertically aligned in the grid. Falls back gracefully when absent
    (template omits the element via hasLead guard). */
 .card-desc{
-  margin: 10px 0 0;
+  margin: 10px 0 14px;
   color: rgba(255,255,255,.74);
   font-size: 13px;
   line-height: 1.5;
