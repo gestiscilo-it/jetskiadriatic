@@ -134,6 +134,55 @@ window.JSA.parseDeepLink = function(hashStr){
              .replace(/&lt;(\/?(?:em|b))&gt;/g, '<$1>');
   }
 
+  // Fill .flagship-overview[data-active-tab] sections with N skeleton cards
+  // filtered by metadata.tab. Runs BEFORE updateExpGrid so the enrichment pass
+  // picks up the dynamically generated cards via their data-product-id.
+  // Default N = 3, override via data-max on the .exp-grid element.
+  // Sub-page hardcoded .exp-grid sections (not inside .flagship-overview) are
+  // untouched — they continue to use the slug-based enrichment-only flow.
+  // Operates on raw SDK rows (pre-mapProduct) so sort_order and metadata.tab
+  // are first-class — mapProduct drops sort_order from its return shape.
+  function fillCategoryGrids(rawRows) {
+    var sections = document.querySelectorAll('.flagship-overview[data-active-tab]');
+    sections.forEach(function (section) {
+      var grid = section.querySelector('.exp-grid');
+      if (!grid) return;
+      var tab = section.getAttribute('data-active-tab');
+      var max = parseInt(grid.getAttribute('data-max') || '3', 10) || 3;
+
+      var filtered = rawRows
+        .filter(function (p) { return p && p.metadata && p.metadata.tab === tab; })
+        .sort(function (a, b) {
+          var sa = (a.sort_order != null) ? a.sort_order : Infinity;
+          var sb = (b.sort_order != null) ? b.sort_order : Infinity;
+          if (sa !== sb) return sa - sb;
+          return String(a.slug || a.id).localeCompare(String(b.slug || b.id));
+        })
+        .slice(0, max);
+
+      if (filtered.length === 0) return;
+
+      grid.innerHTML = filtered.map(function (p, i) {
+        var slug = String(p.slug || (p.metadata && p.metadata.slug) || p.id);
+        var safeSlug = slug.replace(/"/g, '&quot;');
+        var nn = String(i + 1).padStart(2, '0');
+        var titleFallback = p.name || '';
+        return '' +
+          '<article class="exp exp--love" data-detail="' + safeSlug + '" data-product-id="' + safeSlug + '">' +
+            '<div class="exp-n">' + nn + '</div>' +
+            '<div class="exp-illu"></div>' +
+            '<h3>' + titleFallback.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</h3>' +
+            '<p></p>' +
+            '<ul class="exp-tags"></ul>' +
+            '<div class="exp-foot">' +
+              '<div class="exp-price"><b></b><span></span></div>' +
+              '<span class="exp-go">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>' +
+            '</div>' +
+          '</article>';
+      }).join('');
+    });
+  }
+
   function updateExpGrid(experiences) {
     var articles = document.querySelectorAll('article.exp[data-product-id]');
     articles.forEach(function (article) {
@@ -584,6 +633,10 @@ window.JSA.parseDeepLink = function(hashStr){
           showEmptyCatalogueState();
           return;
         }
+        // Populate per-category .flagship-overview grids BEFORE enrichment so
+        // the dynamically generated cards' data-product-id is in the DOM when
+        // updateExpGrid walks article.exp[data-product-id].
+        fillCategoryGrids(rows);
         EXPERIENCES.splice.apply(EXPERIENCES, [0, EXPERIENCES.length].concat(rows.map(mapProduct)));
         // init() touches DOM elements (#cards, #feed) that may not be present
         // on every page (sub-pages don't include the feed). Don't let a missing
@@ -1048,22 +1101,29 @@ window.JSA.parseDeepLink = function(hashStr){
     const sheet = document.getElementById(sheetId);
     if(!sheet) return;
     const grab = sheet.querySelector('.sheet-grab');
-    if(!grab) return;
+    const scroller = sheet.querySelector('.sheet-body');
+
+    // Top band of the sheet (px from the sheet's top edge) inside which a
+    // pointerdown can also start the close-drag, regardless of which child
+    // element it lands on (hero image, title, summary strip, …). Picked to
+    // cover the visual "header" area of all three sheets without reaching
+    // into the form controls below.
+    const TOP_BAND_PX = 140;
+    const INTERACTIVE_SEL = 'button, a, input, select, textarea, label, [role="button"], [contenteditable=""], [contenteditable="true"]';
 
     let startY = 0;
     let dy = 0;
     let dragging = false;
     let startTime = 0;
 
-    function onDown(e){
-      if(!isMobileSheet()) return;
+    function startDrag(e, captureTarget){
       startY = e.clientY;
       dy = 0;
       dragging = true;
       startTime = Date.now();
       sheet.style.transition = 'none';
-      grab.classList.add('is-dragging');
-      try{ grab.setPointerCapture(e.pointerId); }catch(_){}
+      if(grab) grab.classList.add('is-dragging');
+      try{ captureTarget.setPointerCapture(e.pointerId); }catch(_){}
     }
     function onMove(e){
       if(!dragging) return;
@@ -1078,7 +1138,7 @@ window.JSA.parseDeepLink = function(hashStr){
     function onUp(){
       if(!dragging) return;
       dragging = false;
-      grab.classList.remove('is-dragging');
+      if(grab) grab.classList.remove('is-dragging');
       const elapsed = Date.now() - startTime;
       const velocity = dy / Math.max(elapsed, 1);
       // close if dragged past 100px or fast flick down
@@ -1099,10 +1159,39 @@ window.JSA.parseDeepLink = function(hashStr){
       dy = 0;
     }
 
-    grab.addEventListener('pointerdown', onDown);
-    grab.addEventListener('pointermove', onMove);
-    grab.addEventListener('pointerup', onUp);
-    grab.addEventListener('pointercancel', onUp);
+    // (1) Grabber drag — unchanged behaviour, dedicated handle.
+    if(grab){
+      grab.addEventListener('pointerdown', (e) => {
+        if(!isMobileSheet()) return;
+        startDrag(e, grab);
+      });
+      grab.addEventListener('pointermove', onMove);
+      grab.addEventListener('pointerup', onUp);
+      grab.addEventListener('pointercancel', onUp);
+    }
+
+    // (2) Upper-band drag — start the same close-gesture when the user
+    // pulls from any non-interactive spot in the top band of the sheet
+    // (hero image, title row, summary strip). Visual layout untouched.
+    sheet.addEventListener('pointerdown', (e) => {
+      if(!isMobileSheet() || dragging) return;
+      const t = e.target;
+      if(!t || !t.closest) return;
+      // the grabber has its own binding above
+      if(t.closest('.sheet-grab')) return;
+      // never hijack interactive controls inside the band
+      if(t.closest(INTERACTIVE_SEL)) return;
+      // only when scrollable content is at the top — otherwise the user
+      // is scrolling content, not dismissing the sheet
+      if(scroller && scroller.scrollTop > 0) return;
+      // restrict to the upper band of the visible sheet
+      const rect = sheet.getBoundingClientRect();
+      if(e.clientY - rect.top > TOP_BAND_PX) return;
+      startDrag(e, sheet);
+    });
+    sheet.addEventListener('pointermove', onMove);
+    sheet.addEventListener('pointerup', onUp);
+    sheet.addEventListener('pointercancel', onUp);
   }
   ['bookingSheet','meteoSheet','detailSheet'].forEach(attachDragClose);
 

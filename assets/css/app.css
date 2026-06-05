@@ -3612,7 +3612,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .hero-kicker::before{
   content:"";
   width:32px;height:1px;
-  background:var(--tramonto);
+  background:var(--tab-accent, var(--tramonto));
   display:inline-block;
 }
 .hero-h{
@@ -3628,7 +3628,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   font-family:var(--f-serif);
   font-style:italic;
   font-weight:400;
-  color:var(--tramonto);
+  color:var(--tab-accent, var(--tramonto));
   letter-spacing:-.02em;
 }
 .hero-lead{
@@ -3642,6 +3642,16 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .hero-lead b{color:var(--acqua-l);font-weight:600}
 
 .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+
+/* Hero primary CTA follows the active accent so per-category sections
+   (data-active-tab on the hero) read coherently with kicker dash + title em.
+   Falls back to navy when no accent is in scope (#top hero before tab-switch
+   wires --tab-accent on body). */
+.hero .btn-primary{
+  background:linear-gradient(180deg, var(--tab-accent, var(--navy-3)), var(--tab-accent-d, var(--navy)));
+  color:var(--tab-on-accent, #fff);
+  box-shadow:0 8px 18px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.1);
+}
 
 /* On the dark hero, override the global .btn-ghost (which is white-on-light)
    so it reads correctly on the video — translucent border, white text. */
