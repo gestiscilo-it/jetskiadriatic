@@ -619,13 +619,11 @@ window.JSA.parseDeepLink = function(hashStr){
       showEmptyCatalogueState();
       return;
     }
-    // 158: SDK bootstrap — wirePhoneLinks + wireEmailLinks + product catalogue loader + updateExpGrid.
+    // 158: SDK bootstrap — product catalogue loader + updateExpGrid.
+    // Phase 186: Gestiscilo.autoWire() auto-starts on ready and re-wires on DOM
+    // mutations; manual wirePhoneLinks/wireEmailLinks are no longer needed here.
     Gestiscilo.ready
       .then(function () {
-        Gestiscilo.wirePhoneLinks(document);
-        if (typeof Gestiscilo.wireEmailLinks === 'function') {
-          Gestiscilo.wireEmailLinks(document);
-        }
         return Gestiscilo.products();
       })
       .then(function (rows) {

@@ -24,12 +24,10 @@
 
     function bootstrap() {
       if (!window.Gestiscilo || !Gestiscilo.ready) return;
+      // Phase 186: Gestiscilo.autoWire() auto-starts on ready and re-wires on DOM
+      // mutations; manual wirePhoneLinks/wireEmailLinks are no longer needed here.
       Gestiscilo.ready
         .then(function () {
-          Gestiscilo.wirePhoneLinks(document);
-          if (typeof Gestiscilo.wireEmailLinks === 'function') {
-            Gestiscilo.wireEmailLinks(document);
-          }
           return Gestiscilo.products();
         })
         .then(function (rows) {

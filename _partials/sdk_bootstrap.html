@@ -1,13 +1,3 @@
 <script src="https://gestiscilo.it/embed/v1.js" data-business="jetskiadriatic"></script>
-<script>
-  (function () {
-    if (window.Gestiscilo && Gestiscilo.ready) {
-      Gestiscilo.ready.then(function () {
-        Gestiscilo.wirePhoneLinks(document);
-        if (typeof Gestiscilo.wireEmailLinks === 'function') {
-          Gestiscilo.wireEmailLinks(document);
-        }
-      }).catch(function () { /* graceful degradation */ });
-    }
-  })();
-</script>
+{# Phase 186: Gestiscilo.autoWire() auto-starts on ready and re-wires on DOM mutations.
+   The previous manual wirePhoneLinks/wireEmailLinks chain is now redundant. #}

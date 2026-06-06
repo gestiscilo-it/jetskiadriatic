@@ -125,16 +125,9 @@
     color:var(--abisso);
   }
 </style>
-<script>
-  // 148-MIG-02: defer-tolerant wirePhoneLinks boot for pages without app.js
-  // Source: 148-RESEARCH.md Common Pitfalls #2 + Code Example 1
-  (function () {
-    if (!window.Gestiscilo || !Gestiscilo.ready) return;
-    Gestiscilo.ready
-      .then(function () { Gestiscilo.wirePhoneLinks(document); })
-      .catch(function () { /* SDK bootstrap failed — placeholder hrefs stay no-op */ });
-  })();
-</script>
+{# Phase 186: removed the parse-time wirePhoneLinks IIFE — at parse time
+   window.Gestiscilo was undefined, so the early-return made this a silent
+   no-op. Gestiscilo.autoWire() now auto-starts on ready and covers this page. #}
 {% endblock %}
 
 {% block hero %}
