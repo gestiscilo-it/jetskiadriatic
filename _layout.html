@@ -18,8 +18,10 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=optional" />
+<link rel="preconnect" href="https://gestiscilo.it" />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=optional" />
+<link rel="preload" as="script" href="https://gestiscilo.it/embed/v1.js" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=optional" />
 <link rel="stylesheet" href="assets/css/app.css" />
 
 <style>
@@ -36,5 +38,6 @@
 {% block content %}{% endblock %}
 {% include "_partials/footer.html" %}
 {% include "_partials/sdk_bootstrap.html" %}
+{% include "_partials/splash_dismiss.html" %}
 </body>
 </html>

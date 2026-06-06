@@ -200,7 +200,7 @@
 
 <!-- ============ NOLEGGIO VIDEO ============ -->
 <section class="hero" id="noleggio" data-active-tab="moto">
-  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
+  <video class="hero-video" autoplay loop muted playsinline preload="none" aria-hidden="true"
          poster="https://images.unsplash.com/photo-1505867798796-639ec7e8cdf5?q=90&w=2400&auto=format&fit=crop">
     <source src="https://videos.pexels.com/video-files/35077130/14859106_960_540_60fps.mp4" type="video/mp4" />
   </video>
@@ -286,7 +286,7 @@
 
 <!-- ============ ESCURSIONI VIDEO ============ -->
 <section class="hero" id="escursioni" data-active-tab="escursioni">
-  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
+  <video class="hero-video" autoplay loop muted playsinline preload="none" aria-hidden="true"
          poster="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=90&w=2400&auto=format&fit=crop">
     <source src="https://videos.pexels.com/video-files/7397243/7397243-hd_1920_1080_30fps.mp4" type="video/mp4" />
   </video>
@@ -377,7 +377,7 @@
 
 <!-- ============ YACHT VIDEO ============ -->
 <section class="hero" id="yacht" data-active-tab="party">
-  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
+  <video class="hero-video" autoplay loop muted playsinline preload="none" aria-hidden="true"
          poster="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=90&w=2400&auto=format&fit=crop">
     <source src="https://videos.pexels.com/video-files/26830092/12016061_1920_1080_50fps.mp4" type="video/mp4" />
   </video>
@@ -439,7 +439,7 @@
 
 <!-- ============ LOVE EXPERIENCES VIDEO ============ -->
 <section class="hero" id="love" data-active-tab="love">
-  <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
+  <video class="hero-video" autoplay loop muted playsinline preload="none" aria-hidden="true"
          poster="https://images.unsplash.com/photo-1519741497674-611481863552?q=90&w=2400&auto=format&fit=crop">
     <source src="https://videos.pexels.com/video-files/3576377/3576377-hd_1920_1080_25fps.mp4" type="video/mp4" />
   </video>
@@ -1031,29 +1031,4 @@
 
 
 <script src="assets/js/app.js"></script>
-
-<script>
-(function(){
-  var s = document.getElementById('splash');
-  if (!s) return;
-  try {
-    if (sessionStorage.getItem('jsa_splash')) { s.remove(); return; }
-    sessionStorage.setItem('jsa_splash', '1');
-  } catch(e) {}
-  var prev = document.body.style.overflow;
-  document.body.style.overflow = 'hidden';
-  function dismiss(){
-    s.classList.add('is-out');
-    setTimeout(function(){
-      if (s.parentNode) s.parentNode.removeChild(s);
-      document.body.style.overflow = prev;
-    }, 600);
-  }
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    setTimeout(dismiss, 400);
-  } else {
-    window.addEventListener('load', function(){ setTimeout(dismiss, 150); });
-  }
-})();
-</script>
 {% endblock %}

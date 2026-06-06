@@ -282,29 +282,4 @@
 
 <script src="assets/js/info-strip.js"></script>
 <script src="assets/js/faq.js"></script>
-
-<script>
-(function(){
-  var s = document.getElementById('splash');
-  if (!s) return;
-  try {
-    if (sessionStorage.getItem('jsa_splash')) { s.remove(); return; }
-    sessionStorage.setItem('jsa_splash', '1');
-  } catch(e) {}
-  var prev = document.body.style.overflow;
-  document.body.style.overflow = 'hidden';
-  function dismiss(){
-    s.classList.add('is-out');
-    setTimeout(function(){
-      if (s.parentNode) s.parentNode.removeChild(s);
-      document.body.style.overflow = prev;
-    }, 600);
-  }
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    setTimeout(dismiss, 400);
-  } else {
-    window.addEventListener('load', function(){ setTimeout(dismiss, 150); });
-  }
-})();
-</script>
 {% endblock %}
