@@ -107,9 +107,7 @@ window.JSA.parseDeepLink = function(hashStr){
   let EXPERIENCES = [];
 
   function priceFor(e) {
-    if (typeof e.priceFromOverride === 'number') return e.priceFromOverride;
-    if (typeof e.basePrice === 'number') return e.basePrice;
-    if (typeof e.priceFrom === 'number') return e.priceFrom; // legacy alias
+    if (typeof e.price_cents === 'number') return e.price_cents / 100;
     if (e.aliasOf) {
       var canon = EXPERIENCES.find(function (p) { return p.id === e.aliasOf; });
       if (canon) return priceFor(canon);
@@ -118,10 +116,10 @@ window.JSA.parseDeepLink = function(hashStr){
   }
 
   function unitFor(e) {
-    if (e.priceUnit) return e.priceUnit;
+    if (e.per_person === true) return '/persona';
     if (e.aliasOf) {
       var canon = EXPERIENCES.find(function (p) { return p.id === e.aliasOf; });
-      if (canon) return canon.priceUnit || '';
+      if (canon) return unitFor(canon);
     }
     return '';
   }
@@ -215,7 +213,7 @@ window.JSA.parseDeepLink = function(hashStr){
       // Price: textContent (XSS-safe) using module-scope priceFor/unitFor
       var priceB = article.querySelector('.exp-price b');
       var priceSpan = article.querySelector('.exp-price span');
-      if (priceB) priceB.textContent = 'da ' + priceFor(e) + '€';
+      if (priceB) priceB.textContent = (e.per_person ? 'da ' : '') + priceFor(e) + '€';
       if (priceSpan) priceSpan.textContent = unitFor(e);
       var h3 = article.querySelector('h3');
       if (h3 && e.title) h3.innerHTML = sanitizeTitle(e.title);
@@ -237,10 +235,26 @@ window.JSA.parseDeepLink = function(hashStr){
     // Prefer the top-level p.slug (first-class column post-migration 108).
     // Fall back to metadata.jsa_id for clients still seeded under the old path.
     var slug = p.slug || meta.jsa_id || meta.slug || '';
+    // Phase 184 D-19 / Pitfall 11: surface Phase 175 typed top-level fields
+    // verbatim on the returned shape so priceFor/unitFor + the upcoming
+    // Plan 04 quote loop can read e.price_cents / e.per_person / capacity
+    // fields directly. Metadata spread preserved — other consumers still
+    // use meta.tab / tier / tags / imgs / canonical.
     return Object.assign(
       { id: String(p.id), slug: slug, basePrice: (p.price_cents || 0) / 100 },
       meta,
-      { slug: slug, img: img, imgs: imgs, linked_products: p.linked_products || [] }
+      {
+        slug: slug,
+        img: img,
+        imgs: imgs,
+        linked_products: p.linked_products || [],
+        price_cents: p.price_cents,
+        per_person: p.per_person,
+        min_people: p.min_people,
+        max_people: p.max_people,
+        overage_threshold: p.overage_threshold,
+        overage_price_cents: p.overage_price_cents,
+      }
     );
   }
 
@@ -280,6 +294,18 @@ window.JSA.parseDeepLink = function(hashStr){
     };
     if (s.notes && String(s.notes).trim()) {
       payload.owner_notes = String(s.notes).trim();
+    }
+    // Phase 184 (D-22, Pitfall 4): resolve state.booking.extras (Set of link.id strings)
+    // to backend {slug, quantity} shape via extrasLookup. .filter(Boolean) drops stale
+    // link.ids no longer in extrasLookup (e.g. user toggled product mid-booking).
+    // duration_minutes is NOT touched — extras DO NOT extend booking duration (D-26).
+    if (s.extras && s.extras.size) {
+      payload.extras = Array.from(s.extras).map(function (linkId) {
+        var entry = extrasLookup[String(linkId)];
+        return entry && entry.child_slug
+          ? { slug: entry.child_slug, quantity: 1 }
+          : null;
+      }).filter(Boolean);
     }
     return payload;
   }
@@ -868,6 +894,19 @@ window.JSA.parseDeepLink = function(hashStr){
     returnToDetail: null // when set, closing meteo reopens this detail id
   };
 
+  // Phase 184 (D-20, Pitfall 5): debounce timer + cart-generation counter for /quote
+  // race protection. updateBookingTotal() rewrites use these to coalesce stepper drags
+  // and drop stale responses when a newer edit lands first.
+  var quoteDebounceTimer = null;
+  var quoteCartGeneration = 0;
+
+  // Phase 184 (D-22, Pitfall 4): link.id (stringified) -> {child_slug, name} lookup.
+  // state.booking.extras carries link.id values (set by dataset.extra in renderExtras),
+  // NOT slugs. Backend POST /bookings expects {slug, quantity}. This map bridges them.
+  // Populated by renderExtras on each render; read by buildBookingPayload at submit and
+  // by updateBookingTotal when assembling /quote cart items.
+  var extrasLookup = {};
+
   // ============ HELPERS ============
   const $  = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
@@ -958,7 +997,7 @@ window.JSA.parseDeepLink = function(hashStr){
             <p class="card-meta">${e.meta}</p>
             ${hasLead ? `<p class="card-desc">${sanitizeTitle(e.lead)}</p>` : ''}
             <div class="card-foot">
-              <p class="card-price"><b>da ${priceFor(e)}€</b><small>${unitFor(e)}</small></p>
+              <p class="card-price"><b>${e.per_person ? 'da ' : ''}${priceFor(e)}€</b><small>${unitFor(e)}</small></p>
               <span class="card-cta" aria-hidden="true">Scopri<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
             </div>
           </div>
@@ -1205,9 +1244,9 @@ window.JSA.parseDeepLink = function(hashStr){
     const liked = state.likes.has(id);
     const isLove = e.tab === 'love';
 
-    // priceFrom is a boolean "starts from" flag in the seed; priceFor() returns
-    // the numeric value via the priceFromOverride → basePrice → legacy cascade.
-    const dtPrefix = e.priceFrom === true ? 'da ' : '';
+    // Phase 184 D-18: "da" prefix gated on typed per_person field (legacy
+    // e.priceFrom boolean read deleted; priceFor() reads e.price_cents directly).
+    const dtPrefix = e.per_person ? 'da ' : '';
     $('#detailPrice').textContent = `${dtPrefix}${priceFor(e)}€`;
     $('#detailPriceUnit').textContent = unitFor(e);
     $('#detailBook').onclick = () => {
@@ -1414,6 +1453,16 @@ window.JSA.parseDeepLink = function(hashStr){
       label.appendChild(row);
       container.appendChild(label);
 
+      // Phase 184 (D-22, Pitfall 4): populate module-scope extrasLookup so
+      // buildBookingPayload + updateBookingTotal can resolve link.id -> child_slug at
+      // submit/quote time. state.booking.extras Set carries link.id strings (set on
+      // input.dataset.extra above); the backend expects child_slug. Backend Plan 01
+      // emits link.child_slug verbatim on ProductResource.linked_products[N].
+      extrasLookup[String(link.id)] = {
+        child_slug: link.child_slug,
+        name: (link.name || child.name || ''),
+      };
+
       // Pitfall 1: wire change listener per-instance because boot-time wiring is deleted.
       input.addEventListener('change', function () {
         if (input.checked) state.booking.extras.add(input.dataset.extra);
@@ -1600,32 +1649,216 @@ window.JSA.parseDeepLink = function(hashStr){
   function getCurrentExp(){
     return EXPERIENCES.find(x => x.id === state.booking.expId) || EXPERIENCES[0];
   }
+  // Phase 184 (D-20, D-23, D-24, D-25, D-32, Pitfalls 3 + 5):
+  // updateBookingTotal is now a debounced consumer of Gestiscilo.quote(). The server
+  // is the single source of truth for pricing; the client only renders the envelope.
+  //
+  // Cart shape per D-04 / D-20:
+  //   [{slug: primary, people: state.booking.people, quantity: 1},
+  //    ...{slug: extra_child_slug, people: 1, quantity: 1}]
+  //
+  // SDK readiness (Pitfall 3): embed/v1.js loads AFTER app.js; the early-return guard
+  // at function entry mirrors the applyTenantInfo defer pattern at lines 695-697.
+  //
+  // Race protection (Pitfall 5): every entry bumps quoteCartGeneration and captures
+  // the bumped value; stale fetch responses whose captured gen no longer matches the
+  // module-scope counter are dropped on the floor.
+  //
+  // D-21: hardcoded perPersonSlugs / perCoupleSlugs arrays DELETED. Phase 175 seeder
+  // stripped the matching metadata; per-person semantics ride on e.per_person now.
   function updateBookingTotal(){
-    const e = getCurrentExp();
-    const people = state.booking.people;
-    let base = typeof e.basePrice === 'number' ? e.basePrice : (e.priceFrom || 0);
-    // a rough estimation logic — multiply by people for some types
-    // Match against e.slug — mapProduct sets e.id to String(p.id), so the
-    // earlier id-keyed check never fired and every product fell through to
-    // the flat-base branch.
-    const perPersonSlugs = ['vallugola-gold','blind-date'];
-    const perCoupleSlugs = ['the-proposal','vallugola-diamond','secret-romance','midday-brunch','sinfonia-amore'];
-    let total;
-    if(perPersonSlugs.includes(e.slug)){
-      total = base * people;
-    }else if(perCoupleSlugs.includes(e.slug)){
-      total = base;
-    }else{
-      total = base;
-    }
-    let extras = 0;
-    state.booking.extras.forEach(ext => {
-      const cb = document.querySelector(`.bk-extra input[data-extra="${ext}"]`);
-      if(cb) extras += Number(cb.dataset.price || 0);
+    if (!window.Gestiscilo || typeof Gestiscilo.quote !== 'function') return;
+    clearTimeout(quoteDebounceTimer);
+    quoteDebounceTimer = setTimeout(function () {
+      var gen = ++quoteCartGeneration;
+      var e = getCurrentExp();
+      if (!e || !e.slug) return;
+
+      var items = [{ slug: e.slug, people: state.booking.people, quantity: 1 }];
+      // extrasLookup is hoisted by Plan 05 — guard with typeof so Plan 04 ships
+      // primary-only flows correctly until Plan 05 lands the lookup map population.
+      state.booking.extras.forEach(function (linkId) {
+        var entry = (typeof extrasLookup !== 'undefined') ? extrasLookup[String(linkId)] : null;
+        if (entry && entry.child_slug) items.push({ slug: entry.child_slug, people: 1, quantity: 1 });
+      });
+
+      Gestiscilo.quote(items).then(function (env) {
+        if (gen !== quoteCartGeneration) return;  // Pitfall 5: drop stale
+        renderQuoteEnvelope(env);
+      }).catch(function () {
+        // D-32: silent single retry after 500ms; on second fail, fallback copy
+        // and leave CTA enabled — booking POST is authoritative and recomputes server-side.
+        setTimeout(function () {
+          if (gen !== quoteCartGeneration) return;
+          if (!window.Gestiscilo || typeof Gestiscilo.quote !== 'function') return;
+          Gestiscilo.quote(items).then(function (env) {
+            if (gen !== quoteCartGeneration) return;
+            renderQuoteEnvelope(env);
+          }).catch(function () {
+            if (gen !== quoteCartGeneration) return;
+            var totalEl = $('#bkTotal');
+            var unitEl = $('#bkTotalUnit');
+            if (totalEl) totalEl.textContent = 'Calcolo prezzo non disponibile';
+            if (unitEl) unitEl.textContent = 'al check-in';
+            clearInlineErrors();
+            restoreCtaFromOperatorQuote();
+            setCtaEnabled(true);  // D-32: CTA stays enabled on network fallback
+          });
+        }, 500);
+      });
+    }, 200);  // D-20 debounce window
+  }
+
+  // Phase 184 (V-184-13): test seam — expose updateBookingTotal + a minimal hook to
+  // seed an experience so tests can drive renderQuoteEnvelope with a stubbed
+  // window.Gestiscilo.quote. Production code paths do not call these.
+  window.JSA.updateBookingTotal = updateBookingTotal;
+  window.JSA.__seedTestExperience = function (exp) {
+    if (!exp || !exp.slug) return;
+    EXPERIENCES.push(exp);
+    state.booking.expId = exp.id != null ? exp.id : exp.slug;
+  };
+
+  // Phase 184 (D-20, D-23, D-24, D-25): state-machine renderer over the /quote envelope.
+  // Six render states, each idempotent — every call fully replaces the previous render
+  // (no partial cleanup needed between transitions). See UI-SPEC §Interaction State Matrix.
+  function renderQuoteEnvelope(env) {
+    var totalEl = $('#bkTotal');
+    var unitEl = $('#bkTotalUnit');
+    if (!totalEl || !unitEl) return;
+
+    var lines = (env && env.lines) || [];
+    var unavailable = false;
+    var operatorQuote = false;
+    var primaryError = null;
+    var extraErrors = [];
+
+    lines.forEach(function (line, idx) {
+      if (!line || !line.error_kind) return;
+      if (line.error_kind === 'unknown_product' || line.error_kind === 'product_unavailable') {
+        unavailable = true;
+      } else if (line.error_kind === 'operator_quote_required') {
+        operatorQuote = true;
+      } else if (idx === 0) {
+        primaryError = line.message || 'Errore';
+      } else {
+        extraErrors.push({ index: idx - 1, message: line.message || 'Errore' });
+      }
     });
-    total += extras;
-    $('#bkTotal').textContent = `${fmt(total)} €`;
-    $('#bkTotalUnit').textContent = `stima · al check-in${extras ? ` · +${fmt(extras)} extra` : ''}`;
+
+    // D-24: product unavailable wins over all other states.
+    if (unavailable) {
+      totalEl.textContent = 'Esperienza non disponibile';
+      unitEl.textContent = '';
+      clearInlineErrors();
+      restoreCtaFromOperatorQuote();
+      setCtaEnabled(false);
+      return;
+    }
+
+    // D-25: operator quote required — swap CTA, render best-effort total caption.
+    if (operatorQuote) {
+      if (typeof env.grand_total_cents === 'number' && env.grand_total_cents > 0) {
+        totalEl.textContent = fmt(env.grand_total_cents / 100) + ' €';
+      } else {
+        totalEl.textContent = '—';
+      }
+      unitEl.textContent = '';
+      clearInlineErrors();
+      swapCtaToOperatorQuote();
+      return;
+    }
+
+    // D-20: success or per-line capacity errors. Total renders unconditionally;
+    // errors gate the CTA. Server has already computed grand_total_cents excluding
+    // any error lines (per /quote contract).
+    totalEl.textContent = fmt((env.grand_total_cents || 0) / 100) + ' €';
+    unitEl.textContent = 'al check-in';
+    restoreCtaFromOperatorQuote();
+    applyPrimaryErrorHint(primaryError);
+    applyExtraErrorHints(extraErrors);
+    var hasErrors = !!primaryError || extraErrors.length > 0;
+    setCtaEnabled(!hasErrors);
+  }
+
+  // Phase 184 (D-23): inline error hint under the #bkPeople stepper. Reuses the
+  // existing #bkCapacityHint slot — color toggles to --rose on error, clears on success.
+  function applyPrimaryErrorHint(message) {
+    var hintEl = $('#bkCapacityHint');
+    if (!hintEl) return;
+    if (message) {
+      hintEl.textContent = message;
+      hintEl.style.color = 'var(--rose)';
+    } else {
+      // Restore the static capacity hint set on openBooking (cap.hint). When no
+      // primary error is active, the slot reverts to its capacity caption.
+      var e = getCurrentExp();
+      var cap = (e && typeof capacityFor === 'function') ? capacityFor(e) : null;
+      hintEl.textContent = (cap && cap.hint) ? cap.hint : '';
+      hintEl.style.color = '';
+    }
+  }
+
+  // Phase 184 (D-23): per-extra inline error hints. New DOM is injected under each
+  // offending .bk-extra label and removed/rebuilt on every render (idempotent).
+  // Inherits .bk-hint styling — only the color is overridden to --rose.
+  function applyExtraErrorHints(extraErrors) {
+    document.querySelectorAll('.bk-extra-hint').forEach(function (n) { n.remove(); });
+    if (!extraErrors || !extraErrors.length) return;
+    var labels = document.querySelectorAll('.bk-extra');
+    extraErrors.forEach(function (err) {
+      var label = labels[err.index];
+      if (!label) return;
+      var hint = document.createElement('small');
+      hint.className = 'bk-hint bk-extra-hint';
+      hint.style.color = 'var(--rose)';
+      hint.textContent = err.message;
+      label.parentNode.insertBefore(hint, label.nextSibling);
+    });
+  }
+
+  function clearInlineErrors() {
+    applyPrimaryErrorHint(null);
+    document.querySelectorAll('.bk-extra-hint').forEach(function (n) { n.remove(); });
+  }
+
+  function setCtaEnabled(enabled) {
+    var cta = $('#bkNext');
+    if (!cta) return;
+    cta.disabled = !enabled;
+  }
+
+  // Phase 184 (D-25): operator-quote CTA swap. Dormant in JSA today (zero from_price
+  // SKUs) but wired-for-future so a future yacht-quote SKU surfaces as a graceful
+  // WhatsApp handoff instead of a 500. Original label preserved on the dataset for
+  // restoration when the cart returns to a priced state.
+  function swapCtaToOperatorQuote() {
+    var cta = $('#bkNext');
+    if (!cta) return;
+    if (cta.dataset.operatorQuote === '1') return;  // already swapped
+    cta.dataset.originalLabel = cta.textContent;
+    cta.textContent = 'Richiedi preventivo';
+    cta.disabled = false;
+    cta.dataset.operatorQuote = '1';
+  }
+
+  function restoreCtaFromOperatorQuote() {
+    var cta = $('#bkNext');
+    if (!cta) return;
+    if (cta.dataset.operatorQuote !== '1') return;
+    if (typeof cta.dataset.originalLabel === 'string') {
+      cta.textContent = cta.dataset.originalLabel;
+      delete cta.dataset.originalLabel;
+    }
+    delete cta.dataset.operatorQuote;
+  }
+
+  // Phase 184 (D-25): WhatsApp message body for the operator-quote handoff.
+  // Names the product so the operator knows which SKU the customer wants priced.
+  function buildOperatorQuoteMsg() {
+    var e = getCurrentExp();
+    var name = (e && (e.name || e.title)) || 'esperienza';
+    return 'Ciao, vorrei un preventivo per: ' + name + '.';
   }
 
   // step interactions — delegated so dynamically-rendered chips bind without
@@ -1681,7 +1914,19 @@ window.JSA.parseDeepLink = function(hashStr){
       updateBookingStep();
     }
   });
-  $('#bkNext').addEventListener('click', () => {
+  $('#bkNext').addEventListener('click', function () {
+    // Phase 184 (D-25): operator-quote handoff. When /quote returned
+    // operator_quote_required, the CTA was swapped via swapCtaToOperatorQuote()
+    // and the dataset flag was set. Bypass the regular submit flow and open a
+    // prefilled WhatsApp deep link instead. Dormant in JSA today (zero from_price
+    // SKUs) but wired-for-future so this path is exercised the day operator
+    // publishes a yacht-quote product.
+    var ctaEl = this;
+    if (ctaEl && ctaEl.dataset && ctaEl.dataset.operatorQuote === '1') {
+      if (!window.Gestiscilo || !Gestiscilo.contact || typeof Gestiscilo.contact.waLink !== 'function') return;
+      window.open(Gestiscilo.contact.waLink(buildOperatorQuoteMsg()), '_blank', 'noopener');
+      return;
+    }
     if(state.bkStep < 3){
       var next = state.bkStep + 1;
       while(next < 3 && isPaneHidden(next)) next++;

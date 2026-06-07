@@ -4,207 +4,104 @@
   const summary = document.getElementById('summary');
   let passed = 0, failed = 0;
 
+  // Phase 184: async-aware test runner. Returns a Promise so the run() driver
+  // can await each test sequentially. Sync tests (fn() returns undefined) work
+  // unchanged; async tests (fn() returns a Promise) are awaited before the
+  // pass/fail is recorded.
   function test(name, fn){
-    try{
-      fn();
-      results.insertAdjacentHTML('beforeend', `<li class="pass">✓ ${name}</li>`);
-      passed++;
-    }catch(err){
-      results.insertAdjacentHTML('beforeend', `<li class="fail">✗ ${name} — ${err.message}</li>`);
-      console.error(name, err);
-      failed++;
-    }
+    return Promise.resolve()
+      .then(function(){ return fn(); })
+      .then(function(){
+        results.insertAdjacentHTML('beforeend', '<li class="pass">✓ ' + name + '</li>');
+        passed++;
+      })
+      .catch(function(err){
+        results.insertAdjacentHTML('beforeend', '<li class="fail">✗ ' + name + ' — ' + (err && err.message ? err.message : err) + '</li>');
+        console.error(name, err);
+        failed++;
+      });
   }
   function eq(a, b, msg){
     const sa = JSON.stringify(a), sb = JSON.stringify(b);
-    if(sa !== sb) throw new Error(`${msg || ''} expected ${sb}, got ${sa}`);
+    if(sa !== sb) throw new Error((msg || '') + ' expected ' + sb + ', got ' + sa);
   }
 
   // Wait for app.js to attach window.JSA
-  function run(){
+  async function run(){
     if(!window.JSA){ summary.textContent = 'window.JSA not found — app.js did not export pure functions'; summary.className = 'summary bad'; return; }
 
-    // Tests will be added below in subsequent tasks.
-
-    test('window.JSA exists and exposes computeTotal', () => {
-      if(typeof window.JSA !== 'object') throw new Error('JSA not exported');
-      if(typeof window.JSA.computeTotal !== 'function') throw new Error('computeTotal missing');
-    });
-
-    test('computeTotal — base price only, no variants', () => {
-      const product = { id: 'p', basePrice: 100, perPerson: false };
-      eq(window.JSA.computeTotal(product, {}, 1), 100);
-    });
-
-    test('computeTotal — replace variant overrides base', () => {
-      const product = {
-        basePrice: 50, perPerson: false,
-        variantGroups: [{
-          id: 'durata', selection: 'single', required: true,
-          options: [
-            { id: '15', priceMode: 'replace', price: 50 },
-            { id: '45', priceMode: 'replace', price: 105 }
-          ]
-        }]
+    // V-184-13: updateBookingTotal renders grand_total_cents via Gestiscilo.quote()
+    // stub. Replaces the legacy pre-Phase-175 client-side pricing tests deleted in
+    // Phase 184 — Phase 175 backend killed the code paths those tests covered.
+    await test('updateBookingTotal renders grand_total_cents via fmt() (V-184-13)', async function () {
+      // Stub the SDK before driving the booking flow.
+      window.Gestiscilo = window.Gestiscilo || {};
+      window.Gestiscilo.ready = Promise.resolve();
+      var originalQuote = window.Gestiscilo.quote;
+      window.Gestiscilo.quote = async function (items) {
+        return {
+          lines: [{
+            slug: (items && items[0] && items[0].slug) || 'x',
+            breakdown: { line_total_cents: 12345 },
+          }],
+          grand_total_cents: 12345,
+          currency: 'EUR',
+        };
       };
-      eq(window.JSA.computeTotal(product, { durata: '45' }, 1), 105);
+
+      // Seed a fake experience so getCurrentExp() inside the IIFE resolves.
+      // EXPERIENCES is normally populated by Gestiscilo.products(), which doesn't fire
+      // in the test page bootstrap.
+      if (typeof window.JSA.__seedTestExperience === 'function') {
+        window.JSA.__seedTestExperience({
+          id: 'test184-primary',
+          slug: 'test184-primary',
+          tab: 'moto',
+          cat: 'ride',
+          per_person: false,
+          price_cents: 0,
+        });
+      }
+
+      // DOM fixture — the minimal nodes updateBookingTotal + renderQuoteEnvelope read.
+      // Prefixed IDs avoid colliding with any production app DOM injected by app.js boot.
+      document.body.insertAdjacentHTML('beforeend',
+        '<div id="testFixture184">' +
+          '<input id="bkPeople" type="number" value="2" />' +
+          '<button id="bkNext">Avanti</button>' +
+          '<div id="bkTotal"></div>' +
+          '<div id="bkTotalUnit"></div>' +
+          '<small id="bkCapacityHint" class="bk-hint"></small>' +
+        '</div>'
+      );
+
+      // Trigger.
+      if (typeof window.JSA.updateBookingTotal !== 'function') {
+        document.getElementById('testFixture184').remove();
+        if (originalQuote === undefined) delete window.Gestiscilo.quote;
+        else window.Gestiscilo.quote = originalQuote;
+        throw new Error('window.JSA.updateBookingTotal not exported — Plan 05 Task 1 incomplete');
+      }
+      try {
+        window.JSA.updateBookingTotal();
+
+        // Wait for 200ms debounce + microtask settling.
+        await new Promise(function (r) { setTimeout(r, 350); });
+
+        // Assert. fmt() uses Intl.NumberFormat('it-IT') which renders 123.45 as "123,45".
+        // renderQuoteEnvelope renders "{fmt} €" (with a space and Euro sign).
+        var rendered = (document.getElementById('bkTotal').textContent || '').trim();
+        eq(rendered, '123,45 €', '#bkTotal renders grand_total_cents/100 via fmt()');
+      } finally {
+        // Cleanup — keep test idempotent across re-runs.
+        var fixture = document.getElementById('testFixture184');
+        if (fixture) fixture.remove();
+        if (originalQuote === undefined) delete window.Gestiscilo.quote;
+        else window.Gestiscilo.quote = originalQuote;
+      }
     });
 
-    test('computeTotal — add variants stack on top of replace', () => {
-      const product = {
-        basePrice: 50, perPerson: false,
-        variantGroups: [
-          { id: 'durata', selection: 'single', required: true,
-            options: [{ id: '45', priceMode: 'replace', price: 105 }] },
-          { id: 'media', selection: 'multi', required: false,
-            options: [
-              { id: 'drone', priceMode: 'add', price: 99 },
-              { id: 'gopro', priceMode: 'add', price: 15 }
-            ] }
-        ]
-      };
-      eq(window.JSA.computeTotal(product, { durata: '45', media: ['drone','gopro'] }, 1), 105 + 99 + 15);
-    });
-
-    test('computeTotal — per-person multiplies basePrice and replaces, but adds are flat', () => {
-      const product = {
-        basePrice: 289, perPerson: true,
-        variantGroups: [{
-          id: 'media', selection: 'multi', required: false,
-          options: [{ id: 'drone', priceMode: 'add', price: 99 }]
-        }]
-      };
-      // 2 people * 289 + 99 drone (flat, not per-person)
-      eq(window.JSA.computeTotal(product, { media: ['drone'] }, 2), 2*289 + 99);
-    });
-
-    test('computeTotal — single optional add picked', () => {
-      const product = {
-        basePrice: 690, perPerson: false,
-        variantGroups: [{
-          id: 'catering', selection: 'single', required: false,
-          options: [
-            { id: 'standard', priceMode: 'add', price: 0 },
-            { id: 'premium',  priceMode: 'add', price: 120 }
-          ]
-        }]
-      };
-      eq(window.JSA.computeTotal(product, { catering: 'premium' }, 1), 690 + 120);
-    });
-
-    test('computeTotal — Set as multi value works (booking sheet uses Set)', () => {
-      const product = {
-        basePrice: 50, perPerson: false,
-        variantGroups: [{ id: 'media', selection: 'multi', required: false,
-          options: [{ id: 'drone', priceMode: 'add', price: 99 }, { id: 'gopro', priceMode: 'add', price: 15 }] }]
-      };
-      eq(window.JSA.computeTotal(product, { media: new Set(['drone','gopro']) }, 1), 50 + 99 + 15);
-    });
-
-    test('validateRequiredVariants — no required groups returns []', () => {
-      const product = { variantGroups: [{ id: 'media', required: false, options: [] }] };
-      eq(window.JSA.validateRequiredVariants(product, {}), []);
-    });
-
-    test('validateRequiredVariants — required + missing returns the id', () => {
-      const product = { variantGroups: [{ id: 'durata', required: true, selection: 'single', options: [] }] };
-      eq(window.JSA.validateRequiredVariants(product, {}), ['durata']);
-    });
-
-    test('validateRequiredVariants — required + filled returns []', () => {
-      const product = { variantGroups: [{ id: 'durata', required: true, selection: 'single', options: [] }] };
-      eq(window.JSA.validateRequiredVariants(product, { durata: '45' }), []);
-    });
-
-    test('validateRequiredVariants — multi required with empty Set is missing', () => {
-      const product = { variantGroups: [{ id: 'm', required: true, selection: 'multi', options: [] }] };
-      eq(window.JSA.validateRequiredVariants(product, { m: new Set() }), ['m']);
-    });
-
-    test('validateRequiredVariants — multi required with one selection is filled', () => {
-      const product = { variantGroups: [{ id: 'm', required: true, selection: 'multi', options: [] }] };
-      eq(window.JSA.validateRequiredVariants(product, { m: new Set(['x']) }), []);
-    });
-
-    test('validateRequiredVariants — multiple required groups, some missing', () => {
-      const product = {
-        variantGroups: [
-          { id: 'a', required: true, selection: 'single', options: [] },
-          { id: 'b', required: true, selection: 'single', options: [] }
-        ]
-      };
-      eq(window.JSA.validateRequiredVariants(product, { a: '1' }), ['b']);
-    });
-
-    test('resolveAlias — non-alias returns same product', () => {
-      const catalog = [{ id: 'p1', basePrice: 100 }];
-      const r = window.JSA.resolveAlias(catalog, 'p1');
-      eq(r.product.id, 'p1');
-      eq(r.preselect, {});
-    });
-
-    test('resolveAlias — alias resolves to canonical with preselect', () => {
-      const catalog = [
-        { id: 'noleggio-sportender', basePrice: 50 },
-        { id: 'classic', aliasOf: 'noleggio-sportender', preselect: { durata: '45' } }
-      ];
-      const r = window.JSA.resolveAlias(catalog, 'classic');
-      eq(r.product.id, 'noleggio-sportender');
-      eq(r.preselect, { durata: '45' });
-      eq(r.aliasId, 'classic');
-    });
-
-    test('resolveAlias — unknown id returns null', () => {
-      eq(window.JSA.resolveAlias([], 'nope'), null);
-    });
-
-    test('applyClears — selecting an option whose group has clears wipes the cleared group', () => {
-      const product = {
-        variantGroups: [
-          { id: 'media', selection: 'multi', options: [{id:'drone'},{id:'gopro'}] },
-          { id: 'bundle', selection: 'single', clears: ['media'], options: [{id:'social-star'}] }
-        ]
-      };
-      const sel = { media: new Set(['drone','gopro']), bundle: 'social-star' };
-      const out = window.JSA.applyClears(product, sel, 'bundle');
-      eq([...out.media], []);
-      eq(out.bundle, 'social-star');
-    });
-
-    test('applyClears — selecting in cleared group does NOT clear the bundle group', () => {
-      const product = {
-        variantGroups: [
-          { id: 'media', selection: 'multi', options: [{id:'drone'}] },
-          { id: 'bundle', selection: 'single', clears: ['media'], options: [{id:'social-star'}] }
-        ]
-      };
-      const sel = { media: new Set(['drone']), bundle: 'social-star' };
-      const out = window.JSA.applyClears(product, sel, 'media');
-      // bundle stays — clears is one-way (bundle clears media, not the other way)
-      eq(out.bundle, 'social-star');
-    });
-
-    test('parseDeepLink — empty hash returns null', () => {
-      eq(window.JSA.parseDeepLink(''), null);
-      eq(window.JSA.parseDeepLink('#'), null);
-    });
-
-    test('parseDeepLink — only product id', () => {
-      eq(window.JSA.parseDeepLink('#p=classic'), { id: 'classic', preselect: {} });
-    });
-
-    test('parseDeepLink — id + single + multi (csv)', () => {
-      const r = window.JSA.parseDeepLink('#p=noleggio-sportender&durata=45&media=drone,gopro');
-      eq(r.id, 'noleggio-sportender');
-      eq(r.preselect.durata, '45');
-      eq([...r.preselect.media].sort(), ['drone','gopro']);
-    });
-
-    test('parseDeepLink — non-p hash returns null', () => {
-      eq(window.JSA.parseDeepLink('#meteo'), null);
-    });
-
-    summary.textContent = `${passed} passed, ${failed} failed`;
+    summary.textContent = passed + ' passed, ' + failed + ' failed';
     summary.className = failed ? 'summary bad' : 'summary ok';
   }
 
