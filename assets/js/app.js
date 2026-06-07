@@ -106,6 +106,18 @@ window.JSA.parseDeepLink = function(hashStr){
   // Source: 148-CONTEXT.md D-C-03; 148-RESEARCH.md Code Example 2.
   let EXPERIENCES = [];
 
+  // Phase 184 (V-184-13): test seam — expose updateBookingTotal + a minimal hook to
+  // seed an experience so tests can drive renderQuoteEnvelope with a stubbed
+  // window.Gestiscilo.quote. Production code paths do not call these. Hoisted to top
+  // of IIFE so it lands before any DOM-dependent wiring that throws on a barebones
+  // test page (which lacks the JSA booking-sheet DOM).
+  window.JSA.updateBookingTotal = function () { return updateBookingTotal.apply(this, arguments); };
+  window.JSA.__seedTestExperience = function (exp) {
+    if (!exp || !exp.slug) return;
+    EXPERIENCES.push(exp);
+    state.booking.expId = exp.id != null ? exp.id : exp.slug;
+  };
+
   function priceFor(e) {
     if (typeof e.price_cents === 'number') return e.price_cents / 100;
     if (e.aliasOf) {
@@ -1708,16 +1720,6 @@ window.JSA.parseDeepLink = function(hashStr){
       });
     }, 200);  // D-20 debounce window
   }
-
-  // Phase 184 (V-184-13): test seam — expose updateBookingTotal + a minimal hook to
-  // seed an experience so tests can drive renderQuoteEnvelope with a stubbed
-  // window.Gestiscilo.quote. Production code paths do not call these.
-  window.JSA.updateBookingTotal = updateBookingTotal;
-  window.JSA.__seedTestExperience = function (exp) {
-    if (!exp || !exp.slug) return;
-    EXPERIENCES.push(exp);
-    state.booking.expId = exp.id != null ? exp.id : exp.slug;
-  };
 
   // Phase 184 (D-20, D-23, D-24, D-25): state-machine renderer over the /quote envelope.
   // Six render states, each idempotent — every call fully replaces the previous render
