@@ -36,8 +36,8 @@
   }
 })();
 
-  // Easter egg: a volte la moto d'acqua parte. Corsa casuale ogni 25-75s
-  // (mai nei primi 8s), disattivata con prefers-reduced-motion.
+  // Easter egg: a volte la moto d'acqua parte. Prima corsa ~10s dopo il
+  // load, poi cadenza casuale 25-75s. Disattivata con prefers-reduced-motion.
   (function jetskiRides(){
     if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var img = document.querySelector('.strip-logo img');
@@ -48,5 +48,5 @@
       schedule();
     }
     function schedule(){ setTimeout(ride, 25000 + Math.random()*50000); }
-    setTimeout(schedule, 8000);
+    setTimeout(ride, 10000);
   })();
