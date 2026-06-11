@@ -2210,39 +2210,6 @@ window.JSA.parseDeepLink = function(hashStr){
   }
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // ============ INFO STRIP MARQUEE (mobile) ============
-  function setupInfoStripMarquee(){
-    if(window.innerWidth > 720) return;
-    const wrap = document.querySelector('.info-strip-inner');
-    if(!wrap || wrap.querySelector('.info-strip-marquee-inner')) return;
-
-    const track = document.createElement('div');
-    track.className = 'info-strip-track';
-
-    // Move all existing children into the track, with · separators between them
-    [...wrap.children].forEach((el, i) => {
-      if(i > 0){
-        const sep = document.createElement('span');
-        sep.className = 'sep';
-        sep.textContent = '·';
-        track.appendChild(sep);
-      }
-      track.appendChild(el);
-    });
-
-    const clone = track.cloneNode(true);
-    clone.setAttribute('aria-hidden', 'true');
-
-    const inner = document.createElement('div');
-    inner.className = 'info-strip-marquee-inner';
-    inner.appendChild(track);
-    inner.appendChild(clone);
-    wrap.appendChild(inner);
-
-    // tell CSS to switch the wrap into marquee layout
-    wrap.classList.add('has-marquee');
-  }
-
   // ============ HIDE TOPBAR + CAT-BAR WHEN OUTSIDE PRODUCTS ============
   // The chrome (top tabs + bottom filter bar) is product-context UI.
   // The hero now sits ABOVE the feed, so the cat-bar must hide both
@@ -2288,7 +2255,6 @@ window.JSA.parseDeepLink = function(hashStr){
     renderCats();
     renderCards();
     onScroll();
-    setupInfoStripMarquee();
     setupChromeHideOnFooter();
     wireFooterCatLinks();
     wireBookCtas();
