@@ -2525,6 +2525,9 @@ body.is-past-products .cat-bar{
    o assente — evita il vuoto morto sopra/sotto la griglia di card.    */
 .section--tight-top{ padding-top: clamp(40px, 5vw, 64px) }
 .section--tight-bot{ padding-bottom: clamp(40px, 5vw, 64px) }
+/* First content section after the page hero — matches the 88px post-hero
+   rhythm of noleggio/escursioni/love (default 140px read as detached). */
+.section--after-hero{ padding-top: clamp(48px, 6vw, 88px) }
 .section em{
   font-family:var(--f-serif);
   font-style:italic;
