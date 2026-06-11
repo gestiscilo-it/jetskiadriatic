@@ -4134,3 +4134,10 @@ body.is-past-products .cat-bar{
 }
 .hero-logo-link{display:inline-block;line-height:0}
 .hero-logo-link:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:50%}
+/* Desktop: il fondo del feed chiudeva con 100px (app 40 + feed 60) contro i
+   64px di whitespace standard attorno alle bande — la prima banda sembrava
+   "staccata" sopra. Mobile resta com'è (la cat-bar sticky usa quel respiro). */
+@media (min-width:861px){
+  .app{padding-bottom:0}
+  .feed{padding-bottom:24px}
+}
