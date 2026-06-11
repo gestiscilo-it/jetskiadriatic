@@ -9,7 +9,10 @@
   the duplicate inner is display:none, and the visible inner falls back
   to the original 92vw/space-between layout — same height as before.
 -->
-<div class="info-strip">
+<!-- is-loading: entry effect "il varo" — solo la moto visibile finché i dati
+     tenant non sono idratati; info-strip.js la rimuove lanciando la corsa.
+     Failsafe CSS (strip-hold) se il JS non parte. Desktop only. -->
+<div class="info-strip is-loading">
   <div class="info-strip-marquee">
     <div class="info-strip-inner">
       <span class="info-l">

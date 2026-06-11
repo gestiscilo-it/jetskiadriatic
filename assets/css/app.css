@@ -1837,26 +1837,26 @@ body.is-past-products .cat-bar{
   }
   .tab.is-active{ padding: 9px 18px }
 
-  /* Filter bar moves into header on desktop — old top layout */
+  /* Filter bar sits in the feed under the title on desktop — light surface */
   .cat-bar{
     position: static;
     background: transparent;
-    border-top: 1px solid rgba(255,255,255,.1);
+    border-top: 0;
     padding-bottom: 0;
     z-index: auto;
+    margin-bottom: 20px;
   }
-  /* desktop cat-bar is static inside the topbar and slides with it via
-     the topbar's `top` animation — cancel the mobile slide-down */
+  /* desktop cat-bar is static inside the feed — cancel the mobile slide-down */
   body.is-past-products .cat-bar{
     transform: none;
   }
   .cats{
-    width: 92vw;
-    max-width: var(--content-w);
-    margin: 0 auto;
-    /* 4px less than the hero/section rail (40px) so the pill chip rounded
-       corner optically aligns with the hard text edge of the hero copy. */
-    padding: 14px 36px 0;
+    /* .feed already provides the rail; pull the first chip's 18px padding
+       back so the chip text aligns with the feed-head title above. */
+    width: auto;
+    max-width: none;
+    margin: 0 -18px;
+    padding: 0;
     justify-content: flex-start;
     gap: 0;
     overflow-x: auto;
@@ -1868,14 +1868,14 @@ body.is-past-products .cat-bar{
     font-size: 12px;
     gap: 6px;
     border-bottom: 2px solid transparent;
-    color: color-mix(in srgb, var(--tab-on-accent) 60%, transparent);
+    color: var(--ink-2);
     opacity: 1;
   }
-  .cat:hover{ color: color-mix(in srgb, var(--tab-on-accent) 90%, transparent) }
+  .cat:hover{ color: var(--ink) }
   .cat svg{ width: 18px; height: 18px; stroke-width: 1.8 }
   .cat.is-active{
-    color: var(--tab-on-accent);
-    border-bottom-color: var(--tab-on-accent);
+    color: var(--ink);
+    border-bottom-color: var(--tab-accent);
   }
 
   /* Feed: 3 columns. Hero rail at 40px padding-x; 92vw + max-width set in
@@ -3776,7 +3776,7 @@ body.is-past-products .cat-bar{
   transform: translateX(-50%);
 }
 @media (min-width: 960px){
-  .cat.is-active{ color: var(--tab-on-accent); border-bottom-color: var(--tab-on-accent) }
+  .cat.is-active{ color: var(--ink); border-bottom-color: var(--tab-accent) }
   .cat.is-active::after{ display: none }
 }
 .cat-bar{
@@ -3784,7 +3784,7 @@ body.is-past-products .cat-bar{
   border-top: 1px solid var(--line);
 }
 @media (min-width: 960px){
-  .cat-bar{ background: transparent; border-top: 1px solid rgba(255,255,255,.1) }
+  .cat-bar{ background: transparent; border-top: 0 }
 }
 
 /* ==============================================================
@@ -4163,27 +4163,36 @@ body.is-past-products .cat-bar{
   opacity:0;
   pointer-events:none;
 }
-@keyframes jetski-ride{
-  0%{transform:translate(0,0) rotate(0)}
-  7%{transform:translate(-7px,1px) rotate(-8deg)}              /* rincorsa */
-  14%{transform:translate(9vw,-3px) rotate(6deg)}              /* primo salto */
-  21%{transform:translate(20vw,1px) rotate(-3deg)}             /* ammara */
-  29%{transform:translate(34vw,-4px) rotate(7deg)}             /* salto lungo */
-  37%{transform:translate(52vw,1px) rotate(-3deg)}
-  46%{transform:translate(105vw,-2px) rotate(4deg);opacity:1}  /* via! */
-  47%{opacity:0}
-  53%{transform:translate(-90px,0) rotate(0);opacity:0}        /* riparte da sx */
+/* La corsa è scomposta su due elementi per restare fluida: l'asse X vive
+   sull'anchor (jetski-run, easing per-segmento — un'unica accelerazione
+   continua, niente pulsazioni a ogni keyframe) e il beccheggio sull'img
+   (jetski-bob, oscillazione ease-in-out sovrapposta). La scia ::after è
+   posizionata sull'anchor quindi segue gratis; anima solo la sua opacity. */
+@keyframes jetski-run{
+  0%{transform:translateX(0);opacity:1;animation-timing-function:ease-in}
+  8%{transform:translateX(-7px);animation-timing-function:cubic-bezier(.55,0,.85,.6)} /* rincorsa, poi accelera */
+  46%{transform:translateX(105vw);opacity:1}
+  47%{transform:translateX(105vw);opacity:0}
+  53%{transform:translateX(-90px);opacity:0;animation-timing-function:cubic-bezier(.15,.45,.35,1)} /* rientra lanciato, decelera */
   58%{opacity:1}
-  66%{transform:translate(-40px,-3px) rotate(6deg)}            /* ultimo salto */
-  74%{transform:translate(-18px,1px) rotate(-2deg)}
-  88%{transform:translate(5px,0) rotate(-6deg)}                /* frenata */
-  100%{transform:translate(0,0) rotate(0)}
+  90%{transform:translateX(6px);animation-timing-function:ease-in-out}  /* frenata oltre il segno */
+  100%{transform:translateX(0);opacity:1}
 }
-/* La scia segue la stessa rotta; questa anima solo l'opacity e, venendo
-   dopo nella lista, vince sull'opacity di jetski-ride. */
+@keyframes jetski-bob{
+  0%{transform:translateY(0) rotate(0)}
+  10%{transform:translateY(.5px) rotate(-7deg)}   /* muso su al lancio */
+  22%{transform:translateY(-2.5px) rotate(5deg)}
+  34%{transform:translateY(.5px) rotate(-2deg)}
+  46%{transform:translateY(-2px) rotate(4deg)}
+  53%{transform:translateY(0) rotate(2deg)}
+  66%{transform:translateY(-2px) rotate(4deg)}
+  78%{transform:translateY(.5px) rotate(-1deg)}
+  90%{transform:translateY(.5px) rotate(-6deg)}   /* frenata: muso su */
+  100%{transform:translateY(0) rotate(0)}
+}
 @keyframes jetski-spray{
   0%,6%{opacity:0}
-  10%,46%{opacity:.9}
+  12%,46%{opacity:.9}
   47%,58%{opacity:0}
   64%{opacity:.8}
   84%{opacity:.5}
@@ -4197,7 +4206,41 @@ body.is-past-products .cat-bar{
   85%{transform:translateX(-1px) rotate(-3deg)}
 }
 @media (prefers-reduced-motion: no-preference){
-  .strip-logo.is-riding img{animation:jetski-ride var(--egg-dur) cubic-bezier(.45,.05,.55,.95)}
-  .strip-logo.is-riding::after{animation:jetski-ride var(--egg-dur) cubic-bezier(.45,.05,.55,.95), jetski-spray var(--egg-dur) linear}
+  .strip-logo.is-riding{animation:jetski-run var(--egg-dur) linear}
+  .strip-logo.is-riding img{animation:jetski-bob var(--egg-dur) ease-in-out}
+  .strip-logo.is-riding::after{animation:jetski-spray var(--egg-dur) linear}
   .strip-logo:not(.is-riding):hover img{animation:jetski-rev .55s ease-in-out}
+}
+
+/* "Il varo" — entry effect della strip. Al load resta visibile solo la moto,
+   che galleggia sul posto (loading placeholder). Quando i dati tenant sono
+   idratati il JS lancia la corsa e le voci affiorano nella scia, sfalsate da
+   sinistra a destra. Su mobile la sequenza avviene dentro il marquee, che
+   scorre a prescindere; il sep a livello track (creato dal builder marquee
+   tra info-l e info-r) va coperto a parte. Failsafe senza JS: strip-hold
+   riporta comunque tutto visibile dopo ~5s. */
+@media (prefers-reduced-motion: no-preference){
+  .info-strip.is-loading .info-l > *:not(.strip-logo),
+  .info-strip.is-loading .info-strip-track > .sep,
+  .info-strip.is-loading .info-r{animation:strip-hold 5s linear both}
+  .info-strip.is-loading .strip-logo img{animation:jetski-idle 2.4s ease-in-out infinite}
+  /* Le voci restano nascoste finché il JS non le marca .wake — lo fa un rAF
+     che legge la posizione reale della moto, così l'affioramento è in sync
+     col passaggio qualunque siano easing, durata o scroll del marquee. */
+  .info-strip.is-arriving .info-l > *:not(.strip-logo),
+  .info-strip.is-arriving .info-strip-track > .sep,
+  .info-strip.is-arriving .info-r{opacity:0}
+  .info-strip.is-arriving .wake{animation:jetski-wake-in .6s cubic-bezier(.22,.61,.36,1) both}
+}
+@keyframes strip-hold{
+  0%,95%{opacity:0}
+  100%{opacity:1}
+}
+@keyframes jetski-idle{
+  0%,100%{transform:translateY(0) rotate(0)}
+  50%{transform:translateY(-1.5px) rotate(-2deg)}
+}
+@keyframes jetski-wake-in{
+  from{opacity:0;transform:translateX(-10px)}
+  to{opacity:1;transform:translateX(0)}
 }
