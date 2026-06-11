@@ -35,3 +35,18 @@
     setup();
   }
 })();
+
+  // Easter egg: a volte la moto d'acqua parte. Corsa casuale ogni 25-75s
+  // (mai nei primi 8s), disattivata con prefers-reduced-motion.
+  (function jetskiRides(){
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var img = document.querySelector('.strip-logo img');
+    if (!img) return;
+    function ride(){
+      img.classList.add('is-riding');
+      img.addEventListener('animationend', function(){ img.classList.remove('is-riding'); }, { once:true });
+      schedule();
+    }
+    function schedule(){ setTimeout(ride, 25000 + Math.random()*50000); }
+    setTimeout(schedule, 8000);
+  })();

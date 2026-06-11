@@ -4138,3 +4138,16 @@ body.is-past-products .cat-bar{
 .strip-logo{display:inline-flex;align-items:center;margin-right:14px;line-height:0;flex:none}
 .strip-logo img{height:19px;width:auto;display:block}
 .strip-logo:focus-visible{outline:2px solid #fff;outline-offset:3px}
+/* Easter egg: ogni tanto la moto d'acqua parte — sfreccia a destra fuori
+   dalla barra, rientra da sinistra e torna al suo posto. */
+.info-strip{overflow:hidden}
+@keyframes jetski-ride{
+  0%{transform:translateX(0) rotate(0)}
+  6%{transform:translateX(-6px) rotate(-6deg)}            /* rincorsa */
+  46%{transform:translateX(105vw) rotate(3deg);opacity:1} /* via! */
+  47%{opacity:0}
+  53%{transform:translateX(-80px) rotate(0);opacity:0}    /* teletrasporto a sx */
+  60%{opacity:1}
+  100%{transform:translateX(0)}
+}
+.strip-logo img.is-riding{animation:jetski-ride 2.6s cubic-bezier(.45,.05,.55,.95)}
