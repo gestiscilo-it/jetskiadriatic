@@ -4143,16 +4143,61 @@ body.is-past-products .cat-bar{
 .strip-logo{display:inline-flex;align-items:center;margin-right:14px;line-height:0;flex:none}
 .strip-logo img{height:19px;width:auto;display:block}
 .strip-logo:focus-visible{outline:2px solid #fff;outline-offset:3px}
-/* Easter egg: ogni tanto la moto d'acqua parte — sfreccia a destra fuori
-   dalla barra, rientra da sinistra e torna al suo posto. */
+/* Easter egg: ogni tanto la moto d'acqua parte — rincorsa, saltella sulle
+   onde con la scia di schiuma dietro, esce a destra, rientra da sinistra e
+   frena con un piccolo overshoot. 1 corsa su 4 è turbo (stessa rotta, doppia
+   velocità). Hover sul pittogramma = colpo di gas. La classe is-riding va
+   sull'anchor, non sull'img, così la scia (::after) condivide la corsa. */
 .info-strip{overflow:hidden}
-@keyframes jetski-ride{
-  0%{transform:translateX(0) rotate(0)}
-  6%{transform:translateX(-6px) rotate(-6deg)}            /* rincorsa */
-  46%{transform:translateX(105vw) rotate(3deg);opacity:1} /* via! */
-  47%{opacity:0}
-  53%{transform:translateX(-80px) rotate(0);opacity:0}    /* teletrasporto a sx */
-  60%{opacity:1}
-  100%{transform:translateX(0)}
+.strip-logo{position:relative;--egg-dur:2.9s}
+.strip-logo.is-turbo{--egg-dur:1.4s}
+.strip-logo::after{
+  content:"";
+  position:absolute;
+  left:-26px;
+  top:calc(50% + 4px);
+  width:24px;
+  height:3px;
+  border-radius:2px;
+  background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.9));
+  opacity:0;
+  pointer-events:none;
 }
-.strip-logo img.is-riding{animation:jetski-ride 2.6s cubic-bezier(.45,.05,.55,.95)}
+@keyframes jetski-ride{
+  0%{transform:translate(0,0) rotate(0)}
+  7%{transform:translate(-7px,1px) rotate(-8deg)}              /* rincorsa */
+  14%{transform:translate(9vw,-3px) rotate(6deg)}              /* primo salto */
+  21%{transform:translate(20vw,1px) rotate(-3deg)}             /* ammara */
+  29%{transform:translate(34vw,-4px) rotate(7deg)}             /* salto lungo */
+  37%{transform:translate(52vw,1px) rotate(-3deg)}
+  46%{transform:translate(105vw,-2px) rotate(4deg);opacity:1}  /* via! */
+  47%{opacity:0}
+  53%{transform:translate(-90px,0) rotate(0);opacity:0}        /* riparte da sx */
+  58%{opacity:1}
+  66%{transform:translate(-40px,-3px) rotate(6deg)}            /* ultimo salto */
+  74%{transform:translate(-18px,1px) rotate(-2deg)}
+  88%{transform:translate(5px,0) rotate(-6deg)}                /* frenata */
+  100%{transform:translate(0,0) rotate(0)}
+}
+/* La scia segue la stessa rotta; questa anima solo l'opacity e, venendo
+   dopo nella lista, vince sull'opacity di jetski-ride. */
+@keyframes jetski-spray{
+  0%,6%{opacity:0}
+  10%,46%{opacity:.9}
+  47%,58%{opacity:0}
+  64%{opacity:.8}
+  84%{opacity:.5}
+  92%,100%{opacity:0}
+}
+@keyframes jetski-rev{
+  0%,100%{transform:translateX(0) rotate(0)}
+  25%{transform:translateX(-2px) rotate(-7deg)}
+  45%{transform:translateX(-1px) rotate(-4deg)}
+  65%{transform:translateX(-3px) rotate(-9deg)}
+  85%{transform:translateX(-1px) rotate(-3deg)}
+}
+@media (prefers-reduced-motion: no-preference){
+  .strip-logo.is-riding img{animation:jetski-ride var(--egg-dur) cubic-bezier(.45,.05,.55,.95)}
+  .strip-logo.is-riding::after{animation:jetski-ride var(--egg-dur) cubic-bezier(.45,.05,.55,.95), jetski-spray var(--egg-dur) linear}
+  .strip-logo:not(.is-riding):hover img{animation:jetski-rev .55s ease-in-out}
+}

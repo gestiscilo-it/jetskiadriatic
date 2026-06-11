@@ -36,16 +36,25 @@
   }
 })();
 
-  // Easter egg: a volte la moto d'acqua parte. Prima corsa ~10s dopo il
-  // load, poi cadenza casuale 25-75s. Disattivata con prefers-reduced-motion.
+  // Easter egg: a volte la moto d'acqua parte — saltella sulle onde con la
+  // scia dietro, esce a destra e rientra da sinistra. 1 corsa su 4 è turbo.
+  // Prima corsa ~10s dopo il load, poi cadenza casuale 25-75s. Se il tab è
+  // nascosto la corsa salta (riprogrammata). Disattivata con
+  // prefers-reduced-motion. La classe va sull'anchor: la scia è il ::after.
   (function jetskiRides(){
     if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var img = document.querySelector('.strip-logo img');
-    if (!img) return;
+    var logo = document.querySelector('a.strip-logo');
+    var img = logo && logo.querySelector('img');
+    if (!logo || !img) return;
     function ride(){
-      img.classList.add('is-riding');
-      img.addEventListener('animationend', function(){ img.classList.remove('is-riding'); }, { once:true });
       schedule();
+      if (document.hidden || logo.classList.contains('is-riding')) return;
+      if (Math.random() < 0.25) logo.classList.add('is-turbo');
+      logo.classList.add('is-riding');
+      img.addEventListener('animationend', function(){
+        logo.classList.remove('is-riding');
+        logo.classList.remove('is-turbo');
+      }, { once:true });
     }
     function schedule(){ setTimeout(ride, 25000 + Math.random()*50000); }
     setTimeout(ride, 10000);
