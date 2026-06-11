@@ -4117,10 +4117,6 @@ body.is-past-products .cat-bar{
 .fleet--deep .mezzo-spec{border-color:rgba(255,255,255,.14)}
 .fleet--deep .mezzo-list li{color:var(--on-dark)}
 .fleet--deep .mezzo-list li svg{color:var(--acqua)}
-/* Slim light proof strip on index between the dark hero stack and the
-   first dark category band — breaks the dark/dark adjacency. */
-.manifesto--strip{padding:clamp(28px,4.5vw,56px) 0}
-.manifesto--strip .manifesto-stats{margin-top:0}
 /* Column balancing for dynamic sub-page grids: counts divisible by 4 (and
    not by 3) render 4-up to avoid orphan rows (4 → 3+1, 8 → 3+3+2). */
 @media (min-width:1100px){
