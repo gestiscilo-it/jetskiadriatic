@@ -15,7 +15,7 @@
 <!-- ============ HERO ============ -->
 <section class="hero hero--love" id="top">
   <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
-         poster="https://images.unsplash.com/photo-1505867798796-639ec7e8cdf5?q=90&w=2400&auto=format&fit=crop">
+         poster="assets/posters/35077130.jpg">
     <source src="https://videos.pexels.com/video-files/35077130/14859106_960_540_60fps.mp4" type="video/mp4" />
   </video>
   <div class="hero-overlay"></div>
@@ -26,6 +26,7 @@
 
   <div class="hero-inner">
     <div class="hero-body">
+      {% include "_partials/hero_logo.html" %}
       <span class="hero-kicker">noleggio sportender</span>
       <h1 class="hero-h">
         Il timer parte<br/><em>fuori dal porto</em>.
@@ -55,7 +56,13 @@
 {% block content %}
 <!-- ============ FORMATI ============ -->
 <section class="section experiences" style="padding:clamp(48px,6vw,88px) 0 clamp(72px,8vw,112px)">
-  <div class="container exp-grid exp-grid--love reveal-s">
+  <div class="container" style="margin-bottom:clamp(18px,2.4vw,30px)">
+    <p class="price-policy-note" style="display:inline-flex;align-items:center;gap:10px;margin:0;padding:11px 18px;border-radius:999px;background:#06182A;color:#fff;font-weight:600;line-height:1.3;font-size:clamp(13px,1.4vw,15px)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
+      Prezzo totale per moto — valido fino a 2 persone, nessun costo aggiuntivo per il passeggero
+    </p>
+  </div>
+  <div class="container exp-grid exp-grid--love reveal-s" data-fill-tab="moto">
 
     <article class="exp exp--love" data-detail="noleggio-15-minuti" data-product-id="noleggio-15-minuti">
       <div class="exp-n">01</div>
@@ -133,13 +140,10 @@
 
 <!-- ============ COME FUNZIONA (dark slab) ============ -->
 <section class="section how experiences">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">come funziona</span>
-      <h2 class="sh">Dal pontile<br/><em>al largo in 10 minuti</em>.</h2>
-    </div>
-    <p class="lead">Il noleggio Sportender è progettato per partire veloce e finire altrettanto. Ti presenti, fai il check-in, sali sul mezzo. Il timer parte solo quando sei davvero fuori dai pali.</p>
-  </div>
+  {% set sh_kicker = "come funziona" %}
+{% set sh_title = "Dal pontile<br/><em>al largo in 10 minuti</em>." %}
+{% set sh_lead = "Il noleggio Sportender è progettato per partire veloce e finire altrettanto. Ti presenti, fai il check-in, sali sul mezzo. Il timer parte solo quando sei davvero fuori dai pali." %}
+{% include "_partials/section_head.html" %}
 
   <div class="container how-grid reveal-s">
     <div class="step">
@@ -160,15 +164,28 @@
   </div>
 </section>
 
+<!-- Wave divider: dark → light -->
+<div class="wave-band wave-band--from-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,0 L0,0 Z" fill="#06182A"/>
+  </svg>
+</div>
+
+{% include "_partials/meteo.html" %}
+
+<!-- Wave divider: light → dark -->
+<div class="wave-band wave-band--into-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,80 L0,80 Z" fill="#06182A"/>
+  </svg>
+</div>
+
 <!-- ============ MEDIA — il mezzo, sicurezza, tagliando ============ -->
 <section class="section media">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">il mezzo</span>
-      <h2 class="sh">Sportender JST-30 · 70 km/h,<br/><em>propulsione a getto</em>, nessun esame.</h2>
-    </div>
-    <p class="lead">Tre adulti a bordo senza limitazioni di peso, propulsione a getto senza elica esterna, tagliando settimanale certificato. Il mezzo che usiamo da quando abbiamo aperto.</p>
-  </div>
+  {% set sh_kicker = "il mezzo" %}
+{% set sh_title = "Sportender JST-30 · 70 km/h,<br/><em>propulsione a getto</em>, nessun esame." %}
+{% set sh_lead = "Tre adulti a bordo senza limitazioni di peso, propulsione a getto senza elica esterna, tagliando settimanale certificato. Il mezzo che usiamo da quando abbiamo aperto." %}
+{% include "_partials/section_head.html" %}
 
   <div class="container media-grid reveal-s">
 
@@ -187,9 +204,9 @@
       <div class="media-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
-      <h3>Tre <em>posti</em></h3>
-      <p>Pilota più due passeggeri: bambino dai 6 anni come passeggero, adulto al manubrio. Gavone stagno per smartphone e effetti personali, radio VHF e GPS a bordo per restare in contatto con il pontile.</p>
-      <span class="media-meta">3 posti · gavone stagno · VHF + GPS</span>
+      <h3>Due <em>posti</em></h3>
+      <p>Pilota più un passeggero, fino a 2 persone a bordo: passeggero dai 6 anni in su, adulto maggiorenne al manubrio. Gavone stagno per smartphone e effetti personali, radio VHF e GPS a bordo per restare in contatto con il pontile.</p>
+      <span class="media-meta">2 posti · gavone stagno · VHF + GPS</span>
     </article>
 
     <article class="media-card">
@@ -213,63 +230,14 @@
 </div>
 
 <!-- ============ CONTACT + MAP ============ -->
-<section class="contact" id="contatti" aria-labelledby="contactTitle">
-  <div class="contact-head">
-    <span class="kicker">dove ci trovi</span>
-    <h2 id="contactTitle">Sul <em>pontile</em>, a Cattolica.</h2>
-    <p class="lead">Parcheggio gratuito, doccia, spogliatoio. Bar e ristorante a 30 metri dal pontile. A due passi dal lungomare, con il parco di San Bartolo sullo sfondo.</p>
-  </div>
-
-  <div class="contact-grid">
-
-    <div class="contact-map">
-      <iframe
-        data-gs="osm-frame"
-        src="about:blank"
-        loading="lazy"
-        title="Mappa Jet Ski Adriatic — Porto di Cattolica"
-        allowfullscreen></iframe>
-      <a data-gs="maps-cta" target="_blank" rel="noopener" class="contact-map-cta">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
-        <span class="contact-map-cta-l">
-          <b>Indicazioni stradali</b>
-          <small>Apri in Google Maps</small>
-        </span>
-        <svg class="contact-map-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-      </a>
-    </div>
-
-    <div class="contact-card">
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Pontile</span><span class="ci-value"><a data-gs="maps-cta" target="_blank" rel="noopener"><span data-gs="address-line"></span></a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Telefono &amp; WhatsApp</span><span class="ci-value"><a href="tel:" data-gs="phone">+39 351 621 4480</a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Email</span><span class="ci-value"><a href="mailto:" data-gs="email">info@jetskiadriatic.it</a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Orari stagione</span><span class="ci-value" data-gs="hours-week"></span></span>
-      </div>
-    </div>
-
-  </div>
-</section>
+{% include "_partials/contact.html" %}
 
 <!-- ============ FAQ ============ -->
 <section class="section faq wave-bg-pattern">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">le domande</span>
-      <h2 class="sh">Rispondiamo<br/><em>prima</em> che tu chieda.</h2>
-    </div>
-    <p class="lead">Le domande più frequenti sul noleggio. Se manca la tua, scrivici su WhatsApp — in stagione rispondiamo entro pochi minuti.</p>
-  </div>
+  {% set sh_kicker = "le domande" %}
+{% set sh_title = "Rispondiamo<br/><em>prima</em> che tu chieda." %}
+{% set sh_lead = "Le domande più frequenti sul noleggio. Se manca la tua, scrivici su WhatsApp — in stagione rispondiamo entro pochi minuti." %}
+{% include "_partials/section_head.html" %}
   <div class="faq-list reveal-s">
     <div class="fa"><div class="fq"><span class="num">01</span><h5>Serve la patente nautica?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>No. Lo Sportender JST-30 è omologato per il noleggio senza patente: serve solo un documento d'identità valido al check-in e un briefing di 10 minuti con l'istruttore prima della partenza.</p></div></div>
     <div class="fa"><div class="fq"><span class="num">02</span><h5>Da che età si può salire?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Per guidare bisogna essere maggiorenni. Come passeggeri si può salire dai 6 anni in su, con giubbotto salvagente nella taglia adeguata. Sotto i 6 anni non possiamo accettare il bambino a bordo per ragioni di sicurezza.</p></div></div>

@@ -958,9 +958,9 @@ body.is-past-products .cat-bar{
   box-shadow: 0 8px 18px rgba(10,37,64,.18), inset 0 1px 0 rgba(255,255,255,.06);
 }
 .btn-primary:hover{ filter: brightness(1.05) }
-body[data-active-tab="experience"] .btn-primary{
-  background: linear-gradient(180deg, #f06b85, var(--rose));
-  box-shadow: 0 8px 18px rgba(232,79,107,.30), inset 0 1px 0 rgba(255,255,255,.1);
+.sheet[data-active-tab] .btn-primary{
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tab-accent) 82%, #fff 18%), var(--tab-accent-d));
+  box-shadow: 0 8px 18px var(--tab-tint, rgba(31,182,216,.3)), inset 0 1px 0 rgba(255,255,255,.1)
 }
 .btn-ghost{
   background: var(--surface);
@@ -1349,17 +1349,17 @@ body[data-active-tab="experience"] .btn-primary{
   font-weight: 400;
   font-style: normal;
   letter-spacing: -.01em;
-  margin: 0 0 4px;
+  margin: 0 0 2px;
   line-height: 1.05;
   color: var(--ink);
 }
 .dt-body h1 em,
-.sheet-section-head h2 em{ color: var(--cyan-2); font-weight: 400 }
-body[data-active-tab="experience"] .dt-body h1 em,
-body[data-active-tab="experience"] .sheet-section-head h2 em{ color: var(--rose) }
+.sheet-section-head h2 em{ color: var(--tab-accent, var(--cyan-2)); font-weight: 400 }
 .dt-body .dt-meta{
   font-size: 13.5px; color: var(--ink-3);
-  margin: 0 0 16px;
+  /* -8px counters the serif h1 line-box overshoot so the meta reads as the
+     title's subtitle (~10px visual); 14px below groups title+meta vs lead. */
+  margin: -8px 0 14px;
 }
 .dt-body .dt-meta b{ color: var(--ink); font-weight: 700 }
 .dt-body p.lead{
@@ -1381,15 +1381,14 @@ body[data-active-tab="experience"] .sheet-section-head h2 em{ color: var(--rose)
 
 /* Inline link inside .dt-includes items (e.g. the meteo disclaimer) */
 .dt-link{
-  color: var(--cyan-2);
+  color: var(--tab-accent, var(--cyan-2));
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 2px;
   cursor: pointer;
   white-space: nowrap;
 }
-.dt-link:hover{ color: var(--cyan) }
-body[data-active-tab="experience"] .dt-link{ color: var(--rose) }
+.dt-link:hover{ color: var(--tab-accent-d, var(--cyan)) }
 
 /* Compact 7-day meteo list — embedded in the product sheet, days stacked vertically */
 .dt-meteo-note{
@@ -1477,8 +1476,7 @@ body[data-active-tab="experience"] .dt-link{ color: var(--rose) }
   display: grid; grid-template-columns: 18px 1fr; gap: 10px;
   font-size: 14px;
 }
-.dt-includes li svg{ width: 18px; height: 18px; color: var(--cyan-2); margin-top: 2px }
-body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
+.dt-includes li svg{ width: 18px; height: 18px; color: var(--tab-accent, var(--cyan-2)); margin-top: 2px }
 .dt-tags{
   display: flex; gap: 6px; flex-wrap: wrap;
   margin-bottom: 18px;
@@ -1687,7 +1685,9 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 }
 
 .md-dow{
-  display: flex; align-items: baseline; gap: 5px;
+  /* 48px grid column can't fit "Gio 11 giu" inline — "11 giu" wrapped
+     mid-text. Stack dow over date deliberately (matches .fcast-date). */
+  display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
   line-height: 1;
 }
 .md-dow b{
@@ -1697,6 +1697,7 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
 .md-dow small{
   font-size: 11px; color: var(--ink-3);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .md-icon{ display: grid; place-items: center; color: var(--ink) }
@@ -2534,12 +2535,10 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   width:92vw;
   margin:0 auto clamp(40px, 5vw, 64px);
   display:grid;
-  grid-template-columns:1.05fr 1fr;
-  gap:56px;
-  align-items:end;
-}
-@media (max-width:860px){
-  .section-head{grid-template-columns:1fr;gap:22px}
+  /* Stacked head: title above, lead below (operator pattern, sitewide). */
+  grid-template-columns:1fr;
+  gap:14px;
+  align-items:start;
 }
 .section .kicker{
   font-family:var(--f-body);
@@ -2579,11 +2578,11 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   font-size:17px;
   line-height:1.55;
   color:var(--muted);
-  max-width:520px;
-  justify-self:end;
+  max-width:760px;
+  justify-self:start;
   margin:0;
 }
-@media (max-width:860px){.section .lead{justify-self:start;max-width:none}}
+@media (max-width:860px){.section .lead{max-width:none}}
 
 .section .container{
   max-width:1320px;
@@ -4096,3 +4095,44 @@ body[data-active-tab="experience"] .dt-includes li svg{ color: var(--rose) }
   .splash.is-out{ transform: none; }
   .splash-logo{ animation: none !important; }
 }
+
+/* ── Tonal-rhythm additions ───────────────────────────────────────────── */
+/* Dark variant for the long fleet catalogue on flotta (#imbarcazioni) —
+   mirrors the .how/.media dark-slab text overrides. */
+.fleet--deep{background:var(--abisso-d)}
+.fleet--deep .sh{color:var(--spuma)}
+.fleet--deep .sh u{text-decoration-color:var(--tramonto)}
+.fleet--deep .kicker{color:var(--acqua)}
+.fleet--deep .kicker::before{background:var(--acqua)}
+.fleet--deep .lead{color:var(--on-dark)}
+.fleet--deep .mezzo-desc{color:var(--on-dark)}
+/* Spec values + checklist inside the dark fleet slab — the light-bg inks
+   (--abisso / --muted) are unreadable on --abisso-d. */
+.fleet--deep .mezzo-spec b{color:var(--spuma)}
+.fleet--deep .mezzo-spec span{color:rgba(255,255,255,.55)}
+.fleet--deep .mezzo-spec small{color:rgba(255,255,255,.55)}
+.fleet--deep .mezzo-specs{border-color:rgba(255,255,255,.14)}
+.fleet--deep .mezzo-spec{border-color:rgba(255,255,255,.14)}
+.fleet--deep .mezzo-list li{color:var(--on-dark)}
+.fleet--deep .mezzo-list li svg{color:var(--acqua)}
+/* Slim light proof strip on index between the dark hero stack and the
+   first dark category band — breaks the dark/dark adjacency. */
+.manifesto--strip{padding:clamp(28px,4.5vw,56px) 0}
+.manifesto--strip .manifesto-stats{margin-top:0}
+/* Column balancing for dynamic sub-page grids: counts divisible by 4 (and
+   not by 3) render 4-up to avoid orphan rows (4 → 3+1, 8 → 3+3+2). */
+@media (min-width:1100px){
+  .exp-grid[data-fill-tab][data-count="4"],
+  .exp-grid[data-fill-tab][data-count="8"]{grid-template-columns:repeat(4,1fr);gap:18px}
+}
+
+/* Brand logo in the page hero (above the kicker). */
+.hero-logo{
+  display:block;
+  width:clamp(64px,7vw,92px);
+  height:auto;
+  margin-bottom:clamp(14px,2vw,22px);
+  filter:drop-shadow(0 4px 14px rgba(6,24,42,.45));
+}
+.hero-logo-link{display:inline-block;line-height:0}
+.hero-logo-link:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:50%}

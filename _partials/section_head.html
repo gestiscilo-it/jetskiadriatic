@@ -1,0 +1,14 @@
+<!-- ============ SECTION HEAD (shared partial) ============
+  Stacked head: kicker + title above, lead below (sitewide pattern).
+  Set before include:
+    sh_kicker — kicker text
+    sh_title  — h2 inner HTML (<br/>, <em>, <u> allowed)
+    sh_lead   — lead inner HTML (links allowed); omit/empty → no lead
+-->
+<div class="section-head reveal">
+  <div>
+    <span class="kicker">{{ sh_kicker }}</span>
+    <h2 class="sh">{{ sh_title | safe }}</h2>
+  </div>
+  {% if sh_lead is defined and sh_lead %}<p class="lead">{{ sh_lead | safe }}</p>{% endif %}
+</div>

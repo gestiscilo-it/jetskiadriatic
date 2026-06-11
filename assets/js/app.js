@@ -314,8 +314,9 @@ window.JSA.parseDeepLink = function(hashStr){
     if (s.extras && s.extras.size) {
       payload.extras = Array.from(s.extras).map(function (linkId) {
         var entry = extrasLookup[String(linkId)];
+        var qty = (state.booking.extraQty && state.booking.extraQty[String(linkId)]) || 1;
         return entry && entry.child_slug
-          ? { slug: entry.child_slug, quantity: 1 }
+          ? { slug: entry.child_slug, quantity: qty }
           : null;
       }).filter(Boolean);
     }
@@ -705,165 +706,9 @@ window.JSA.parseDeepLink = function(hashStr){
     runSdkBootstrap();
   }
 
-  // ---------------------------------------------------------------------------
-  // Phase 154 MIG-09 — applyTenantInfo()
-  // Hydrates the contact-card address line + Google Maps deep link from the
-  // SDK's Gestiscilo.business.{streetAddress, postalCode, city}. Plans 11 + 12
-  // extend this same function with MIG-10 (OSM iframe) and MIG-08 (hours).
-  //
-  // Invariants:
-  //  - Idempotent: querySelectorAll-driven; safe to call more than once.
-  //  - Defensive: missing fields produce empty strings, never throws.
-  //  - XSS-safe (T-154-04): textContent + encodeURIComponent, never innerHTML.
-  // ---------------------------------------------------------------------------
-  async function applyTenantInfo() {
-    if (!window.Gestiscilo || !Gestiscilo.ready) return;
-    try { await Gestiscilo.ready; } catch (_) { return; }
-    var b = Gestiscilo.business;
-    if (!b) return;
-
-    // MIG-09: address line — "${streetAddress} · ${postalCode} ${city}"
-    var addrParts = [
-      b.streetAddress,
-      [b.postalCode, b.city].filter(Boolean).join(' ')
-    ].filter(function (s) { return s && String(s).trim() !== ''; });
-    var addr = addrParts.join(' · ');
-    document.querySelectorAll('[data-gs="address-line"]').forEach(function (el) {
-      el.textContent = addr;
-    });
-
-    // MIG-09: Google Maps deep link — encoded address text (not coordinates).
-    // The CTA works even if Nominatim (Plan 11) is unavailable — D-F-05.
-    var dest = encodeURIComponent(
-      [b.streetAddress, b.postalCode, b.city].filter(Boolean).join(', ')
-    );
-    document.querySelectorAll('[data-gs="maps-cta"]').forEach(function (a) {
-      a.href = 'https://www.google.com/maps/dir/?api=1&destination=' + dest;
-    });
-
-    // MIG-08: hours-today / hours-week placeholders + #statusPill APERTO/CHIUSO.
-    // SDK helpers return controlled strings (T-154-04): textContent only, never
-    // innerHTML; setAttribute writes only the literal 'open'/'closed' values.
-    // Defensive: if Gestiscilo.hours is undefined (SDK without hours helper),
-    // skip the block — placeholders remain empty rather than throwing.
-    if (Gestiscilo.hours &&
-        typeof Gestiscilo.hours.todayLabel === 'function' &&
-        typeof Gestiscilo.hours.isOpenNow === 'function') {
-      var lbl = Gestiscilo.hours.todayLabel();
-      var open = Gestiscilo.hours.isOpenNow();
-      // When the SDK has no hours configured todayLabel() returns the literal
-      // "CHIUSO" (or empty). Don't render "dalle CHIUSO" or "CHIUSO · 7/7" —
-      // the status pill already shows CHIUSO, so we just hide the redundant
-      // info-strip slot and its preceding separator.
-      var closedDay = !lbl || /^\s*chiuso\s*$/i.test(lbl);
-      document.querySelectorAll('[data-gs="hours-today"]').forEach(function (el) {
-        var prevSep = el.previousElementSibling;
-        if (closedDay) {
-          el.textContent = '';
-          el.style.display = 'none';
-          if (prevSep && prevSep.classList.contains('sep')) {
-            prevSep.style.display = 'none';
-          }
-        } else {
-          el.textContent = 'dalle ' + lbl;
-          el.style.display = '';
-          if (prevSep && prevSep.classList.contains('sep')) {
-            prevSep.style.display = '';
-          }
-        }
-      });
-      document.querySelectorAll('[data-gs="hours-week"]').forEach(function (el) {
-        el.textContent = closedDay ? 'orari su richiesta' : (lbl + ' · 7/7');
-      });
-      document.querySelectorAll('#statusPill').forEach(function (pill) {
-        pill.setAttribute('data-status', open ? 'open' : 'closed');
-        var t = pill.querySelector('.status-label');
-        if (t) t.textContent = open ? 'APERTO' : 'CHIUSO';
-      });
-    }
-
-    // MIG-10: OSM iframe via Nominatim (async, non-blocking — D-J / D-F-07).
-    // Geocoding failure hides the iframe via .contact-map--no-coords; the
-    // Google Maps CTA above still works because it uses address text.
-    applyMap(addr, dest).catch(function () { /* iframe stays hidden */ });
-  }
-
-  // ---------------------------------------------------------------------------
-  // Phase 154 MIG-10 — Nominatim geocoding + OSM iframe hydration.
-  // sessionStorage cache: 1 req per page-session per address (OSMF policy
-  // compliance — D-F-03). Graceful failure: iframe gets .contact-map--no-coords
-  // class (display:none) on any Nominatim outage / empty result / parse error.
-  // No UA header override per Pitfall 2 (browsers ignore it; Referer is set
-  // automatically and satisfies the Nominatim identification policy).
-  // ---------------------------------------------------------------------------
-  async function geocodeAddress(text) {
-    var key = 'gs:nominatim:' + text;
-    try {
-      var cached = sessionStorage.getItem(key);
-      if (cached) {
-        var c = JSON.parse(cached);
-        if (c && c.lat && c.lon) return c;
-      }
-    } catch (_) { /* sessionStorage disabled — proceed to fetch */ }
-
-    var url = 'https://nominatim.openstreetmap.org/search?q=' +
-      encodeURIComponent(text) + '&format=json&limit=1';
-    var res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-    if (!res.ok) throw new Error('nominatim http ' + res.status);
-    var arr = await res.json();
-    if (!Array.isArray(arr) || arr.length === 0) throw new Error('nominatim empty');
-
-    var hit = { lat: arr[0].lat, lon: arr[0].lon, ts: Date.now() };
-    try { sessionStorage.setItem(key, JSON.stringify(hit)); } catch (_) {}
-    return hit;
-  }
-
-  async function applyMap(addressLine, _dest) {
-    var iframes = document.querySelectorAll('[data-gs="osm-frame"]');
-    if (iframes.length === 0) return;  // entrypoint has no map region
-    if (!addressLine) {
-      iframes.forEach(function (f) { f.classList.add('contact-map--no-coords'); });
-      return;
-    }
-
-    var geo;
-    try {
-      geo = await geocodeAddress(addressLine);
-    } catch (e) {
-      console.warn('Gestiscilo: geocoding failed —', (e && e.message) || e);
-      iframes.forEach(function (f) { f.classList.add('contact-map--no-coords'); });
-      return;
-    }
-
-    var lat = parseFloat(geo.lat);
-    var lon = parseFloat(geo.lon);
-    if (isNaN(lat) || isNaN(lon)) {
-      iframes.forEach(function (f) { f.classList.add('contact-map--no-coords'); });
-      return;
-    }
-
-    // ±0.01° bbox (~1.1 km × 1.1 km at this latitude) per D-F-06.
-    var minLon = (lon - 0.01).toFixed(4);
-    var maxLon = (lon + 0.01).toFixed(4);
-    var minLat = (lat - 0.01).toFixed(4);
-    var maxLat = (lat + 0.01).toFixed(4);
-
-    var src = 'https://www.openstreetmap.org/export/embed.html' +
-      '?bbox=' + minLon + '%2C' + minLat + '%2C' + maxLon + '%2C' + maxLat +
-      '&layer=mapnik' +
-      '&marker=' + lat + '%2C' + lon;
-
-    iframes.forEach(function (f) {
-      f.classList.remove('contact-map--no-coords');
-      f.src = src;
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { applyTenantInfo(); });
-  } else {
-    applyTenantInfo();
-  }
+  // applyTenantInfo / geocodeAddress / applyMap moved to assets/js/tenant-info.js
+  // (shared via _layout.html so every sub-page hydrates the info-strip,
+  // contact card, status pill and OSM map — not just index).
 
   const CATS = {
     moto: [
@@ -896,6 +741,9 @@ window.JSA.parseDeepLink = function(hashStr){
       time: '',
       people: 2,
       extras: new Set(),
+      // link.id -> quantity for per-unit extras (Telo Mare, metadata.qtyMax > 1).
+      // Absent keys default to 1 at quote/payload time.
+      extraQty: {},
       name: '',
       phone: '',
       email: '',
@@ -1253,6 +1101,10 @@ window.JSA.parseDeepLink = function(hashStr){
       String(x.detail_key || '') === id
     );
     if(!e) return;
+    // Category accent: scope --tab-accent to the sheet from the ITEM's tab
+    // (not the page's active tab) so the modal matches the item's category.
+    const dtSheet = document.getElementById('detailSheet');
+    if (dtSheet) dtSheet.setAttribute('data-active-tab', e.tab || '');
     const liked = state.likes.has(id);
     const isLove = e.tab === 'love';
 
@@ -1412,6 +1264,8 @@ window.JSA.parseDeepLink = function(hashStr){
       var label = document.createElement('label');
       label.className = 'bk-extra';
       label.dataset.type = addonType;
+      // Typed columns (migration 139) for the notice-gate mirror + qty stepper.
+      label.dataset.noticeHours = String(Number(child.min_notice_hours) || 0);
 
       var input = document.createElement('input');
       input.type = 'checkbox';
@@ -1481,6 +1335,110 @@ window.JSA.parseDeepLink = function(hashStr){
         else state.booking.extras.delete(input.dataset.extra);
         updateBookingTotal();
       });
+
+      // Per-unit quantity stepper (metadata.qtyMax > 1 — e.g. Telo Mare, 1-2).
+      // Shown only while the extra is checked; server is authoritative on the
+      // ceiling (public_booking validates quantity <= qtyMax). Buttons
+      // stopPropagation so a click doesn't toggle the wrapping <label> checkbox.
+      var qtyMax = Number(child.max_quantity) || 1;
+      if (qtyMax > 1) {
+        var qtyWrap = document.createElement('div');
+        qtyWrap.className = 'bk-extra-qty';
+        qtyWrap.hidden = true;
+        qtyWrap.style.cssText = 'display:flex;align-items:center;gap:10px;margin:-2px 0 8px;padding-left:46px';
+        var qtyLabel = document.createElement('small');
+        qtyLabel.textContent = 'Quantità';
+        qtyLabel.style.color = 'var(--ink-3)';
+        var minus = document.createElement('button');
+        var num = document.createElement('b');
+        var plus = document.createElement('button');
+        num.textContent = '1';
+        num.style.cssText = 'min-width:18px;text-align:center';
+        minus.type = 'button'; minus.textContent = '−'; minus.setAttribute('aria-label', 'Meno');
+        plus.type = 'button'; plus.textContent = '+'; plus.setAttribute('aria-label', 'Più');
+        [minus, plus].forEach(function (b) {
+          b.className = 'bk-qty-btn';
+          b.style.cssText = 'width:28px;height:28px;border-radius:8px;border:1px solid var(--line,#d9dde1);background:#fff;font-size:16px;line-height:1;cursor:pointer';
+        });
+        function setExtraQty(n) {
+          n = Math.max(1, Math.min(qtyMax, n));
+          num.textContent = String(n);
+          state.booking.extraQty[String(link.id)] = n;
+          updateBookingTotal();
+        }
+        minus.addEventListener('click', function (ev) {
+          ev.preventDefault(); ev.stopPropagation();
+          setExtraQty((state.booking.extraQty[String(link.id)] || 1) - 1);
+        });
+        plus.addEventListener('click', function (ev) {
+          ev.preventDefault(); ev.stopPropagation();
+          setExtraQty((state.booking.extraQty[String(link.id)] || 1) + 1);
+        });
+        qtyWrap.appendChild(qtyLabel);
+        qtyWrap.appendChild(minus);
+        qtyWrap.appendChild(num);
+        qtyWrap.appendChild(plus);
+        container.appendChild(qtyWrap);
+
+        input.addEventListener('change', function () {
+          qtyWrap.hidden = !input.checked;
+          if (input.checked) {
+            if (!state.booking.extraQty[String(link.id)]) state.booking.extraQty[String(link.id)] = 1;
+          } else {
+            delete state.booking.extraQty[String(link.id)];
+            num.textContent = '1';
+          }
+        });
+      }
+    });
+  }
+
+  // Notice-gate UX mirror. The server (public_booking) is authoritative; this
+  // only greys out extras whose required advance notice (data-notice-hours,
+  // from products.min_notice_hours) the chosen slot can't satisfy, so the
+  // customer doesn't pick something that would 422 at submit. Runs on entry to
+  // the extras pane and whenever the slot changes. Idempotent.
+  function gateExtras() {
+    var labels = document.querySelectorAll('.bk-extra');
+    if (!labels.length) return;
+    // Need a concrete slot to gate against; with no time chosen yet, leave open.
+    var slot = null;
+    if (state.booking.date && state.booking.time) {
+      var d = state.booking.date.split('-');
+      var t = state.booking.time.split(':');
+      if (d.length === 3 && t.length >= 2) {
+        slot = new Date(+d[0], +d[1] - 1, +d[2], +t[0], +t[1], 0, 0);
+      }
+    }
+    var now = new Date();
+    labels.forEach(function (label) {
+      var hours = Number(label.dataset.noticeHours) || 0;
+      var input = label.querySelector('input[type="checkbox"]');
+      if (!input) return;
+      var prev = label.querySelector('.bk-extra-lock');
+      if (prev) prev.remove();
+      var locked = false;
+      if (hours > 0 && slot) {
+        locked = (slot.getTime() - now.getTime()) / 3600000 < hours;
+      }
+      if (locked) {
+        input.disabled = true;
+        label.style.opacity = '.55';
+        // Uncheck + drop from cart if it was selected. dispatch('change') runs
+        // the existing listeners (remove from cart, hide qty stepper, re-quote).
+        if (input.checked) {
+          input.checked = false;
+          input.dispatchEvent(new Event('change'));
+        }
+        var note = document.createElement('small');
+        note.className = 'bk-hint bk-extra-lock';
+        note.style.color = 'var(--ink-3)';
+        note.textContent = 'Richiede preavviso di ' + hours + 'h — scegli uno slot più avanti.';
+        label.appendChild(note);
+      } else {
+        input.disabled = false;
+        label.style.opacity = '';
+      }
     });
   }
 
@@ -1590,7 +1548,7 @@ window.JSA.parseDeepLink = function(hashStr){
   function capacityFor(exp) {
     var tier = (exp && typeof exp.tier === 'string') ? exp.tier : 'jet-ski';
     var defaults = {
-      'jet-ski':   { min: 1, max: 2,  pick: 1, hint: 'Capienza max per moto: 2 persone (pilota + 1)' },
+      'jet-ski':   { min: 1, max: 2,  pick: 1, hint: 'Prezzo totale per moto · valido fino a 2 persone (pilota + 1), nessun costo aggiuntivo per il passeggero' },
       'yacht':     { min: 1, max: 12, pick: 4, hint: 'Capienza fino a 12 ospiti — confermiamo il numero esatto al check-in.' },
       'love':      { min: 2, max: 2,  pick: 2, hint: 'Esperienza per coppia (2 persone).' },
       'escursione':{ min: 1, max: 8,  pick: 2, hint: 'Capienza fino a 8 persone.' },
@@ -1619,6 +1577,9 @@ window.JSA.parseDeepLink = function(hashStr){
     }
     state.booking.expId = e.id;
     state.bkStep = 1;
+    // Category accent on the booking sheet too (matches the detail modal).
+    const bkSheet = document.getElementById('bookingSheet');
+    if (bkSheet) bkSheet.setAttribute('data-active-tab', e.tab || '');
     $('#bkExpName').textContent = e.title.replace(/<[^>]+>/g, '');
     $('#bkThumb').style.backgroundImage = `url('${e.img}')`;
 
@@ -1629,6 +1590,7 @@ window.JSA.parseDeepLink = function(hashStr){
 
     // reset extras and re-render from SDK linked_products
     state.booking.extras = new Set();
+    state.booking.extraQty = {};
     renderExtras(e);
 
     // people — capacity driven by product tier with per-product overrides.
@@ -1656,6 +1618,10 @@ window.JSA.parseDeepLink = function(hashStr){
     $('#bkBack').hidden = step === 1;
     // Single primary button — relabels on the final step
     $('#bkNext').textContent = step === 3 ? 'Conferma prenotazione' : 'Avanti';
+    // Extras pane (step 2): the slot is already chosen in step 1, so re-run the
+    // notice-gate mirror against the final slot. Re-fires if the user goes back,
+    // changes the slot, and returns.
+    if (step === 2) gateExtras();
   }
 
   function getCurrentExp(){
@@ -1691,7 +1657,10 @@ window.JSA.parseDeepLink = function(hashStr){
       // primary-only flows correctly until Plan 05 lands the lookup map population.
       state.booking.extras.forEach(function (linkId) {
         var entry = (typeof extrasLookup !== 'undefined') ? extrasLookup[String(linkId)] : null;
-        if (entry && entry.child_slug) items.push({ slug: entry.child_slug, people: 1, quantity: 1 });
+        if (entry && entry.child_slug) {
+          var q = (state.booking.extraQty && state.booking.extraQty[String(linkId)]) || 1;
+          items.push({ slug: entry.child_slug, people: 1, quantity: q });
+        }
       });
 
       Gestiscilo.quote(items).then(function (env) {
@@ -2223,21 +2192,7 @@ window.JSA.parseDeepLink = function(hashStr){
   }
 
   // ============ STATUS ============
-  function tickStatus(){
-    const now = new Date();
-    const h = now.getHours();
-    const open = h >= 9 && h < 20;
-    const wa  = (h >= 7 && h < 9) || (h >= 20 && h < 22);
-    const status = open ? 'open' : (wa ? 'whatsapp' : 'closed');
-    const pill = $('#statusPill');
-    if(!pill) return;
-    pill.dataset.status = status;
-    const label = pill.querySelector('.status-label');
-    if(label){
-      label.textContent =
-        status === 'open' ? 'Aperto' : (status === 'whatsapp' ? 'Solo WhatsApp' : 'Chiuso');
-    }
-  }
+  // tickStatus moved to assets/js/tenant-info.js (SDK-hours-driven 3-state pill).
 
   // ============ SCROLL ELEVATION ============
   const topbar = document.querySelector('.topbar');
@@ -2332,8 +2287,6 @@ window.JSA.parseDeepLink = function(hashStr){
     document.body.dataset.activeTab = state.activeTab;
     renderCats();
     renderCards();
-    tickStatus();
-    setInterval(tickStatus, 60_000);
     onScroll();
     setupInfoStripMarquee();
     setupChromeHideOnFooter();
@@ -2416,102 +2369,7 @@ window.JSA.parseDeepLink = function(hashStr){
     it.addEventListener('click', () => it.classList.toggle('open'));
   });
 
-  /* ---- 7-day inline forecast (Open-Meteo, attribution: Aeronautica Militare in UI) ---- */
-  (async function(){
-    const grid = document.getElementById('fcastGrid');
-    if (!grid) return;
-
-    const lat = 43.9592, lon = 12.7431;
-    const tz  = encodeURIComponent('Europe/Rome');
-    const marineUrl  = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&daily=wave_height_max&timezone=${tz}&forecast_days=7`;
-    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,wind_speed_10m_max&timezone=${tz}&forecast_days=7`;
-
-    const fetchJson = async (url) => {
-      const r = await fetch(url);
-      if (!r.ok) throw new Error(r.statusText);
-      return r.json();
-    };
-
-    try {
-      const [marine, weather] = await Promise.all([
-        fetchJson(marineUrl),
-        fetchJson(weatherUrl)
-      ]);
-
-      const days = marine.daily.time.map((d, i) => ({
-        date: new Date(d + 'T00:00'),
-        wave: marine.daily.wave_height_max[i],
-        wind: weather.daily.wind_speed_10m_max[i],
-        code: weather.daily.weather_code[i]
-      }));
-
-      grid.innerHTML = days.map((d, i) => renderDay(d, i === 0)).join('');
-    } catch (err) {
-      console.warn('Forecast unavailable:', err);
-      grid.innerHTML = `
-        <div class="fcast-empty">
-          Le previsioni si stanno aggiornando. Se non le vedi, <a href="https://wa.me/">scrivici su WhatsApp</a> e ti diciamo le condizioni in tempo reale.
-        </div>
-      `;
-      // 148-MIG-02: SITE 3 container not held in a local variable; pass document.body
-      // (wirePhoneLinks is idempotent — re-scanning the body to patch newly inserted anchors is cheap).
-      if (window.Gestiscilo && Gestiscilo.wirePhoneLinks) { Gestiscilo.wirePhoneLinks(document.body); }
-    }
-
-    function renderDay(d, isToday) {
-      const v = verdict(d);
-      const dow = d.date.toLocaleDateString('it-IT', { weekday: 'short' }).replace('.', '');
-      const wave = (typeof d.wave === 'number') ? d.wave.toFixed(1) : '—';
-      const wind = (typeof d.wind === 'number') ? Math.round(d.wind) : '—';
-      return `
-        <article class="fcast-day${isToday ? ' today' : ''}" data-verdict="${v.level}">
-          <div class="fcast-date">
-            <span class="fcast-dow">${dow}</span>
-            <span class="fcast-num">${d.date.getDate()}</span>
-          </div>
-          <div class="fcast-icon">${weatherIcon(d.code)}</div>
-          <div class="fcast-stats">
-            <span><b>${wave}</b> m mare</span>
-            <span><b>${wind}</b> km/h vento</span>
-          </div>
-          <span class="fcast-verdict">${v.label}</span>
-        </article>
-      `;
-    }
-
-    function verdict({ wave, wind, code }) {
-      if (code >= 95) return { level: 'no', label: 'No' };
-      if (code >= 71 && code <= 77) return { level: 'no', label: 'No' };
-      if ((typeof wave === 'number' && wave > 0.8)
-         || (typeof wind === 'number' && wind > 30)
-         || (code >= 65 && code <= 67)
-         || (code >= 82 && code <= 86)) return { level: 'no', label: 'Sconsigliato' };
-      if ((typeof wave === 'number' && wave > 0.5)
-         || (typeof wind === 'number' && wind > 22)
-         || (code >= 51 && code <= 64)
-         || (code >= 80 && code <= 81)
-         || (code >= 45 && code <= 48)) return { level: 'caution', label: 'Mare mosso' };
-      return { level: 'go', label: 'Perfetto' };
-    }
-
-    function weatherIcon(code) {
-      const sun = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
-      const partly = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><path d="M19 17a4 4 0 0 0-4-4h-1a5 5 0 0 0-9.5 1.5A4 4 0 0 0 7 20h12a3 3 0 0 0 0-6"/></svg>`;
-      const cloud = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 18a4 4 0 0 0-4-4h-1a5 5 0 0 0-9.5 1.5A4 4 0 0 0 7 20h12a3 3 0 0 0 0-6"/></svg>`;
-      const fog = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18M3 12h18M3 16h18M3 20h18"/></svg>`;
-      const rain = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14a4 4 0 0 0-4-4h-1a5 5 0 0 0-9.5 1.5A4 4 0 0 0 7 16h12a3 3 0 0 0 0-6"/><path d="M8 19v3M12 19v3M16 19v3"/></svg>`;
-      const snow = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14a4 4 0 0 0-4-4h-1a5 5 0 0 0-9.5 1.5A4 4 0 0 0 7 16h12a3 3 0 0 0 0-6"/><path d="M8 20l1 1M12 20l1 1M16 20l1 1"/></svg>`;
-      const thunder = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14a4 4 0 0 0-4-4h-1a5 5 0 0 0-9.5 1.5A4 4 0 0 0 7 16h12a3 3 0 0 0 0-6"/><polyline points="13 14 9 19 12 19 11 22"/></svg>`;
-
-      if (code === 0 || code === 1) return sun;
-      if (code <= 3) return partly;
-      if (code <= 48) return fog;
-      if (code <= 67) return rain;
-      if (code <= 77) return snow;
-      if (code <= 82) return rain;
-      if (code <= 86) return snow;
-      return thunder;
-    }
-  })();
+  // 7-day inline forecast moved to assets/js/fcast.js (shared with sub-pages
+  // that include _partials/meteo.html).
 
 })();

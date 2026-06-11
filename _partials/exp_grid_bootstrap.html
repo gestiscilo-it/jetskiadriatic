@@ -40,15 +40,30 @@
     }
 
     // PHASE 1: replace hardcoded grid contents with N filtered skeleton cards.
+    //
+    // Two fill targets:
+    //  (a) home rails — .flagship-overview[data-active-tab] sections (capped,
+    //      default 3 via data-max);
+    //  (b) sub-page catalogues — any .exp-grid[data-fill-tab] (uncapped by
+    //      default: the page IS the category, so it lists the full filtered
+    //      set; hardcoded cards inside are SSR fallback, replaced on fill).
+    // Card accents need no per-card class: .exp reads var(--tab-accent),
+    // scoped by body[data-active-tab] on sub-pages and by the section's own
+    // data-active-tab attribute on the home rails.
     function fillCategoryGrids(rows) {
-      // Scoped to .flagship-overview sections so a body-level data-active-tab
-      // doesn't trigger an accidental fill on sub-pages that use hardcoded cards.
-      var sections = document.querySelectorAll('.flagship-overview[data-active-tab]');
-      sections.forEach(function (section) {
+      var targets = [];
+      document.querySelectorAll('.flagship-overview[data-active-tab]').forEach(function (section) {
         var grid = section.querySelector('.exp-grid');
         if (!grid) return;
-        var tab = section.getAttribute('data-active-tab');
-        var max = parseInt(grid.getAttribute('data-max') || DEFAULT_MAX, 10) || DEFAULT_MAX;
+        targets.push({ grid: grid, tab: section.getAttribute('data-active-tab'), defMax: DEFAULT_MAX });
+      });
+      document.querySelectorAll('.exp-grid[data-fill-tab]').forEach(function (grid) {
+        targets.push({ grid: grid, tab: grid.getAttribute('data-fill-tab'), defMax: Infinity });
+      });
+      targets.forEach(function (t) {
+        var grid = t.grid;
+        var tab = t.tab;
+        var max = parseInt(grid.getAttribute('data-max') || '', 10) || t.defMax;
 
         var filtered = rows
           .filter(function (p) { return p && p.metadata && p.metadata.tab === tab; })
@@ -69,7 +84,7 @@
           var nn = String(i + 1).padStart(2, '0');
           var titleFallback = p.name || '';
           return '' +
-            '<article class="exp exp--love" data-detail="' + safeSlug + '" data-product-id="' + safeSlug + '">' +
+            '<article class="exp" data-detail="' + safeSlug + '" data-product-id="' + safeSlug + '">' +
               '<div class="exp-n">' + nn + '</div>' +
               '<div class="exp-illu"></div>' +
               '<h3>' + escapeText(titleFallback) + '</h3>' +
@@ -81,6 +96,9 @@
               '</div>' +
             '</article>';
         }).join('');
+        // Column balancing: 4 or 8 cards read better as 4-up rows than 3+1 /
+        // 3+3+2 orphans. CSS keys on data-count (≥1100px only).
+        grid.setAttribute('data-count', String(filtered.length));
       });
     }
 

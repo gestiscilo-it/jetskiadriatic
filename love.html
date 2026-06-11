@@ -21,7 +21,7 @@
 <!-- ============ HERO ============ -->
 <section class="hero hero--love" id="top">
   <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
-         poster="https://images.unsplash.com/photo-1519741497674-611481863552?q=90&w=2400&auto=format&fit=crop">
+         poster="assets/posters/3576377.jpg">
     <source src="https://videos.pexels.com/video-files/3576377/3576377-hd_1920_1080_25fps.mp4" type="video/mp4" />
   </video>
   <div class="hero-overlay"></div>
@@ -33,6 +33,7 @@
 
   <div class="hero-inner">
     <div class="hero-body">
+      {% include "_partials/hero_logo.html" %}
       <span class="hero-kicker">love experience</span>
       <h1 class="hero-h">
         Un momento,<br/><em>per sempre</em>.
@@ -62,7 +63,7 @@
 {% block content %}
 <!-- ============ ESPERIENZE ============ -->
 <section class="section experiences" style="padding:clamp(48px,6vw,88px) 0 clamp(72px,8vw,112px)">
-  <div class="container exp-grid exp-grid--love reveal-s">
+  <div class="container exp-grid exp-grid--love reveal-s" data-fill-tab="love">
 
     <article class="exp exp--love" data-detail="secret-romance" data-product-id="secret-romance">
       <div class="exp-n">01</div>
@@ -189,13 +190,10 @@
 
 <!-- ============ COME FUNZIONA (dark slab) ============ -->
 <section class="section how experiences">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">come funziona</span>
-      <h2 class="sh">Dalla prenotazione<br/><em>al ricordo per sempre</em>.</h2>
-    </div>
-    <p class="lead">Ogni Love Experience si costruisce con qualche giorno di anticipo: coordiniamo rose, champagne, drone e rotta prima che arriviate al pontile. Il giorno dell'uscita non dovete pensare a nulla.</p>
-  </div>
+  {% set sh_kicker = "come funziona" %}
+{% set sh_title = "Dalla prenotazione<br/><em>al ricordo per sempre</em>." %}
+{% set sh_lead = "Ogni Love Experience si costruisce con qualche giorno di anticipo: coordiniamo rose, champagne, drone e rotta prima che arriviate al pontile. Il giorno dell'uscita non dovete pensare a nulla." %}
+{% include "_partials/section_head.html" %}
 
   <div class="container how-grid reveal-s">
     <div class="step">
@@ -216,15 +214,28 @@
   </div>
 </section>
 
+<!-- Wave divider: dark → light -->
+<div class="wave-band wave-band--from-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,0 L0,0 Z" fill="#06182A"/>
+  </svg>
+</div>
+
+{% include "_partials/meteo.html" %}
+
+<!-- Wave divider: light → dark -->
+<div class="wave-band wave-band--into-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,80 L0,80 Z" fill="#06182A"/>
+  </svg>
+</div>
+
 <!-- ============ MEDIA — drone, foto, pergamena GPS ============ -->
 <section class="section media">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">il ricordo</span>
-      <h2 class="sh">Drone 4K, foto al golden hour,<br/><em>coordinate GPS</em> su pergamena.</h2>
-    </div>
-    <p class="lead">Tu vivi il momento — noi lo catturiamo dal cielo, da terra e dal manubrio. Al rientro ricevi il video già editato con colonna sonora, la galleria foto in alta risoluzione e il certificato GPS stampato.</p>
-  </div>
+  {% set sh_kicker = "il ricordo" %}
+{% set sh_title = "Drone 4K, foto al golden hour,<br/><em>coordinate GPS</em> su pergamena." %}
+{% set sh_lead = "Tu vivi il momento — noi lo catturiamo dal cielo, da terra e dal manubrio. Al rientro ricevi il video già editato con colonna sonora, la galleria foto in alta risoluzione e il certificato GPS stampato." %}
+{% include "_partials/section_head.html" %}
 
   <div class="container media-grid reveal-s">
 
@@ -270,63 +281,14 @@
 </div>
 
 <!-- ============ CONTACT + MAP ============ -->
-<section class="contact" id="contatti" aria-labelledby="contactTitle">
-  <div class="contact-head">
-    <span class="kicker">dove ci trovi</span>
-    <h2 id="contactTitle">Sul <em>pontile</em>, a Cattolica.</h2>
-    <p class="lead">Parcheggio gratuito, doccia, spogliatoio. Bar e ristorante a 30 metri dal pontile. A due passi dal lungomare, con il parco di San Bartolo sullo sfondo.</p>
-  </div>
-
-  <div class="contact-grid">
-
-    <div class="contact-map">
-      <iframe
-        data-gs="osm-frame"
-        src="about:blank"
-        loading="lazy"
-        title="Mappa Jet Ski Adriatic — Porto di Cattolica"
-        allowfullscreen></iframe>
-      <a data-gs="maps-cta" target="_blank" rel="noopener" class="contact-map-cta">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
-        <span class="contact-map-cta-l">
-          <b>Indicazioni stradali</b>
-          <small>Apri in Google Maps</small>
-        </span>
-        <svg class="contact-map-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-      </a>
-    </div>
-
-    <div class="contact-card">
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Pontile</span><span class="ci-value"><a data-gs="maps-cta" target="_blank" rel="noopener"><span data-gs="address-line"></span></a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Telefono &amp; WhatsApp</span><span class="ci-value"><a href="tel:" data-gs="phone">+39 351 621 4480</a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Email</span><span class="ci-value"><a href="mailto:" data-gs="email">info@jetskiadriatic.it</a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Orari stagione</span><span class="ci-value" data-gs="hours-week"></span></span>
-      </div>
-    </div>
-
-  </div>
-</section>
+{% include "_partials/contact.html" %}
 
 <!-- ============ FAQ ============ -->
 <section class="section faq wave-bg-pattern">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">le domande</span>
-      <h2 class="sh">Rispondiamo<br/><em>prima</em> che tu chieda.</h2>
-    </div>
-    <p class="lead">Le domande più frequenti sulle Love Experience. Se manca la tua, scrivici su WhatsApp — in stagione rispondiamo entro pochi minuti.</p>
-  </div>
+  {% set sh_kicker = "le domande" %}
+{% set sh_title = "Rispondiamo<br/><em>prima</em> che tu chieda." %}
+{% set sh_lead = "Le domande più frequenti sulle Love Experience. Se manca la tua, scrivici su WhatsApp — in stagione rispondiamo entro pochi minuti." %}
+{% include "_partials/section_head.html" %}
   <div class="faq-list reveal-s">
     <div class="fa"><div class="fq"><span class="num">01</span><h5>Con quanta anticipo devo prenotare?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Secret Romance, Midday Brunch e Vallugola Diamond richiedono almeno 24 ore di anticipo. The Proposal lo stesso; Sinfonia d'Amore richiede 48 ore per coordinare musicista, rose, drone e pergamena GPS. Prima prenoti, meglio è.</p></div></div>
     <div class="fa"><div class="fq"><span class="num">02</span><h5>Il mio partner deve sapere qualcosa in anticipo?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>No. Per The Proposal gestiamo tutto in silenzio: tu sai tutto, il partner scopre solo a bordo. L'unica cosa che devi dirgli è di portare costume e documento. Il resto è una sorpresa orchestrata da noi.</p></div></div>

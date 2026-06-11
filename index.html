@@ -15,7 +15,7 @@
 <!-- ============ HERO (video) ============ -->
 <section class="hero" id="top">
   <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
-         poster="https://images.unsplash.com/photo-1505867798796-639ec7e8cdf5?q=90&w=2400&auto=format&fit=crop">
+         poster="assets/posters/35077130.jpg">
     <source src="https://videos.pexels.com/video-files/35077130/14859106_960_540_60fps.mp4" type="video/mp4" />
   </video>
   <div class="hero-overlay"></div>
@@ -24,6 +24,7 @@
 
   <div class="hero-inner">
     <div class="hero-body">
+      {% include "_partials/hero_logo.html" %}
       <span class="hero-kicker">noleggio · senza patente</span>
       <h1 class="hero-h">
         Tutta la <em>velocità</em>.<br/>Zero patente.
@@ -198,10 +199,30 @@
 
 </div><!-- /.app -->
 
+<!-- ============ PROOF STRIP (light) — spezza hero scuro / prima banda scura ============ -->
+<!-- Wave divider: dark → light -->
+<div class="wave-band wave-band--from-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,72 480,8 720,40 C960,72 1200,8 1440,40 L1440,0 L0,0 Z" fill="#06182A"/>
+  </svg>
+</div>
+
+<section class="section manifesto manifesto--strip">
+  <div class="wrap reveal">
+    <div class="manifesto-stats">
+      <div class="m"><b>4</b><span>Formati di noleggio</span></div>
+      <div class="m"><b>70</b><span>km/h di punta</span></div>
+      <div class="m"><b>10'</b><span>Briefing al pontile</span></div>
+      <div class="m"><b>0</b><span>Patente o corsi richiesti</span></div>
+    </div>
+  </div>
+</section>
+
+
 <!-- ============ NOLEGGIO VIDEO ============ -->
 <section class="hero" id="noleggio" data-active-tab="moto">
   <video class="hero-video" autoplay loop muted playsinline preload="none" data-lazy-hero aria-hidden="true"
-         poster="https://images.unsplash.com/photo-1505867798796-639ec7e8cdf5?q=90&w=2400&auto=format&fit=crop">
+         poster="assets/posters/35077130.jpg">
     <source src="https://videos.pexels.com/video-files/35077130/14859106_960_540_60fps.mp4" type="video/mp4" />
   </video>
   <div class="hero-overlay"></div>
@@ -287,7 +308,7 @@
 <!-- ============ ESCURSIONI VIDEO ============ -->
 <section class="hero" id="escursioni" data-active-tab="escursioni">
   <video class="hero-video" autoplay loop muted playsinline preload="none" data-lazy-hero aria-hidden="true"
-         poster="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=90&w=2400&auto=format&fit=crop">
+         poster="assets/posters/7397243.jpg">
     <source src="https://videos.pexels.com/video-files/7397243/7397243-hd_1920_1080_30fps.mp4" type="video/mp4" />
   </video>
   <div class="hero-overlay"></div>
@@ -378,7 +399,7 @@
 <!-- ============ YACHT VIDEO ============ -->
 <section class="hero" id="yacht" data-active-tab="party">
   <video class="hero-video" autoplay loop muted playsinline preload="none" data-lazy-hero data-lazy-hero-margin="400px 0px" aria-hidden="true"
-         poster="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=90&w=2400&auto=format&fit=crop">
+         poster="assets/posters/26830092.jpg">
     <source src="https://videos.pexels.com/video-files/26830092/12016061_1920_1080_50fps.mp4" type="video/mp4" />
   </video>
   <div class="hero-overlay"></div>
@@ -440,7 +461,7 @@
 <!-- ============ LOVE EXPERIENCES VIDEO ============ -->
 <section class="hero" id="love" data-active-tab="love">
   <video class="hero-video" autoplay loop muted playsinline preload="none" data-lazy-hero aria-hidden="true"
-         poster="https://images.unsplash.com/photo-1519741497674-611481863552?q=90&w=2400&auto=format&fit=crop">
+         poster="assets/posters/3576377.jpg">
     <source src="https://videos.pexels.com/video-files/3576377/3576377-hd_1920_1080_25fps.mp4" type="video/mp4" />
   </video>
   <div class="hero-overlay"></div>
@@ -591,13 +612,10 @@
       <path d="M0 35 C56 6 112 64 170 35 C228 6 284 64 340 35" stroke="currentColor" stroke-width="2.4"/>
     </svg>
   </div>
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">come si fa</span>
-      <h2 class="sh">Dal messaggio al largo:<br/><em>meno di dieci minuti</em>.</h2>
-    </div>
-    <p class="lead">Scrivi su WhatsApp, ricevi conferma in cinque minuti, arrivi al pontile con costume e documento — il resto lo gestiamo noi. Paghi al check-in, cancelli gratis fino a 24 ore prima.</p>
-  </div>
+  {% set sh_kicker = "come si fa" %}
+{% set sh_title = "Dal messaggio al largo:<br/><em>meno di dieci minuti</em>." %}
+{% set sh_lead = "Scrivi su WhatsApp, ricevi conferma in cinque minuti, arrivi al pontile con costume e documento — il resto lo gestiamo noi. Paghi al check-in, cancelli gratis fino a 24 ore prima." %}
+{% include "_partials/section_head.html" %}
 
   <div class="container how-grid reveal-s">
     <div class="step">
@@ -671,13 +689,10 @@
 <!-- ============ MEDIA — drone, GoPro, fotografo ============ -->
 <section class="section media">
 
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">le foto e i video</span>
-      <h2 class="sh">Drone 4K, GoPro POV, fotografo.<br/><em>Tre angolazioni</em>, un solo rientro.</h2>
-    </div>
-    <p class="lead">Tu spingi in mezzo all'Adriatico, noi catturiamo tutto contemporaneamente dal cielo, dal manubrio e da terra. Al rientro ricevi via AirDrop il video già editato e la galleria pronta — nessuno scatto grezzo da gestire, nessun frame perso.</p>
-  </div>
+  {% set sh_kicker = "le foto e i video" %}
+{% set sh_title = "Drone 4K, GoPro POV, fotografo.<br/><em>Tre angolazioni</em>, un solo rientro." %}
+{% set sh_lead = "Tu spingi in mezzo all'Adriatico, noi catturiamo tutto contemporaneamente dal cielo, dal manubrio e da terra. Al rientro ricevi via AirDrop il video già editato e la galleria pronta — nessuno scatto grezzo da gestire, nessun frame perso." %}
+{% include "_partials/section_head.html" %}
 
   <div class="container media-grid reveal-s">
 
@@ -723,51 +738,7 @@
   </svg>
 </div>
 
-<!-- ============ METEO — controlla prima di prenotare ============ -->
-<section class="section meteo" id="meteo-section">
-  <div class="wave-splash" aria-hidden="true" style="top:8%;left:6vw;width:clamp(180px,21vw,320px);height:clamp(42px,5vw,72px);opacity:.32">
-    <svg viewBox="0 0 320 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 32 C50 4 100 60 160 32 C220 4 270 60 320 32" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-    </svg>
-  </div>
-  <div class="wave-splash" aria-hidden="true" style="bottom:14%;right:4vw;width:clamp(140px,16vw,240px);height:clamp(34px,4vw,56px);opacity:.22">
-    <svg viewBox="0 0 240 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 28 C40 6 80 50 120 28 C160 6 200 50 240 28" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-    </svg>
-  </div>
-
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">il meteo</span>
-      <h2 class="sh">Controlla <em>prima</em><br/>di prenotare.</h2>
-    </div>
-    <p class="lead">Non usciamo se le condizioni non sono all'altezza, e non vogliamo che paghi per qualcosa che non sarà perfetto. Controlliamo Capitaneria, <a href="https://www.windy.com/?43.96,12.74,11" target="_blank" rel="noopener">Windy su Cattolica</a> e Meteomar ogni mattina alle 8:00. Se hai dubbi su una data, <a href="https://wa.me/" target="_blank" rel="noopener">scrivici su WhatsApp</a> e controlliamo insieme.</p>
-  </div>
-
-  <div class="container fcast-wrap reveal">
-    <div class="fcast-head">
-      <span class="fcast-tag">Le prossime 7 giornate</span>
-      <span class="fcast-source">Fonte: Servizio Meteorologico dell'<a href="https://www.meteoam.it/it/home" target="_blank" rel="noopener">Aeronautica Militare</a> · aggiornamento giornaliero</span>
-    </div>
-
-    <div class="forecast-7d" id="fcastGrid" aria-live="polite">
-      <!-- skeleton placeholders, popolati via JS -->
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-      <article class="fcast-day fcast-skeleton"></article>
-    </div>
-
-    <div class="fcast-legend">
-      <span><i data-v="go"></i>Perfetto · esci sereno</span>
-      <span><i data-v="caution"></i>Mare mosso · esci, ma fai attenzione</span>
-      <span><i data-v="no"></i>Sconsigliato · meglio rimandare</span>
-    </div>
-  </div>
-</section>
+{% include "_partials/meteo.html" %}
 
 <!-- ============ FAQ ============ -->
 <section class="section faq">
@@ -781,13 +752,10 @@
       <path d="M0 23 C34 4 66 42 100 23 C134 4 166 42 200 23" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/>
     </svg>
   </div>
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">le domande</span>
-      <h2 class="sh">Rispondiamo<br/><em>prima</em> che tu chieda.</h2>
-    </div>
-    <p class="lead">Se la tua domanda non c'è, scrivici su WhatsApp: in stagione rispondiamo entro pochi minuti, a volte con la barca già in acqua.</p>
-  </div>
+  {% set sh_kicker = "le domande" %}
+{% set sh_title = "Rispondiamo<br/><em>prima</em> che tu chieda." %}
+{% set sh_lead = "Se la tua domanda non c'è, scrivici su WhatsApp: in stagione rispondiamo entro pochi minuti, a volte con la barca già in acqua." %}
+{% include "_partials/section_head.html" %}
   <div class="faq-list reveal-s">
     <div class="fa"><div class="fq"><span class="num">01</span><h5>Serve la patente nautica?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Per navigare liberamente sì, è obbligatoria. Senza patente offriamo i format Taste e Ride in area controllata con radio VHF e istruttore a vista — nessun esame, solo briefing di 10 minuti.</p></div></div>
     <div class="fa"><div class="fq"><span class="num">02</span><h5>Da che età si può salire?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Il conducente deve avere 18 anni compiuti. I passeggeri sono benvenuti dai 6 anni accompagnati da un adulto. Giubbotto sempre obbligatorio — taglie da 15 kg in su.</p></div></div>
@@ -799,59 +767,8 @@
 </section>
 
 
-<!-- ============ CONTACT + MAP ============ -->
-<section class="contact" id="contatti" aria-labelledby="contactTitle">
-  <div class="wave-splash" aria-hidden="true" style="top:6%;right:5vw;width:clamp(160px,18vw,280px);height:clamp(38px,4.5vw,64px);opacity:.4">
-    <svg viewBox="0 0 280 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 30 C46 6 94 54 140 30 C186 6 234 54 280 30" stroke="currentColor" stroke-width="2.4"/>
-    </svg>
-  </div>
-  <div class="contact-head">
-    <span class="kicker">dove ci trovi</span>
-    <h2 id="contactTitle">Sul <em>pontile</em>, a Cattolica.</h2>
-    <p class="lead">Parcheggio gratuito, doccia, spogliatoio. Bar e ristorante a 30 metri. A due passi dal lungomare, con il parco di San Bartolo sullo sfondo.</p>
-  </div>
-
-  <div class="contact-grid">
-
-    <div class="contact-map">
-      <iframe
-        data-gs="osm-frame"
-        src="about:blank"
-        loading="lazy"
-        title="Mappa Jet Ski Adriatic — Porto di Cattolica"
-        allowfullscreen></iframe>
-      <a data-gs="maps-cta" target="_blank" rel="noopener" class="contact-map-cta">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
-        <span class="contact-map-cta-l">
-          <b>Indicazioni stradali</b>
-          <small>Apri in Google Maps</small>
-        </span>
-        <svg class="contact-map-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-      </a>
-    </div>
-
-    <div class="contact-card">
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Pontile</span><span class="ci-value"><a data-gs="maps-cta" target="_blank" rel="noopener"><span data-gs="address-line"></span></a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Telefono &amp; WhatsApp</span><span class="ci-value"><a href="tel:" data-gs="phone">+39 351 621 4480</a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Email</span><span class="ci-value"><a href="mailto:" data-gs="email">info@jetskiadriatic.it</a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Orari stagione</span><span class="ci-value" data-gs="hours-week"></span></span>
-      </div>
-    </div>
-
-  </div>
-</section>
+{% set contact_splash = true %}
+{% include "_partials/contact.html" %}
 
 
 <!-- ============ DETAIL SHEET (bottom drawer) ============ -->

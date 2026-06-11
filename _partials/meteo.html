@@ -1,0 +1,44 @@
+<!-- ============ METEO — controlla prima di prenotare (shared partial) ============
+  Requires assets/js/fcast.js on the page (renders #fcastGrid).
+-->
+<section class="section meteo" id="meteo-section">
+  <div class="wave-splash" aria-hidden="true" style="top:8%;left:6vw;width:clamp(180px,21vw,320px);height:clamp(42px,5vw,72px);opacity:.32">
+    <svg viewBox="0 0 320 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 32 C50 4 100 60 160 32 C220 4 270 60 320 32" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="wave-splash" aria-hidden="true" style="bottom:14%;right:4vw;width:clamp(140px,16vw,240px);height:clamp(34px,4vw,56px);opacity:.22">
+    <svg viewBox="0 0 240 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 28 C40 6 80 50 120 28 C160 6 200 50 240 28" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  {% set sh_kicker = "il meteo" %}
+{% set sh_title = "Controlla <em>prima</em><br/>di prenotare." %}
+{% set sh_lead = "Non usciamo se le condizioni non sono all'altezza, e non vogliamo che paghi per qualcosa che non sarà perfetto. Controlliamo Capitaneria, <a href=\"https://www.windy.com/?43.96,12.74,11\" target=\"_blank\" rel=\"noopener\">Windy su Cattolica</a> e Meteomar ogni mattina alle 8:00. Se hai dubbi su una data, <a href=\"https://wa.me/\" target=\"_blank\" rel=\"noopener\">scrivici su WhatsApp</a> e controlliamo insieme." %}
+{% include "_partials/section_head.html" %}
+
+  <div class="container fcast-wrap reveal">
+    <div class="fcast-head">
+      <span class="fcast-tag">Le prossime 7 giornate</span>
+      <span class="fcast-source">Fonte: Servizio Meteorologico dell'<a href="https://www.meteoam.it/it/home" target="_blank" rel="noopener">Aeronautica Militare</a> · aggiornamento giornaliero</span>
+    </div>
+
+    <div class="forecast-7d" id="fcastGrid" aria-live="polite">
+      <!-- skeleton placeholders, popolati via assets/js/fcast.js -->
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+      <article class="fcast-day fcast-skeleton"></article>
+    </div>
+
+    <div class="fcast-legend">
+      <span><i data-v="go"></i>Perfetto · esci sereno</span>
+      <span><i data-v="caution"></i>Mare mosso · esci, ma fai attenzione</span>
+      <span><i data-v="no"></i>Sconsigliato · meglio rimandare</span>
+    </div>
+  </div>
+</section>

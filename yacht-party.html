@@ -134,7 +134,7 @@
 <!-- ============ HERO ============ -->
 <section class="hero hero--party" id="top">
   <video class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"
-         poster="https://images.unsplash.com/photo-1605281317010-fe5ffe798166?q=90&w=2400&auto=format&fit=crop">
+         poster="assets/posters/26830092.jpg">
     <source src="https://videos.pexels.com/video-files/26830092/12016061_1920_1080_50fps.mp4" type="video/mp4" />
   </video>
   <div class="hero-overlay"></div>
@@ -146,6 +146,7 @@
 
   <div class="hero-inner">
     <div class="hero-body">
+      {% include "_partials/hero_logo.html" %}
       <span class="hero-kicker">yacht party</span>
       <h1 class="hero-h">
         Il tuo party,<br/><em>a bordo</em>.
@@ -173,15 +174,47 @@
 {% endblock %}
 
 {% block content %}
+<!-- ============ MANIFESTO ============ -->
+<section class="section manifesto">
+  <div class="wave-splash" aria-hidden="true" style="top:14%;right:5vw;width:clamp(160px,18vw,260px);height:clamp(40px,5vw,70px);opacity:.55">
+    <svg viewBox="0 0 260 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 30 C44 6 88 54 132 30 C176 6 220 54 264 30" stroke="#E8A33D" stroke-width="2.5"/>
+    </svg>
+  </div>
+  <div class="wave-splash" aria-hidden="true" style="bottom:12%;left:3vw;width:clamp(200px,24vw,360px);height:clamp(50px,6vw,80px);opacity:.45">
+    <svg viewBox="0 0 360 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 35 C60 5 120 65 180 35 C240 5 300 65 360 35" stroke="#E8A33D" stroke-width="2.5"/>
+    </svg>
+  </div>
+
+  <div class="wrap reveal">
+    <p class="big">
+      Due catamarani, due yacht,<br/>
+      DJ e open bar inclusi —<br/>
+      la festa che vuoi, <span class="ornate">dove vuoi</span>.
+    </p>
+    <div class="manifesto-stats">
+      <div class="m"><b>4</b><span>Imbarcazioni party</span></div>
+      <div class="m"><b>28</b><span>Ospiti max (Catamarano Luxury)</span></div>
+      <div class="m"><b>4</b><span>Format evento</span></div>
+      <div class="m"><b>5 ore</b><span>Esclusiva per pacchetto</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider: light → dark -->
+<div class="wave-band wave-band--into-dark" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,8 480,72 720,40 C960,8 1200,72 1440,40 L1440,80 L0,80 Z" fill="#06182A"/>
+  </svg>
+</div>
+
 <!-- ============ PACCHETTI (dark slab) ============ -->
 <section class="section how" id="pacchetti" style="padding:clamp(56px,7vw,96px) 0 clamp(72px,9vw,120px)">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">i pacchetti</span>
-      <h2 class="sh">Quattro format,<br/><em>un solo pontile</em>.</h2>
-    </div>
-    <p class="lead">Dal party catamarano "Fino all'Alba" al club galleggiante Ultra-Platinum su yacht 20 metri. Ogni pacchetto include cinque ore di esclusiva, DJ set privato, open bar e due moto d'acqua in baia. Si scala su tier (catamarano → yacht) per spazio, capienza e finitura.</p>
-  </div>
+  {% set sh_kicker = "i pacchetti" %}
+{% set sh_title = "Quattro format,<br/><em>un solo pontile</em>." %}
+{% set sh_lead = "Dal party catamarano \"Fino all'Alba\" al club galleggiante Ultra-Platinum su yacht 20 metri. Ogni pacchetto include cinque ore di esclusiva, DJ set privato, open bar e due moto d'acqua in baia. Si scala su tier (catamarano → yacht) per spazio, capienza e finitura." %}
+{% include "_partials/section_head.html" %}
 
   <div class="container pkg-grid reveal-s">
 
@@ -260,48 +293,18 @@
   </svg>
 </div>
 
-<!-- ============ MANIFESTO ============ -->
-<section class="section manifesto">
-  <div class="wave-splash" aria-hidden="true" style="top:14%;right:5vw;width:clamp(160px,18vw,260px);height:clamp(40px,5vw,70px);opacity:.55">
-    <svg viewBox="0 0 260 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 30 C44 6 88 54 132 30 C176 6 220 54 264 30" stroke="#E8A33D" stroke-width="2.5"/>
-    </svg>
-  </div>
-  <div class="wave-splash" aria-hidden="true" style="bottom:12%;left:3vw;width:clamp(200px,24vw,360px);height:clamp(50px,6vw,80px);opacity:.45">
-    <svg viewBox="0 0 360 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 35 C60 5 120 65 180 35 C240 5 300 65 360 35" stroke="#E8A33D" stroke-width="2.5"/>
-    </svg>
-  </div>
-
-  <div class="wrap reveal">
-    <p class="big">
-      Due catamarani, due yacht,<br/>
-      DJ e open bar inclusi —<br/>
-      la festa che vuoi, <span class="ornate">dove vuoi</span>.
-    </p>
-    <div class="manifesto-stats">
-      <div class="m"><b>4</b><span>Imbarcazioni party</span></div>
-      <div class="m"><b>28</b><span>Ospiti max (Catamarano Luxury)</span></div>
-      <div class="m"><b>4</b><span>Format evento</span></div>
-      <div class="m"><b>5 ore</b><span>Esclusiva per pacchetto</span></div>
-    </div>
-  </div>
-</section>
 
 <!-- ============ LA FLOTTA ============ -->
 <section class="section fleet" id="flotta">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">la flotta</span>
-      <h2 class="sh">Quattro barche.<br/><em>Due tier</em>: catamarano e yacht.</h2>
-    </div>
-    <p class="lead">Tutte le imbarcazioni sono operate da Capitano e Hostess Wave Bros, con assicurazione kasko e manutenzione certificata. Scegli il tier in base a numero di ospiti e finitura — il resto lo organizziamo noi.</p>
-  </div>
+  {% set sh_kicker = "la flotta" %}
+{% set sh_title = "Quattro barche.<br/><em>Due tier</em>: catamarano e yacht." %}
+{% set sh_lead = "Tutte le imbarcazioni sono operate da Capitano e Hostess Wave Bros, con assicurazione kasko e manutenzione certificata. Scegli il tier in base a numero di ospiti e finitura — il resto lo organizziamo noi." %}
+{% include "_partials/section_head.html" %}
 
   <!-- Tier 1 — Catamarani (Aperol + Luxury) — fino a 28 ospiti -->
   <a class="container mezzo-wrap mezzo-wrap--link reveal" href="#pacchetti">
     <div class="mezzo-l">
-      <div class="mezzo-illu" style="background-image:url('https://images.unsplash.com/photo-1517655493089-65a6d735b00e?q=85&w=1600&auto=format&fit=crop')">
+      <div class="mezzo-illu" style="background-image:url('https://images.unsplash.com/photo-1769610352818-cf8fa29ccf9a?q=85&w=1600&auto=format&fit=crop')">
         <span class="mezzo-badge">Catamarani · Aperol &amp; Luxury</span>
       </div>
     </div>
@@ -386,7 +389,7 @@
     </div>
 
     <div class="mezzo-l">
-      <div class="mezzo-illu" style="background-image:url('https://images.unsplash.com/photo-1599582909646-2ca06ad65bd1?q=85&w=1600&auto=format&fit=crop')">
+      <div class="mezzo-illu" style="background-image:url('https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?q=85&w=1600&auto=format&fit=crop')">
         <span class="mezzo-badge">Yacht · Baia 60 &amp; Valbruna 20m</span>
       </div>
     </div>
@@ -403,13 +406,10 @@
 
 <!-- ============ COME ORGANIZZIAMO (dark slab) ============ -->
 <section class="section how experiences">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">come organizziamo</span>
-      <h2 class="sh">Dal preventivo<br/><em>al party perfetto</em>.</h2>
-    </div>
-    <p class="lead">Dimmi quante persone, che occasione e che budget — il resto lo gestiamo noi. Catering, DJ, allestimento ponte, rotta su misura: ogni evento è costruito da zero sulla vostra giornata.</p>
-  </div>
+  {% set sh_kicker = "come organizziamo" %}
+{% set sh_title = "Dal preventivo<br/><em>al party perfetto</em>." %}
+{% set sh_lead = "Dimmi quante persone, che occasione e che budget — il resto lo gestiamo noi. Catering, DJ, allestimento ponte, rotta su misura: ogni evento è costruito da zero sulla vostra giornata." %}
+{% include "_partials/section_head.html" %}
 
   <div class="container how-grid reveal-s">
     <div class="step">
@@ -439,63 +439,14 @@
 </div>
 
 <!-- ============ CONTACT + MAP ============ -->
-<section class="contact" id="contatti" aria-labelledby="contactTitle">
-  <div class="contact-head">
-    <span class="kicker">dove ci trovi</span>
-    <h2 id="contactTitle">Sul <em>pontile</em>, a Cattolica.</h2>
-    <p class="lead">Parcheggio gratuito, doccia, spogliatoio. Bar e ristorante a 30 metri dal pontile yacht. A due passi dal lungomare, con il parco di San Bartolo sullo sfondo.</p>
-  </div>
-
-  <div class="contact-grid">
-
-    <div class="contact-map">
-      <iframe
-        data-gs="osm-frame"
-        src="about:blank"
-        loading="lazy"
-        title="Mappa Jet Ski Adriatic — Porto di Cattolica"
-        allowfullscreen></iframe>
-      <a data-gs="maps-cta" target="_blank" rel="noopener" class="contact-map-cta">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
-        <span class="contact-map-cta-l">
-          <b>Indicazioni stradali</b>
-          <small>Apri in Google Maps</small>
-        </span>
-        <svg class="contact-map-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-      </a>
-    </div>
-
-    <div class="contact-card">
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Pontile</span><span class="ci-value"><a data-gs="maps-cta" target="_blank" rel="noopener"><span data-gs="address-line"></span></a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.04 4.18 2 2 0 0 1 4.02 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.71 3.04a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.04-1.19a2 2 0 0 1 2.11-.45c.97.34 1.99.58 3.04.71A2 2 0 0 1 22 16.92z"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Telefono &amp; WhatsApp</span><span class="ci-value"><a href="tel:" data-gs="phone">+39 351 621 4480</a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Email</span><span class="ci-value"><a href="mailto:" data-gs="email">info@jetskiadriatic.it</a></span></span>
-      </div>
-      <div class="ci-row">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-        <span class="ci-c"><span class="ci-label">Orari stagione</span><span class="ci-value" data-gs="hours-week"></span></span>
-      </div>
-    </div>
-
-  </div>
-</section>
+{% include "_partials/contact.html" %}
 
 <!-- ============ FAQ ============ -->
 <section class="section faq wave-bg-pattern">
-  <div class="section-head reveal">
-    <div>
-      <span class="kicker">le domande</span>
-      <h2 class="sh">Rispondiamo<br/><em>prima</em> che tu chieda.</h2>
-    </div>
-    <p class="lead">Le domande più frequenti sugli eventi a bordo. Se manca la tua, scrivici su WhatsApp — in stagione rispondiamo entro pochi minuti.</p>
-  </div>
+  {% set sh_kicker = "le domande" %}
+{% set sh_title = "Rispondiamo<br/><em>prima</em> che tu chieda." %}
+{% set sh_lead = "Le domande più frequenti sugli eventi a bordo. Se manca la tua, scrivici su WhatsApp — in stagione rispondiamo entro pochi minuti." %}
+{% include "_partials/section_head.html" %}
   <div class="faq-list reveal-s">
     <div class="fa"><div class="fq"><span class="num">01</span><h5>Quante persone possono salire a bordo?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>Lo yacht Day &amp; Sunset ospita fino a 10 persone in giornata. Il Weekend &amp; Event arriva a 12 di giorno, 6 in notte. Per il Valbruna Ultra-Platinum saliamo a 20 ospiti di giorno con accorgimenti specifici. Per gruppi più grandi contattateci — valutiamo soluzioni dedicate.</p></div></div>
     <div class="fa"><div class="fq"><span class="num">02</span><h5>Serve la patente nautica?</h5><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div><div class="fa-body"><p>No. Lo skipper è sempre incluso e a bordo per ogni uscita. Voi siete ospiti: ci pensate noi alla navigazione, voi pensate alla festa.</p></div></div>
