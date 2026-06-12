@@ -2249,6 +2249,26 @@ window.JSA.parseDeepLink = function(hashStr){
     });
   }
 
+  // ============ WHEEL → HORIZONTAL on the card carousel ============
+  // While the pointer is over the horizontal cards row, a vertical wheel
+  // gesture scrolls the row sideways. Boundary-aware: at either end the
+  // event is left untouched so the page keeps scrolling vertically. Native
+  // trackpad horizontal gestures (deltaX dominant) pass through unchanged.
+  function wireCarouselWheel(){
+    $$('.cards').forEach(el => {
+      el.addEventListener('wheel', (e) => {
+        if(Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+        if(el.scrollWidth <= el.clientWidth) return;
+        const delta = e.deltaY * (e.deltaMode === 1 ? 16 : 1);
+        const atStart = el.scrollLeft <= 0;
+        const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+        if((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
+        e.preventDefault();
+        el.scrollLeft += delta;
+      }, { passive: false });
+    });
+  }
+
   // ============ INIT ============
   function init(){
     document.body.dataset.activeTab = state.activeTab;
@@ -2259,6 +2279,7 @@ window.JSA.parseDeepLink = function(hashStr){
     wireFooterCatLinks();
     wireBookCtas();
     wireDetailCtas();
+    wireCarouselWheel();
 
     // pre-set deep link
     if(location.hash === '#love'){ setTab('love'); }
