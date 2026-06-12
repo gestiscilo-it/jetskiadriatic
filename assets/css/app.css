@@ -1837,26 +1837,26 @@ body.is-past-products .cat-bar{
   }
   .tab.is-active{ padding: 9px 18px }
 
-  /* Filter bar sits in the feed under the title on desktop — light surface */
+  /* Filter bar moves into header on desktop — old top layout */
   .cat-bar{
     position: static;
     background: transparent;
-    border-top: 0;
+    border-top: 1px solid rgba(255,255,255,.1);
     padding-bottom: 0;
     z-index: auto;
-    margin-bottom: 20px;
   }
-  /* desktop cat-bar is static inside the feed — cancel the mobile slide-down */
+  /* desktop cat-bar is static inside the topbar and slides with it via
+     the topbar's `top` animation — cancel the mobile slide-down */
   body.is-past-products .cat-bar{
     transform: none;
   }
   .cats{
-    /* .feed already provides the rail; pull the first chip's 18px padding
-       back so the chip text aligns with the feed-head title above. */
-    width: auto;
-    max-width: none;
-    margin: 0 -18px;
-    padding: 0;
+    width: 92vw;
+    max-width: var(--content-w);
+    margin: 0 auto;
+    /* 4px less than the hero/section rail (40px) so the pill chip rounded
+       corner optically aligns with the hard text edge of the hero copy. */
+    padding: 14px 36px 0;
     justify-content: flex-start;
     gap: 0;
     overflow-x: auto;
@@ -1868,14 +1868,14 @@ body.is-past-products .cat-bar{
     font-size: 12px;
     gap: 6px;
     border-bottom: 2px solid transparent;
-    color: var(--ink-2);
+    color: color-mix(in srgb, var(--tab-on-accent) 60%, transparent);
     opacity: 1;
   }
-  .cat:hover{ color: var(--ink) }
+  .cat:hover{ color: color-mix(in srgb, var(--tab-on-accent) 90%, transparent) }
   .cat svg{ width: 18px; height: 18px; stroke-width: 1.8 }
   .cat.is-active{
-    color: var(--ink);
-    border-bottom-color: var(--tab-accent);
+    color: var(--tab-on-accent);
+    border-bottom-color: var(--tab-on-accent);
   }
 
   /* Feed: 3 columns. Hero rail at 40px padding-x; 92vw + max-width set in
@@ -3776,7 +3776,7 @@ body.is-past-products .cat-bar{
   transform: translateX(-50%);
 }
 @media (min-width: 960px){
-  .cat.is-active{ color: var(--ink); border-bottom-color: var(--tab-accent) }
+  .cat.is-active{ color: var(--tab-on-accent); border-bottom-color: var(--tab-on-accent) }
   .cat.is-active::after{ display: none }
 }
 .cat-bar{
@@ -3784,7 +3784,7 @@ body.is-past-products .cat-bar{
   border-top: 1px solid var(--line);
 }
 @media (min-width: 960px){
-  .cat-bar{ background: transparent; border-top: 0 }
+  .cat-bar{ background: transparent; border-top: 1px solid rgba(255,255,255,.1) }
 }
 
 /* ==============================================================
