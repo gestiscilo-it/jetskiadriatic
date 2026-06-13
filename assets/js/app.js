@@ -1000,12 +1000,9 @@ window.JSA.parseDeepLink = function(hashStr){
     const grab = sheet.querySelector('.sheet-grab');
     const scroller = sheet.querySelector('.sheet-body');
 
-    // Top band of the sheet (px from the sheet's top edge) inside which a
-    // pointerdown can also start the close-drag, regardless of which child
-    // element it lands on (hero image, title, summary strip, …). Picked to
-    // cover the visual "header" area of all three sheets without reaching
-    // into the form controls below.
-    const TOP_BAND_PX = 140;
+    // Pointerdown anywhere on a non-interactive surface of the sheet starts
+    // the close-drag, as long as the scroller is at the top (so inner scroll
+    // is preserved when there's content above the fold).
     const INTERACTIVE_SEL = 'button, a, input, select, textarea, label, [role="button"], [contenteditable=""], [contenteditable="true"]';
 
     let startY = 0;
@@ -1067,23 +1064,20 @@ window.JSA.parseDeepLink = function(hashStr){
       grab.addEventListener('pointercancel', onUp);
     }
 
-    // (2) Upper-band drag — start the same close-gesture when the user
-    // pulls from any non-interactive spot in the top band of the sheet
-    // (hero image, title row, summary strip). Visual layout untouched.
+    // (2) Body drag — start the same close-gesture from anywhere on the
+    // sheet, as long as the scroller is parked at the top. Inner scroll
+    // takes over once the user has scrolled past 0 (scrollTop guard below).
     sheet.addEventListener('pointerdown', (e) => {
       if(!isMobileSheet() || dragging) return;
       const t = e.target;
       if(!t || !t.closest) return;
       // the grabber has its own binding above
       if(t.closest('.sheet-grab')) return;
-      // never hijack interactive controls inside the band
+      // never hijack interactive controls
       if(t.closest(INTERACTIVE_SEL)) return;
       // only when scrollable content is at the top — otherwise the user
       // is scrolling content, not dismissing the sheet
       if(scroller && scroller.scrollTop > 0) return;
-      // restrict to the upper band of the visible sheet
-      const rect = sheet.getBoundingClientRect();
-      if(e.clientY - rect.top > TOP_BAND_PX) return;
       startDrag(e, sheet);
     });
     sheet.addEventListener('pointermove', onMove);
@@ -1454,6 +1448,21 @@ window.JSA.parseDeepLink = function(hashStr){
     if (timesEl) timesEl.innerHTML = '';
   }
 
+  function renderDayStripSkeleton() {
+    var daysEl  = document.getElementById('bkDays');
+    var timesEl = document.getElementById('bkTimes');
+    if (daysEl) {
+      daysEl.innerHTML = Array.from({length: 7}, function() {
+        return '<span class="skel-bar skel-light" style="height:52px;min-width:56px;border-radius:12px;flex:0 0 auto"></span>';
+      }).join('');
+    }
+    if (timesEl) {
+      timesEl.innerHTML = Array.from({length: 8}, function() {
+        return '<span class="skel-bar skel-light" style="height:38px;border-radius:10px"></span>';
+      }).join('');
+    }
+  }
+
   function renderTimeSlots(slots, preferredTime) {
     var timesEl = document.getElementById('bkTimes');
     if (!timesEl) return;
@@ -1494,7 +1503,7 @@ window.JSA.parseDeepLink = function(hashStr){
   function renderAvailability(productId, people) {
     var daysEl = document.getElementById('bkDays');
     if (!daysEl) return;
-    renderDayStripPlaceholder('Carico disponibilità…');
+    renderDayStripSkeleton();
     if (!window.Gestiscilo || typeof Gestiscilo.availability !== 'function') {
       renderDayStripPlaceholder('Disponibilità non disponibile in questo momento.');
       return;
