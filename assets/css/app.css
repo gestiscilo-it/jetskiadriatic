@@ -1354,7 +1354,11 @@ body.is-past-products .cat-bar{
   font-weight: 400;
   font-style: normal;
   letter-spacing: -.01em;
-  margin: 0 0 2px;
+  /* 12px below gives the description (p.lead) breathing room when no
+     dt-meta subtitle sits between them. When dt-meta IS present its
+     negative-top margin (-18px) counters this back to a ~2px visual
+     gap so the meta still reads as the title's subtitle. */
+  margin: 0 0 12px;
   line-height: 1.05;
   color: var(--ink);
 }
@@ -1362,9 +1366,10 @@ body.is-past-products .cat-bar{
 .sheet-section-head h2 em{ color: var(--tab-accent, var(--cyan-2)); font-weight: 400 }
 .dt-body .dt-meta{
   font-size: 13.5px; color: var(--ink-3);
-  /* -8px counters the serif h1 line-box overshoot so the meta reads as the
-     title's subtitle (~10px visual); 14px below groups title+meta vs lead. */
-  margin: -8px 0 14px;
+  /* -18px counters the h1's 12px bottom margin + the serif line-box
+     overshoot (~10px visual) so the meta reads as the title's subtitle.
+     14px below groups title+meta vs lead. */
+  margin: -18px 0 14px;
 }
 .dt-body .dt-meta b{ color: var(--ink); font-weight: 700 }
 .dt-body p.lead{
