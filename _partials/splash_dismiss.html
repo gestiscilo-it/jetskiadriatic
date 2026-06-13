@@ -15,6 +15,16 @@
     var s = document.getElementById('splash');
     if (!s) return;
     try {
+      // Pull-to-reload / Cmd-R / location.reload() — the user is asking for
+      // a fresh page, so honour that and re-run the splash even if the
+      // session already saw it. Same-session in-app navigation still skips
+      // the splash so it doesn't flash between sub-pages.
+      var nav = (performance && performance.getEntriesByType)
+        ? performance.getEntriesByType('navigation')[0] : null;
+      var isReload = nav
+        ? nav.type === 'reload'
+        : (performance && performance.navigation && performance.navigation.type === 1);
+      if (isReload) sessionStorage.removeItem('jsa_splash');
       if (sessionStorage.getItem('jsa_splash')) { s.remove(); return; }
       sessionStorage.setItem('jsa_splash', '1');
     } catch (e) {}
