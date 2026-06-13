@@ -1,9 +1,16 @@
 <script>
-  // Splash teardown. Triggers on DOMContentLoaded (not window.load) so the
-  // overlay drops as soon as the parsed DOM is ready — independent of the
-  // hero <video>/<img> resources, which previously delayed the load event
-  // past LCP on slow connections. Per-session: first visit shows the
-  // animation, repeats remove the splash node immediately.
+  // Splash teardown. Hides only once the LCP hero <video> is actually
+  // painting frames — previously the overlay dropped on a fixed delay
+  // after DOMContentLoaded and revealed a black hero rectangle for the
+  // 200–800 ms between teardown and `playing`. Now the timing chain is:
+  //   1. find the first .hero-video on the page (LCP candidate);
+  //   2. attempt to play() it as soon as DOMContentLoaded fires;
+  //   3. dismiss the splash on the video's `playing` event (or `canplay`
+  //      if the browser refuses to fire `playing` while muted/looped);
+  //   4. fall back to a hard cap so a stuck network or autoplay-blocking
+  //      tab never traps the user behind the splash.
+  // Per-session: first visit shows the animation, repeats remove the
+  // splash node immediately.
   (function () {
     var s = document.getElementById('splash');
     if (!s) return;
@@ -13,18 +20,51 @@
     } catch (e) {}
     var prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    var dismissed = false;
     function dismiss() {
+      if (dismissed) return;
+      dismissed = true;
       s.classList.add('is-out');
       setTimeout(function () {
         if (s.parentNode) s.parentNode.removeChild(s);
         document.body.style.overflow = prev;
       }, 600);
     }
-    var delay = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 400 : 150;
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Hard cap: if the video never signals it's playing within this window
+    // (slow network, autoplay blocked, no video element on the page), drop
+    // the splash anyway. The original behaviour kicked in at 150–400 ms,
+    // so we keep the upper bound short enough that the user never waits
+    // longer than they did before; the gain is purely that ON THE HAPPY
+    // PATH the first frame is already on screen.
+    var hardCap = reducedMotion ? 600 : 900;
+    function start() {
+      var v = document.querySelector('.hero-video');
+      if (!v) { setTimeout(dismiss, reducedMotion ? 400 : 150); return; }
+      var minDelay = reducedMotion ? 400 : 150;
+      var armed = Date.now();
+      function ready() {
+        var elapsed = Date.now() - armed;
+        setTimeout(dismiss, Math.max(0, minDelay - elapsed));
+      }
+      // `playing` is the strongest signal — frames are flowing. `canplay`
+      // is a fallback for browsers that hold `playing` back on muted-loop
+      // autoplay. Either path triggers `ready` once.
+      v.addEventListener('playing', ready, { once: true });
+      v.addEventListener('canplay', ready, { once: true });
+      // Kick autoplay synchronously — `muted playsinline` makes this safe
+      // across iOS/Android. Promise reject = autoplay blocked; the hard
+      // cap will still dismiss the splash on time.
+      try {
+        var p = v.play();
+        if (p && typeof p.then === 'function') p.then(function () {}, function () {});
+      } catch (e) {}
+      setTimeout(dismiss, hardCap);
+    }
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function () { setTimeout(dismiss, delay); });
+      document.addEventListener('DOMContentLoaded', start);
     } else {
-      setTimeout(dismiss, delay);
+      start();
     }
   })();
 </script>
