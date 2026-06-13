@@ -1451,14 +1451,17 @@ window.JSA.parseDeepLink = function(hashStr){
   function renderDayStripSkeleton() {
     var daysEl  = document.getElementById('bkDays');
     var timesEl = document.getElementById('bkTimes');
+    // Same block style for both rails — simple rectangles, equal height +
+    // radius. Geometry differs only in width (days flex, times grid-cell).
+    var blockStyle = 'height:44px;border-radius:10px';
     if (daysEl) {
       daysEl.innerHTML = Array.from({length: 7}, function() {
-        return '<span class="skel-bar skel-light" style="height:52px;min-width:56px;border-radius:12px;flex:0 0 auto"></span>';
+        return '<span class="skel-bar skel-light" style="' + blockStyle + ';min-width:56px;flex:0 0 auto"></span>';
       }).join('');
     }
     if (timesEl) {
       timesEl.innerHTML = Array.from({length: 8}, function() {
-        return '<span class="skel-bar skel-light" style="height:38px;border-radius:10px"></span>';
+        return '<span class="skel-bar skel-light" style="' + blockStyle + '"></span>';
       }).join('');
     }
   }
