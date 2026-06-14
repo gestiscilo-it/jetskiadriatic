@@ -263,20 +263,11 @@ body.is-past-products .topbar{
    detaches to the viewport bottom and the topbar otherwise ends on a flat
    line. Picks up navy-2 (the topbar bg) so the wave reads as a continuation
    of the header rather than a separate element. */
-.topbar-edge{ display: none }
-@media (max-width: 759px){
-  .topbar-edge--bot{
-    display: block;
-    position: absolute;
-    left: 0; right: 0;
-    top: 100%;
-    width: 100%;
-    height: clamp(18px, 4vw, 28px);
-    color: var(--navy-2);
-    pointer-events: none;
-    z-index: 1;
-  }
-}
+/* Wavy bottom edge is hidden everywhere now that the cat-bar lives inside
+   the topbar on every viewport — the bar provides its own flat bottom and
+   the wave previously visible on mobile read as a visual artifact below
+   the new sub-cat row. */
+.topbar-edge{ display: none !important }
 
 /* generic row */
 .topbar-row{
@@ -3768,19 +3759,11 @@ body.is-past-products .topbar{
 
 /* ----- Filter bar (cats) — dark text on light surface ----- */
 .cat.is-active{ color: var(--tab-on-accent, #fff) }
-.cat.is-active::after{
-  content: "";
-  position: absolute;
-  bottom: 3px;
-  left: 50%;
-  width: 18px; height: 3px;
-  background: var(--tab-accent);
-  border-radius: 999px;
-  transform: translateX(-50%);
-}
+/* The .cat.is-active::after pill (cyan accent) is removed — active state
+   is now signaled by the white border-bottom underline only (see ~L416),
+   consistent across mobile + desktop. */
 @media (min-width: 960px){
   .cat.is-active{ color: var(--tab-on-accent); border-bottom-color: var(--tab-on-accent) }
-  .cat.is-active::after{ display: none }
 }
 /* (deduplicated) — .cat-bar bg/border now declared once in the top-level
    rule (~line 374). The duplicate that set background:var(--surface)
