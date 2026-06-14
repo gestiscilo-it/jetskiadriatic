@@ -955,19 +955,28 @@ window.JSA.parseDeepLink = function(hashStr){
     return null;
   }
 
-  // Scroll the nearest horizontal scroller so `el` is positioned near the
-  // left edge. Used to bring the active tab/chip into view in the topbar
-  // when scroll-driven updates land on an off-screen chip.
+  // Scroll the nearest horizontal scroller MINIMALLY so `el` becomes visible.
+  // Skips entirely when the element is already fully visible — this avoids
+  // re-shuffling the topbar (and "hiding" earlier tabs from view) on every
+  // scroll-driven activation. Only scrolls when needed, and just enough.
   function scrollChipIntoView(el){
     if(!el) return;
     const container = findHScroller(el);
     if(!container) return; // nothing overflows, no scroll needed
     const elRect = el.getBoundingClientRect();
     const cRect = container.getBoundingClientRect();
-    const elLeftWithin = elRect.left - cRect.left + container.scrollLeft;
-    // Target = chip's offset minus small inset (12px) so it leads the row.
-    const targetLeft = Math.max(0, elLeftWithin - 12);
-    container.scrollTo({ left: targetLeft, behavior: 'smooth' });
+    const pad = 12; // breathing room from container edges
+    // Already fully visible (with padding) → do nothing.
+    if(elRect.left >= cRect.left + pad && elRect.right <= cRect.right - pad) return;
+    let targetLeft = container.scrollLeft;
+    if(elRect.left < cRect.left + pad){
+      // Off-screen to the left → scroll left so el's left aligns at +pad inset
+      targetLeft -= (cRect.left + pad - elRect.left);
+    } else if(elRect.right > cRect.right - pad){
+      // Off-screen to the right → scroll right so el's right aligns at -pad inset
+      targetLeft += (elRect.right - (cRect.right - pad));
+    }
+    container.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
   }
 
   // Scroll observer for the home unified-rail carousel. Watches each card

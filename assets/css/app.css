@@ -371,21 +371,16 @@ body.is-past-products .topbar{
 /* =====================================================
    BOTTOM FILTER BAR (replaces old bottom-nav)
    ===================================================== */
+/* Cat-bar lives inside the topbar on ALL viewports (mobile + desktop).
+   The previous mobile layout (position: fixed, bottom: 0) was removed —
+   user request: topbar selector on mobile too, no bottom-floating bar. */
 .cat-bar{
-  position: fixed;
-  bottom: 0;
-  left: 0; right: 0;
-  z-index: 60;
-  background: var(--surface);
-  border-top: 1px solid var(--line);
-  transition: transform .28s ease;
-  padding-bottom: var(--safe-bottom);
-  transition: transform .28s ease;
-  will-change: transform;
+  position: static;
+  background: transparent;
+  border-top: 1px solid rgba(255,255,255,.08);
+  z-index: auto;
 }
-body.is-past-products .cat-bar{
-  transform: translateY(100%);
-}
+:root{ --cat-bar-h: 0px; } /* zero out the FAB offset reservation */
 .cats{
   display: flex;
   align-items: stretch;
