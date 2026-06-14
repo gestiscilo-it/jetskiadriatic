@@ -3782,13 +3782,9 @@ body.is-past-products .topbar{
   .cat.is-active{ color: var(--tab-on-accent); border-bottom-color: var(--tab-on-accent) }
   .cat.is-active::after{ display: none }
 }
-.cat-bar{
-  background: var(--surface);
-  border-top: 1px solid var(--line);
-}
-@media (min-width: 960px){
-  .cat-bar{ background: transparent; border-top: 1px solid rgba(255,255,255,.1) }
-}
+/* (deduplicated) — .cat-bar bg/border now declared once in the top-level
+   rule (~line 374). The duplicate that set background:var(--surface)
+   here was overriding the topbar's dark navy on mobile. */
 
 /* ==============================================================
    RIDES CARDS — restyled to echo the .exp showcase cards
