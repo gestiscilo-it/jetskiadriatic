@@ -2492,6 +2492,21 @@ window.JSA.parseDeepLink = function(hashStr){
     if(location.hash === '#escursioni'){ setTab('escursioni'); }
     if(location.hash === '#party'){ setTab('party'); }
     if(location.hash === '#meteo'){ openMeteo(); }
+
+    // First-load mobile UX: skip the hero so the user lands on the cards
+    // carousel + title (matching the desktop initial paint, where hero is
+    // off-screen left/right). Only when no deep-link hash and scroll is
+    // still at top. Smooth scroll lets the hero register briefly first.
+    if(!location.hash && window.scrollY === 0 && window.innerWidth <= 760){
+      const feed = $('#feed') || $('.feed-head') || $('#cards');
+      if(feed){
+        setTimeout(() => {
+          const tbH = ($('.topbar')?.getBoundingClientRect().height || 110);
+          const y = feed.getBoundingClientRect().top + window.scrollY - tbH - 8;
+          if(y > 0) window.scrollTo({ top: y, behavior: 'smooth' });
+        }, 350);
+      }
+    }
   }
 
   // Delegated click handler: any element with [data-book] opens the booking
