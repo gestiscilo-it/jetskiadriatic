@@ -683,14 +683,14 @@ body.is-past-products .topbar{
 .fab-book{
   position: fixed;
   right: 16px;
-  bottom: calc(var(--safe-bottom) + 144px);
+  bottom: calc(var(--safe-bottom) + 220px);
   transition: transform .2s ease, bottom .28s ease;
-  width: 52px; height: 52px;
+  width: 48px; height: 48px;
   border-radius: 50%;
   background: var(--ochre);
   color: #fff;
   display: grid; place-items: center;
-  box-shadow: 0 10px 28px rgba(232,163,61,.45), 0 4px 10px rgba(232,163,61,.25);
+  box-shadow: 0 4px 12px rgba(0,0,0,.18);
   z-index: 70;
 }
 .fab-book:active{ transform: scale(.94) }
@@ -747,13 +747,13 @@ body.is-past-products .topbar{
    FAB makes this animate in sync with the cat-bar slide. */
 @media (max-width: 759px){
   body:not(.is-past-products) .fab-wa{
-    bottom: calc(var(--safe-bottom) + 16px + var(--cat-bar-h));
+    bottom: calc(var(--safe-bottom) + 92px);
   }
   body:not(.is-past-products) .fab-call{
-    bottom: calc(var(--safe-bottom) + 80px + var(--cat-bar-h));
+    bottom: calc(var(--safe-bottom) + 156px);
   }
   body:not(.is-past-products) .fab-book{
-    bottom: calc(var(--safe-bottom) + 144px + var(--cat-bar-h));
+    bottom: calc(var(--safe-bottom) + 220px);
   }
 }
 
