@@ -3767,7 +3767,7 @@ body.is-past-products .topbar{
 }
 
 /* ----- Filter bar (cats) — dark text on light surface ----- */
-.cat.is-active{ color: var(--ink) }
+.cat.is-active{ color: var(--tab-on-accent, #fff) }
 .cat.is-active::after{
   content: "";
   position: absolute;
