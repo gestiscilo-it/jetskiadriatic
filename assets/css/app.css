@@ -424,9 +424,9 @@ body.is-past-products .topbar{
   padding: 16px 0 12px;
   position: relative;
   /* Anchored "Prenota" CTAs land here. Pull the scroll target up
-     so the sticky topbar doesn't cover the feed-head and the user
-     sees a bit of context above before the cards start. */
-  scroll-margin-top: clamp(80px, 14vw, 140px);
+     so the sticky topbar (info-strip ~37px + tabs+cat-bar ~110px) doesn't
+     cover the feed-head. Min 160px clears the topbar on mobile. */
+  scroll-margin-top: clamp(160px, 18vw, 200px);
 }
 .feed-head{
   display: flex; justify-content: space-between; align-items: flex-end;
