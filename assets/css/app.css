@@ -462,6 +462,10 @@ body.is-past-products .topbar{
   overflow-x: auto;
   overflow-y: visible;
   overscroll-behavior-x: contain;
+  /* Allow horizontal pan inside the carousel, but pass vertical gestures
+     through to the page so the user can scroll the page even when the
+     finger lands on a card. */
+  touch-action: pan-x pinch-zoom;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
