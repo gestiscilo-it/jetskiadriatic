@@ -2281,6 +2281,47 @@ window.JSA.parseDeepLink = function(hashStr){
     });
   }
 
+  // ============ TOUCH → HORIZONTAL on the card carousel ============
+  // Mobile counterpart to wireCarouselWheel. Vertical touch drags on the
+  // cards row translate to horizontal scroll until either end is reached;
+  // past the boundary the gesture passes through to the page so the user
+  // can keep scrolling vertically. Horizontal-dominant swipes are left
+  // alone so the native overflow-x scroll keeps working.
+  function wireCarouselTouch(){
+    $$('.cards').forEach(el => {
+      let startX = 0, startY = 0, startScrollLeft = 0;
+      let mode = null; // 'horiz-pass' | 'vert-hijack' | null
+      el.addEventListener('touchstart', (e) => {
+        if(e.touches.length !== 1) { mode = null; return; }
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        startScrollLeft = el.scrollLeft;
+        mode = null;
+      }, { passive: true });
+      el.addEventListener('touchmove', (e) => {
+        if(e.touches.length !== 1) return;
+        if(el.scrollWidth <= el.clientWidth) return;
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+        if(mode === null){
+          // Lock direction on the first ~6px of movement.
+          if(Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+          mode = Math.abs(dy) > Math.abs(dx) ? 'vert-hijack' : 'horiz-pass';
+        }
+        if(mode !== 'vert-hijack') return;
+        const next = startScrollLeft - dy;
+        const maxLeft = el.scrollWidth - el.clientWidth;
+        // Past either boundary: release so the page can scroll vertically.
+        if(next <= 0 && dy > 0) return;          // at start, swiping down
+        if(next >= maxLeft && dy < 0) return;    // at end, swiping up
+        e.preventDefault();
+        el.scrollLeft = Math.max(0, Math.min(maxLeft, next));
+      }, { passive: false });
+      el.addEventListener('touchend', () => { mode = null; }, { passive: true });
+      el.addEventListener('touchcancel', () => { mode = null; }, { passive: true });
+    });
+  }
+
   // ============ INIT ============
   function init(){
     document.body.dataset.activeTab = state.activeTab;
@@ -2292,6 +2333,7 @@ window.JSA.parseDeepLink = function(hashStr){
     wireBookCtas();
     wireDetailCtas();
     wireCarouselWheel();
+    wireCarouselTouch();
 
     // pre-set deep link
     if(location.hash === '#love'){ setTab('love'); }
