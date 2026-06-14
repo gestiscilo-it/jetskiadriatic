@@ -381,12 +381,14 @@ body.is-past-products .topbar{
   z-index: auto;
 }
 :root{ --cat-bar-h: 0px; } /* zero out the FAB offset reservation */
+/* Horizontal pill row (same on mobile + desktop now that cat-bar lives
+   inside the topbar everywhere). Active chip = underline border-bottom. */
 .cats{
   display: flex;
   align-items: stretch;
-  justify-content: space-around;
+  justify-content: flex-start;
   gap: 0;
-  padding: 6px 8px;
+  padding: 8px 12px 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -395,25 +397,26 @@ body.is-past-products .topbar{
 }
 .cats::-webkit-scrollbar{ display:none }
 .cat{
-  flex: 1 1 0;
-  display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-  padding: 8px 6px;
+  flex: 0 0 auto;
+  display: inline-flex; flex-direction: row; align-items: center; justify-content: center; gap: 6px;
+  padding: 4px 14px 10px;
   min-width: 0;
-  color: var(--ink-2);
-  font-size: 10.5px; font-weight: 600;
+  color: color-mix(in srgb, var(--tab-on-accent, var(--ink-2)) 60%, transparent);
+  font-size: 12px; font-weight: 600;
   letter-spacing: .01em;
   white-space: nowrap;
   position: relative;
   opacity: 1;
-  /* See note on .tab — same overflow-x scroll context, same fix. */
+  border-bottom: 2px solid transparent;
   touch-action: manipulation;
 }
-.cat svg{ width: 22px; height: 22px; stroke-width: 1.7 }
+.cat svg{ width: 18px; height: 18px; stroke-width: 1.8 }
 @media (hover: hover){
-  .cat:hover{ color: var(--ink) }
+  .cat:hover{ color: color-mix(in srgb, var(--tab-on-accent, var(--ink)) 90%, transparent) }
 }
 .cat.is-active{
-  color: var(--ink);
+  color: var(--tab-on-accent, var(--ink));
+  border-bottom-color: var(--tab-on-accent, var(--ink));
 }
 .cat.is-active svg{ stroke-width: 2.1 }
 
