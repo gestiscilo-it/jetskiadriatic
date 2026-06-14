@@ -153,12 +153,22 @@ window.JSA.parseDeepLink = function(hashStr){
   // Operates on raw SDK rows (pre-mapProduct) so sort_order and metadata.tab
   // are first-class — mapProduct drops sort_order from its return shape.
   function fillCategoryGrids(rawRows) {
-    var sections = document.querySelectorAll('.flagship-overview[data-active-tab]');
-    sections.forEach(function (section) {
+    // Two grid scopes:
+    //   .flagship-overview[data-active-tab] — homepage capped previews (data-max, default 3)
+    //   .exp-grid[data-fill-tab]            — internal-page full listings (no cap, all products of tab)
+    var targets = [];
+    document.querySelectorAll('.flagship-overview[data-active-tab]').forEach(function (section) {
       var grid = section.querySelector('.exp-grid');
-      if (!grid) return;
-      var tab = section.getAttribute('data-active-tab');
-      var max = parseInt(grid.getAttribute('data-max') || '3', 10) || 3;
+      if (grid) targets.push({ grid: grid, tab: section.getAttribute('data-active-tab'), capped: true });
+    });
+    document.querySelectorAll('.exp-grid[data-fill-tab]').forEach(function (grid) {
+      // Skip if already counted via flagship-overview parent.
+      if (grid.closest('.flagship-overview[data-active-tab]')) return;
+      targets.push({ grid: grid, tab: grid.getAttribute('data-fill-tab'), capped: false });
+    });
+    targets.forEach(function (t) {
+      var grid = t.grid, tab = t.tab;
+      var max = t.capped ? (parseInt(grid.getAttribute('data-max') || '3', 10) || 3) : Infinity;
 
       var filtered = rawRows
         .filter(function (p) { return p && p.metadata && p.metadata.tab === tab; })
@@ -167,8 +177,8 @@ window.JSA.parseDeepLink = function(hashStr){
           var sb = (b.sort_order != null) ? b.sort_order : Infinity;
           if (sa !== sb) return sa - sb;
           return String(a.slug || a.id).localeCompare(String(b.slug || b.id));
-        })
-        .slice(0, max);
+        });
+      if (max !== Infinity) filtered = filtered.slice(0, max);
 
       if (filtered.length === 0) return;
 
@@ -789,23 +799,68 @@ window.JSA.parseDeepLink = function(hashStr){
     wrap.querySelectorAll('.cat').forEach(btn => {
       btn.addEventListener('click', () => {
         state.activeCat = btn.dataset.cat;
-        renderCats();
-        renderCards();
+        const cardsEl = $('#cards');
+        if(cardsEl && (cardsEl.dataset.scope || '') === 'all'){
+          // Unified-rail mode: scroll to first card matching tab+cat, no re-render.
+          const target = cardsEl.querySelector(
+            `[data-card-tab="${state.activeTab}"][data-card-cat="${btn.dataset.cat}"]`
+          );
+          if(target){
+            scrollObsMuted = true;
+            target.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
+            setTimeout(() => { scrollObsMuted = false; }, 600);
+          }
+          renderCats();
+        } else {
+          renderCats();
+          renderCards();
+        }
       });
     });
   }
 
   function renderCards(){
     const grid = $('#cards');
+    if(!grid) return;
     const empty = $('#emptyState');
-    let items = EXPERIENCES.filter(e => e.tab === state.activeTab && e.cat === state.activeCat);
+    // Scope resolution (added for unified-rail rework):
+    //   data-scope="all"      → show ALL products (home carousel mode);
+    //                          scroll-driven topbar via setupScrollObserver()
+    //   data-scope-tab="X"    → show all products of tab X (internal page mode);
+    //                          renders sub-cat dividers within the page
+    //   (no data-scope attr)  → legacy: filter by state.activeTab+activeCat
+    const scope = grid.dataset.scope || '';
+    const scopeTab = grid.dataset.scopeTab || '';
+    let items;
+    if(scope === 'all'){
+      // Only top-level experiences (have metadata.tab); excludes add-ons,
+      // cantina bottles, catering tiers, chef menus — those are linked
+      // children rendered inside the booking modal, not on the home carousel.
+      items = EXPERIENCES.filter(e => !!e.tab);
+    } else if(scopeTab){
+      items = EXPERIENCES.filter(e => e.tab === scopeTab);
+    } else {
+      items = EXPERIENCES.filter(e => e.tab === state.activeTab && e.cat === state.activeCat);
+    }
+    // Sort by tab order then cat order then existing sort within (preserves SDK sort_order).
+    const tabOrder = { moto: 0, love: 1, party: 2, escursioni: 3 };
+    items.sort((a, b) => {
+      const ta = tabOrder[a.tab] != null ? tabOrder[a.tab] : 99;
+      const tb = tabOrder[b.tab] != null ? tabOrder[b.tab] : 99;
+      if(ta !== tb) return ta - tb;
+      const catsA = (CATS[a.tab] || []).findIndex(c => c.id === a.cat);
+      const catsB = (CATS[b.tab] || []).findIndex(c => c.id === b.cat);
+      const ca = catsA < 0 ? 99 : catsA;
+      const cb = catsB < 0 ? 99 : catsB;
+      return ca - cb;
+    });
 
     if(!items.length){
       grid.innerHTML = '';
-      empty.hidden = false;
+      if(empty) empty.hidden = false;
       return;
     }
-    empty.hidden = true;
+    if(empty) empty.hidden = true;
 
     grid.innerHTML = items.map(e => {
       const liked = state.likes.has(e.id);
@@ -835,11 +890,11 @@ window.JSA.parseDeepLink = function(hashStr){
       const hasLead   = typeof e.lead === 'string' && e.lead.trim().length > 0;
       const stars     = hasRating ? e.rating.toFixed(2) : '';
       return `
-        <article class="card ${isLove ? 'card--love' : ''}" data-card="${e.id}">
+        <article class="card ${isLove ? 'card--love' : ''}" data-card="${e.id}" data-card-tab="${e.tab || ''}" data-card-cat="${e.cat || ''}">
           <div class="card-img" data-card-img="${e.id}">
             ${mediaHtml}
             ${hasBadge ? `<span class="card-badge ${isLove ? 'card-badge--love' : ''}">${e.badge}</span>` : ''}
-            <button type="button" class="card-heart ${liked ? 'is-liked' : ''}" data-heart="${e.id}" aria-label="Salva ${e.title.replace(/<[^>]+>/g, '')}">
+            <button type="button" class="card-heart ${liked ? 'is-liked' : ''}" data-heart="${e.id}" aria-label="Salva ${(e.title || e.name || '').replace(/<[^>]+>/g, '')}">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
             ${dotsCount > 1 ? `
@@ -881,6 +936,85 @@ window.JSA.parseDeepLink = function(hashStr){
       });
     });
 
+    // Wire scroll-driven topbar update for the unified-rail home carousel.
+    // Tracks which card is centered in the horizontal scroller and reflects
+    // its tab/cat into the topbar `.tab.is-active` + `.cat.is-active` chips.
+    if((grid.dataset.scope || '') === 'all') setupScrollObserver(grid);
+  }
+
+  // Walk up the DOM to find the nearest horizontally-scrollable ancestor
+  // (overflow-x: auto|scroll AND scrollWidth > clientWidth). The chip's
+  // immediate parent is often a non-scrollable wrapper.
+  function findHScroller(el){
+    let p = el ? el.parentElement : null;
+    while(p && p !== document.body){
+      const cs = getComputedStyle(p);
+      if(p.scrollWidth > p.clientWidth && /auto|scroll/.test(cs.overflowX)) return p;
+      p = p.parentElement;
+    }
+    return null;
+  }
+
+  // Scroll the nearest horizontal scroller so `el` is positioned near the
+  // left edge. Used to bring the active tab/chip into view in the topbar
+  // when scroll-driven updates land on an off-screen chip.
+  function scrollChipIntoView(el){
+    if(!el) return;
+    const container = findHScroller(el);
+    if(!container) return; // nothing overflows, no scroll needed
+    const elRect = el.getBoundingClientRect();
+    const cRect = container.getBoundingClientRect();
+    const elLeftWithin = elRect.left - cRect.left + container.scrollLeft;
+    // Target = chip's offset minus small inset (12px) so it leads the row.
+    const targetLeft = Math.max(0, elLeftWithin - 12);
+    container.scrollTo({ left: targetLeft, behavior: 'smooth' });
+  }
+
+  // Scroll observer for the home unified-rail carousel. Watches each card
+  // and, when one reaches the horizontal-center of #cards, updates the
+  // active tab + cat highlights on the topbar (and auto-scrolls them into
+  // view) without re-rendering the cards. Clicking a tab/chip sets a brief
+  // muted-flag to avoid feedback loops.
+  let scrollObsMuted = false;
+  function setupScrollObserver(grid){
+    if(!('IntersectionObserver' in window)) return;
+    const obs = new IntersectionObserver((entries) => {
+      if(scrollObsMuted) return;
+      // Find the most-visible entry (largest intersectionRatio)
+      let best = null;
+      entries.forEach(en => {
+        if(en.isIntersecting && (!best || en.intersectionRatio > best.intersectionRatio)) best = en;
+      });
+      if(!best) return;
+      const tab = best.target.dataset.cardTab;
+      const cat = best.target.dataset.cardCat;
+      if(tab && tab !== state.activeTab){
+        state.activeTab = tab;
+        document.body.dataset.activeTab = tab;
+        let activeTabEl = null;
+        $$('.tab').forEach(t => {
+          const on = t.dataset.tab === tab;
+          t.classList.toggle('is-active', on);
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+          if(on) activeTabEl = t;
+        });
+        // Re-render the cat chips for the newly active tab, then center
+        // the active tab pill in the topbar scroller.
+        renderCats();
+        scrollChipIntoView(activeTabEl);
+      }
+      if(cat && cat !== state.activeCat){
+        state.activeCat = cat;
+        let activeCatEl = null;
+        $$('#cats .cat').forEach(c => {
+          const on = c.dataset.cat === cat;
+          c.classList.toggle('is-active', on);
+          if(on) activeCatEl = c;
+        });
+        scrollChipIntoView(activeCatEl);
+      }
+    }, { root: grid, threshold: [0.5, 0.75, 1.0] });
+    grid.querySelectorAll('[data-card]').forEach(card => obs.observe(card));
   }
 
   function toggleHeart(id, btn){
@@ -933,14 +1067,23 @@ window.JSA.parseDeepLink = function(hashStr){
       }
     };
     const t = FEED_COPY[tab] || FEED_COPY.moto;
-    $('#feedTitle').textContent = t.title;
-    $('#feedSub').textContent = t.sub;
+    if($('#feedTitle')) $('#feedTitle').textContent = t.title;
+    if($('#feedSub')) $('#feedSub').textContent = t.sub;
     renderCats();
-    renderCards();
-    // Reset the cards row to its starting position so the user always
-    // lands on the first card of the newly-selected tab.
     const cardsEl = $('#cards');
-    if(cardsEl) cardsEl.scrollTo({ left: 0, behavior: 'instant' in cardsEl.scrollTo ? 'instant' : 'auto' });
+    if(cardsEl && (cardsEl.dataset.scope || '') === 'all'){
+      // Unified-rail mode: don't re-render; scroll to the first card of
+      // this tab so the observer can take over from there.
+      const target = cardsEl.querySelector(`[data-card-tab="${tab}"]`);
+      if(target){
+        scrollObsMuted = true;
+        target.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
+        setTimeout(() => { scrollObsMuted = false; }, 600);
+      }
+    } else {
+      renderCards();
+      if(cardsEl) cardsEl.scrollTo({ left: 0, behavior: 'instant' in cardsEl.scrollTo ? 'instant' : 'auto' });
+    }
   }
 
   // ============ SHEETS ============
